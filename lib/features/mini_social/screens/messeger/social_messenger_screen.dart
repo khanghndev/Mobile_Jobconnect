@@ -177,7 +177,7 @@ class _SocialMessengerScreenState extends State<SocialMessengerScreen> with Auto
                 builder: (context, socialVm, child) {
                     final friends = socialVm.friends;
                     return SizedBox(
-                      height: 70.h,
+                      height: 80.h,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: friends.length + 1,

@@ -130,30 +130,44 @@ class SocialPostViewModel extends ChangeNotifier {
   //TODO: TOGGLE LIKE
   Future<void> onToggleLike(String postId) async {
     final isLiked = _likedPosts.contains(postId);
+    
+    // 1. Cập nhật local ngay
+    final index = _posts.indexWhere((p) => p.idPost == postId);
+    if (index != -1) {
+      final post = _posts[index];
+      final likesCount = isLiked ? post.likesCount - 1 : post.likesCount + 1;
+      _posts[index] = post.copyWith(likesCount: likesCount);
+      if (isLiked) {
+        _likedPosts.remove(postId);
+      } else {
+        _likedPosts.add(postId);
+      }
+      _calculateTotalLikes();
+      notifyListeners();
+    }
 
-    await _handleApiCall<void>(
-      apiCall: () => isLiked
-          ? _socialPostService.unlikePost(id: postId, userId: currentUserId)
-          : _socialPostService.likePost(id: postId, userId: currentUserId),
-      onSuccess: (_) {
-        final index = _posts.indexWhere((p) => p.idPost == postId);
-        if (index != -1) {
-          final post = _posts[index];
-          final likesCount = isLiked ? post.likesCount - 1 : post.likesCount + 1;
-          _posts[index] = post.copyWith(likesCount: likesCount);
-        }
-
+    // 2. Gọi API không ảnh hưởng UI
+    try {
+      if (isLiked) {
+        await _socialPostService.unlikePost(id: postId, userId: currentUserId);
+      } else {
+        await _socialPostService.likePost(id: postId, userId: currentUserId);
+      }
+    } catch (e) {
+      // Rollback nếu thất bại
+      if (index != -1) {
+        final post = _posts[index];
+        final likesCount = isLiked ? post.likesCount + 1 : post.likesCount - 1;
+        _posts[index] = post.copyWith(likesCount: likesCount);
         if (isLiked) {
-          _likedPosts.remove(postId);
-        } else {
           _likedPosts.add(postId);
+        } else {
+          _likedPosts.remove(postId);
         }
-
-        // CẬP NHẬT TỔNG LƯỢT THÍCH
         _calculateTotalLikes();
         notifyListeners();
-      },
-    );
+      }
+    }
   }
 
   //TODO: TOGGLE SAVE

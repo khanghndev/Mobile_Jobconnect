@@ -118,6 +118,13 @@ class StringUtils {
     return result;
   }
 
+  // Lấy tên
+  static String getLastName(String fullName) {
+    if (fullName.isEmpty) return '';
+    final parts = fullName.trim().split(' ');
+    return parts.isNotEmpty ? parts.last : '';
+  }
+
 }
 
 // Cách sử dụng

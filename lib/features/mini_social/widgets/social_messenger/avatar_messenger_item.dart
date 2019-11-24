@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:job_connect/config/utils/image_url.dart';
+import 'package:job_connect/config/utils/string_utils.dart';
 
 class AvatarMessengerItem extends StatelessWidget {
   final String name;
@@ -26,17 +27,15 @@ class AvatarMessengerItem extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.only(right: 12.w),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           children: [
             CircleAvatar(
               radius: radius.r,
               backgroundImage: ImageUtils.getImageProvider(imageUrl),
             ),
             SizedBox(height: 6.h),
-            SizedBox(
-              width: 100.w,
+            Expanded(
               child: Text(
-                name,
+                StringUtils.getLastName(name),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,

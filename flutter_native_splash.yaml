@@ -1,16 +1,20 @@
 flutter_native_splash:
-  color: "#FFFAF0"
-  color_dark: "#1A1A1A"
+  # Màu nền chính cho light mode
+  color: "#FFFAF0"  
+  # Màu nền cho dark mode
+  color_dark: "#1A1A1A"  
 
+  # Logo trung tâm
   image: assets/images/logo.png
-  image_scale: 1.8
   android_gravity: center
   ios_content_mode: scaleAspectFit
 
+  # Android 12+ (Material You)
   android_12:
     image: assets/images/logo.png
-    icon_background_color: "#FF5722"
+    icon_background_color: "#FF5722"  # Nền icon khi tạo splash theo Material You
 
+  # Platform support
   web: false
   android: true
   ios: true

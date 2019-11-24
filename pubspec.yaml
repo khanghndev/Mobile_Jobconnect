@@ -90,6 +90,10 @@ dependencies:
   supabase_flutter: ^2.10.3
   app_links: ^6.4.1
   build_runner: ^2.10.1
+  signalr_netcore: ^1.4.4
+  collection: ^1.19.1
+  vnlunar: ^1.1.1
+  calendar_view: ^1.4.0
 
 dev_dependencies:
   flutter_test:
