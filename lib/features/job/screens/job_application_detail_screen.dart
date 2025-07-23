@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // For SystemUiOverlayStyle
-import 'package:job_connect/core/models/job_application_model.dart';
-import 'package:job_connect/core/utils/format.dart';
-import 'package:job_connect/core/utils/status_helper.dart';
+import 'package:job_connect/core/data/models/job_application_model.dart';
+import 'package:job_connect/core/config/utils/format.dart';
+import 'package:job_connect/core/config/utils/status_helper.dart';
 // Giả sử bạn có ApiService và ApiConstants để gọi API hủy
-import 'package:job_connect/core/services/api.dart';
-import 'package:job_connect/core/constant/apiconstant.dart';
-import 'package:job_connect/features/file/file_viewer_screen.dart';
+import 'package:job_connect/core/data/services/api.dart';
+import 'package:job_connect/core/config/constant/api_constants.dart';
+import 'package:job_connect/features/file/screens/file_viewer_screen.dart';
 // import 'package:job_connect/features/file/file_viewer_screen.dart';
 
 class JobApplicationDetailScreen extends StatefulWidget {

@@ -1,4 +1,4 @@
-import 'account_model.dart';
+import '../../models/account_model.dart';
 
 class AuthResponse {
   final String token;

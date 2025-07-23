@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:job_connect/core/constant/apiconstant.dart';
-import 'package:job_connect/core/models/company_model.dart';
-import 'package:job_connect/core/models/job_posting_model.dart';
-import 'package:job_connect/core/services/api.dart';
+import 'package:job_connect/core/config/constant/api_constants.dart';
+import 'package:job_connect/core/data/models/company_model.dart';
+import 'package:job_connect/core/data/models/job_posting_model.dart';
+import 'package:job_connect/core/data/services/api.dart';
 import 'package:job_connect/features/company/screens/company_detail_screen.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart'; // Thêm thư viện
 

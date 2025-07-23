@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:job_connect/core/constant/apiconstant.dart';
-import 'package:job_connect/core/models/recruiter_info_model.dart';
+import 'package:job_connect/core/config/constant/api_constants.dart';
+import 'package:job_connect/core/data/models/recruiter_info_model.dart';
 
 class RecruiterService {
   final _client = http.Client();

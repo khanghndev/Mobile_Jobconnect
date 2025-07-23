@@ -1,4 +1,4 @@
-import 'package:job_connect/core/models/account_model.dart';
+import 'package:job_connect/core/data/models/account_model.dart';
 
 class Resume {
   final String idResume;

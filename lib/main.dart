@@ -3,8 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:job_connect/core/providers/text_size_provider.dart';
-import 'package:job_connect/core/providers/theme_provider.dart';
+import 'package:job_connect/core/config/providers/text_size_provider.dart';
+import 'package:job_connect/core/config/providers/theme_provider.dart';
 //import 'package:job_connect/core/services/notification_service.dart';
 import 'package:job_connect/features/auth/screens/login_screen.dart';
 import 'package:job_connect/features/home/screens/home_page.dart';
@@ -133,7 +133,7 @@ class MainApp extends StatelessWidget {
             color: Colors.grey,
           ), // Màu chữ nhỏ, ví dụ cho phiên bản
         ),
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           color: Colors.white,
           elevation: 0,
           shape: RoundedRectangleBorder(
@@ -272,7 +272,7 @@ class MainApp extends StatelessWidget {
             color: Colors.grey,
           ), // Màu chữ nhỏ, ví dụ cho phiên bản
         ),
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           color: const Color(0xFF1E1E1E), // Màu card tối
           elevation: 0,
           shape: RoundedRectangleBorder(

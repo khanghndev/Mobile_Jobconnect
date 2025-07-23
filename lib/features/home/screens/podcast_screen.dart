@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:job_connect/core/constant/apiconstant.dart';
-import 'package:job_connect/core/models/podcast_model.dart';
-import 'package:job_connect/core/services/api.dart';
-import 'package:job_connect/core/utils/format.dart';
+import 'package:job_connect/core/config/constant/api_constants.dart';
+import 'package:job_connect/core/data/models/podcast_model.dart';
+import 'package:job_connect/core/data/services/api.dart';
+import 'package:job_connect/core/config/utils/format.dart';
 
 class PodcastScreen extends StatefulWidget {
   const PodcastScreen({Key? key}) : super(key: key);

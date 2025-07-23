@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:intl/intl.dart';
-import 'package:job_connect/core/constant/apiconstant.dart';
-import 'package:job_connect/core/models/notification_model.dart';
-import 'package:job_connect/core/services/api.dart';
+import 'package:job_connect/core/config/constant/api_constants.dart';
+import 'package:job_connect/core/data/models/notification_model.dart';
+import 'package:job_connect/core/data/services/api.dart';
 import 'package:timeago/timeago.dart' as timeago; //timeago: ^3.2.5
 
 class NotificationsScreen extends StatefulWidget {

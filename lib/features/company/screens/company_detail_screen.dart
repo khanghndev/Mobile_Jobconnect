@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // For SystemUiOverlayStyle
-import 'package:job_connect/core/constant/apiconstant.dart';
-import 'package:job_connect/core/models/company_model.dart';
-import 'package:job_connect/core/models/job_posting_model.dart';
-import 'package:job_connect/core/services/api.dart';
-import 'package:job_connect/core/utils/format.dart';
+import 'package:job_connect/core/config/constant/api_constants.dart';
+import 'package:job_connect/core/data/models/company_model.dart';
+import 'package:job_connect/core/data/models/job_posting_model.dart';
+import 'package:job_connect/core/data/services/api.dart';
+import 'package:job_connect/core/config/utils/format.dart';
 import 'package:job_connect/features/job/screens/job_detail_screen.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';

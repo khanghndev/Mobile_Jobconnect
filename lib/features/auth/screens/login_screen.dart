@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:job_connect/core/constant/apiconstant.dart';
-import 'package:job_connect/core/models/account_model.dart';
-import 'package:job_connect/core/services/api.dart';
+import 'package:job_connect/core/config/constant/api_constants.dart';
+import 'package:job_connect/core/data/models/account_model.dart';
+import 'package:job_connect/core/data/services/api.dart';
 import 'package:job_connect/features/auth/controllers/auth_service.dart';
 import 'package:job_connect/features/home/screens/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';

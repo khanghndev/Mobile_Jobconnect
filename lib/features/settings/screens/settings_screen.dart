@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:job_connect/core/constant/apiconstant.dart';
-import 'package:job_connect/core/models/account_model.dart';
-import 'package:job_connect/core/services/api.dart';
+import 'package:job_connect/core/config/constant/api_constants.dart';
+import 'package:job_connect/core/data/models/account_model.dart';
+import 'package:job_connect/core/data/services/api.dart';
 import 'package:job_connect/features/auth/screens/login_screen.dart';
 import 'package:job_connect/features/help/screens/help_screen.dart';
 import 'package:job_connect/features/payments/screens/payment_screen.dart';
@@ -14,8 +14,8 @@ import 'package:job_connect/features/settings/screens/security_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:job_connect/core/providers/theme_provider.dart';
-import 'package:job_connect/core/providers/text_size_provider.dart';
+import 'package:job_connect/core/config/providers/theme_provider.dart';
+import 'package:job_connect/core/config/providers/text_size_provider.dart';
 
 class SettingScreen extends StatefulWidget {
   final bool isLoggedIn;

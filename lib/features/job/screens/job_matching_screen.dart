@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:job_connect/core/constant/apiconstant.dart';
-import 'package:job_connect/core/models/job_posting_model.dart';
-import 'package:job_connect/core/models/account_model.dart';
-import 'package:job_connect/core/models/candidate_info_model.dart';
-import 'package:job_connect/core/services/api.dart';
-import 'package:job_connect/core/utils/format.dart';
+import 'package:job_connect/core/config/constant/api_constants.dart';
+import 'package:job_connect/core/data/models/job_posting_model.dart';
+import 'package:job_connect/core/data/models/account_model.dart';
+import 'package:job_connect/core/data/models/candidate_info_model.dart';
+import 'package:job_connect/core/data/services/api.dart';
+import 'package:job_connect/core/config/utils/format.dart';
 import 'package:job_connect/features/job/screens/job_detail_screen.dart';
 
 class JobMatchingScreen extends StatefulWidget {

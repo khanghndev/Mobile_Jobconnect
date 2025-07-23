@@ -1,4 +1,4 @@
-import 'package:job_connect/core/models/role_model.dart';
+import 'package:job_connect/core/data/models/role_model.dart';
 
 class Account {
   final String idUser;

@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 class AppStatus {
   // Define API status keys
   static const String pending = 'pending';
-  static const String interview =
-      'interview'; // or 'interview' if that's what your API uses
+  static const String interview = 'interview'; // or 'interview' if that's what your API uses
   static const String rejected = 'rejected';
   static const String accepted = 'accepted';
   static const String viewed = 'viewed';

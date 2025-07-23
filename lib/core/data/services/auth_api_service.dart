@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:job_connect/core/constant/apiconstant.dart';
-import 'package:job_connect/core/models/auth_login_dto.dart';
-import 'package:job_connect/core/models/auth_register_dto.dart';
+import 'package:job_connect/core/config/constant/api_constants.dart';
+import 'package:job_connect/core/data/dto/auth_dto/auth_login_dto.dart';
+import 'package:job_connect/core/data/dto/auth_dto/auth_register_dto.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/auth_response.dart';
+import '../dto/auth_dto/auth_response.dart';
 
 class AuthAPIService {
   final _client = http.Client();

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:job_connect/core/constant/apiconstant.dart';
-import 'package:job_connect/core/models/job_posting_model.dart';
-import 'package:job_connect/core/services/api.dart';
+import 'package:job_connect/core/config/constant/api_constants.dart';
+import 'package:job_connect/core/data/models/job_posting_model.dart';
+import 'package:job_connect/core/data/services/api.dart';
 import 'package:intl/intl.dart';
 import 'package:job_connect/features/job/screens/apply_job_screen.dart';
 import 'package:job_connect/features/job/screens/job_detail_screen.dart'; // Thêm để định dạng tiền tệ và ngày tháng

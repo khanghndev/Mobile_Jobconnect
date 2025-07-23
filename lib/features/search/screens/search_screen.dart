@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // For SystemUiOverlayStyle
-import 'package:job_connect/core/constant/apiconstant.dart';
-import 'package:job_connect/core/models/account_model.dart';
-import 'package:job_connect/core/models/job_application_model.dart';
-import 'package:job_connect/core/models/job_posting_model.dart';
-import 'package:job_connect/core/models/job_saved_model.dart';
-import 'package:job_connect/core/services/api.dart';
-import 'package:job_connect/core/utils/format.dart';
+import 'package:job_connect/core/config/constant/api_constants.dart';
+import 'package:job_connect/core/data/models/account_model.dart';
+import 'package:job_connect/core/data/models/job_application_model.dart';
+import 'package:job_connect/core/data/models/job_posting_model.dart';
+import 'package:job_connect/core/data/models/job_saved_model.dart';
+import 'package:job_connect/core/data/services/api.dart';
+import 'package:job_connect/core/config/utils/format.dart';
 import 'package:job_connect/features/job/screens/apply_job_screen.dart';
 import 'package:job_connect/features/job/screens/job_detail_screen.dart';
 import 'dart:async';
@@ -733,7 +733,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
             data: theme.copyWith(
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
-              tabBarTheme: TabBarTheme(
+              tabBarTheme: TabBarThemeData(
                 labelColor: Colors.white,
                 unselectedLabelColor: Colors.white.withOpacity(0.75),
                 indicatorSize: TabBarIndicatorSize.label,

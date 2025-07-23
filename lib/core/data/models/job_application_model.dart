@@ -1,4 +1,4 @@
-import 'package:job_connect/core/models/job_posting_model.dart';
+import 'package:job_connect/core/data/models/job_posting_model.dart';
 
 class JobApplication {
   final String idJobPost;
