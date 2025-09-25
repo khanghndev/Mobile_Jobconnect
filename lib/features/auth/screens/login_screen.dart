@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:job_connect/core/config/constant/api_constants.dart';
-import 'package:job_connect/core/data/models/account_model.dart';
-import 'package:job_connect/core/data/services/api.dart';
+import 'package:job_connect/config/constant/api_constants.dart';
+import 'package:job_connect/config/constant/app_string.dart';
+import 'package:job_connect/data/models/account_model.dart';
+import 'package:job_connect/data/services/api.dart';
 import 'package:job_connect/features/auth/controllers/auth_service.dart';
 import 'package:job_connect/features/home/screens/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -309,59 +310,59 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   // Hàm đăng nhập bằng Facebook
-  // Future<void> _loginFacebook(BuildContext context) async {
-  //   setState(() {
-  //     _isLoading = true;
-  //   });
+  Future<void> _loginFacebook(BuildContext context) async {
+    setState(() {
+      _isLoading = true;
+    });
 
-  //   try {
-  //     // 1. Gọi Facebook Auth
-  //     final userCredential = await _auth.authFacebook();
+    try {
+      // 1. Gọi Facebook Auth
+      final userCredential = await _auth.authFacebook();
 
-  //     print("Facebook UserCredential: $userCredential");
+      print("Facebook UserCredential: $userCredential");
 
-  //     // Kiểm tra xem người dùng đã đăng nhập thành công chưa
-  //     if (userCredential == null || userCredential.user == null) {
-  //       if (mounted) {
-  //         ScaffoldMessenger.of(context).showSnackBar(
-  //           const SnackBar(
-  //             content: Text(
-  //               'Đăng nhập bằng Facebook thất bại, vui lòng thử lại.',
-  //             ),
-  //             backgroundColor: Colors.red,
-  //           ),
-  //         );
-  //       }
-  //       setState(() {
-  //         _isLoading = false;
-  //       });
-  //       return; // Dừng nếu auth thất bại
-  //     }
+      // Kiểm tra xem người dùng đã đăng nhập thành công chưa
+      if (userCredential == null || userCredential.user == null) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Đăng nhập bằng Facebook thất bại, vui lòng thử lại.',
+              ),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+        setState(() {
+          _isLoading = false;
+        });
+        return; // Dừng nếu auth thất bại
+      }
 
-  //     _loginSuccess(userCredential.user!.uid);
-  //   } catch (e) {
-  //     print("Lỗi Facebook Sign In chi tiết: $e");
-  //     if (mounted) {
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(
-  //           content: Text(
-  //             'Đã xảy ra lỗi khi đăng nhập Facebook: ${e.toString()}',
-  //           ),
-  //           backgroundColor: Colors.red,
-  //           duration: Duration(seconds: 5),
-  //         ),
-  //       );
-  //     }
-  //   } finally {
-  //     if (mounted) {
-  //       setState(() {
-  //         _isLoading = false;
-  //       });
-  //     }
-  //   }
-  // }
+      _loginSuccess(userCredential.user!.uid);
+    } catch (e) {
+      print("Lỗi Facebook Sign In chi tiết: $e");
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Đã xảy ra lỗi khi đăng nhập Facebook: ${e.toString()}',
+            ),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 5),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
 
-  // Hàm mở trang đăng nhập bằng số điện thoại
+  // Hàm đăng nhập bằng só điện thoại
   // Future<void> _loginWithPhone(BuildContext context) async {
   //   Navigator.push(
   //     context,
@@ -438,7 +439,7 @@ class _LoginScreenState extends State<LoginScreen>
 
           // Tiêu đề đăng nhập
           const Text(
-            'HUITERN Chào Bạn',
+            '${AppStrings.appName} Chào Bạn',
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
@@ -447,15 +448,15 @@ class _LoginScreenState extends State<LoginScreen>
           ),
           const SizedBox(height: 8),
           const Text(
-            'Đăng nhập để tiếp tục với HUITERN',
+            'Đăng nhập để tiếp tục với ${AppStrings.appName}',
             style: TextStyle(fontSize: 14, color: Color(0xFF5F6368)),
           ),
           const SizedBox(height: 32),
 
-          // HUITERN login button
+          // ${AppStrings.appName} login button
           _buildLoginButton(
             onPressed: _showTraditionalLogin,
-            text: 'Đăng nhập với HUITERN',
+            text: 'Đăng nhập với ${AppStrings.appName}',
             backgroundColor: const Color(0xFF1976D2),
             textColor: Colors.white,
             icon: Icons.business_center,
@@ -524,7 +525,7 @@ class _LoginScreenState extends State<LoginScreen>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                'Chưa có tài khoản HUITERN?',
+                'Chưa có tài khoản ${AppStrings.appName}?',
                 style: TextStyle(color: Color(0xFF5F6368), fontSize: 14),
               ),
               TextButton(
@@ -724,7 +725,7 @@ class _LoginScreenState extends State<LoginScreen>
 
             const SizedBox(height: 16),
             const Text(
-              'HUITERN',
+              '${AppStrings.appName}',
               style: TextStyle(
                 fontSize: 26,
                 fontWeight: FontWeight.bold,
@@ -890,8 +891,10 @@ class _LoginScreenState extends State<LoginScreen>
               width: double.infinity,
               height: 55,
               child: ElevatedButton(
+
+                onPressed: () => goToHomeCandidate(context, '1'),
                 // Đăng nhập bằng firebase
-                onPressed: !_isLoading ? () => _loginIn(context) : null,
+                //onPressed: !_isLoading ? () => _loginIn(context) : null,
 
                 //Đăng nhập bằng api
                 //onPressed: !_isLoading ? () => _loginWithApi() : null,

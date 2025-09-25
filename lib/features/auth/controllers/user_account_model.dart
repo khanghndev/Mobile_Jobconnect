@@ -1,4 +1,4 @@
-import 'package:job_connect/core/data/models/role_model.dart';
+import 'package:job_connect/data/models/role_model.dart';
 
 class UserAccountModel {
   String idUser; //Mã người dùng - IDU001

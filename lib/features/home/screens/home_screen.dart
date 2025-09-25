@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:job_connect/core/config/constant/api_constants.dart';
-import 'package:job_connect/core/data/models/account_model.dart';
-import 'package:job_connect/core/data/models/company_model.dart';
-import 'package:job_connect/core/data/models/job_posting_model.dart';
-import 'package:job_connect/core/data/models/notification_model.dart';
-import 'package:job_connect/core/data/models/podcast_model.dart';
-import 'package:job_connect/core/data/services/api.dart';
-import 'package:job_connect/core/config/utils/format.dart';
+import 'package:job_connect/config/constant/api_constants.dart';
+import 'package:job_connect/config/constant/app_string.dart';
+import 'package:job_connect/data/models/account_model.dart';
+import 'package:job_connect/data/models/company_model.dart';
+import 'package:job_connect/data/models/job_posting_model.dart';
+import 'package:job_connect/data/models/notification_model.dart';
+import 'package:job_connect/data/models/podcast_model.dart';
+import 'package:job_connect/data/services/api.dart';
+import 'package:job_connect/config/utils/format.dart';
 import 'package:job_connect/features/company/screens/company_detail_screen.dart';
 import 'package:job_connect/features/company/screens/company_screen.dart';
 import 'package:job_connect/features/home/screens/home_page.dart';
+import 'package:job_connect/features/home/widgets/gooey_fab_menu.dart';
 import 'package:job_connect/features/job/screens/job_detail_screen.dart';
 import 'package:job_connect/features/home/screens/podcast_screen.dart';
 import 'package:job_connect/features/home/screens/nearby_jobs_map_screen.dart';
 import 'package:job_connect/features/auth/screens/login_screen.dart';
 import 'dart:async';
-import 'dart:math' as math; // For random colors or transformations
 import 'package:intl/intl.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart'; // For list animations
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:job_connect/features/mini_social/screens/messeger/social_messenger_screen.dart';
+import 'package:job_connect/features/mini_social/screens/social_feed_screen.dart';
 
 // Custom Clipper cho hiệu ứng sóng
 class WaveClipper extends CustomClipper<Path> {
@@ -58,7 +61,6 @@ class WaveClipper extends CustomClipper<Path> {
 }
 
 class HomeScreen extends StatefulWidget {
-  final void Function(RefreshCallback refreshCallback)? registerRefreshCallback;
   final bool isLoggedIn;
   final String idUser;
 
@@ -66,7 +68,6 @@ class HomeScreen extends StatefulWidget {
     super.key,
     this.isLoggedIn = false,
     required this.idUser,
-    this.registerRefreshCallback,
   });
 
   @override
@@ -104,7 +105,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
 
     _initializeData();
-    widget.registerRefreshCallback?.call(_onRefresh);
   }
 
   Future<void> _initializeData() async {
@@ -147,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         'icon': Icons.hub_outlined,
       },
     ];
-
+    
     if (mounted) {
       _startBannerTimer();
       _fadeController.forward(); // Start fade-in animation for the whole screen
@@ -341,13 +341,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
 
-    return FadeTransition(
+    return Scaffold (
+      // Sử dụng Scaffold để có thể thêm AppBar nếu muốn sau này
+      // backgroundColor: isDarkMode ? const Color(0xFF121212) : const Color(0xFFF5F5F5), // Nền tùy chỉnh
       // Wrap toàn bộ màn hình trong FadeTransition
-      opacity: _fadeAnimation,
-      child: Scaffold(
-        // Sử dụng Scaffold để có thể thêm AppBar nếu muốn sau này
-        // backgroundColor: isDarkMode ? const Color(0xFF121212) : const Color(0xFFF5F5F5), // Nền tùy chỉnh
-        body: SingleChildScrollView(
+      body: FadeTransition(
+        opacity: _fadeAnimation,
+        child: SingleChildScrollView(
           controller: _scrollController,
           physics: const BouncingScrollPhysics(),
           child: Column(
@@ -436,7 +436,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     _buildSectionHeader(
                       context,
                       "Công việc nổi bật",
-                      () => HomePage.goToSearchTab(context),
+                      // () => HomePage.goToSearchTab(context),
+                      () => HomePage.goToUniJobsTab(context),
                     ),
                     const SizedBox(height: 18),
                     _buildFeaturedJobsList(context),
@@ -459,6 +460,41 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ],
           ),
         ),
+      ),
+       floatingActionButton: GooeyFABMenu(
+        items: [
+          GooeyFABItem(
+            icon: Icons.add,
+            color: Colors.red,
+            onTap: () => Navigator.push(
+              context, 
+              MaterialPageRoute(builder: (context) => 
+                SocialMessengerScreen(
+                  isLoggedIn: widget.isLoggedIn,
+                  idUser: widget.idUser,
+                )
+              )
+            )
+          ),
+          GooeyFABItem(
+            icon: Icons.local_fire_department,
+            color: Colors.green,
+            onTap: () => Navigator.push(
+              context, 
+              MaterialPageRoute(builder: (context) => 
+                SocialFeedScreen(
+                  isLoggedIn: widget.isLoggedIn,
+                  idUser: widget.idUser,
+                )
+              )
+            )
+          ),
+          GooeyFABItem(
+            icon: Icons.post_add,
+            color: Colors.pink,
+            onTap: () {}
+          ),
+        ]
       ),
     );
   }
@@ -765,10 +801,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       if (isLoggedIn) {
                         switch (banner['value']) {
                           case 1:
-                            HomePage.goToSearchTab(context);
+                            // TODO: search
+                            // HomePage.goToSearchTab(context);
+                            // TODO: UniJobs
+                            HomePage.goToUniJobsTab(context);
                             break;
                           case 2:
-                            HomePage.goToChatBotTab(context);
+                            // TODO: Chatbot
+                            // HomePage.goToChatBotTab(context);
+                            // Message
+                            HomePage.goToChatMessageTab(context);
                             break;
                           case 3:
                             HomePage.goToCVTab(context);
@@ -830,10 +872,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     if (isLoggedIn) {
                                       switch (banner['value']) {
                                         case 1:
-                                          HomePage.goToSearchTab(context);
+                                          // HomePage.goToSearchTab(context);
+                                          HomePage.goToUniJobsTab(context);
                                           break;
                                         case 2:
-                                          HomePage.goToChatBotTab(context);
+                                          // HomePage.goToChatBotTab(context);
+                                          HomePage.goToChatMessageTab(context);
                                           break;
                                         case 3:
                                           HomePage.goToCVTab(context);
@@ -1267,7 +1311,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ),
                       const SizedBox(height: 6),
                       Text(
-                        'Host: ${podcast.host ?? 'HUITERN Team'}',
+                        'Host: ${podcast.host ?? '${AppStrings.appName} Team'}',
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: theme.colorScheme.onSurfaceVariant.withOpacity(
                             0.8,
@@ -1481,7 +1525,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       child: Column(
                         children: [
                           Text(
-                            'Để trải nghiệm đầy đủ các tính năng tuyệt vời, vui lòng đăng nhập tài khoản HUITERN của bạn.',
+                            'Để trải nghiệm đầy đủ các tính năng tuyệt vời, vui lòng đăng nhập tài khoản ${AppStrings.appName} của bạn.',
                             textAlign: TextAlign.center,
                             style: Theme.of(
                               context,

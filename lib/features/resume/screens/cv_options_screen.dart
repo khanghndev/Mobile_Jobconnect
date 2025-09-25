@@ -4,13 +4,12 @@ import 'dart:typed_data'; // Cho Uint8List khi đổi tên file trên Firebase
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Cho SystemUiOverlayStyle
 import 'package:http/http.dart' as http;
-import 'package:job_connect/core/config/constant/api_constants.dart';
-import 'package:job_connect/core/data/models/account_model.dart';
-import 'package:job_connect/core/data/models/resume_model.dart';
-import 'package:job_connect/core/data/services/api.dart';
-import 'package:job_connect/core/config/utils/format.dart';
+import 'package:job_connect/config/constant/api_constants.dart';
+import 'package:job_connect/data/models/account_model.dart';
+import 'package:job_connect/data/models/resume_model.dart';
+import 'package:job_connect/data/services/api.dart';
+import 'package:job_connect/config/utils/format.dart';
 import 'package:job_connect/features/file/screens/file_viewer_screen.dart';
-import 'package:job_connect/features/resume/screens/create_cv_screen.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:open_filex/open_filex.dart';
@@ -22,7 +21,6 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'cv_templates_screen.dart'; // Thêm thư viện này
 
 class CVOptionsScreen extends StatefulWidget {
-  final void Function(RefreshCallback refreshCallback)? registerRefreshCallback;
   final bool isLoggedIn;
   final String idUser;
 
@@ -30,7 +28,6 @@ class CVOptionsScreen extends StatefulWidget {
     super.key,
     required this.isLoggedIn,
     required this.idUser,
-    this.registerRefreshCallback,
   });
 
   @override
@@ -77,7 +74,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
     );
 
     _initializeData();
-    widget.registerRefreshCallback?.call(_onRefresh);
+    
   }
 
   @override

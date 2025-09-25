@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // For SystemUiOverlayStyle
-import 'package:job_connect/core/config/constant/api_constants.dart';
-import 'package:job_connect/core/data/models/account_model.dart';
-import 'package:job_connect/core/data/models/job_application_model.dart';
-import 'package:job_connect/core/data/models/job_posting_model.dart';
-import 'package:job_connect/core/data/models/job_saved_model.dart';
-import 'package:job_connect/core/data/services/api.dart';
-import 'package:job_connect/core/config/utils/format.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:job_connect/config/constant/api_constants.dart';
+import 'package:job_connect/data/models/account_model.dart';
+import 'package:job_connect/data/models/job_application_model.dart';
+import 'package:job_connect/data/models/job_posting_model.dart';
+import 'package:job_connect/data/models/job_saved_model.dart';
+import 'package:job_connect/data/services/api.dart';
+import 'package:job_connect/config/utils/format.dart';
 import 'package:job_connect/features/job/screens/apply_job_screen.dart';
 import 'package:job_connect/features/job/screens/job_detail_screen.dart';
 import 'dart:async';
@@ -14,7 +16,6 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'dart:ui'; // For ImageFilter
 
 class SearchPage extends StatefulWidget {
-  final void Function(RefreshCallback refreshCallback)? registerRefreshCallback;
   final bool isLoggedIn;
   final String idUser;
   final int? initialTabIndex;
@@ -23,7 +24,6 @@ class SearchPage extends StatefulWidget {
     super.key,
     required this.idUser,
     required this.isLoggedIn,
-    this.registerRefreshCallback,
     this.initialTabIndex,
   });
 
@@ -62,7 +62,6 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    widget.registerRefreshCallback?.call(_onRefresh);
 
     _tabController = TabController(
       length: 3,
@@ -546,7 +545,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       }
     });
   }
-
+  // TODO: 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -624,6 +623,15 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                       GestureDetector(
+                        onTap: () => context.pop(), 
+                        child: Icon(
+                          Icons.arrow_back_ios_new,
+                          color: Colors.white,
+                          size: 24.sp,
+                        ),
+                      ),
+                      SizedBox(height: 8.h,),
                       Text(
                         'Khám Phá Việc Làm',
                         style: theme.textTheme.headlineSmall?.copyWith(

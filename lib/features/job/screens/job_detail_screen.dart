@@ -1,13 +1,16 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:job_connect/core/config/constant/api_constants.dart';
-import 'package:job_connect/core/data/models/company_model.dart';
-import 'package:job_connect/core/data/models/job_application_model.dart';
-import 'package:job_connect/core/data/models/job_posting_model.dart';
-import 'package:job_connect/core/data/models/job_saved_model.dart';
-import 'package:job_connect/core/config/providers/theme_provider.dart';
-import 'package:job_connect/core/data/services/api.dart';
-import 'package:job_connect/core/config/utils/format.dart';
+import 'package:job_connect/config/constant/api_constants.dart';
+import 'package:job_connect/config/constant/app_string.dart';
+import 'package:job_connect/data/models/company_model.dart';
+import 'package:job_connect/data/models/job_application_model.dart';
+import 'package:job_connect/data/models/job_posting_model.dart';
+import 'package:job_connect/data/models/job_saved_model.dart';
+import 'package:job_connect/config/providers/theme_provider.dart';
+import 'package:job_connect/data/services/api.dart';
+import 'package:job_connect/config/utils/format.dart';
 import 'package:job_connect/features/auth/screens/login_screen.dart';
 import 'package:job_connect/features/company/screens/company_detail_screen.dart';
 import 'package:intl/intl.dart';
@@ -784,7 +787,7 @@ class JobDetailState extends State<JobDetailScreen>
                       child: Column(
                         children: [
                           Text(
-                            'Để tiếp tục, bạn cần đăng nhập vào tài khoản HUITERN. Khám phá ngay!',
+                            'Để tiếp tục, bạn cần đăng nhập vào tài khoản ${AppStrings.appName}. Khám phá ngay!',
                             textAlign: TextAlign.center,
                             style: theme.textTheme.bodyLarge?.copyWith(
                               height: 1.45,

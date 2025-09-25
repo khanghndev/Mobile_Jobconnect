@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // For SystemUiOverlayStyle
+import 'package:job_connect/config/constant/app_string.dart';
 import 'package:package_info_plus/package_info_plus.dart'; // Thêm package này để lấy thông tin phiên bản
 import 'package:url_launcher/url_launcher.dart'; // Thêm package này để mở URL
 
@@ -11,7 +12,7 @@ class AboutAppScreen extends StatefulWidget {
 }
 
 class _AboutAppScreenState extends State<AboutAppScreen> {
-  String _appName = 'HUITERN';
+  String _appName = AppStrings.appName;
   String _version = '1.0.0';
   String _buildNumber = '1';
 
@@ -57,7 +58,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
       backgroundColor: theme.colorScheme.background,
       appBar: AppBar(
         title: Text(
-          'Về HUITERN',
+          'Về ${AppStrings.appName}',
           style: theme.textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.bold,
             color: theme.colorScheme.onSurface,
@@ -125,7 +126,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
 
                 // Tên ứng dụng
                 Text(
-                  "HUITERN",
+                  AppStrings.appName,
                   style: theme.textTheme.displaySmall?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: theme.colorScheme.primary,
@@ -147,7 +148,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
 
                 // Mô tả ngắn gọn
                 Text(
-                  'HUITERN là nền tảng kết nối ứng viên tài năng với các cơ hội việc làm hấp dẫn trong lĩnh vực Công nghệ thông tin, Thiết kế và Marketing. Sứ mệnh của chúng tôi là đồng hành cùng bạn trên con đường phát triển sự nghiệp.',
+                  '${AppStrings.appName} là nền tảng kết nối ứng viên tài năng với các cơ hội việc làm hấp dẫn trong lĩnh vực Công nghệ thông tin, Thiết kế và Marketing. Sứ mệnh của chúng tôi là đồng hành cùng bạn trên con đường phát triển sự nghiệp.',
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodyLarge?.copyWith(
                     height: 1.6,
@@ -164,7 +165,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
 
                 // Thông tin nhà phát triển/bản quyền
                 Text(
-                  '© ${DateTime.now().year} HUITERN Team.',
+                  '© ${DateTime.now().year} ${AppStrings.appName} Team.',
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant.withOpacity(0.7),
                   ),
@@ -226,7 +227,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
                     );
                   },
                   // () => _launchUrl(
-                  //   'mailto:support@huitern.com',
+                  //   'mailto:support@${AppStrings.appName}.com',
                   // ), // Thay bằng email hỗ trợ
                 ),
                 const SizedBox(height: 20),
@@ -250,7 +251,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
                         ),
                       ),
                       applicationLegalese:
-                          '© ${DateTime.now().year} HUITERN Team',
+                          '© ${DateTime.now().year} ${AppStrings.appName} Team',
                     );
                   },
                 ),

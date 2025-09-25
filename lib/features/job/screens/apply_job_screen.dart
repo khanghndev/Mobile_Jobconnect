@@ -3,13 +3,13 @@ import 'package:flutter/services.dart'; // For SystemUiOverlayStyle
 import 'package:http/http.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart'; // Mặc dù không dùng trực tiếp trong UI này, nhưng có thể cần cho logic upload ảnh CV nếu có
-import 'package:job_connect/core/config/constant/api_constants.dart';
-import 'package:job_connect/core/data/models/account_model.dart';
-import 'package:job_connect/core/data/models/resume_model.dart';
-import 'package:job_connect/core/data/services/api.dart';
+import 'package:job_connect/config/constant/api_constants.dart';
+import 'package:job_connect/data/models/account_model.dart';
+import 'package:job_connect/data/models/resume_model.dart';
+import 'package:job_connect/data/services/api.dart';
 import 'package:file_picker/file_picker.dart'; // Đã có
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:job_connect/core/config/utils/format.dart';
+import 'package:job_connect/config/utils/format.dart';
 import 'package:job_connect/features/home/screens/home_page.dart';
 import 'package:job_connect/features/job/screens/job_history_screen.dart'; // Thêm cho loading indicator đẹp hơn
 

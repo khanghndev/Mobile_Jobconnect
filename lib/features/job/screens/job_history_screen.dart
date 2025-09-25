@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // For SystemUiOverlayStyle
-import 'package:job_connect/core/config/constant/api_constants.dart';
-import 'package:job_connect/core/data/models/job_application_model.dart';
-import 'package:job_connect/core/data/services/api.dart';
-import 'package:job_connect/core/config/utils/format.dart';
-import 'package:job_connect/core/config/utils/status_helper.dart';
+import 'package:job_connect/config/constant/api_constants.dart';
+import 'package:job_connect/data/models/job_application_model.dart';
+import 'package:job_connect/data/services/api.dart';
+import 'package:job_connect/config/utils/format.dart';
+import 'package:job_connect/config/utils/status_helper.dart';
 import 'package:job_connect/features/home/screens/home_page.dart';
 import 'package:job_connect/features/job/screens/job_application_detail_screen.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -910,7 +910,8 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
                   ),
                 ),
                 onPressed: () {
-                  HomePage.goToSearchTab(context, initialTabIndex: 1);
+                  // HomePage.goToSearchTab(context, initialTabIndex: 1);
+                  HomePage.goToUniJobsTab(context, initialTabIndex: 1);
                 },
                 style: OutlinedButton.styleFrom(
                   side: BorderSide(

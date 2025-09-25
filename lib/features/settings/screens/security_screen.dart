@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart'; // Thêm import này
-import 'package:job_connect/core/config/providers/theme_provider.dart';
+import 'package:job_connect/config/providers/theme_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Import ThemeProvider
 
 class SecurityScreen extends StatefulWidget {

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:job_connect/features/appbar_drawer.dart';
+import 'package:job_connect/config/constant/app_string.dart';
+import 'package:job_connect/features/mini_social/screens/messeger/social_messenger_screen.dart';
+import 'package:job_connect/features/widgets/appbar_drawer.dart';
 import 'package:job_connect/features/chat/screens/ai_chat_screen.dart';
 import 'package:job_connect/features/home/screens/home_screen.dart';
-import 'package:job_connect/features/search/screens/search_screen.dart';
+import 'package:job_connect/features/mini_social/screens/social_feed_screen.dart';
 import 'package:job_connect/features/profile/screens/profile_screen.dart';
 import 'package:job_connect/features/resume/screens/cv_options_screen.dart';
 import 'package:job_connect/features/auth/screens/login_screen.dart';
@@ -16,12 +18,29 @@ class HomePage extends StatefulWidget {
   static final GlobalKey<HomePageState> homeKey = GlobalKey<HomePageState>();
 
   static void goToSearchTab(BuildContext context, {int? initialTabIndex}) {
+    // // Thêm initialTabIndex
+    // final state = context.findAncestorStateOfType<HomePageState>();
+    // if (state == null || !state.mounted) {
+    //   return;
+    // }
+    // const int targetIndex = 2;
+    // final List<int> publicTabIndexes = [0, 4];
+    // if (!state.widget.isLoggedIn && !publicTabIndexes.contains(targetIndex)) {
+    //   state._showLoginRequiredDialog();
+    //   return;
+    // }
+    // // Truyền initialTabIndex (nếu có) xuống SearchScreen thông qua navigateToTab
+    // state.navigateToTab(
+    //   targetIndex,
+    //   navigateToSavedInSearch: initialTabIndex == 2,
+    //   searchInitialTab: initialTabIndex,
+    // );
+  }
+
+  static void goToUniJobsTab(BuildContext context, {int? initialTabIndex}) {
     // Thêm initialTabIndex
     final state = context.findAncestorStateOfType<HomePageState>();
     if (state == null || !state.mounted) {
-      print(
-        "[HomePage] goToSearchTab: HomePageState is not available or not mounted.",
-      );
       return;
     }
     const int targetIndex = 2;
@@ -38,7 +57,19 @@ class HomePage extends StatefulWidget {
     );
   }
 
-  static void goToChatBotTab(BuildContext context) {
+  // static void goToChatBotTab(BuildContext context) {
+  //   final state = context.findAncestorStateOfType<HomePageState>();
+  //   if (state == null || !state.mounted) return;
+  //   const int targetIndex = 3;
+  //   final List<int> publicTabIndexes = [0, 4];
+  //   if (!state.widget.isLoggedIn && !publicTabIndexes.contains(targetIndex)) {
+  //     state._showLoginRequiredDialog();
+  //     return;
+  //   }
+  //   state.navigateToTab(targetIndex);
+  // }
+
+  static void goToChatMessageTab(BuildContext context) {
     final state = context.findAncestorStateOfType<HomePageState>();
     if (state == null || !state.mounted) return;
     const int targetIndex = 3;
@@ -96,7 +127,6 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> with TickerProviderStateMixin {
-  // Thêm TickerProviderStateMixin
   int _currentIndex = 0;
   final PageController _pageController = PageController();
   List<Widget> _screens = [];
@@ -131,76 +161,109 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     }
   }
 
+  // TODO: Cập nhập màn hình
   void _updateScreens() {
+    // TODO: TRANG CHỦ
     final homeScreenWithAppBar = CustomAppBarWithDrawer(
       key: const ValueKey('HomeScreenWithAppBar'),
       isLoggedIn: widget.isLoggedIn,
-      idUser: widget.idUser ?? "",
-      bodyBuilder:
-          (registerRefreshCallback) => HomeScreen(
-            key: const PageStorageKey('HomeScreenContent'),
-            isLoggedIn: widget.isLoggedIn,
-            idUser: widget.idUser ?? "",
-            registerRefreshCallback: registerRefreshCallback,
-          ),
+      idUser: widget.idUser,
+      title: AppStrings.appName,
+      bodyBuilder: HomeScreen(
+        key: const PageStorageKey('HomeScreenContent'),
+        isLoggedIn: widget.isLoggedIn,
+        idUser: widget.idUser,
+      ),
     );
+    // TODO: CV
     final cvOptionsScreenWithAppBar = CustomAppBarWithDrawer(
       key: const ValueKey('CVOptionsScreenWithAppBar'),
       isLoggedIn: widget.isLoggedIn,
-      idUser: widget.idUser ?? "",
-      bodyBuilder:
-          (registerRefreshCallback) => CVOptionsScreen(
-            key: const PageStorageKey('CVOptionsScreenContent'),
-            isLoggedIn: widget.isLoggedIn,
-            idUser: widget.idUser ?? "",
-            registerRefreshCallback: registerRefreshCallback,
-          ),
+      idUser: widget.idUser,
+      title: AppStrings.appCV,
+      bodyBuilder: CVOptionsScreen(
+        key: const PageStorageKey('CVOptionsScreenContent'),
+        isLoggedIn: widget.isLoggedIn,
+        idUser: widget.idUser,
+      ),
     );
-    final searchPageWithAppBar = CustomAppBarWithDrawer(
-      key: const ValueKey('SearchPageWithAppBar'),
+    // TODO: TÌM KIẾM
+    // final searchPageWithAppBar = CustomAppBarWithDrawer(
+    //   key: const ValueKey('SearchPageWithAppBar'),
+    //   isLoggedIn: widget.isLoggedIn,
+    //   idUser: widget.idUser,
+    //   bodyBuilder:
+    //       (registerRefreshCallback) => SearchPage(
+    //         // Truyền searchInitialTab
+    //         key: PageStorageKey(
+    //           'SearchPageContent_tab$_searchPageInitialTab',
+    //         ), // Key khác nhau nếu tab khác nhau
+    //         isLoggedIn: widget.isLoggedIn,
+    //         idUser: widget.idUser,
+    //         registerRefreshCallback: registerRefreshCallback,
+    //         initialTabIndex: _searchPageInitialTab, // Truyền xuống SearchPage
+    //       ),
+    // );
+    // TODO: MẠNG XÃ HỘI
+    final socialScreenWithAppBar = CustomAppBarWithDrawer(
+      key: const ValueKey('SocialScreenWithAppBar'),
       isLoggedIn: widget.isLoggedIn,
-      idUser: widget.idUser ?? "",
-      bodyBuilder:
-          (registerRefreshCallback) => SearchPage(
-            // Truyền searchInitialTab
-            key: PageStorageKey(
-              'SearchPageContent_tab$_searchPageInitialTab',
-            ), // Key khác nhau nếu tab khác nhau
-            isLoggedIn: widget.isLoggedIn,
-            idUser: widget.idUser ?? "",
-            registerRefreshCallback: registerRefreshCallback,
-            initialTabIndex: _searchPageInitialTab, // Truyền xuống SearchPage
-          ),
+      idUser: widget.idUser,
+      title: AppStrings.appSocial,
+      bodyBuilder: SocialFeedScreen(
+        key: const PageStorageKey('SocialScreenContent'),
+        isLoggedIn: widget.isLoggedIn,
+        idUser: widget.idUser,
+      ),
     );
-    final chatScreenWithAppBar = CustomAppBarWithDrawer(
-      key: const ValueKey('ChatScreenWithAppBar'),
+    // TODO: CHAT BOX AI
+    // final chatScreenWithAppBar = CustomAppBarWithDrawer(
+    //   key: const ValueKey('ChatScreenWithAppBar'),
+    //   isLoggedIn: widget.isLoggedIn,
+    //   idUser: widget.idUser,
+    //   bodyBuilder:
+    //       (registerRefreshCallback) => AIChatScreen(
+    //         key: const PageStorageKey('ChatScreenContent'),
+    //         isLoggedIn: widget.isLoggedIn,
+    //         idUser: widget.idUser,
+    //         registerRefreshCallback: registerRefreshCallback,
+    //       ),
+    // );
+
+    // TODO: CHATBOX MESSAGER
+    final chatMessageScreenWithAppBar = CustomAppBarWithDrawer(
+      key: const ValueKey('ChatMessageScreenWithAppBar'),
       isLoggedIn: widget.isLoggedIn,
-      idUser: widget.idUser ?? "",
-      bodyBuilder:
-          (registerRefreshCallback) => AIChatScreen(
-            key: const PageStorageKey('ChatScreenContent'),
-            isLoggedIn: widget.isLoggedIn,
-            idUser: widget.idUser ?? "",
-            registerRefreshCallback: registerRefreshCallback,
-          ),
+      idUser: widget.idUser,
+      title: AppStrings.appMessage,
+      bodyBuilder: SocialMessengerScreen(
+        key: const PageStorageKey('ChatMessageScreenContent'),
+        isLoggedIn: widget.isLoggedIn,
+        idUser: widget.idUser,
+      ),
     );
+
+    // TODO: TRANG CÁ NHÂN
     final profilePageScreenWithAppBar = CustomAppBarWithDrawer(
       key: const ValueKey('ProfilePageScreenWithAppBar'),
       isLoggedIn: widget.isLoggedIn,
-      idUser: widget.idUser ?? "",
-      bodyBuilder:
-          (registerRefreshCallback) => ProfilePageScreen(
-            key: const PageStorageKey('ProfilePageScreenContent'),
-            isLoggedIn: widget.isLoggedIn,
-            idUser: widget.idUser ?? "",
-            registerRefreshCallback: registerRefreshCallback,
-          ),
+      idUser: widget.idUser,
+      title: AppStrings.appProfile,
+      bodyBuilder: ProfilePageScreen(
+        key: const PageStorageKey('ProfilePageScreenContent'),
+        isLoggedIn: widget.isLoggedIn,
+        idUser: widget.idUser,
+      ),
     );
+
+    // TODO: THÊM MÀN MỚI CHỖ NÀY
     final newScreens = [
       homeScreenWithAppBar,
       cvOptionsScreenWithAppBar,
-      searchPageWithAppBar,
-      chatScreenWithAppBar,
+      // searchPageWithAppBar,
+      socialScreenWithAppBar,
+      // chatScreenWithAppBar,
+      chatMessageScreenWithAppBar,
       profilePageScreenWithAppBar,
     ];
     if (mounted) setState(() => _screens = newScreens);
@@ -213,7 +276,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  int _searchPageInitialTab = 0; // Biến để lưu tab ban đầu cho SearchScreen
+  int _searchPageInitialTab = 0; // Biến để lưu tab ban đầu cho màn hình chính giữa
 
   void navigateToTab(
     int index, {
@@ -373,17 +436,24 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       ),
                       _buildNavItem(
                         2,
-                        Icons.search_rounded,
-                        Icons.search_off_rounded,
-                        'Tìm Việc',
+                        Icons.local_fire_department_rounded,
+                        Icons.local_fire_department,
+                        'UniJobs',
                         theme,
                         isSpecial: true,
-                      ), // Icon filled khi active
+                      ), 
+                      // _buildNavItem(
+                      //   3,
+                      //   Icons.chat_bubble_outline_rounded,
+                      //   Icons.chat_bubble_rounded,
+                      //   'AI Chat',
+                      //   theme,
+                      // ),
                       _buildNavItem(
                         3,
                         Icons.chat_bubble_outline_rounded,
                         Icons.chat_bubble_rounded,
-                        'AI Chat',
+                        'Hộp thư',
                         theme,
                       ),
                       _buildNavItem(
@@ -466,7 +536,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 ),
                 child: Icon(
                   isSelected
-                      ? Icons.manage_search_rounded
+                      ? Icons.local_fire_department_outlined
                       : iconOutlined, // Icon khác khi active
                   color:
                       isSelected
@@ -536,8 +606,6 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
       ),
     );
   }
-
-  // Bỏ _getShortLabel vì label đã được thiết kế để vừa
 
   void _showLoginRequiredDialog() {
     // ... (Giữ nguyên dialog này, đảm bảo nó sử dụng Theme.of(context))
@@ -630,7 +698,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       child: Column(
                         children: [
                           Text(
-                            'Để tiếp tục, bạn cần đăng nhập vào tài khoản HUITERN. Khám phá ngay!',
+                            'Để tiếp tục, bạn cần đăng nhập vào tài khoản ${AppStrings.appName}. Khám phá ngay!',
                             textAlign: TextAlign.center,
                             style: theme.textTheme.bodyLarge?.copyWith(
                               height: 1.45,

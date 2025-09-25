@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class HelpScreen extends StatelessWidget {
   const HelpScreen({super.key});
@@ -10,8 +11,15 @@ class HelpScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Trợ giúp',
-          style: TextStyle(fontWeight: FontWeight.w600),
+          'Trợ giúp & Phản hồi',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () => context.pop(),
         ),
         centerTitle: true,
         elevation: 0,
@@ -32,6 +40,8 @@ class HelpScreen extends StatelessWidget {
             'Câu hỏi thường gặp',
             Icons.question_answer_rounded,
           ),
+          const SizedBox(height: 16),
+          _buildFAQSection(context),
           const SizedBox(height: 16),
           _buildFAQSection(context),
           const SizedBox(height: 24),
@@ -70,22 +80,9 @@ class HelpScreen extends StatelessWidget {
     return Container(
       height: 60,
       padding: const EdgeInsets.symmetric(horizontal: 6),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            // ignore: deprecated_member_use
-            color: Colors.black.withOpacity(0.05),
-            spreadRadius: 1,
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
       child: TextField(
         decoration: InputDecoration(
-          hintText: 'Tìm kiếm câu hỏi thường gặp...',
+          hintText: 'Tìm kiếm câu hỏi trợ giúp...',
           hintStyle: TextStyle(color: Colors.grey[400], fontSize: 16),
           prefixIcon: Icon(
             Icons.search_rounded,
@@ -106,29 +103,29 @@ class HelpScreen extends StatelessWidget {
   Widget _buildFAQSection(BuildContext context) {
     final List<Map<String, String>> faqItems = [
       {
-        'question': 'Làm thế nào để tạo hồ sơ xin việc?',
+        'question': 'Làm sao để tạo tài khoản trên JobSocial?',
         'answer':
-            'Để tạo hồ sơ xin việc, bạn cần:\n1. Đăng nhập vào tài khoản\n2. Vào mục "Hồ sơ"\n3. Nhấn nút "Chỉnh sửa"\n4. Điền đầy đủ thông tin theo yêu cầu\n5. Nhấn "Lưu" để hoàn tất',
+            'Bạn có thể tạo tài khoản bằng cách:\n1. Chọn "Đăng ký"\n2. Điền email hoặc đăng nhập bằng Google/Facebook\n3. Tạo mật khẩu an toàn\n4. Nhấn "Hoàn tất" để sử dụng ứng dụng',
       },
       {
-        'question': 'Làm thế nào để ứng tuyển việc?',
+        'question': 'Làm sao để kết nối với nhà tuyển dụng?',
         'answer':
-            'Để ứng tuyển việc, bạn cần:\n1. Tìm việc phù hợp trong mục "Tìm kiếm"\n2. Nhấn vào việc muốn ứng tuyển\n3. Đọc kỹ mô tả và yêu cầu công việc\n4. Nhấn nút "Ứng tuyển"\n5. Điền thông tin theo yêu cầu\n6. Nhấn "Gửi" để hoàn tất',
+            'Bạn có thể:\n1. Vào trang cá nhân của nhà tuyển dụng\n2. Nhấn nút "Theo dõi" hoặc "Kết nối"\n3. Gửi tin nhắn trực tiếp để trao đổi công việc',
       },
       {
-        'question': 'Làm thế nào để theo dõi trạng thái ứng tuyển?',
+        'question': 'Tôi có thể chia sẻ bài viết tuyển dụng không?',
         'answer':
-            'Để theo dõi trạng thái ứng tuyển:\n1. Vào mục "Lịch sử ứng tuyển"\n2. Tìm việc muốn theo dõi\n3. Xem trạng thái hiển thị trên thẻ việc làm\n4. Nhấn "Xem chi tiết" để xem thông tin chi tiết',
+            'Hoàn toàn được. Bạn chỉ cần:\n1. Chọn bài viết tuyển dụng\n2. Nhấn nút "Chia sẻ"\n3. Chọn chia sẻ lên trang cá nhân hoặc gửi cho bạn bè',
       },
       {
-        'question': 'Làm thế nào để lưu việc làm?',
+        'question': 'Ứng dụng có thu phí khi ứng tuyển không?',
         'answer':
-            'Để lưu việc làm:\n1. Tìm việc muốn lưu\n2. Nhấn vào biểu tượng bookmark trên thẻ việc làm\n3. Việc đã lưu sẽ được hiển thị trong mục "Việc làm đã lưu"',
+            'Ứng dụng JobSocial hoàn toàn miễn phí cho ứng viên khi tạo hồ sơ và ứng tuyển.\nMột số tính năng cao cấp (như làm nổi bật hồ sơ) có thể yêu cầu trả phí.',
       },
       {
-        'question': 'Làm thế nào để hủy ứng tuyển?',
+        'question': 'Tôi quên mật khẩu thì làm thế nào?',
         'answer':
-            'Để hủy ứng tuyển:\n1. Vào mục "Lịch sử ứng tuyển"\n2. Tìm việc muốn hủy ứng tuyển\n3. Nhấn nút "Hủy ứng tuyển"\n4. Xác nhận hủy ứng tuyển',
+            'Bạn có thể:\n1. Chọn "Quên mật khẩu" tại màn hình đăng nhập\n2. Nhập email đã đăng ký\n3. Kiểm tra email để đặt lại mật khẩu mới',
       },
     ];
 
@@ -138,16 +135,15 @@ class HelpScreen extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          children:
-              faqItems
-                  .map(
-                    (item) => _buildFAQItem(
-                      context,
-                      item['question']!,
-                      item['answer']!,
-                    ),
-                  )
-                  .toList(),
+          children: faqItems
+              .map(
+                (item) => _buildFAQItem(
+                  context,
+                  item['question']!,
+                  item['answer']!,
+                ),
+              )
+              .toList(),
         ),
       ),
     );
@@ -163,7 +159,6 @@ class HelpScreen extends StatelessWidget {
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
         leading: CircleAvatar(
-          // ignore: deprecated_member_use
           backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
           radius: 18,
           child: Icon(
@@ -199,8 +194,8 @@ class HelpScreen extends StatelessWidget {
             _buildContactCard(
               context: context,
               icon: Icons.email_rounded,
-              title: 'Email',
-              subtitle: 'support@jobconnect.com',
+              title: 'Email hỗ trợ',
+              subtitle: 'support@jobsocial.com',
               color: Colors.blue,
               onTap: () {},
             ),
@@ -208,8 +203,8 @@ class HelpScreen extends StatelessWidget {
             _buildContactCard(
               context: context,
               icon: Icons.phone_rounded,
-              title: 'Điện thoại',
-              subtitle: '1900 1234',
+              title: 'Hotline',
+              subtitle: '1900 8888',
               color: Colors.green,
               onTap: () {},
             ),
@@ -217,8 +212,8 @@ class HelpScreen extends StatelessWidget {
             _buildContactCard(
               context: context,
               icon: Icons.chat_rounded,
-              title: 'Chat trực tuyến',
-              subtitle: 'Hỗ trợ 24/7',
+              title: 'Trung tâm trợ giúp',
+              subtitle: 'Chat trực tiếp với CSKH',
               color: Colors.orange,
               onTap: () {},
             ),
@@ -251,7 +246,6 @@ class HelpScreen extends StatelessWidget {
               width: 46,
               height: 46,
               decoration: BoxDecoration(
-                // ignore: deprecated_member_use
                 color: color.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -295,7 +289,7 @@ class HelpScreen extends StatelessWidget {
         onPressed: () {},
         icon: const Icon(Icons.rate_review_rounded),
         label: const Text(
-          'Gửi phản hồi của bạn',
+          'Gửi phản hồi cho JobSocial',
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
         style: ElevatedButton.styleFrom(

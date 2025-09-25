@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:job_connect/core/config/constant/api_constants.dart';
-import 'package:job_connect/core/data/models/account_model.dart';
-import 'package:job_connect/core/data/services/api.dart';
+import 'package:job_connect/config/constant/api_constants.dart';
+import 'package:job_connect/config/constant/app_string.dart';
+import 'package:job_connect/data/models/account_model.dart';
+import 'package:job_connect/data/services/api.dart';
 import 'package:job_connect/features/auth/screens/login_screen.dart';
 import 'package:job_connect/features/help/screens/help_screen.dart';
 import 'package:job_connect/features/payments/screens/payment_screen.dart';
@@ -14,8 +15,8 @@ import 'package:job_connect/features/settings/screens/security_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:job_connect/core/config/providers/theme_provider.dart';
-import 'package:job_connect/core/config/providers/text_size_provider.dart';
+import 'package:job_connect/config/providers/theme_provider.dart';
+import 'package:job_connect/config/providers/text_size_provider.dart';
 
 class SettingScreen extends StatefulWidget {
   final bool isLoggedIn;
@@ -499,7 +500,7 @@ class SettingScreenState extends State<SettingScreen>
                     _buildSettingItem(
                       theme,
                       Icons.info_outline_rounded,
-                      "Về HUITERN",
+                      "Về ${AppStrings.appName.toUpperCase()}",
                       subtitle: "Phiên bản ứng dụng, giới thiệu",
                       onTap: () {
                         Navigator.push(
@@ -521,7 +522,7 @@ class SettingScreenState extends State<SettingScreen>
                     padding: const EdgeInsets.all(20.0),
                     child: Center(
                       child: Text(
-                        "HUITERN App v1.0.0", // Ví dụ
+                        "${AppStrings.appName} App v1.0.0", // Ví dụ
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: theme.colorScheme.onSurfaceVariant.withOpacity(
                             0.6,
@@ -658,7 +659,7 @@ class SettingScreenState extends State<SettingScreen>
           ),
           const SizedBox(height: 8),
           Text(
-            "Đăng nhập để quản lý tài khoản và trải nghiệm đầy đủ các tính năng của HUITERN.",
+            "Đăng nhập để quản lý tài khoản và trải nghiệm đầy đủ các tính năng của ${AppStrings.appName}.",
             textAlign: TextAlign.center,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
@@ -1346,7 +1347,7 @@ class SettingScreenState extends State<SettingScreen>
                       child: Column(
                         children: [
                           Text(
-                            'Để tiếp tục, bạn cần đăng nhập vào tài khoản HUITERN. Khám phá ngay!',
+                            'Để tiếp tục, bạn cần đăng nhập vào tài khoản ${AppStrings.appName}. Khám phá ngay!',
                             textAlign: TextAlign.center,
                             style: theme.textTheme.bodyLarge?.copyWith(
                               height: 1.45,

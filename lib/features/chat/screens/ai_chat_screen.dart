@@ -4,19 +4,19 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'dart:math' as math; // For randomizing quick options
+import 'dart:math' as math;
+
+import 'package:job_connect/config/constant/app_string.dart'; // For randomizing quick options
 
 typedef RefreshCallback = Future<void> Function();
 
 class AIChatScreen extends StatefulWidget {
-  final void Function(RefreshCallback refreshCallback)? registerRefreshCallback;
   final bool isLoggedIn;
   final String? idUser;
   const AIChatScreen({
     super.key,
     required this.isLoggedIn,
     this.idUser,
-    this.registerRefreshCallback,
   });
 
   @override
@@ -37,7 +37,7 @@ class _AIChatScreenState extends State<AIChatScreen>
   final String _apiKey =
       dotenv.env['CHATBOT_API_KEY'] ?? "YOUR_CHATBOT_API_KEY_FALLBACK";
   final String systemPrompt =
-      'Bạn là một trợ lý AI chuyên nghiệp của HUITERN, tập trung vào tư vấn việc làm trong các lĩnh vực IT (bao gồm Frontend, Backend, Mobile, Data Science, AI/ML, DevOps, QA/QC, Game Developer), thiết kế (UI/UX, Graphic Design, Illustration, Video Editing, 3D Modeling), và marketing (Digital Marketing, Content Marketing, SEO, Social Media Marketing, Branding, Market Research). Hãy trả lời ngắn gọn, thân thiện, chuyên nghiệp và đi thẳng vào vấn đề. Luôn đặt câu hỏi để khai thác thêm thông tin nếu cần thiết để đưa ra lời khuyên tốt nhất. Nếu người dùng hỏi về chủ đề không liên quan đến việc làm hoặc các lĩnh vực đã nêu, hãy lịch sự từ chối và khéo léo lái cuộc trò chuyện về chủ đề chính. Mục tiêu của bạn là giúp người dùng định hướng nghề nghiệp, tìm kiếm cơ hội việc làm, chuẩn bị CV và phỏng vấn. Hãy cung cấp thông tin cập nhật và hữu ích. Bạn có thể gợi ý các kỹ năng cần thiết, lộ trình học tập, hoặc các công ty tiềm năng. Khi được hỏi về một vị trí cụ thể, hãy mô tả ngắn gọn về công việc đó và các yêu cầu phổ biến.';
+      'Bạn là một trợ lý AI chuyên nghiệp của ${AppStrings.appName}, tập trung vào tư vấn việc làm trong các lĩnh vực IT (bao gồm Frontend, Backend, Mobile, Data Science, AI/ML, DevOps, QA/QC, Game Developer), thiết kế (UI/UX, Graphic Design, Illustration, Video Editing, 3D Modeling), và marketing (Digital Marketing, Content Marketing, SEO, Social Media Marketing, Branding, Market Research). Hãy trả lời ngắn gọn, thân thiện, chuyên nghiệp và đi thẳng vào vấn đề. Luôn đặt câu hỏi để khai thác thêm thông tin nếu cần thiết để đưa ra lời khuyên tốt nhất. Nếu người dùng hỏi về chủ đề không liên quan đến việc làm hoặc các lĩnh vực đã nêu, hãy lịch sự từ chối và khéo léo lái cuộc trò chuyện về chủ đề chính. Mục tiêu của bạn là giúp người dùng định hướng nghề nghiệp, tìm kiếm cơ hội việc làm, chuẩn bị CV và phỏng vấn. Hãy cung cấp thông tin cập nhật và hữu ích. Bạn có thể gợi ý các kỹ năng cần thiết, lộ trình học tập, hoặc các công ty tiềm năng. Khi được hỏi về một vị trí cụ thể, hãy mô tả ngắn gọn về công việc đó và các yêu cầu phổ biến.';
 
   late AnimationController
   _typingAnimationController; // Animation cho "đang gõ"
@@ -64,7 +64,6 @@ class _AIChatScreenState extends State<AIChatScreen>
       duration: const Duration(milliseconds: 600),
     )..repeat(reverse: true);
 
-    widget.registerRefreshCallback?.call(_onRefresh);
     _initializeChat();
   }
 
@@ -76,7 +75,7 @@ class _AIChatScreenState extends State<AIChatScreen>
       });
     _chat = _model.startChat(history: []);
     _addBotMessage(
-      'Xin chào! Tôi là trợ lý AI tuyển dụng của HUITERN. Tôi có thể giúp bạn những gì liên quan đến định hướng nghề nghiệp, tìm việc, CV, hoặc phỏng vấn trong lĩnh vực IT, Thiết kế, và Marketing?',
+      'Xin chào! Tôi là trợ lý AI tuyển dụng của ${AppStrings.appName}. Tôi có thể giúp bạn những gì liên quan đến định hướng nghề nghiệp, tìm việc, CV, hoặc phỏng vấn trong lĩnh vực IT, Thiết kế, và Marketing?',
       hasOptions: true,
       options: [
         'Tìm việc Frontend Developer',
@@ -280,7 +279,7 @@ class _AIChatScreenState extends State<AIChatScreen>
         ]);
       } else {
         options.addAll([
-          "Kể thêm về HUITERN.",
+          "Kể thêm về ${AppStrings.appName}.",
           "Quy trình tuyển dụng thường thế nào?",
           "Tôi có câu hỏi khác.",
         ]);
@@ -363,7 +362,7 @@ class _AIChatScreenState extends State<AIChatScreen>
             ),
             const SizedBox(width: 10),
             Text(
-              'AI Tư Vấn HUITERN',
+              'AI Tư Vấn ${AppStrings.appName}',
               style: theme.textTheme.titleLarge?.copyWith(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -692,7 +691,7 @@ class ChatMessage extends StatelessWidget {
                   ),
                   const SizedBox(width: 10),
                   Text(
-                    'AI HUITERN', // Tên ngắn gọn hơn
+                    'AI ${AppStrings.appName}', // Tên ngắn gọn hơn
                     style: theme.textTheme.labelMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: theme.colorScheme.onSurfaceVariant.withOpacity(
