@@ -357,7 +357,7 @@ class _AIChatScreenState extends State<AIChatScreen>
           children: [
             Icon(
               Icons.smart_toy_outlined,
-              color: Colors.white.withOpacity(0.9),
+              color: Colors.white.withValues(alpha:0.9),
               size: 24,
             ),
             const SizedBox(width: 10),
@@ -380,7 +380,7 @@ class _AIChatScreenState extends State<AIChatScreen>
           IconButton(
             icon: Icon(
               Icons.refresh_rounded,
-              color: Colors.white.withOpacity(0.9),
+              color: Colors.white.withValues(alpha:0.9),
             ),
             tooltip: 'Bắt đầu lại cuộc trò chuyện',
             onPressed:
@@ -437,7 +437,7 @@ class _AIChatScreenState extends State<AIChatScreen>
                 children: [
                   CircleAvatar(
                     radius: 16, // Tăng kích thước avatar
-                    backgroundColor: theme.primaryColor.withOpacity(0.1),
+                    backgroundColor: theme.primaryColor.withValues(alpha:0.1),
                     child: Image.asset(
                       'assets/images/ai_assistant.png',
                       height: 20,
@@ -463,7 +463,7 @@ class _AIChatScreenState extends State<AIChatScreen>
                       ).copyWith(bottomLeft: const Radius.circular(5)),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.07),
+                          color: Colors.black.withValues(alpha:0.07),
                           blurRadius: 5,
                           offset: const Offset(0, 2),
                         ),
@@ -481,7 +481,7 @@ class _AIChatScreenState extends State<AIChatScreen>
                           'AI đang nhập...',
                           style: TextStyle(
                             color: theme.textTheme.bodyMedium?.color
-                                ?.withOpacity(0.8),
+                                ?.withValues(alpha:0.8),
                             fontSize: 14.5,
                           ),
                         ),
@@ -501,7 +501,7 @@ class _AIChatScreenState extends State<AIChatScreen>
               color: theme.cardColor, // Màu nền từ theme
               boxShadow: [
                 BoxShadow(
-                  color: theme.shadowColor.withOpacity(0.1),
+                  color: theme.shadowColor.withValues(alpha:0.1),
                   blurRadius: 12,
                   offset: const Offset(0, -4),
                 ),
@@ -528,7 +528,7 @@ class _AIChatScreenState extends State<AIChatScreen>
                       decoration: InputDecoration(
                         hintText: 'Đặt câu hỏi cho AI...',
                         hintStyle: TextStyle(
-                          color: theme.hintColor.withOpacity(0.7),
+                          color: theme.hintColor.withValues(alpha:0.7),
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(25),
@@ -540,7 +540,7 @@ class _AIChatScreenState extends State<AIChatScreen>
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(25),
                           borderSide: BorderSide(
-                            color: theme.dividerColor.withOpacity(0.7),
+                            color: theme.dividerColor.withValues(alpha:0.7),
                             width: 1.2,
                           ),
                         ),
@@ -552,7 +552,7 @@ class _AIChatScreenState extends State<AIChatScreen>
                           ),
                         ),
                         filled: true,
-                        fillColor: theme.colorScheme.surfaceVariant.withOpacity(
+                        fillColor: theme.colorScheme.surfaceVariant.withValues(alpha:
                           0.4,
                         ),
                         contentPadding: const EdgeInsets.symmetric(
@@ -562,7 +562,7 @@ class _AIChatScreenState extends State<AIChatScreen>
                         suffixIcon: IconButton(
                           icon: Icon(
                             Icons.clear_rounded,
-                            color: theme.iconTheme.color?.withOpacity(0.6),
+                            color: theme.iconTheme.color?.withValues(alpha:0.6),
                             size: 20,
                           ),
                           onPressed: () => _messageController.clear(),
@@ -588,7 +588,7 @@ class _AIChatScreenState extends State<AIChatScreen>
                     color: theme.primaryColor,
                     shape: const CircleBorder(),
                     elevation: 2,
-                    shadowColor: theme.primaryColor.withOpacity(0.4),
+                    shadowColor: theme.primaryColor.withValues(alpha:0.4),
                     child: InkWell(
                       onTap:
                           _messageController.text.trim().isEmpty
@@ -600,7 +600,7 @@ class _AIChatScreenState extends State<AIChatScreen>
                                 ).requestFocus(FocusNode());
                               },
                       customBorder: const CircleBorder(),
-                      splashColor: Colors.white.withOpacity(0.3),
+                      splashColor: Colors.white.withValues(alpha:0.3),
                       child: Padding(
                         padding: const EdgeInsets.all(14.0),
                         child: Icon(
@@ -651,9 +651,9 @@ class ChatMessage extends StatelessWidget {
         isDarkMode ? const Color(0xFF3A3A3C) : Colors.white; // Màu bot bubble
     final botTextColor =
         isDarkMode
-            ? Colors.white.withOpacity(0.9)
+            ? Colors.white.withValues(alpha:0.9)
             : theme.textTheme.bodyLarge!.color;
-    final optionBubbleColor = theme.primaryColor.withOpacity(
+    final optionBubbleColor = theme.primaryColor.withValues(alpha:
       0.15,
     ); // Màu cho tin nhắn option của user
     final optionTextColor = theme.primaryColor;
@@ -676,7 +676,7 @@ class ChatMessage extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 15,
-                    backgroundColor: theme.primaryColor.withOpacity(0.1),
+                    backgroundColor: theme.primaryColor.withValues(alpha:0.1),
                     child: Image.asset(
                       'assets/images/ai_assistant.png',
                       height: 19,
@@ -694,7 +694,7 @@ class ChatMessage extends StatelessWidget {
                     'AI ${AppStrings.appName}', // Tên ngắn gọn hơn
                     style: theme.textTheme.labelMedium?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.onSurfaceVariant.withOpacity(
+                      color: theme.colorScheme.onSurfaceVariant.withValues(alpha:
                         0.8,
                       ),
                     ),
@@ -742,7 +742,7 @@ class ChatMessage extends StatelessWidget {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: theme.shadowColor.withOpacity(isUser ? 0.12 : 0.08),
+                    color: theme.shadowColor.withValues(alpha:isUser ? 0.12 : 0.08),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -791,7 +791,7 @@ class ChatMessage extends StatelessWidget {
                             label: Text(option),
                             onPressed: () => onOptionTap?.call(option),
                             backgroundColor: theme.colorScheme.primaryContainer
-                                .withOpacity(0.6), // Màu nền chip
+                                .withValues(alpha:0.6), // Màu nền chip
                             labelStyle: TextStyle(
                               color: theme.colorScheme.onPrimaryContainer,
                               fontWeight: FontWeight.w600, // Đậm hơn
@@ -800,7 +800,7 @@ class ChatMessage extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18),
                               side: BorderSide(
-                                color: theme.colorScheme.primary.withOpacity(
+                                color: theme.colorScheme.primary.withValues(alpha:
                                   0.4,
                                 ),
                                 width: 1.2,

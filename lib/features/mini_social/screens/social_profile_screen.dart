@@ -6,7 +6,7 @@ import 'package:job_connect/features/mini_social/widgets/profile/profile_avatar.
 import 'package:job_connect/features/mini_social/widgets/profile/profile_goals.dart';
 import 'package:job_connect/features/mini_social/widgets/profile/profile_header.dart';
 import 'package:job_connect/features/mini_social/widgets/profile/profile_stats.dart';
-import 'package:job_connect/features/widgets/unfocus_widget.dart';
+import 'package:job_connect/config/widgets/unfocus_widget.dart';
 
 class DiscoverCardModel {
   final String title;

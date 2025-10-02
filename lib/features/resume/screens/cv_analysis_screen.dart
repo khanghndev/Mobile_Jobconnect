@@ -652,13 +652,13 @@ class _CVAnalysisPageState extends State<CVAnalysisPage> {
                         (req) => Chip(
                           label: Text(req),
                           backgroundColor: theme.colorScheme.primary
-                              .withOpacity(0.1), // Chip background
+                              .withValues(alpha:0.1), // Chip background
                           labelStyle: theme.textTheme.labelSmall?.copyWith(
                             color: theme.colorScheme.primary, // Chip text color
                             fontWeight: FontWeight.w500,
                           ),
                           side: BorderSide(
-                            color: theme.colorScheme.primary.withOpacity(0.3),
+                            color: theme.colorScheme.primary.withValues(alpha:0.3),
                           ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),

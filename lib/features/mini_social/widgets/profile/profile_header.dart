@@ -20,7 +20,7 @@ class ProfileHeader extends StatelessWidget {
         CircleAvatar(
           backgroundColor: Colors.blue.withValues(alpha: 0.1),
           child: IconButton(
-            icon: Icon(Icons.edit, color: Colors.blue, size: 22.sp),
+            icon: Icon(Icons.person_add, color: Colors.blue, size: 22.sp),
             onPressed: () {},
           ),
         ),

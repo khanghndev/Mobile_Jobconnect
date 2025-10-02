@@ -1,7 +1,8 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class ApiConstants {
-  // 🌐 BASE URL
-  // Dùng HTTP nếu chạy Flutter trên Android Emulator (localhost = 10.0.2.2)
-  static const String baseUrl = "http://10.0.2.2:5281";
+  // static const String baseUrl = "http://10.0.2.2:5281";
+  static final String baseUrl = dotenv.env['API_URL'] ?? "";
 
   // 🔐 AUTHENTICATION - Đăng nhập/Đăng ký
   static const String registerEndpoint = "/api/Auth/register";      // Đăng ký

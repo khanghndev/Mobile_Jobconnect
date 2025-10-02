@@ -5,13 +5,11 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart' as flutter_geocoding;
 import 'package:job_connect/config/constant/api_constants.dart';
 import 'package:job_connect/data/models/job_posting_model.dart';
-import 'package:job_connect/data/services/api.dart';
-import 'package:intl/intl.dart' hide TextDirection;
+import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/config/utils/format.dart';
 import 'package:job_connect/features/job/screens/job_detail_screen.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart'; // For nice loading indicators
 import 'dart:ui'; // For custom markers
-import 'dart:typed_data'; // For custom markers
 
 class NearbyJobsMapScreen extends StatefulWidget {
   final bool isLoggedIn;
@@ -242,7 +240,7 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen>
   LatLng? _currentPositionLatLng;
   City? _currentCity;
   // bool _isRenderingMarkers = false; // Đã tích hợp vào _isLoading
-  final ApiService _apiService = ApiService(baseUrl: ApiConstants.baseUrl);
+  final ApiService _apiService = ApiService( );
   List<JobPosting> _allFetchedJobs = [];
   List<JobPosting> _jobsInView =
       []; // Jobs hiển thị trong DraggableScrollableSheet, được lọc theo map bounds
@@ -507,7 +505,7 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen>
       //   '${ApiConstants.jobPostingSearchEndpoint}?locationQuery=${_normalizeCityName(_currentCity!.administrativeArea)}',
       // );
       final responseData = await _apiService.get(
-        ApiConstants.jobPostingEndpoint,
+        endpoint:  ApiConstants.jobPostingEndpoint,
       );
       _allFetchedJobs.addAll(
         (responseData as List)
@@ -944,7 +942,7 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen>
                 FloatingActionButton.small(
                   heroTag: "backButtonMap",
                   onPressed: () => Navigator.pop(context, true),
-                  backgroundColor: theme.cardColor.withOpacity(0.9),
+                  backgroundColor: theme.cardColor.withValues(alpha:0.9),
                   elevation: 3,
                   child: Icon(
                     Icons.arrow_back_ios_new_rounded,
@@ -962,7 +960,7 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen>
                     // Material để có shadow đẹp
                     elevation: 4.0,
                     borderRadius: BorderRadius.circular(30.0),
-                    shadowColor: theme.shadowColor.withOpacity(0.3),
+                    shadowColor: theme.shadowColor.withValues(alpha:0.3),
                     child: TextField(
                       controller: _searchLocationController,
                       style: theme.textTheme.bodyLarge?.copyWith(
@@ -971,7 +969,7 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen>
                       decoration: InputDecoration(
                         hintText: 'Tìm kiếm địa điểm, thành phố...',
                         hintStyle: TextStyle(
-                          color: theme.hintColor.withOpacity(0.8),
+                          color: theme.hintColor.withValues(alpha:0.8),
                         ),
                         prefixIcon: Icon(
                           Icons.search_rounded,
@@ -983,7 +981,7 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen>
                                 ? IconButton(
                                   icon: Icon(
                                     Icons.clear_rounded,
-                                    color: theme.iconTheme.color?.withOpacity(
+                                    color: theme.iconTheme.color?.withValues(alpha:
                                       0.7,
                                     ),
                                     size: 20,
@@ -1017,7 +1015,7 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen>
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30.0),
                           borderSide: BorderSide(
-                            color: theme.dividerColor.withOpacity(0.3),
+                            color: theme.dividerColor.withValues(alpha:0.3),
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
@@ -1071,7 +1069,7 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen>
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: theme.shadowColor.withOpacity(0.2),
+                      color: theme.shadowColor.withValues(alpha:0.2),
                       blurRadius: 15,
                       offset: const Offset(0, -5),
                     ),
@@ -1085,7 +1083,7 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen>
                       height: 5.5,
                       margin: const EdgeInsets.symmetric(vertical: 12),
                       decoration: BoxDecoration(
-                        color: theme.dividerColor.withOpacity(0.7),
+                        color: theme.dividerColor.withValues(alpha:0.7),
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
@@ -1312,8 +1310,8 @@ class JobCard extends StatelessWidget {
               ),
             ),
         borderRadius: BorderRadius.circular(14),
-        splashColor: theme.primaryColor.withOpacity(0.1),
-        highlightColor: theme.primaryColor.withOpacity(0.05),
+        splashColor: theme.primaryColor.withValues(alpha:0.1),
+        highlightColor: theme.primaryColor.withValues(alpha:0.05),
         child: Padding(
           padding: const EdgeInsets.all(14.0), // Tăng padding
           child: Row(
@@ -1324,10 +1322,10 @@ class JobCard extends StatelessWidget {
                 width: 56,
                 height: 56, // Tăng kích thước logo
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primaryContainer.withOpacity(0.15),
+                  color: theme.colorScheme.primaryContainer.withValues(alpha:0.15),
                   borderRadius: BorderRadius.circular(12), // Bo góc lớn hơn
                   border: Border.all(
-                    color: theme.dividerColor.withOpacity(0.3),
+                    color: theme.dividerColor.withValues(alpha:0.3),
                     width: 0.8,
                   ),
                 ),
@@ -1380,7 +1378,7 @@ class JobCard extends StatelessWidget {
                     Text(
                       jobPosting.company.companyName,
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant.withOpacity(
+                        color: theme.colorScheme.onSurfaceVariant.withValues(alpha:
                           0.85,
                         ),
                         fontWeight: FontWeight.w500,
@@ -1435,7 +1433,7 @@ class JobCard extends StatelessWidget {
         vertical: 5,
       ), // Điều chỉnh padding
       decoration: BoxDecoration(
-        color: color.withOpacity(0.12),
+        color: color.withValues(alpha:0.12),
         borderRadius: BorderRadius.circular(16), // Bo tròn hơn
       ),
       child: Row(

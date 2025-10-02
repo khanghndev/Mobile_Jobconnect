@@ -6,12 +6,12 @@ import 'package:job_connect/data/models/company_model.dart';
 import 'package:job_connect/data/models/job_posting_model.dart';
 import 'package:job_connect/data/models/notification_model.dart';
 import 'package:job_connect/data/models/podcast_model.dart';
-import 'package:job_connect/data/services/api.dart';
+import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/config/utils/format.dart';
 import 'package:job_connect/features/company/screens/company_detail_screen.dart';
 import 'package:job_connect/features/company/screens/company_screen.dart';
-import 'package:job_connect/features/home/screens/home_page.dart';
-import 'package:job_connect/features/home/widgets/gooey_fab_menu.dart';
+import 'package:job_connect/features/navigation/screens/navigation_page.dart';
+import 'package:job_connect/features/home/widgets/shared/gooey_fab_menu.dart';
 import 'package:job_connect/features/job/screens/job_detail_screen.dart';
 import 'package:job_connect/features/home/screens/podcast_screen.dart';
 import 'package:job_connect/features/home/screens/nearby_jobs_map_screen.dart';
@@ -76,7 +76,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   // Add TickerProviderStateMixin
-  final _apiService = ApiService(baseUrl: ApiConstants.baseUrl);
+  final _apiService = ApiService( );
   bool get isLoggedIn => widget.isLoggedIn;
   Account? _account;
   List<Company> _featuredCompanies = [];
@@ -193,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
     try {
       final dynamic responseData = await _apiService.get(
-        '${ApiConstants.userEndpoint}/${widget.idUser}',
+        endpoint: '${ApiConstants.userEndpoint}/${widget.idUser}',
       );
       if (responseData != null) {
         if (responseData is List && responseData.isNotEmpty) {
@@ -215,7 +215,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Future<void> _fetchFeaturedCompanies() async {
     try {
       final dynamic responseData = await _apiService.get(
-        ApiConstants.companiesFeaturedEndpoint,
+        endpoint:  ApiConstants.companiesFeaturedEndpoint,
       );
       if (responseData != null && responseData is List) {
         _featuredCompanies =
@@ -233,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Future<void> _fetchFeaturedJobs() async {
     try {
       final dynamic responseData = await _apiService.get(
-        ApiConstants.jobPostingFeaturedEndpoint,
+        endpoint: ApiConstants.jobPostingFeaturedEndpoint,
       );
       if (responseData != null && responseData is List) {
         _featuredJobs =
@@ -253,7 +253,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Future<void> _fetchFeaturedPodcasts() async {
     try {
       final dynamic responseData = await _apiService.get(
-        ApiConstants.podcastFeaturedEndpoint,
+        endpoint: ApiConstants.podcastFeaturedEndpoint,
       );
       if (responseData != null && responseData is List) {
         _featuredPodcasts =
@@ -275,7 +275,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
     try {
       final dynamic responseData = await _apiService.get(
-        "${ApiConstants.notificationEndpoint}/${widget.idUser}",
+       endpoint:  "${ApiConstants.notificationEndpoint}/${widget.idUser}",
       );
       if (responseData != null && responseData is List) {
         List<NotificationModel> notifications =
@@ -368,8 +368,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       colors:
                           isDarkMode
                               ? [
-                                theme.colorScheme.primary.withOpacity(0.8),
-                                theme.colorScheme.secondary.withOpacity(0.7),
+                                theme.colorScheme.primary.withValues(alpha:0.8),
+                                theme.colorScheme.secondary.withValues(alpha:0.7),
                               ]
                               : [
                                 theme.colorScheme.primary,
@@ -436,8 +436,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     _buildSectionHeader(
                       context,
                       "Công việc nổi bật",
-                      // () => HomePage.goToSearchTab(context),
-                      () => HomePage.goToUniJobsTab(context),
+                      // () => NavigationPage.goToSearchTab(context),
+                      () => NavigationPage.goToUniJobsTab(context),
                     ),
                     const SizedBox(height: 18),
                     _buildFeaturedJobsList(context),
@@ -525,7 +525,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           gradient: LinearGradient(
             colors: [
               theme.colorScheme.secondary,
-              theme.colorScheme.tertiary.withOpacity(0.8),
+              theme.colorScheme.tertiary.withValues(alpha:0.8),
             ],
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
@@ -533,7 +533,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: theme.colorScheme.secondary.withOpacity(0.4),
+              color: theme.colorScheme.secondary.withValues(alpha:0.4),
               blurRadius: 12,
               offset: const Offset(0, 6),
             ),
@@ -573,7 +573,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           style: theme.textTheme.headlineSmall?.copyWith(
             // Lớn hơn, ấn tượng hơn
             fontWeight: FontWeight.bold,
-            color: theme.colorScheme.onSurface.withOpacity(0.85),
+            color: theme.colorScheme.onSurface.withValues(alpha:0.85),
           ),
         ),
         TextButton(
@@ -779,14 +779,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   gradient: LinearGradient(
                     colors: [
                       banner['color'],
-                      banner['endColor'] ?? banner['color'].withOpacity(0.7),
+                      banner['endColor'] ?? banner['color'].withValues(alpha:0.7),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: (banner['color'] as Color).withOpacity(0.4),
+                      color: (banner['color'] as Color).withValues(alpha:0.4),
                       blurRadius: isActive ? 15 : 8,
                       offset: Offset(0, isActive ? 8 : 4),
                     ),
@@ -802,18 +802,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         switch (banner['value']) {
                           case 1:
                             // TODO: search
-                            // HomePage.goToSearchTab(context);
+                            // NavigationPage.goToSearchTab(context);
                             // TODO: UniJobs
-                            HomePage.goToUniJobsTab(context);
+                            NavigationPage.goToUniJobsTab(context);
                             break;
                           case 2:
                             // TODO: Chatbot
-                            // HomePage.goToChatBotTab(context);
+                            // NavigationPage.goToChatBotTab(context);
                             // Message
-                            HomePage.goToChatMessageTab(context);
+                            NavigationPage.goToChatMessageTab(context);
                             break;
                           case 3:
-                            HomePage.goToCVTab(context);
+                            NavigationPage.goToCVTab(context);
                             break;
                           case 4:
                             Navigator.push(
@@ -859,7 +859,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 Text(
                                   banner['description'],
                                   style: theme.textTheme.bodyMedium?.copyWith(
-                                    color: Colors.white.withOpacity(0.88),
+                                    color: Colors.white.withValues(alpha:0.88),
                                     fontSize: 13.5,
                                     height: 1.3,
                                   ),
@@ -872,15 +872,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     if (isLoggedIn) {
                                       switch (banner['value']) {
                                         case 1:
-                                          // HomePage.goToSearchTab(context);
-                                          HomePage.goToUniJobsTab(context);
+                                          // NavigationPage.goToSearchTab(context);
+                                          NavigationPage.goToUniJobsTab(context);
                                           break;
                                         case 2:
-                                          // HomePage.goToChatBotTab(context);
-                                          HomePage.goToChatMessageTab(context);
+                                          // NavigationPage.goToChatBotTab(context);
+                                          NavigationPage.goToChatMessageTab(context);
                                           break;
                                         case 3:
-                                          HomePage.goToCVTab(context);
+                                          NavigationPage.goToCVTab(context);
                                           break;
                                         case 4:
                                           Navigator.push(
@@ -899,7 +899,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.white.withOpacity(
+                                    backgroundColor: Colors.white.withValues(alpha:
                                       0.25,
                                     ),
                                     foregroundColor: Colors.white,
@@ -912,7 +912,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     ),
                                     elevation: 0,
                                     side: BorderSide(
-                                      color: Colors.white.withOpacity(0.5),
+                                      color: Colors.white.withValues(alpha:0.5),
                                       width: 1,
                                     ),
                                   ),
@@ -939,7 +939,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               child: Icon(
                                 banner['icon'] as IconData? ??
                                     Icons.interests_rounded,
-                                color: Colors.white.withOpacity(0.85),
+                                color: Colors.white.withValues(alpha:0.85),
                                 size: 55,
                               ),
                             ),
@@ -969,7 +969,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         ? theme
                             .colorScheme
                             .secondary // Màu active nổi bật
-                        : theme.colorScheme.onSurface.withOpacity(0.2),
+                        : theme.colorScheme.onSurface.withValues(alpha:0.2),
               ),
             );
           }),
@@ -982,13 +982,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     final theme = Theme.of(context);
     // Tạo màu gradient ngẫu nhiên hoặc dựa trên index cho mỗi card
     List<Color> cardGradientColors = [
-      Colors.primaries[index % Colors.primaries.length].withOpacity(0.1),
-      Colors.accents[(index + 5) % Colors.accents.length].withOpacity(0.05),
+      Colors.primaries[index % Colors.primaries.length].withValues(alpha:0.1),
+      Colors.accents[(index + 5) % Colors.accents.length].withValues(alpha:0.05),
     ];
     if (theme.brightness == Brightness.dark) {
       cardGradientColors = [
-        Colors.primaries[index % Colors.primaries.length].withOpacity(0.2),
-        Colors.accents[(index + 5) % Colors.accents.length].withOpacity(0.15),
+        Colors.primaries[index % Colors.primaries.length].withValues(alpha:0.2),
+        Colors.accents[(index + 5) % Colors.accents.length].withValues(alpha:0.15),
       ];
     }
 
@@ -1009,13 +1009,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           borderRadius: BorderRadius.circular(20), // Bo góc lớn hơn
           boxShadow: [
             BoxShadow(
-              color: theme.shadowColor.withOpacity(0.1),
+              color: theme.shadowColor.withValues(alpha:0.1),
               blurRadius: 12,
               offset: const Offset(0, 5),
             ),
           ],
           border: Border.all(
-            color: theme.dividerColor.withOpacity(0.15),
+            color: theme.dividerColor.withValues(alpha:0.15),
             width: 1,
           ),
         ),
@@ -1051,7 +1051,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           (context, error, stackTrace) => Container(
                             decoration: BoxDecoration(
                               color: theme.colorScheme.primaryContainer
-                                  .withOpacity(0.4),
+                                  .withValues(alpha:0.4),
                               borderRadius: BorderRadius.circular(50),
                             ),
                             child: Center(
@@ -1096,10 +1096,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return Card(
       margin: const EdgeInsets.only(bottom: 20),
       elevation: 3, // Tăng elevation
-      shadowColor: theme.shadowColor.withOpacity(isDarkMode ? 0.15 : 0.08),
+      shadowColor: theme.shadowColor.withValues(alpha:isDarkMode ? 0.15 : 0.08),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(18), // Bo góc lớn hơn
-        // side: BorderSide(color: theme.dividerColor.withOpacity(0.3), width: 1), // Có thể bỏ nếu elevation đủ
+        // side: BorderSide(color: theme.dividerColor.withValues(alpha:0.3), width: 1), // Có thể bỏ nếu elevation đủ
       ),
       child: InkWell(
         onTap: () async {
@@ -1131,12 +1131,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       height: 58,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(14),
-                        color: theme.colorScheme.primaryContainer.withOpacity(
+                        color: theme.colorScheme.primaryContainer.withValues(alpha:
                           0.2,
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: theme.colorScheme.primary.withOpacity(0.1),
+                            color: theme.colorScheme.primary.withValues(alpha:0.1),
                             blurRadius: 8,
                             offset: const Offset(2, 2),
                           ),
@@ -1192,7 +1192,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         Text(
                           job.company.companyName,
                           style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurface.withOpacity(
+                            color: theme.colorScheme.onSurface.withValues(alpha:
                               0.75,
                             ),
                           ),
@@ -1228,13 +1228,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     context,
                     Icons.business_center_outlined,
                     job.workType,
-                    theme.colorScheme.primary.withOpacity(0.8),
+                    theme.colorScheme.primary.withValues(alpha:0.8),
                   ),
                   _buildInfoChip(
                     context,
                     Icons.layers_outlined,
                     job.experienceLevel,
-                    theme.colorScheme.primary.withOpacity(0.8),
+                    theme.colorScheme.primary.withValues(alpha:0.8),
                   ),
                 ],
               ),
@@ -1250,7 +1250,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return Card(
       margin: const EdgeInsets.only(bottom: 18),
       elevation: 2,
-      shadowColor: theme.shadowColor.withOpacity(0.07),
+      shadowColor: theme.shadowColor.withValues(alpha:0.07),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Material(
         // Để có ripple
@@ -1274,14 +1274,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       // Gradient cho thumbnail
                       colors: [
                         theme.colorScheme.secondaryContainer,
-                        theme.colorScheme.tertiaryContainer.withOpacity(0.7),
+                        theme.colorScheme.tertiaryContainer.withValues(alpha:0.7),
                       ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: theme.colorScheme.secondary.withOpacity(0.2),
+                        color: theme.colorScheme.secondary.withValues(alpha:0.2),
                         blurRadius: 8,
                         offset: Offset(2, 2),
                       ),
@@ -1313,7 +1313,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       Text(
                         'Host: ${podcast.host ?? '${AppStrings.appName} Team'}',
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant.withOpacity(
+                          color: theme.colorScheme.onSurfaceVariant.withValues(alpha:
                             0.8,
                           ),
                         ),
@@ -1325,14 +1325,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             Icons.access_time_rounded,
                             size: 14,
                             color: theme.colorScheme.onSurfaceVariant
-                                .withOpacity(0.6),
+                                .withValues(alpha:0.6),
                           ),
                           const SizedBox(width: 4),
                           Text(
                             'Thời lượng: ${FormatUtils.formatDuration(podcast.duration)}',
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: theme.colorScheme.onSurfaceVariant
-                                  .withOpacity(0.6),
+                                  .withValues(alpha:0.6),
                             ),
                           ),
                           const SizedBox(width: 12),
@@ -1340,7 +1340,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             Icons.calendar_month_outlined,
                             size: 14,
                             color: theme.colorScheme.onSurfaceVariant
-                                .withOpacity(0.6),
+                                .withValues(alpha:0.6),
                           ),
                           const SizedBox(width: 4),
                           Text(
@@ -1351,7 +1351,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 : 'Mới', // Rút gọn ngày
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: theme.colorScheme.onSurfaceVariant
-                                  .withOpacity(0.6),
+                                  .withValues(alpha:0.6),
                             ),
                           ),
                         ],
@@ -1389,14 +1389,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       decoration: BoxDecoration(
         color:
             isHighlighted
-                ? color.withOpacity(0.15)
-                : theme.dividerColor.withOpacity(0.08),
+                ? color.withValues(alpha:0.15)
+                : theme.dividerColor.withValues(alpha:0.08),
         borderRadius: BorderRadius.circular(
           isHighlighted ? 10 : 20,
         ), // Hình dạng khác nhau
         border:
             isHighlighted
-                ? Border.all(color: color.withOpacity(0.4), width: 1)
+                ? Border.all(color: color.withValues(alpha:0.4), width: 1)
                 : null,
       ),
       child: Row(
@@ -1408,7 +1408,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             color:
                 isHighlighted
                     ? color
-                    : theme.colorScheme.onSurfaceVariant.withOpacity(0.7),
+                    : theme.colorScheme.onSurfaceVariant.withValues(alpha:0.7),
           ),
           const SizedBox(width: 6),
           Text(
@@ -1417,7 +1417,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               color:
                   isHighlighted
                       ? color
-                      : theme.colorScheme.onSurfaceVariant.withOpacity(0.9),
+                      : theme.colorScheme.onSurfaceVariant.withValues(alpha:0.9),
               fontWeight: isHighlighted ? FontWeight.bold : FontWeight.w500,
             ),
           ),
@@ -1434,7 +1434,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       context: context,
       barrierDismissible: true,
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-      barrierColor: Colors.black.withOpacity(0.6),
+      barrierColor: Colors.black.withValues(alpha:0.6),
       transitionDuration: const Duration(milliseconds: 350),
       pageBuilder: (context, animation1, animation2) => Container(),
       transitionBuilder: (context, animation, secondaryAnimation, child) {
@@ -1475,7 +1475,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           colors: [
                             Theme.of(
                               context,
-                            ).colorScheme.primary.withOpacity(0.9),
+                            ).colorScheme.primary.withValues(alpha:0.9),
                             Theme.of(context).colorScheme.primary,
                           ],
                         ),
@@ -1491,11 +1491,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             decoration: BoxDecoration(
                               color: Theme.of(
                                 context,
-                              ).colorScheme.surface.withOpacity(0.9),
+                              ).colorScheme.surface.withValues(alpha:0.9),
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(0.2),
+                                  color: Colors.black.withValues(alpha:0.2),
                                   blurRadius: 8,
                                   offset: const Offset(0, 3),
                                 ),
@@ -1577,7 +1577,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               style: TextButton.styleFrom(
                                 foregroundColor: Theme.of(
                                   context,
-                                ).textTheme.bodyMedium?.color?.withOpacity(0.7),
+                                ).textTheme.bodyMedium?.color?.withValues(alpha:0.7),
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 12,
                                 ),

@@ -7,7 +7,7 @@ import 'package:job_connect/data/models/account_model.dart';
 import 'package:job_connect/data/models/job_application_model.dart';
 import 'package:job_connect/data/models/job_posting_model.dart';
 import 'package:job_connect/data/models/job_saved_model.dart';
-import 'package:job_connect/data/services/api.dart';
+import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/config/utils/format.dart';
 import 'package:job_connect/features/job/screens/apply_job_screen.dart';
 import 'package:job_connect/features/job/screens/job_detail_screen.dart';
@@ -35,7 +35,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   final TextEditingController _searchController = TextEditingController();
   late TabController _tabController;
   bool _showClearButton = false;
-  final _apiService = ApiService(baseUrl: ApiConstants.baseUrl);
+  final _apiService = ApiService( );
   List<JobPosting> _jobList = [];
   List<JobPosting> _filteredJobs = [];
   List<JobSaved> _savedJobs = [];
@@ -193,7 +193,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   Future<void> _fetchAccount() async {
     try {
       final data = await _apiService.get(
-        '${ApiConstants.userEndpoint}/${widget.idUser}',
+        endpoint: '${ApiConstants.userEndpoint}/${widget.idUser}',
       );
       if (mounted && data.isNotEmpty) {
         setState(() => _account = Account.fromJson(data.first));
@@ -205,7 +205,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
 
   Future<void> _fetchJobs() async {
     try {
-      final response = await _apiService.get(ApiConstants.jobPostingEndpoint);
+      final response = await _apiService.get(endpoint: ApiConstants.jobPostingEndpoint);
       if (mounted) {
         _jobList.clear();
         _jobList.addAll(response.map((job) => JobPosting.fromJson(job)));
@@ -225,7 +225,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     if (widget.idUser.isEmpty) return;
     try {
       final response = await _apiService.get(
-        "${ApiConstants.jobSavedEndpoint}/${widget.idUser}",
+        endpoint: "${ApiConstants.jobSavedEndpoint}/${widget.idUser}",
       );
       if (mounted) {
         // setState(() { // Không cần setState ở đây nữa
@@ -242,7 +242,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     if (widget.idUser.isEmpty) return;
     try {
       final response = await _apiService.get(
-        "${ApiConstants.jobApplicationEndpoint}/${widget.idUser}",
+       endpoint: "${ApiConstants.jobApplicationEndpoint}/${widget.idUser}",
       );
       if (mounted) {
         _appliedJobs.clear();
@@ -403,7 +403,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     if (isSaved) {
       try {
         await _apiService.delete(
-          "${ApiConstants.jobSaveJobPostdEndpoint}/$idJobPost/${widget.idUser}",
+          endpoint: "${ApiConstants.jobSaveJobPostdEndpoint}/$idJobPost/${widget.idUser}",
         );
         _onRefresh();
       } catch (e) {
@@ -424,8 +424,8 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     } else {
       try {
         final response = await _apiService.post(
-          ApiConstants.jobSavedPostEndpoint,
-          {"idJobPost": idJobPost, "idUser": widget.idUser},
+          endpoint: ApiConstants.jobSavedPostEndpoint,
+          body : {"idJobPost": idJobPost, "idUser": widget.idUser},
         );
         if (mounted) {
           if (response == 200 || response == 201) {
@@ -596,17 +596,17 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
               isDarkMode
                   ? [
                     theme.colorScheme.surface,
-                    theme.colorScheme.surface.withOpacity(0.8),
+                    theme.colorScheme.surface.withValues(alpha:0.8),
                   ]
                   : [
                     theme.colorScheme.primary,
-                    theme.colorScheme.primary.withOpacity(0.85),
+                    theme.colorScheme.primary.withValues(alpha:0.85),
                   ],
           stops: const [0.3, 1.0],
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha:0.1),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -643,7 +643,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                       Text(
                         'Hàng ngàn việc làm đang chờ bạn.',
                         style: theme.textTheme.bodyMedium?.copyWith(
-                          color: Colors.white.withOpacity(0.9),
+                          color: Colors.white.withValues(alpha:0.9),
                         ),
                       ),
                     ],
@@ -662,7 +662,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                   child: Material(
                     // Thêm Material để SearchBar có thể hiển thị shadow đúng cách
                     elevation: 3.0, // Tăng elevation
-                    shadowColor: Colors.black.withOpacity(0.2),
+                    shadowColor: Colors.black.withValues(alpha:0.2),
                     borderRadius: BorderRadius.circular(16), // Bo góc lớn hơn
                     child: SearchBar(
                       controller: _searchController,
@@ -672,7 +672,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                           IconButton(
                             icon: Icon(
                               Icons.clear_rounded,
-                              color: theme.iconTheme.color?.withOpacity(0.7),
+                              color: theme.iconTheme.color?.withValues(alpha:0.7),
                             ),
                             onPressed: () {
                               _searchController.clear();
@@ -683,7 +683,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                       hintText: "Tên công việc",
                       hintStyle: WidgetStateProperty.all(
                         theme.textTheme.bodyLarge?.copyWith(
-                          color: theme.hintColor.withOpacity(0.8),
+                          color: theme.hintColor.withValues(alpha:0.8),
                         ),
                       ),
                       backgroundColor: WidgetStateProperty.all(theme.cardColor),
@@ -715,7 +715,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 Material(
                   // Thêm Material cho nút filter
                   elevation: 3.0,
-                  shadowColor: Colors.black.withOpacity(0.2),
+                  shadowColor: Colors.black.withValues(alpha:0.2),
                   borderRadius: BorderRadius.circular(16),
                   color: theme.colorScheme.secondary, // Màu nền cho nút filter
                   child: InkWell(
@@ -743,7 +743,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
               highlightColor: Colors.transparent,
               tabBarTheme: TabBarThemeData(
                 labelColor: Colors.white,
-                unselectedLabelColor: Colors.white.withOpacity(0.75),
+                unselectedLabelColor: Colors.white.withValues(alpha:0.75),
                 indicatorSize: TabBarIndicatorSize.label,
                 indicator: UnderlineTabIndicator(
                   borderSide: const BorderSide(color: Colors.white, width: 3.0),
@@ -942,13 +942,13 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 80, color: theme.hintColor.withOpacity(0.4)),
+            Icon(icon, size: 80, color: theme.hintColor.withValues(alpha:0.4)),
             const SizedBox(height: 24),
             Text(
               title,
               textAlign: TextAlign.center,
               style: theme.textTheme.headlineSmall?.copyWith(
-                color: theme.hintColor.withOpacity(0.8),
+                color: theme.hintColor.withValues(alpha:0.8),
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -957,7 +957,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
               message,
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyLarge?.copyWith(
-                color: theme.hintColor.withOpacity(0.7),
+                color: theme.hintColor.withValues(alpha:0.7),
                 height: 1.5,
               ),
             ),
@@ -975,10 +975,10 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     return Card(
       margin: const EdgeInsets.only(bottom: 18), // Tăng margin dưới
       elevation: 3, // Tăng elevation
-      shadowColor: theme.shadowColor.withOpacity(isDarkMode ? 0.15 : 0.08),
+      shadowColor: theme.shadowColor.withValues(alpha:isDarkMode ? 0.15 : 0.08),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(18), // Bo góc lớn hơn
-        // side: BorderSide(color: theme.dividerColor.withOpacity(0.2), width: 0.8), // Có thể bỏ nếu elevation đủ
+        // side: BorderSide(color: theme.dividerColor.withValues(alpha:0.2), width: 0.8), // Có thể bỏ nếu elevation đủ
       ),
       child: InkWell(
         onTap: () {
@@ -1010,13 +1010,13 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                       width: 60,
                       height: 60, // Tăng kích thước logo
                       decoration: BoxDecoration(
-                        color: theme.colorScheme.primaryContainer.withOpacity(
+                        color: theme.colorScheme.primaryContainer.withValues(alpha:
                           0.15,
                         ),
                         borderRadius: BorderRadius.circular(14), // Bo góc logo
                         boxShadow: [
                           BoxShadow(
-                            color: theme.shadowColor.withOpacity(0.05),
+                            color: theme.shadowColor.withValues(alpha:0.05),
                             blurRadius: 5,
                             offset: const Offset(1, 1),
                           ),
@@ -1092,7 +1092,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                           job.company.companyName,
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: theme.textTheme.bodyMedium?.color
-                                ?.withOpacity(0.8),
+                                ?.withValues(alpha:0.8),
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -1108,7 +1108,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                       color:
                           isSaved
                               ? theme.colorScheme.primary
-                              : theme.iconTheme.color?.withOpacity(0.6),
+                              : theme.iconTheme.color?.withValues(alpha:0.6),
                       size: 28, // Tăng kích thước
                     ),
                     onPressed:
@@ -1138,7 +1138,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                   _buildInfoChip(
                     Icons.event_available_rounded,
                     FormatUtils.formattedDateTime(job.createdAt).toString(),
-                    theme.colorScheme.primary.withOpacity(0.8),
+                    theme.colorScheme.primary.withValues(alpha:0.8),
                   ),
                   _buildInfoChip(
                     Icons.work_outline_rounded,
@@ -1172,7 +1172,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                       },
                       style: OutlinedButton.styleFrom(
                         side: BorderSide(
-                          color: theme.colorScheme.primary.withOpacity(0.7),
+                          color: theme.colorScheme.primary.withValues(alpha:0.7),
                           width: 1.5,
                         ),
                         shape: RoundedRectangleBorder(
@@ -1254,9 +1254,9 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         vertical: 7,
       ), // Tăng padding
       decoration: BoxDecoration(
-        color: color.withOpacity(0.12), // Màu nền nhẹ nhàng hơn
+        color: color.withValues(alpha:0.12), // Màu nền nhẹ nhàng hơn
         borderRadius: BorderRadius.circular(20), // Bo tròn hơn
-        // border: Border.all(color: color.withOpacity(0.3), width: 0.8) // Có thể bỏ border
+        // border: Border.all(color: color.withValues(alpha:0.3), width: 0.8) // Có thể bỏ border
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -1324,7 +1324,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           child: BackdropFilter(
             // Hiệu ứng blur
             filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
-            child: Container(color: Colors.black.withOpacity(0.4)),
+            child: Container(color: Colors.black.withValues(alpha:0.4)),
           ),
         ),
         SlideTransition(
@@ -1387,7 +1387,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
             ),
             Container(
               height: 1,
-              color: theme.dividerColor.withOpacity(0.5),
+              color: theme.dividerColor.withValues(alpha:0.5),
             ), // Divider
             Expanded(
               child: SingleChildScrollView(
@@ -1398,7 +1398,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                   children: [
                     _buildLocationFilter(theme),
                     const SizedBox(height: 12),
-                    Divider(color: theme.dividerColor.withOpacity(0.3)),
+                    Divider(color: theme.dividerColor.withValues(alpha:0.3)),
                     _buildFilterSection(
                       'Loại công việc',
                       _jobTypes,
@@ -1406,7 +1406,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                       (value) => setState(() => _selectedJobType = value),
                     ),
                     const SizedBox(height: 12),
-                    Divider(color: theme.dividerColor.withOpacity(0.3)),
+                    Divider(color: theme.dividerColor.withValues(alpha:0.3)),
                     _buildFilterSection(
                       'Kinh nghiệm',
                       _experienceLevels,
@@ -1414,7 +1414,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                       (value) => setState(() => _selectedExperience = value),
                     ),
                     const SizedBox(height: 12),
-                    Divider(color: theme.dividerColor.withOpacity(0.3)),
+                    Divider(color: theme.dividerColor.withValues(alpha:0.3)),
                     _buildSalaryFilter(theme),
                   ],
                 ),
@@ -1427,13 +1427,13 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 color: theme.cardColor,
                 boxShadow: [
                   BoxShadow(
-                    color: theme.shadowColor.withOpacity(0.1),
+                    color: theme.shadowColor.withValues(alpha:0.1),
                     blurRadius: 8,
                     offset: const Offset(0, -3),
                   ),
                 ],
                 border: Border(
-                  top: BorderSide(color: theme.dividerColor.withOpacity(0.5)),
+                  top: BorderSide(color: theme.dividerColor.withValues(alpha:0.5)),
                 ),
               ),
               child: Row(
@@ -1443,7 +1443,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                       onPressed: _resetFilters,
                       style: OutlinedButton.styleFrom(
                         side: BorderSide(
-                          color: theme.colorScheme.outline.withOpacity(0.7),
+                          color: theme.colorScheme.outline.withValues(alpha:0.7),
                           width: 1.5,
                         ),
                         padding: const EdgeInsets.symmetric(vertical: 15),
@@ -1455,7 +1455,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                         'Đặt Lại',
                         style: theme.textTheme.labelLarge?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: theme.colorScheme.onSurface.withOpacity(0.8),
+                          color: theme.colorScheme.onSurface.withValues(alpha:0.8),
                         ),
                       ),
                     ),
@@ -1524,7 +1524,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                   setState(() => _selectedLocation = 'Tất cả');
                 }
               },
-              backgroundColor: theme.colorScheme.surfaceVariant.withOpacity(
+              backgroundColor: theme.colorScheme.surfaceVariant.withValues(alpha:
                 0.5,
               ),
               selectedColor: theme.colorScheme.primaryContainer,
@@ -1539,8 +1539,8 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 side: BorderSide(
                   color:
                       _selectedLocation == 'Tất cả'
-                          ? theme.colorScheme.primary.withOpacity(0.7)
-                          : theme.dividerColor.withOpacity(0.7),
+                          ? theme.colorScheme.primary.withValues(alpha:0.7)
+                          : theme.dividerColor.withValues(alpha:0.7),
                   width: _selectedLocation == 'Tất cả' ? 1.5 : 1.0,
                 ),
               ),
@@ -1590,7 +1590,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                               }
                             },
                             backgroundColor: theme.colorScheme.surfaceVariant
-                                .withOpacity(0.5),
+                                .withValues(alpha:0.5),
                             selectedColor: theme.colorScheme.primaryContainer,
                             labelStyle: theme.textTheme.bodyMedium?.copyWith(
                               color:
@@ -1603,10 +1603,10 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                               side: BorderSide(
                                 color:
                                     isSelected
-                                        ? theme.colorScheme.primary.withOpacity(
+                                        ? theme.colorScheme.primary.withValues(alpha:
                                           0.7,
                                         )
-                                        : theme.dividerColor.withOpacity(0.7),
+                                        : theme.dividerColor.withValues(alpha:0.7),
                                 width: isSelected ? 1.5 : 1.0,
                               ),
                             ),
@@ -1668,7 +1668,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                   onSelected: (selected) {
                     if (selected) onChanged(option);
                   },
-                  backgroundColor: theme.colorScheme.surfaceVariant.withOpacity(
+                  backgroundColor: theme.colorScheme.surfaceVariant.withValues(alpha:
                     0.5,
                   ),
                   selectedColor: theme.colorScheme.primaryContainer,
@@ -1683,8 +1683,8 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                     side: BorderSide(
                       color:
                           isSelected
-                              ? theme.colorScheme.primary.withOpacity(0.7)
-                              : theme.dividerColor.withOpacity(0.7),
+                              ? theme.colorScheme.primary.withValues(alpha:0.7)
+                              : theme.dividerColor.withValues(alpha:0.7),
                       width:
                           isSelected ? 1.5 : 1.0, // Border đậm hơn khi selected
                     ),
@@ -1721,7 +1721,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           max: _maxSalary,
           divisions: 100,
           activeColor: theme.colorScheme.primary,
-          inactiveColor: theme.colorScheme.primary.withOpacity(0.2),
+          inactiveColor: theme.colorScheme.primary.withValues(alpha:0.2),
           labels: RangeLabels(
             _currentMinSalary == 0
                 ? 'Lương thỏa thuận'

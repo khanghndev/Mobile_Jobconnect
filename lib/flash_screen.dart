@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:job_connect/features/home/screens/home_page.dart';
+import 'package:job_connect/features/navigation/screens/navigation_page.dart';
 import 'package:job_connect/features/auth/screens/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -144,7 +144,7 @@ class _SplashScreenState extends State<SplashScreen>
             colors: [
               const Color(0xFF0D47A1), // Deep blue
               const Color(0xFF1976D2), // Blue
-              Theme.of(context).colorScheme.primary.withOpacity(
+              Theme.of(context).colorScheme.primary.withValues(alpha:
                 0.9,
               ), // Light blue (using theme)
             ],
@@ -178,8 +178,8 @@ class _SplashScreenState extends State<SplashScreen>
                               color:
                                   Theme.of(context).brightness ==
                                           Brightness.dark
-                                      ? Colors.black.withOpacity(0.5)
-                                      : Colors.black.withOpacity(0.15),
+                                      ? Colors.black.withValues(alpha: 0.5)
+                                      : Colors.black.withValues(alpha:0.15),
                               spreadRadius: 2,
                               blurRadius: 15,
                               offset: const Offset(0, 5),
@@ -276,7 +276,7 @@ class _SplashScreenState extends State<SplashScreen>
                                     Icon(
                                       _introContent[index]['icon'],
                                       size: 80,
-                                      color: Colors.white.withOpacity(
+                                      color: Colors.white.withValues(alpha:
                                         0.9,
                                       ), // Giữ nguyên trắng trong suốt trên nền xanh
                                     ),
@@ -297,7 +297,7 @@ class _SplashScreenState extends State<SplashScreen>
                                       style: Theme.of(
                                         context,
                                       ).textTheme.bodyLarge?.copyWith(
-                                        color: Colors.white.withOpacity(0.9),
+                                        color: Colors.white.withValues(alpha:0.9),
                                         height: 1.5,
                                       ),
                                       textAlign: TextAlign.center,
@@ -331,7 +331,7 @@ class _SplashScreenState extends State<SplashScreen>
                                     color:
                                         _currentIntroPage == index
                                             ? Colors.white
-                                            : Colors.white.withOpacity(0.4),
+                                            : Colors.white.withValues(alpha:0.4),
                                     borderRadius: BorderRadius.circular(4.0),
                                   ),
                                 ),
@@ -384,7 +384,7 @@ class _SplashScreenState extends State<SplashScreen>
                             style: Theme.of(
                               context,
                             ).textTheme.bodyLarge?.copyWith(
-                              color: Colors.white.withOpacity(0.9),
+                              color: Colors.white.withValues(alpha:0.9),
                               height: 1.5,
                             ),
                             textAlign: TextAlign.center,
@@ -433,7 +433,7 @@ class _SplashScreenState extends State<SplashScreen>
                         Text(
                           "Phiên bản 1.0.0",
                           style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(color: Colors.white.withOpacity(0.7)),
+                              ?.copyWith(color: Colors.white.withValues(alpha:0.7)),
                           textAlign: TextAlign.center,
                         ),
                       ],

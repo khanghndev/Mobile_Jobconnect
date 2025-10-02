@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:job_connect/config/constant/api_constants.dart';
 import 'package:job_connect/data/models/account_model.dart';
 import 'package:job_connect/data/models/resume_model.dart';
-import 'package:job_connect/data/services/api.dart';
+import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/config/utils/format.dart';
 import 'package:job_connect/features/file/screens/file_viewer_screen.dart';
 import 'package:file_picker/file_picker.dart';
@@ -41,7 +41,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
   late AnimationController _fabAnimationController; // Cho animation FAB
   late Animation<double> _fabScaleAnimation;
 
-  final _apiService = ApiService(baseUrl: ApiConstants.baseUrl);
+  final _apiService = ApiService( );
   final List<Resume> _resumeList = [];
   bool _isLoading = true;
   Account? _account;
@@ -125,7 +125,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
   Future<void> _fetchAccount() async {
     try {
       final data = await _apiService.get(
-        '${ApiConstants.userEndpoint}/${widget.idUser}',
+        endpoint: '${ApiConstants.userEndpoint}/${widget.idUser}',
       );
       if (data != null && data.isNotEmpty) {
         _account = Account.fromJson(data.first);
@@ -138,7 +138,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
   Future<void> _fetchResumeList() async {
     try {
       final response = await _apiService.get(
-        "${ApiConstants.resumeEndpoint}/${widget.idUser}",
+        endpoint: "${ApiConstants.resumeEndpoint}/${widget.idUser}",
       );
       if (mounted) {
         // setState(() { // Không cần setState ở đây nữa
@@ -225,7 +225,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
           "fileSizeKB": _pickedCvPlatformFile!.size,
           "isDefault": _resumeList.isEmpty ? 1 : 0,
         };
-        await _apiService.post(ApiConstants.resumeEndpoint, cvData);
+        await _apiService.post(endpoint: ApiConstants.resumeEndpoint, body: cvData);
         if (mounted) {
           _showSuccessSnackBar(originalFileName);
           await _onRefresh();
@@ -363,7 +363,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
               child: Text(
                 'HỦY BỎ',
                 style: TextStyle(
-                  color: theme.colorScheme.onSurfaceVariant.withOpacity(0.8),
+                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha:0.8),
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -383,7 +383,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
                 bool apiDeleted = false;
                 try {
                   await _apiService.delete(
-                    '${ApiConstants.resumeEndpoint}/${resumeToDelete.idResume}',
+                    endpoint: '${ApiConstants.resumeEndpoint}/${resumeToDelete.idResume}',
                   );
                   apiDeleted = true;
                 } catch (e) {
@@ -745,16 +745,16 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
               decoration: InputDecoration(
                 hintText: 'Tìm theo tên CV...',
                 hintStyle: TextStyle(
-                  color: theme.hintColor.withOpacity(0.6),
+                  color: theme.hintColor.withValues(alpha:0.6),
                   fontSize: 15.5,
                 ),
                 prefixIcon: Icon(
                   Icons.search_rounded,
-                  color: theme.primaryColor.withOpacity(0.8),
+                  color: theme.primaryColor.withValues(alpha:0.8),
                   size: 24,
                 ),
                 filled: true,
-                fillColor: theme.colorScheme.surfaceVariant.withOpacity(
+                fillColor: theme.colorScheme.surfaceVariant.withValues(alpha:
                   isDarkMode ? 0.2 : 0.5,
                 ),
                 border: OutlineInputBorder(
@@ -852,7 +852,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
           const SizedBox(height: 6),
           LinearProgressIndicator(
             value: _uploadProgress > 0 ? _uploadProgress : null,
-            backgroundColor: theme.dividerColor.withOpacity(0.3),
+            backgroundColor: theme.dividerColor.withValues(alpha:0.3),
             valueColor: AlwaysStoppedAnimation<Color>(theme.primaryColor),
             minHeight: 8, // Dày hơn
             borderRadius: BorderRadius.circular(4), // Bo góc
@@ -958,7 +958,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
         onSelected: (bool selected) {
           if (selected) onSelected();
         },
-        backgroundColor: theme.colorScheme.surfaceVariant.withOpacity(
+        backgroundColor: theme.colorScheme.surfaceVariant.withValues(alpha:
           isSelected ? 0.3 : 0.6,
         ), // Màu nền khác nhau
         selectedColor: theme.colorScheme.primaryContainer,
@@ -966,7 +966,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
           color:
               isSelected
                   ? theme.colorScheme.onPrimaryContainer
-                  : theme.colorScheme.onSurfaceVariant.withOpacity(0.9),
+                  : theme.colorScheme.onSurfaceVariant.withValues(alpha:0.9),
           fontWeight:
               isSelected
                   ? FontWeight.bold
@@ -977,8 +977,8 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
           side: BorderSide(
             color:
                 isSelected
-                    ? theme.colorScheme.primary.withOpacity(0.6)
-                    : theme.dividerColor.withOpacity(
+                    ? theme.colorScheme.primary.withValues(alpha:0.6)
+                    : theme.dividerColor.withValues(alpha:
                       0.4,
                     ), // Border rõ hơn khi selected
             width: isSelected ? 1.8 : 1.2, // Border dày hơn khi selected
@@ -990,7 +990,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
         ), // Điều chỉnh padding
         showCheckmark: false, // Bỏ checkmark mặc định
         elevation: isSelected ? 1.5 : 0.5, // Thêm chút elevation
-        selectedShadowColor: theme.colorScheme.primary.withOpacity(0.2),
+        selectedShadowColor: theme.colorScheme.primary.withValues(alpha:0.2),
       ),
     );
   }
@@ -1007,7 +1007,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
                   ? Icons.folder_off_outlined
                   : Icons.search_off_rounded, // Icon khác
               size: 80, // Giảm kích thước icon
-              color: theme.hintColor.withOpacity(0.3),
+              color: theme.hintColor.withValues(alpha:0.3),
             ),
             const SizedBox(height: 24),
             Text(
@@ -1017,7 +1017,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
               textAlign: TextAlign.center,
               style: theme.textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.w600,
-                color: theme.colorScheme.onBackground.withOpacity(0.75),
+                color: theme.colorScheme.onBackground.withValues(alpha:0.75),
               ),
             ),
             const SizedBox(height: 12),
@@ -1027,7 +1027,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
                   : "Vui lòng thử lại với từ khóa khác hoặc điều chỉnh bộ lọc của bạn nhé.",
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyLarge?.copyWith(
-                color: theme.colorScheme.onBackground.withOpacity(0.6),
+                color: theme.colorScheme.onBackground.withValues(alpha:0.6),
                 height: 1.45,
               ),
             ),
@@ -1072,27 +1072,27 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
     final bool isPdf = fileName.toLowerCase().endsWith('.pdf');
     final Color fileIconBgColor =
         isPdf
-            ? theme.colorScheme.errorContainer.withOpacity(0.6)
-            : theme.colorScheme.primaryContainer.withOpacity(0.6);
+            ? theme.colorScheme.errorContainer.withValues(alpha:0.6)
+            : theme.colorScheme.primaryContainer.withValues(alpha:0.6);
     final Color fileIconColor =
         isPdf
-            ? theme.colorScheme.onErrorContainer.withOpacity(0.9)
-            : theme.colorScheme.onPrimaryContainer.withOpacity(0.9);
+            ? theme.colorScheme.onErrorContainer.withValues(alpha:0.9)
+            : theme.colorScheme.onPrimaryContainer.withValues(alpha:0.9);
     final IconData fileIcon =
         isPdf ? Icons.picture_as_pdf_rounded : Icons.article_rounded;
 
     return Card(
       margin: const EdgeInsets.only(bottom: 14), // Giảm margin dưới một chút
       elevation: 1.5, // Giảm elevation
-      shadowColor: theme.shadowColor.withOpacity(0.08),
+      shadowColor: theme.shadowColor.withValues(alpha:0.08),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(14),
       ), // Bo góc vừa phải
       child: InkWell(
         onTap: () => _viewCV(context, resume),
         borderRadius: BorderRadius.circular(14),
-        splashColor: theme.primaryColor.withOpacity(0.08),
-        highlightColor: theme.primaryColor.withOpacity(0.04),
+        splashColor: theme.primaryColor.withValues(alpha:0.08),
+        highlightColor: theme.primaryColor.withValues(alpha:0.04),
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 16,
@@ -1132,7 +1132,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
                         Icon(
                           Icons.calendar_today_outlined,
                           size: 13,
-                          color: theme.colorScheme.onSurfaceVariant.withOpacity(
+                          color: theme.colorScheme.onSurfaceVariant.withValues(alpha:
                             0.6,
                           ),
                         ),
@@ -1141,14 +1141,14 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
                           date,
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: theme.colorScheme.onSurfaceVariant
-                                .withOpacity(0.7),
+                                .withValues(alpha:0.7),
                           ),
                         ),
                         const SizedBox(width: 12),
                         Icon(
                           Icons.sd_storage_outlined,
                           size: 13,
-                          color: theme.colorScheme.onSurfaceVariant.withOpacity(
+                          color: theme.colorScheme.onSurfaceVariant.withValues(alpha:
                             0.6,
                           ),
                         ),
@@ -1157,7 +1157,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
                           fileSize,
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: theme.colorScheme.onSurfaceVariant
-                                .withOpacity(0.7),
+                                .withValues(alpha:0.7),
                           ),
                         ),
                       ],
@@ -1168,7 +1168,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
               PopupMenuButton<String>(
                 icon: Icon(
                   Icons.more_vert_rounded,
-                  color: theme.colorScheme.onSurfaceVariant.withOpacity(0.8),
+                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha:0.8),
                   size: 24,
                 ), // Icon nhỏ hơn
                 tooltip: 'Tùy chọn CV',
@@ -1286,7 +1286,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
                         IconButton(
                           icon: Icon(
                             Icons.close_rounded,
-                            color: theme.iconTheme.color?.withOpacity(0.7),
+                            color: theme.iconTheme.color?.withValues(alpha:0.7),
                             size: 26,
                           ),
                           onPressed: () => Navigator.pop(context),
@@ -1295,7 +1295,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
                       ],
                     ),
                     const SizedBox(height: 10),
-                    Divider(color: theme.dividerColor.withOpacity(0.5)),
+                    Divider(color: theme.dividerColor.withValues(alpha:0.5)),
                     const SizedBox(height: 15),
 
                     _buildOptionItem(
@@ -1303,7 +1303,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
                       title: "Tải Lên Từ Thiết Bị",
                       subtitle: "Chọn file PDF, DOC, DOCX từ máy của bạn.",
                       iconBgColor: theme.colorScheme.primaryContainer
-                          .withOpacity(0.7),
+                          .withValues(alpha:0.7),
                       iconColor: theme.colorScheme.onPrimaryContainer,
                       onTap:
                           _isUploadingCv
@@ -1331,7 +1331,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
                                                   ? 1.0
                                                   : null),
                                       backgroundColor: theme.dividerColor
-                                          .withOpacity(0.3),
+                                          .withValues(alpha:0.3),
                                       valueColor: AlwaysStoppedAnimation<Color>(
                                         theme.primaryColor,
                                       ),
@@ -1353,11 +1353,11 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
                               : Icon(
                                 Icons.arrow_forward_ios_rounded,
                                 size: 18,
-                                color: theme.iconTheme.color?.withOpacity(0.5),
+                                color: theme.iconTheme.color?.withValues(alpha:0.5),
                               ),
                     ),
                     const SizedBox(height: 10),
-                    Divider(color: theme.dividerColor.withOpacity(0.2)),
+                    Divider(color: theme.dividerColor.withValues(alpha:0.2)),
                     const SizedBox(height: 10),
                     _buildOptionItem(
                       icon: Icons.auto_awesome_rounded, // Icon AI mới
@@ -1365,7 +1365,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
                       subtitle:
                           "Để trí tuệ nhân tạo hỗ trợ bạn tạo CV ấn tượng.",
                       iconBgColor: theme.colorScheme.secondaryContainer
-                          .withOpacity(0.7),
+                          .withValues(alpha:0.7),
                       iconColor: theme.colorScheme.onSecondaryContainer,
                       onTap: () {
                         Navigator.pop(context);
@@ -1396,14 +1396,14 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
                       },
                     ),
                     const SizedBox(height: 10),
-                    Divider(color: theme.dividerColor.withOpacity(0.2)),
+                    Divider(color: theme.dividerColor.withValues(alpha:0.2)),
                     const SizedBox(height: 10),
                     _buildOptionItem(
                       icon: Icons.article_outlined, // Icon mẫu CV
                       title: "Sử Dụng Mẫu CV Có Sẵn",
                       subtitle: "Lựa chọn từ thư viện mẫu CV chuyên nghiệp.",
                       iconBgColor: theme.colorScheme.tertiaryContainer
-                          .withOpacity(0.7),
+                          .withValues(alpha:0.7),
                       iconColor: theme.colorScheme.onTertiaryContainer,
                       onTap: () {
                         Navigator.pop(context);
@@ -1484,7 +1484,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
           "fileSizeKB": _pickedCvPlatformFile!.size,
           "isDefault": _resumeList.isEmpty ? 1 : 0,
         };
-        await _apiService.post(ApiConstants.resumeEndpoint, cvData);
+        await _apiService.post(endpoint: ApiConstants.resumeEndpoint, body: cvData);
         if (mounted) {
           _showSuccessSnackBar(originalFileName);
           await _onRefresh();
@@ -1533,8 +1533,8 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(16), // Bo góc cho hiệu ứng chạm
-      splashColor: iconBgColor.withOpacity(0.5), // Màu splash
-      highlightColor: iconBgColor.withOpacity(0.3), // Màu highlight
+      splashColor: iconBgColor.withValues(alpha:0.5), // Màu splash
+      highlightColor: iconBgColor.withValues(alpha:0.3), // Màu highlight
       child: Padding(
         padding: const EdgeInsets.symmetric(
           vertical: 14.0,
@@ -1566,7 +1566,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
                   Text(
                     subtitle,
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant.withOpacity(
+                      color: theme.colorScheme.onSurfaceVariant.withValues(alpha:
                         0.8,
                       ),
                       height: 1.35,
@@ -1580,7 +1580,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
                 Icon(
                   Icons.arrow_forward_ios_rounded,
                   size: 18,
-                  color: theme.iconTheme.color?.withOpacity(0.5),
+                  color: theme.iconTheme.color?.withValues(alpha:0.5),
                 ),
           ],
         ),
@@ -1752,8 +1752,8 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
     }
     try {
       await _apiService.put(
-        '${ApiConstants.resumeEndpoint}/${resume.idResume}',
-        {'fileName': finalNewFileName, 'fileUrl': newFileUrl},
+        endpoint: '${ApiConstants.resumeEndpoint}/${resume.idResume}',
+        body : {'fileName': finalNewFileName, 'fileUrl': newFileUrl},
       );
       if (newFileUrl != oldFileUrl &&
           oldFileUrl.isNotEmpty &&

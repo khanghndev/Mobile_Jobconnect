@@ -1,0 +1,13 @@
+targets:
+  $default:
+    sources:
+      include:
+        - lib/**
+        - pubspec.yaml
+      exclude:
+        - test/**
+
+    builders:
+      json_serializable:
+        options:
+          field_rename: snake

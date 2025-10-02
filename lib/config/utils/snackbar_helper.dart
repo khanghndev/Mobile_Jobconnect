@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:job_connect/config/enum/enum.dart';
+import 'package:job_connect/config/enum/snackbar_type.dart';
 
 
 class SnackbarHelper {

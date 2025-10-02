@@ -4,7 +4,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:intl/intl.dart';
 import 'package:job_connect/config/constant/api_constants.dart';
 import 'package:job_connect/data/models/notification_model.dart';
-import 'package:job_connect/data/services/api.dart';
+import 'package:job_connect/config/services/api_service.dart';
 import 'package:timeago/timeago.dart' as timeago; //timeago: ^3.2.5
 
 class NotificationsScreen extends StatefulWidget {
@@ -22,7 +22,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>
   List<NotificationModel> _notifications = [];
   bool _isLoading = true; // Added for loading state
   final DateFormat _dateFormat = DateFormat('HH:mm - dd/MM/yyyy');
-  final _apiService = ApiService(baseUrl: ApiConstants.baseUrl);
+  final _apiService = ApiService( );
 
   late AnimationController _listAnimationController; // Animation cho danh sách
   late AnimationController _fabAnimationController; // Animation cho FAB
@@ -90,7 +90,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>
   Future<void> _loadNotifications() async {
     try {
       final response = await _apiService.get(
-        '${ApiConstants.notificationEndpoint}/${widget.idUser}',
+        endpoint: '${ApiConstants.notificationEndpoint}/${widget.idUser}',
       );
       if (mounted) {
         // setState(() { // Không cần setState ở đây nữa
@@ -158,8 +158,8 @@ class _NotificationsScreenState extends State<NotificationsScreen>
         // Optimistically update UI
         updatedNotifications[index] = updatedNotification;
         _apiService.put(
-          '${ApiConstants.notificationEndpoint}/${updatedNotification.idNotification}',
-          updatedNotification.toJson(),
+          endpoint: '${ApiConstants.notificationEndpoint}/${updatedNotification.idNotification}',
+          body : updatedNotification.toJson(),
         );
       }
     }
@@ -202,7 +202,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>
 
     for (String id in idsToDelete) {
       deleteFutures.add(
-        _apiService.delete('${ApiConstants.notificationEndpoint}/$id'),
+        _apiService.delete(endpoint: '${ApiConstants.notificationEndpoint}/$id'),
       );
     }
 
@@ -234,8 +234,8 @@ class _NotificationsScreenState extends State<NotificationsScreen>
           updatedNotification.isRead = 1;
           try {
             await _apiService.put(
-              '${ApiConstants.notificationEndpoint}/${updatedNotification.idNotification}',
-              updatedNotification.toJson(),
+              endpoint: '${ApiConstants.notificationEndpoint}/${updatedNotification.idNotification}',
+              body : updatedNotification.toJson(),
             );
           } catch (e) {
             // Handle API error, maybe revert UI or show message
@@ -274,8 +274,8 @@ class _NotificationsScreenState extends State<NotificationsScreen>
         updatedNotifications[i] = updatedNotification; // Optimistic UI update
         updateFutures.add(
           _apiService.put(
-            '${ApiConstants.notificationEndpoint}/${updatedNotification.idNotification}',
-            updatedNotification.toJson(),
+            endpoint: '${ApiConstants.notificationEndpoint}/${updatedNotification.idNotification}',
+            body: updatedNotification.toJson(),
           ),
         );
       }
@@ -534,10 +534,10 @@ class _NotificationsScreenState extends State<NotificationsScreen>
       color:
           _selectMode
               ? (isSelected
-                  ? theme.primaryColor.withOpacity(0.15)
+                  ? theme.primaryColor.withValues(alpha:0.15)
                   : theme.cardColor)
               : (isUnread
-                  ? theme.primaryColor.withOpacity(0.05)
+                  ? theme.primaryColor.withValues(alpha:0.05)
                   : theme.cardColor),
       child: InkWell(
         onTap: () => _handleNotificationTap(notification),
@@ -547,14 +547,14 @@ class _NotificationsScreenState extends State<NotificationsScreen>
             _toggleSelect(notification.idNotification);
           }
         },
-        splashColor: theme.primaryColor.withOpacity(0.1),
-        highlightColor: theme.primaryColor.withOpacity(0.05),
+        splashColor: theme.primaryColor.withValues(alpha:0.1),
+        highlightColor: theme.primaryColor.withValues(alpha:0.05),
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
-                color: theme.dividerColor.withOpacity(0.5),
+                color: theme.dividerColor.withValues(alpha:0.5),
                 width: 0.7,
               ),
             ),
@@ -580,7 +580,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>
                           borderRadius: BorderRadius.circular(6),
                         ),
                         side: BorderSide(
-                          color: theme.primaryColor.withOpacity(0.7),
+                          color: theme.primaryColor.withValues(alpha:0.7),
                           width: 1.5,
                         ),
                       ),
@@ -593,7 +593,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>
                   Container(
                     padding: const EdgeInsets.all(12), // Tăng padding icon
                     decoration: BoxDecoration(
-                      color: iconColor.withOpacity(0.12),
+                      color: iconColor.withValues(alpha:0.12),
                       borderRadius: BorderRadius.circular(12), // Bo góc lớn hơn
                     ),
                     child: Icon(
@@ -643,7 +643,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>
                               color:
                                   isUnread
                                       ? theme.colorScheme.onSurface
-                                      : theme.colorScheme.onSurface.withOpacity(
+                                      : theme.colorScheme.onSurface.withValues(alpha:
                                         0.8,
                                       ),
                               height: 1.3,
@@ -656,7 +656,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>
                             timeAgo,
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: theme.colorScheme.onSurfaceVariant
-                                  .withOpacity(0.7),
+                                  .withValues(alpha:0.7),
                             ),
                           ),
                         ),
@@ -669,7 +669,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant.withOpacity(
+                        color: theme.colorScheme.onSurfaceVariant.withValues(alpha:
                           isUnread ? 0.85 : 0.7,
                         ),
                         height: 1.4,
@@ -678,7 +678,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>
                     // const SizedBox(height: 3),
                     // Text(
                     //   _dateFormat.format(notification.dateTime), // Có thể bỏ nếu timeAgo đã đủ
-                    //   style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant.withOpacity(0.5)),
+                    //   style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant.withValues(alpha:0.5)),
                     // ),
                   ],
                 ),
@@ -700,14 +700,14 @@ class _NotificationsScreenState extends State<NotificationsScreen>
             Icon(
               Icons.notifications_paused_outlined,
               size: 80,
-              color: theme.hintColor.withOpacity(0.4),
+              color: theme.hintColor.withValues(alpha:0.4),
             ),
             const SizedBox(height: 24),
             Text(
               'Hộp Thư Trống',
               style: theme.textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.w600,
-                color: theme.colorScheme.onBackground.withOpacity(0.75),
+                color: theme.colorScheme.onBackground.withValues(alpha:0.75),
               ),
             ),
             const SizedBox(height: 12),
@@ -715,7 +715,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>
               'Mọi thông báo quan trọng sẽ xuất hiện ở đây. Hãy kiểm tra thường xuyên nhé!',
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyLarge?.copyWith(
-                color: theme.colorScheme.onBackground.withOpacity(0.6),
+                color: theme.colorScheme.onBackground.withValues(alpha:0.6),
                 height: 1.5,
               ),
             ),
@@ -733,7 +733,7 @@ class _NotificationsScreenState extends State<NotificationsScreen>
               onPressed: _onRefresh, // Đổi thành _onRefresh
               style: OutlinedButton.styleFrom(
                 side: BorderSide(
-                  color: theme.primaryColor.withOpacity(0.7),
+                  color: theme.primaryColor.withValues(alpha:0.7),
                   width: 1.5,
                 ),
                 padding: const EdgeInsets.symmetric(

@@ -15,11 +15,13 @@ class UserInfoModel {
 class CreatePostInput extends StatelessWidget {
   final UserInfoModel user;
   final VoidCallback? onCreatePost;
+  final VoidCallback? onSearch;
 
   const CreatePostInput({
     super.key,
     required this.user,
     this.onCreatePost,
+    this.onSearch,
   });
 
   @override
@@ -28,7 +30,7 @@ class CreatePostInput extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(0, 12, 0, 8),
       child: InkWell(
         borderRadius: BorderRadius.circular(8),
-        onTap: onCreatePost, 
+        onTap: onCreatePost,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -59,6 +61,10 @@ class CreatePostInput extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.search_rounded, color: Colors.grey),
+              onPressed: onSearch,
             ),
           ],
         ),

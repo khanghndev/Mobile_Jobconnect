@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:job_connect/features/mini_social/screens/social_post_detail_screen.dart';
+import 'package:job_connect/features/mini_social/screens/post/social_post_detail_screen.dart';
 import 'package:job_connect/features/mini_social/widgets/social_feed/post_action_bar.dart';
 import 'package:job_connect/features/mini_social/widgets/social_feed/post_item_header.dart';
 
@@ -85,11 +85,6 @@ class PostItem extends StatelessWidget {
             commentCount: post.commentCount,
             shareCount: post.shareCount,
           ),
-
-          Container(
-            height: 4.h,
-            color: Colors.grey[300],
-          )
         ],
       ),
     );

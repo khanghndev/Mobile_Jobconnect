@@ -32,16 +32,16 @@ class ReasonWrap extends StatelessWidget {
               borderRadius: BorderRadius.circular(999.r),
               color: isSel
                   ? theme.colorScheme.primary
-                  : Colors.white.withOpacity(0.8),
+                  : Colors.white.withValues(alpha:0.8),
               border: Border.all(
                 color: isSel
                     ? theme.colorScheme.primary
-                    : theme.dividerColor.withOpacity(0.2),
+                    : theme.dividerColor.withValues(alpha:0.2),
               ),
               boxShadow: isSel
                   ? [
                       BoxShadow(
-                        color: theme.colorScheme.primary.withOpacity(0.35),
+                        color: theme.colorScheme.primary.withValues(alpha:0.35),
                         blurRadius: 16,
                         offset: const Offset(0, 6),
                       )

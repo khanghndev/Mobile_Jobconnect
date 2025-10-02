@@ -68,7 +68,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
         elevation: 0.8,
         backgroundColor:
             isDarkMode
-                ? theme.colorScheme.surface.withOpacity(0.95)
+                ? theme.colorScheme.surface.withValues(alpha:0.95)
                 : Colors.white,
         leading: IconButton(
           icon: Icon(
@@ -100,11 +100,11 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: theme.primaryColor.withOpacity(0.1),
+                    color: theme.primaryColor.withValues(alpha:0.1),
                     borderRadius: BorderRadius.circular(24), // Bo góc lớn hơn
                     boxShadow: [
                       BoxShadow(
-                        color: theme.primaryColor.withOpacity(0.15),
+                        color: theme.primaryColor.withValues(alpha:0.15),
                         blurRadius: 15,
                         offset: const Offset(0, 5),
                       ),
@@ -152,13 +152,13 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodyLarge?.copyWith(
                     height: 1.6,
-                    color: theme.colorScheme.onSurface.withOpacity(0.85),
+                    color: theme.colorScheme.onSurface.withValues(alpha:0.85),
                   ),
                 ),
                 const SizedBox(height: 32),
 
                 Divider(
-                  color: theme.dividerColor.withOpacity(0.7),
+                  color: theme.dividerColor.withValues(alpha:0.7),
                   thickness: 0.8,
                 ),
                 const SizedBox(height: 24),
@@ -167,14 +167,14 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
                 Text(
                   '© ${DateTime.now().year} ${AppStrings.appName} Team.',
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant.withOpacity(0.7),
+                    color: theme.colorScheme.onSurfaceVariant.withValues(alpha:0.7),
                   ),
                   textAlign: TextAlign.center,
                 ),
                 Text(
                   'Được phát triển với ❤️ bởi Nhóm Sinh Viên HUIT.',
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant.withOpacity(0.6),
+                    color: theme.colorScheme.onSurfaceVariant.withValues(alpha:0.6),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -275,8 +275,8 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
-        splashColor: theme.primaryColor.withOpacity(0.1),
-        highlightColor: theme.primaryColor.withOpacity(0.05),
+        splashColor: theme.primaryColor.withValues(alpha:0.1),
+        highlightColor: theme.primaryColor.withValues(alpha:0.05),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0),
           child: Row(
@@ -295,7 +295,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
               Icon(
                 Icons.arrow_forward_ios_rounded,
                 size: 18,
-                color: theme.colorScheme.onSurfaceVariant.withOpacity(0.6),
+                color: theme.colorScheme.onSurfaceVariant.withValues(alpha:0.6),
               ),
             ],
           ),

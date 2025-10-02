@@ -29,14 +29,14 @@ class SubmitButton extends StatelessWidget {
           gradient: LinearGradient(
             colors: [
               theme.colorScheme.primary,
-              theme.colorScheme.primary.withOpacity(0.8),
+              theme.colorScheme.primary.withValues(alpha:0.8),
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           boxShadow: [
             BoxShadow(
-              color: theme.colorScheme.primary.withOpacity(0.35),
+              color: theme.colorScheme.primary.withValues(alpha:0.35),
               blurRadius: 20,
               offset: const Offset(0, 10),
             ),

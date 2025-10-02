@@ -186,7 +186,7 @@ class _CreateCVPageState extends State<CreateCVPage> {
               boxShadow: [
                 BoxShadow(
                   // ignore: deprecated_member_use
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withValues(alpha:0.05),
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),
@@ -199,7 +199,7 @@ class _CreateCVPageState extends State<CreateCVPage> {
                   child: Container(
                     decoration: BoxDecoration(
                       // ignore: deprecated_member_use
-                      color: template.color.withOpacity(0.1),
+                      color: template.color.withValues(alpha:0.1),
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10),
@@ -260,7 +260,7 @@ class _CreateCVPageState extends State<CreateCVPage> {
         boxShadow: [
           BoxShadow(
             // ignore: deprecated_member_use
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha:0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -359,7 +359,7 @@ class _CreateCVPageState extends State<CreateCVPage> {
         boxShadow: [
           BoxShadow(
             // ignore: deprecated_member_use
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha:0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -408,7 +408,7 @@ class _CreateCVPageState extends State<CreateCVPage> {
         boxShadow: [
           BoxShadow(
             // ignore: deprecated_member_use
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha:0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -457,7 +457,7 @@ class _CreateCVPageState extends State<CreateCVPage> {
         boxShadow: [
           BoxShadow(
             // ignore: deprecated_member_use
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha:0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -649,11 +649,11 @@ Widget _buildOptionButton({
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         // ignore: deprecated_member_use
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha:0.1),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           // ignore: deprecated_member_use
-          color: color.withOpacity(0.3),
+          color: color.withValues(alpha:0.3),
           width: 1,
         ),
       ),
@@ -664,7 +664,7 @@ Widget _buildOptionButton({
             height: 48,
             decoration: BoxDecoration(
               // ignore: deprecated_member_use
-              color: color.withOpacity(0.2),
+              color: color.withValues(alpha:0.2),
               shape: BoxShape.circle,
             ),
             child: Icon(icon, color: color, size: 24),

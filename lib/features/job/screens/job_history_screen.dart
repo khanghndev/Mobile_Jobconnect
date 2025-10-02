@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // For SystemUiOverlayStyle
 import 'package:job_connect/config/constant/api_constants.dart';
 import 'package:job_connect/data/models/job_application_model.dart';
-import 'package:job_connect/data/services/api.dart';
+import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/config/utils/format.dart';
 import 'package:job_connect/config/utils/status_helper.dart';
-import 'package:job_connect/features/home/screens/home_page.dart';
+import 'package:job_connect/features/navigation/screens/navigation_page.dart';
 import 'package:job_connect/features/job/screens/job_application_detail_screen.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
@@ -21,7 +21,7 @@ class JobHistoryScreen extends StatefulWidget {
 
 class JobHistoryScreenState extends State<JobHistoryScreen>
     with TickerProviderStateMixin {
-  final _apiService = ApiService(baseUrl: ApiConstants.baseUrl);
+  final _apiService = ApiService( );
   List<JobApplication> _allJobApplications = [];
   List<JobApplication> _filteredJobApplications = [];
   bool _isLoading = true;
@@ -81,7 +81,7 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
     setState(() => _isLoading = true);
     try {
       final response = await _apiService.get(
-        "${ApiConstants.jobApplicationEndpoint}/${widget.idUser}",
+        endpoint: "${ApiConstants.jobApplicationEndpoint}/${widget.idUser}",
       );
       if (mounted) {
         _allJobApplications =
@@ -204,7 +204,7 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0),
           child: Container(
-            color: theme.dividerColor.withOpacity(0.5),
+            color: theme.dividerColor.withValues(alpha:0.5),
             height: 1.0,
           ),
         ),
@@ -231,7 +231,7 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
                   color: isDarkMode ? const Color(0xFF1E1E1E) : Colors.white,
                   boxShadow: [
                     BoxShadow(
-                      color: theme.shadowColor.withOpacity(0.05),
+                      color: theme.shadowColor.withValues(alpha:0.05),
                       blurRadius: 10,
                       offset: const Offset(0, 2),
                     ),
@@ -244,7 +244,7 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
                       '${_getFilterDisplayName(theme)} (${_filteredJobApplications.length})',
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: theme.colorScheme.onSurface.withOpacity(0.9),
+                        color: theme.colorScheme.onSurface.withValues(alpha:0.9),
                       ),
                     ),
                     if (_selectedStatusFilter != null)
@@ -366,7 +366,7 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
                 : Colors.white,
         boxShadow: [
           BoxShadow(
-            color: theme.shadowColor.withOpacity(0.08),
+            color: theme.shadowColor.withValues(alpha:0.08),
             blurRadius: 15,
             offset: const Offset(0, 5),
           ),
@@ -442,18 +442,18 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
         decoration: BoxDecoration(
           color:
               isSelected
-                  ? color.withOpacity(0.12)
-                  : theme.colorScheme.surfaceVariant.withOpacity(0.3),
+                  ? color.withValues(alpha:0.12)
+                  : theme.colorScheme.surfaceVariant.withValues(alpha:0.3),
           borderRadius: BorderRadius.circular(16),
           border:
               isSelected
-                  ? Border.all(color: color.withOpacity(0.8), width: 1.8)
-                  : Border.all(color: theme.dividerColor.withOpacity(0.5)),
+                  ? Border.all(color: color.withValues(alpha:0.8), width: 1.8)
+                  : Border.all(color: theme.dividerColor.withValues(alpha:0.5)),
           boxShadow:
               isSelected
                   ? [
                     BoxShadow(
-                      color: color.withOpacity(0.15),
+                      color: color.withValues(alpha:0.15),
                       blurRadius: 8,
                       offset: const Offset(0, 3),
                     ),
@@ -481,7 +481,7 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
                 color:
                     isSelected
                         ? color
-                        : theme.colorScheme.onSurfaceVariant.withOpacity(0.9),
+                        : theme.colorScheme.onSurfaceVariant.withValues(alpha:0.9),
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
                 fontSize: 13,
               ),
@@ -504,7 +504,7 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
         bottom: 14.0,
       ), // REFINED: Dùng margin thay vì Padding
       elevation: 2.0,
-      shadowColor: theme.shadowColor.withOpacity(isDarkMode ? 0.12 : 0.07),
+      shadowColor: theme.shadowColor.withValues(alpha:isDarkMode ? 0.12 : 0.07),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: InkWell(
         onTap: () {
@@ -518,8 +518,8 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
           ).then((_) => _onRefresh());
         },
         borderRadius: BorderRadius.circular(16),
-        splashColor: theme.primaryColor.withOpacity(0.1),
-        highlightColor: theme.primaryColor.withOpacity(0.05),
+        splashColor: theme.primaryColor.withValues(alpha:0.1),
+        highlightColor: theme.primaryColor.withValues(alpha:0.05),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -550,7 +550,7 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
                           jobApp.jobPosting.company.companyName,
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: theme.colorScheme.onSurfaceVariant
-                                .withOpacity(0.85),
+                                .withValues(alpha:0.85),
                             fontWeight: FontWeight.w500,
                           ),
                           maxLines: 1,
@@ -589,7 +589,7 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
                 padding: const EdgeInsets.symmetric(vertical: 14.0),
                 child: Divider(
                   height: 1,
-                  color: theme.dividerColor.withOpacity(0.4),
+                  color: theme.dividerColor.withValues(alpha:0.4),
                 ),
               ),
 
@@ -606,7 +606,7 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
                           'Nộp ngày: ${FormatUtils.formattedDateTime(jobApp.submittedAt)}',
                       iconSize: 14,
                       textStyle: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant.withOpacity(
+                        color: theme.colorScheme.onSurfaceVariant.withValues(alpha:
                           0.8,
                         ),
                       ),
@@ -663,9 +663,9 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
       height: 58,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: theme.colorScheme.surfaceVariant.withOpacity(0.4),
+        color: theme.colorScheme.surfaceVariant.withValues(alpha:0.4),
         border: Border.all(
-          color: theme.dividerColor.withOpacity(0.3),
+          color: theme.dividerColor.withValues(alpha:0.3),
           width: 0.8,
         ),
       ),
@@ -691,7 +691,7 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
           icon,
           size: iconSize,
           color:
-              iconColor ?? theme.colorScheme.onSurfaceVariant.withOpacity(0.7),
+              iconColor ?? theme.colorScheme.onSurfaceVariant.withValues(alpha:0.7),
         ),
         const SizedBox(width: 8),
         Expanded(
@@ -714,7 +714,7 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
   void _handleCancelApplication(String idJobPost) async {
     try {
       await _apiService.delete(
-        '${ApiConstants.jobApplicationPostEndpoint}/$idJobPost/${widget.idUser}',
+        endpoint: '${ApiConstants.jobApplicationPostEndpoint}/$idJobPost/${widget.idUser}',
       );
 
       if (mounted) {
@@ -750,7 +750,7 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
       textStyle: theme.textTheme.labelMedium?.copyWith(
         fontWeight: FontWeight.bold,
       ),
-      side: BorderSide(color: theme.primaryColor.withOpacity(0.9), width: 1.5),
+      side: BorderSide(color: theme.primaryColor.withValues(alpha:0.9), width: 1.5),
     );
 
     return Row(
@@ -786,7 +786,7 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
             style: buttonStyle.copyWith(
               side: MaterialStateProperty.all(
                 BorderSide(
-                  color: theme.colorScheme.error.withOpacity(0.9),
+                  color: theme.colorScheme.error.withValues(alpha:0.9),
                   width: 1.5,
                 ),
               ),
@@ -815,11 +815,11 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
       decoration: BoxDecoration(
-        color: bgColor.withOpacity(
+        color: bgColor.withValues(alpha:
           theme.brightness == Brightness.dark ? 0.25 : 1.0,
         ),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: textColor.withOpacity(0.5), width: 1),
+        border: Border.all(color: textColor.withValues(alpha:0.5), width: 1),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -855,7 +855,7 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
                   ? Icons.filter_alt_off_outlined
                   : Icons.history_toggle_off_rounded,
               size: 80,
-              color: theme.hintColor.withOpacity(0.35),
+              color: theme.hintColor.withValues(alpha:0.35),
             ),
             const SizedBox(height: 24),
             Text(
@@ -863,7 +863,7 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
               textAlign: TextAlign.center,
               style: theme.textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
-                color: theme.colorScheme.onBackground.withOpacity(0.8),
+                color: theme.colorScheme.onBackground.withValues(alpha:0.8),
               ),
             ),
             const SizedBox(height: 12),
@@ -873,7 +873,7 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
                   : 'Mọi công việc bạn ứng tuyển sẽ được lưu tại đây để tiện theo dõi.',
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyLarge?.copyWith(
-                color: theme.colorScheme.onBackground.withOpacity(0.65),
+                color: theme.colorScheme.onBackground.withValues(alpha:0.65),
                 height: 1.5,
               ),
             ),
@@ -911,11 +911,11 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
                 ),
                 onPressed: () {
                   // HomePage.goToSearchTab(context, initialTabIndex: 1);
-                  HomePage.goToUniJobsTab(context, initialTabIndex: 1);
+                  NavigationPage.goToUniJobsTab(context, initialTabIndex: 1);
                 },
                 style: OutlinedButton.styleFrom(
                   side: BorderSide(
-                    color: theme.primaryColor.withOpacity(0.7),
+                    color: theme.primaryColor.withValues(alpha:0.7),
                     width: 1.5,
                   ),
                   padding: const EdgeInsets.symmetric(

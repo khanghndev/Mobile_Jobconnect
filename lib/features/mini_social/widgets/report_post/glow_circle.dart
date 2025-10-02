@@ -15,7 +15,7 @@ class GlowCircle extends StatelessWidget {
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: Colors.white.withOpacity(opacity),
+            color: Colors.white.withValues(alpha:opacity),
             blurRadius: size / 2.5,
             spreadRadius: size / 10,
           )

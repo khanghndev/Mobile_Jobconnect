@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class PrivacyScreen extends StatelessWidget {
-  const PrivacyScreen({Key? key}) : super(key: key);
+  const PrivacyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

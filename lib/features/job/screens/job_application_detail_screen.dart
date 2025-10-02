@@ -4,7 +4,7 @@ import 'package:job_connect/data/models/job_application_model.dart';
 import 'package:job_connect/config/utils/format.dart';
 import 'package:job_connect/config/utils/status_helper.dart';
 // Giả sử bạn có ApiService và ApiConstants để gọi API hủy
-import 'package:job_connect/data/services/api.dart';
+import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/config/constant/api_constants.dart';
 import 'package:job_connect/features/file/screens/file_viewer_screen.dart';
 // import 'package:job_connect/features/file/file_viewer_screen.dart';
@@ -25,7 +25,7 @@ class _JobApplicationDetailScreenState
   late JobApplication
   _currentJobApplication; // Để có thể cập nhật trạng thái sau khi hủy
   bool _isCancelling = false; // Cờ để theo dõi trạng thái hủy
-  final ApiService _apiService = ApiService(baseUrl: ApiConstants.baseUrl);
+  final ApiService _apiService = ApiService( );
 
   @override
   void initState() {
@@ -71,7 +71,7 @@ class _JobApplicationDetailScreenState
               child: Text(
                 'KHÔNG',
                 style: TextStyle(
-                  color: theme.colorScheme.onSurfaceVariant.withOpacity(0.8),
+                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha:0.8),
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -153,7 +153,7 @@ class _JobApplicationDetailScreenState
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceVariant.withOpacity(0.5),
+        color: theme.colorScheme.surfaceVariant.withValues(alpha:0.5),
         borderRadius: BorderRadius.circular(8),
       ),
       alignment: Alignment.center,
@@ -162,7 +162,7 @@ class _JobApplicationDetailScreenState
         style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: size * 0.45,
-          color: theme.colorScheme.onSurfaceVariant.withOpacity(0.7),
+          color: theme.colorScheme.onSurfaceVariant.withValues(alpha:0.7),
         ),
       ),
     );
@@ -180,8 +180,8 @@ class _JobApplicationDetailScreenState
 
     return Card(
       elevation: 3,
-      shadowColor: statusBgColor.withOpacity(0.3),
-      color: statusBgColor.withOpacity(0.9),
+      shadowColor: statusBgColor.withValues(alpha:0.3),
+      color: statusBgColor.withValues(alpha:0.9),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
@@ -205,7 +205,7 @@ class _JobApplicationDetailScreenState
                   Text(
                     'Ngày ứng tuyển: ${FormatUtils.formattedDateTime(submittedAt)}',
                     style: theme.textTheme.bodySmall?.copyWith(
-                      color: statusTextColor.withOpacity(0.85),
+                      color: statusTextColor.withValues(alpha:0.85),
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -249,7 +249,7 @@ class _JobApplicationDetailScreenState
   }) {
     return Card(
       elevation: 1.5,
-      shadowColor: theme.shadowColor.withOpacity(0.05),
+      shadowColor: theme.shadowColor.withValues(alpha:0.05),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       color: theme.cardColor,
       child: Padding(
@@ -258,7 +258,7 @@ class _JobApplicationDetailScreenState
           content.isNotEmpty ? content : "Chưa có thông tin.",
           style: theme.textTheme.bodyLarge?.copyWith(
             height: 1.6,
-            color: theme.colorScheme.onSurface.withOpacity(0.85),
+            color: theme.colorScheme.onSurface.withValues(alpha:0.85),
           ),
         ),
       ),
@@ -283,7 +283,7 @@ class _JobApplicationDetailScreenState
             size: 20,
             color:
                 iconColor ??
-                theme.colorScheme.onSurfaceVariant.withOpacity(0.8),
+                theme.colorScheme.onSurfaceVariant.withValues(alpha:0.8),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -328,7 +328,7 @@ class _JobApplicationDetailScreenState
             Icon(
               Icons.arrow_forward_ios_rounded,
               size: 18,
-              color: theme.colorScheme.primary.withOpacity(0.7),
+              color: theme.colorScheme.primary.withValues(alpha:0.7),
             ),
           ],
         ),
@@ -451,7 +451,7 @@ class _JobApplicationDetailScreenState
 
             Card(
               elevation: 2.5,
-              shadowColor: theme.shadowColor.withOpacity(0.1),
+              shadowColor: theme.shadowColor.withValues(alpha:0.1),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
@@ -469,7 +469,7 @@ class _JobApplicationDetailScreenState
                           child: Container(
                             width: 64,
                             height: 64,
-                            color: theme.colorScheme.surfaceVariant.withOpacity(
+                            color: theme.colorScheme.surfaceVariant.withValues(alpha:
                               0.3,
                             ),
                             child: logoWidget,
@@ -493,7 +493,7 @@ class _JobApplicationDetailScreenState
                                 company.companyName,
                                 style: theme.textTheme.titleMedium?.copyWith(
                                   color: theme.colorScheme.onSurfaceVariant
-                                      .withOpacity(0.9),
+                                      .withValues(alpha:0.9),
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
@@ -504,7 +504,7 @@ class _JobApplicationDetailScreenState
                     ),
                     const SizedBox(height: 18),
                     Divider(
-                      color: theme.dividerColor.withOpacity(0.5),
+                      color: theme.dividerColor.withValues(alpha:0.5),
                       height: 1,
                     ),
                     const SizedBox(height: 18),
@@ -566,7 +566,7 @@ class _JobApplicationDetailScreenState
             ),
             Card(
               elevation: 1.5,
-              shadowColor: theme.shadowColor.withOpacity(0.05),
+              shadowColor: theme.shadowColor.withValues(alpha:0.05),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -606,7 +606,7 @@ class _JobApplicationDetailScreenState
               ),
               Card(
                 elevation: 1.5,
-                shadowColor: theme.shadowColor.withOpacity(0.05),
+                shadowColor: theme.shadowColor.withValues(alpha:0.05),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -671,7 +671,7 @@ class _JobApplicationDetailScreenState
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
                                 color: theme.colorScheme.surfaceVariant
-                                    .withOpacity(0.4),
+                                    .withValues(alpha:0.4),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
@@ -721,7 +721,7 @@ class _JobApplicationDetailScreenState
                     onPressed: _isCancelling ? null : _cancelApplication,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: theme.colorScheme.errorContainer
-                          .withOpacity(0.8), // Màu nền nhẹ của error
+                          .withValues(alpha:0.8), // Màu nền nhẹ của error
                       foregroundColor:
                           theme
                               .colorScheme
@@ -732,7 +732,7 @@ class _JobApplicationDetailScreenState
                       ),
                       elevation: 1, // Elevation nhẹ
                       side: BorderSide(
-                        color: theme.colorScheme.error.withOpacity(0.5),
+                        color: theme.colorScheme.error.withValues(alpha:0.5),
                       ), // Viền nhẹ
                     ),
                   ),

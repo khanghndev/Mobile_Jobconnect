@@ -147,7 +147,7 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha:0.05),
             offset: const Offset(0, 4),
             blurRadius: 10,
           ),
@@ -190,14 +190,14 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
                     decoration: BoxDecoration(
                       color:
                           isSelected
-                              ? job['color'].withOpacity(0.1)
+                              ? job['color'].withValues(alpha:0.1)
                               : Colors.white,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color:
                             isSelected
                                 ? job['color']
-                                : Colors.grey.withOpacity(0.3),
+                                : Colors.grey.withValues(alpha:0.3),
                         width: isSelected ? 2 : 1,
                       ),
                     ),
@@ -210,7 +210,7 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
                               width: 28,
                               height: 28,
                               decoration: BoxDecoration(
-                                color: job['color'].withOpacity(0.2),
+                                color: job['color'].withValues(alpha:0.2),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Icon(
@@ -272,7 +272,7 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey.withOpacity(0.3)),
+        border: Border.all(color: Colors.grey.withValues(alpha:0.3)),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
@@ -311,7 +311,7 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha:0.05),
             offset: const Offset(0, 4),
             blurRadius: 10,
           ),
@@ -326,7 +326,7 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
                 width: 60,
                 height: 60,
                 decoration: BoxDecoration(
-                  color: _selectedJob['color'].withOpacity(0.1),
+                  color: _selectedJob['color'].withValues(alpha:0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
@@ -706,7 +706,7 @@ class _FilterChipState extends State<_FilterChip> {
         });
       },
       backgroundColor: Colors.grey[100],
-      selectedColor: Colors.blue.withOpacity(0.2),
+      selectedColor: Colors.blue.withValues(alpha:0.2),
       checkmarkColor: Colors.blue,
       side: BorderSide(color: _isSelected ? Colors.blue : Colors.grey[300]!),
     );
@@ -732,7 +732,7 @@ class _CandidateCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha:0.05),
             offset: const Offset(0, 2),
             blurRadius: 8,
           ),
@@ -827,7 +827,7 @@ class _CandidateCard extends StatelessWidget {
                       vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color: jobColor.withOpacity(0.1),
+                      color: jobColor.withValues(alpha:0.1),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Text(
@@ -1007,7 +1007,7 @@ class _StatusIndicator extends StatelessWidget {
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: color.withOpacity(0.1),
+            color: color.withValues(alpha:0.1),
           ),
           child: Text(
             '$value',

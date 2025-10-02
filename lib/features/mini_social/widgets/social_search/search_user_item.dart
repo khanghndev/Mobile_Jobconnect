@@ -4,7 +4,6 @@ class SearchUserItem extends StatefulWidget {
   final String avatar;
   final String name;
   final String subtitle;
-  final String desc;
   final String followers;
   final VoidCallback? onFollow; // Callback khi bấm nút
 
@@ -13,7 +12,6 @@ class SearchUserItem extends StatefulWidget {
     required this.avatar,
     required this.name,
     required this.subtitle,
-    required this.desc,
     required this.followers,
     this.onFollow,
   });
@@ -54,11 +52,6 @@ class _SearchUserItemState extends State<SearchUserItem> {
                 Text(widget.subtitle,
                     style: const TextStyle(
                         color: Colors.black, fontSize: 12)),
-                const SizedBox(height: 4),
-                Text(widget.desc,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(color: Colors.black)),
                 const SizedBox(height: 4),
                 Text(widget.followers,
                     style: const TextStyle(

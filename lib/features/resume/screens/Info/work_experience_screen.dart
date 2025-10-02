@@ -74,7 +74,7 @@ class _WorkExperienceScreenState extends State<WorkExperienceScreen> {
                         padding: EdgeInsets.all(8),
                         margin: EdgeInsets.only(bottom: 16),
                         decoration: BoxDecoration(
-                          color: Colors.blue.withOpacity(0.1),
+                          color: Colors.blue.withValues(alpha:0.1),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Row(
@@ -266,7 +266,7 @@ class _WorkExperienceScreenState extends State<WorkExperienceScreen> {
                 padding: EdgeInsets.all(8),
                 margin: EdgeInsets.only(bottom: 16),
                 decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.1),
+                  color: Colors.blue.withValues(alpha:0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Row(

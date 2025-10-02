@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:job_connect/config/constant/api_constants.dart';
 import 'package:job_connect/data/models/podcast_model.dart';
-import 'package:job_connect/data/services/api.dart';
+import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/config/utils/format.dart';
 
 class PodcastScreen extends StatefulWidget {
-  const PodcastScreen({Key? key}) : super(key: key);
+  const PodcastScreen({super.key});
 
   @override
   PodcastScreenState createState() => PodcastScreenState();
@@ -24,7 +24,7 @@ class PodcastScreenState extends State<PodcastScreen> {
   String? _errorMessage;
 
   // Khởi tạo service để gọi API
-  final _apiService = ApiService(baseUrl: ApiConstants.baseUrl);
+  final _apiService = ApiService( );
 
   @override
   void initState() {
@@ -174,7 +174,7 @@ class PodcastScreenState extends State<PodcastScreen> {
       _errorMessage = null; // Reset thông báo lỗi
     });
     try {
-      final response = await _apiService.get(ApiConstants.podcastEndpoint);
+      final response = await _apiService.get(endpoint:   ApiConstants.podcastEndpoint);
       setState(() {
         _allPodcasts.clear();
         _allPodcasts.addAll(
@@ -210,7 +210,7 @@ class PodcastScreenState extends State<PodcastScreen> {
           hintStyle: TextStyle(color: theme.hintColor),
           prefixIcon: Icon(Icons.search, color: theme.colorScheme.primary),
           filled: true,
-          fillColor: theme.colorScheme.surfaceVariant.withOpacity(0.5),
+          fillColor: theme.colorScheme.surfaceVariant.withValues(alpha:0.5),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide.none, // Không viền mặc định
@@ -259,7 +259,7 @@ class PodcastScreenState extends State<PodcastScreen> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 // Sử dụng màu từ theme
-                color: theme.colorScheme.primaryContainer.withOpacity(0.3),
+                color: theme.colorScheme.primaryContainer.withValues(alpha:0.3),
               ),
               child: Center(
                 child: Icon(

@@ -2,22 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:job_connect/config/constant/app_colors.dart';
 import 'package:job_connect/config/utils/snackbar_app.dart';
-import 'package:job_connect/features/mini_social/screens/social_report_post_screem.dart';
+import 'package:job_connect/features/mini_social/screens/report/social_report_post_screem.dart';
 
 class PostItemHeader extends StatefulWidget {
   final String avatarUrl;
   final String username;
-  final String group;
+  final String? group;
   final String timeAgo;
-  final String postId; // thêm postId
+  final String postId;
   final VoidCallback onFollow;
 
   const PostItemHeader({
     super.key,
     required this.avatarUrl,
     required this.username,
-    required this.group,
+    this.group,
     required this.timeAgo,
     required this.postId, 
     required this.onFollow,
@@ -44,12 +45,10 @@ class _PostItemHeaderState extends State<PostItemHeader> {
       context,
         title: "Thành công",
         message: "Sao chép link thành công",
-        bgColor: ThemeData.light().primaryColor,
-        icon: Icons.check_circle_outline,
+        backgroudColor: BackgroundColors.backgroundSuccessPrimary
     );
   }
-
-  @override
+ 
   Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,7 +86,7 @@ class _PostItemHeaderState extends State<PostItemHeader> {
                     child: GestureDetector(
                       onTap:() => context.push('/group'),
                       child: Text(
-                        widget.group,
+                        widget.group ?? "",
                         style: const TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 14,

@@ -242,7 +242,7 @@ class _CandidateManagementScreenState extends State<CandidateManagementScreen>
                                   decoration: BoxDecoration(
                                     color: _getStatusColor(
                                       candidate['status'],
-                                    ).withOpacity(0.1),
+                                    ).withValues(alpha:0.1),
                                     borderRadius: BorderRadius.circular(16),
                                   ),
                                   child: Text(
@@ -789,7 +789,7 @@ class _CandidateManagementScreenState extends State<CandidateManagementScreen>
                                         decoration: BoxDecoration(
                                           color: _getStatusColor(
                                             candidate['status'],
-                                          ).withOpacity(0.1),
+                                          ).withValues(alpha:0.1),
                                           borderRadius: BorderRadius.circular(
                                             16,
                                           ),
@@ -892,9 +892,9 @@ class _CandidateManagementScreenState extends State<CandidateManagementScreen>
       padding: const EdgeInsets.all(16),
       width: 140,
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha:0.1),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: color.withOpacity(0.2)),
+        border: Border.all(color: color.withValues(alpha:0.2)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -914,7 +914,7 @@ class _CandidateManagementScreenState extends State<CandidateManagementScreen>
             title,
             style: TextStyle(
               fontSize: 12,
-              color: color.withOpacity(0.8),
+              color: color.withValues(alpha:0.8),
               fontWeight: FontWeight.w500,
             ),
           ),

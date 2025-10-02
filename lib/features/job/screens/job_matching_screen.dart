@@ -3,7 +3,7 @@ import 'package:job_connect/config/constant/api_constants.dart';
 import 'package:job_connect/data/models/job_posting_model.dart';
 import 'package:job_connect/data/models/account_model.dart';
 import 'package:job_connect/data/models/candidate_info_model.dart';
-import 'package:job_connect/data/services/api.dart';
+import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/config/utils/format.dart';
 import 'package:job_connect/features/job/screens/job_detail_screen.dart';
 
@@ -21,7 +21,7 @@ class _JobMatchingScreenState extends State<JobMatchingScreen> {
   Account? _account;
   CandidateInfo? _candidateInfo;
   final List<JobPosting> _jobs = [];
-  final ApiService _apiService = ApiService(baseUrl: ApiConstants.baseUrl);
+  final ApiService _apiService = ApiService( );
   bool _isLoading = true;
 
   @override
@@ -51,7 +51,7 @@ class _JobMatchingScreenState extends State<JobMatchingScreen> {
   Future<void> _fetchAccount() async {
     try {
       final data = await _apiService.get(
-        '${ApiConstants.userEndpoint}/${widget.idUser}',
+        endpoint: '${ApiConstants.userEndpoint}/${widget.idUser}',
       );
       if (mounted && data.isNotEmpty) {
         setState(() => _account = Account.fromJson(data.first));
@@ -64,7 +64,7 @@ class _JobMatchingScreenState extends State<JobMatchingScreen> {
   Future<void> _fetchCandidateInfo() async {
     try {
       final data = await _apiService.get(
-        '${ApiConstants.candidateInfoEndpoint}/${widget.idUser}',
+        endpoint: '${ApiConstants.candidateInfoEndpoint}/${widget.idUser}',
       );
       if (mounted && data.isNotEmpty) {
         setState(() => _candidateInfo = CandidateInfo.fromJson(data.first));
@@ -76,7 +76,7 @@ class _JobMatchingScreenState extends State<JobMatchingScreen> {
 
   Future<void> _fetchJobs() async {
     try {
-      final response = await _apiService.get(ApiConstants.jobPostingEndpoint);
+      final response = await _apiService.get(endpoint: ApiConstants.jobPostingEndpoint);
       if (mounted) {
         _jobs.clear();
         _jobs.addAll(response.map((job) => JobPosting.fromJson(job)));
@@ -401,7 +401,7 @@ class _JobMatchingScreenState extends State<JobMatchingScreen> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.blue.withOpacity(0.1),
+                      color: Colors.blue.withValues(alpha:0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(
@@ -653,12 +653,12 @@ class _JobMatchingScreenState extends State<JobMatchingScreen> {
                                     decoration: BoxDecoration(
                                       color: _getMatchColor(
                                         jobMatch.matchPercentage,
-                                      ).withOpacity(0.1),
+                                      ).withValues(alpha:0.1),
                                       borderRadius: BorderRadius.circular(20),
                                       border: Border.all(
                                         color: _getMatchColor(
                                           jobMatch.matchPercentage,
-                                        ).withOpacity(0.3),
+                                        ).withValues(alpha:0.3),
                                       ),
                                     ),
                                     child: Text(

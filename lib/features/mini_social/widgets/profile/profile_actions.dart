@@ -11,13 +11,13 @@ class ProfileActions extends StatelessWidget {
       children: [
         _buildButton(
           icon: Icons.message_outlined,
-          label: "Message",
+          label: "Nhắn tin",
           bgColor: Colors.white,
           fgColor: Colors.black,
         ),
         SizedBox(width: 12.w),
         _buildButton(
-          label: "Follow",
+          label: "Theo dõi",
           bgColor: Colors.blue,
           fgColor: Colors.white,
         ),
@@ -36,7 +36,7 @@ class ProfileActions extends StatelessWidget {
         borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.15),
+            color: Colors.black.withValues(alpha:0.15),
             blurRadius: 6,
             spreadRadius: 1,
             offset: const Offset(0, 3),

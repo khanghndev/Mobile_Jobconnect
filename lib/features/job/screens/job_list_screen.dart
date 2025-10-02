@@ -26,7 +26,7 @@
 //     "Lưu trữ",
 //   ];
 
-//   final _apiService = ApiService(baseUrl: ApiConstants.baseUrl);
+//   final _apiService = ApiService( );
 
 //   List<JobPosting> _jobList = [];
 //   List<JobPosting> _filteredJobList = [];
@@ -301,7 +301,7 @@
 //                           }
 //                         },
 //                         // ignore: deprecated_member_use
-//                         selectedColor: const Color(0xFF3366FF).withOpacity(0.2),
+//                         selectedColor: const Color(0xFF3366FF).withValues(alpha:0.2),
 //                         labelStyle: TextStyle(
 //                           color:
 //                               isSelected
@@ -337,7 +337,7 @@
 //         boxShadow: [
 //           BoxShadow(
 //             // ignore: deprecated_member_use
-//             color: Colors.black.withOpacity(0.05),
+//             color: Colors.black.withValues(alpha:0.05),
 //             blurRadius: 10,
 //             offset: const Offset(0, 2),
 //           ),
@@ -373,7 +373,7 @@
 //                     title: "Đang tuyển",
 //                     count: activeJobs.toString(),
 //                     // ignore: deprecated_member_use
-//                     backgroundColor: Colors.green.withOpacity(0.1),
+//                     backgroundColor: Colors.green.withValues(alpha:0.1),
 //                     showBadge: activeJobs > 0,
 //                   ),
 //                 ),
@@ -385,7 +385,7 @@
 //                     title: "Đã đóng",
 //                     count: closedJobs.toString(),
 //                     // ignore: deprecated_member_use
-//                     backgroundColor: Colors.red.withOpacity(0.1),
+//                     backgroundColor: Colors.red.withValues(alpha:0.1),
 //                     showBadge: false,
 //                   ),
 //                 ),
@@ -397,7 +397,7 @@
 //                     title: "Lưu trữ",
 //                     count: archivedJobs.toString(),
 //                     // ignore: deprecated_member_use
-//                     backgroundColor: Colors.grey.withOpacity(0.1),
+//                     backgroundColor: Colors.grey.withValues(alpha:0.1),
 //                     showBadge: false,
 //                   ),
 //                 ),
@@ -551,7 +551,7 @@
 //         boxShadow: [
 //           BoxShadow(
 //             // ignore: deprecated_member_use
-//             color: Colors.black.withOpacity(0.05),
+//             color: Colors.black.withValues(alpha:0.05),
 //             blurRadius: 10,
 //             offset: const Offset(0, 2),
 //           ),
@@ -571,7 +571,7 @@
 //                       padding: const EdgeInsets.all(10),
 //                       decoration: BoxDecoration(
 //                         // ignore: deprecated_member_use
-//                         color: const Color(0xFF3366FF).withOpacity(0.1),
+//                         color: const Color(0xFF3366FF).withValues(alpha:0.1),
 //                         borderRadius: BorderRadius.circular(12),
 //                       ),
 //                       child: const Icon(
@@ -596,7 +596,7 @@
 //                               //     ),
 //                               //     decoration: BoxDecoration(
 //                               //       // ignore: deprecated_member_use
-//                               //       color: Colors.red.withOpacity(0.1),
+//                               //       color: Colors.red.withValues(alpha:0.1),
 //                               //       borderRadius: BorderRadius.circular(10),
 //                               //     ),
 //                               //     child: const Row(
@@ -672,7 +672,7 @@
 //                             ),
 //                             decoration: BoxDecoration(
 //                               // ignore: deprecated_member_use
-//                               color: statusColor.withOpacity(0.1),
+//                               color: statusColor.withValues(alpha:0.1),
 //                               borderRadius: BorderRadius.circular(8),
 //                             ),
 //                             child: Row(

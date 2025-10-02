@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:job_connect/config/constant/app_colors.dart';
 
 class SnackbarApp {
   static void show(
     BuildContext context, {
     required String title,
     required String message,
-    Color bgColor = Colors.black87,
-    IconData icon = Icons.info_outline,
+    Color backgroudColor = BackgroundColors.backgroundInfoPrimary,
+    IconData? icon,
     Duration duration = const Duration(seconds: 3),
   }) {
+    icon ??= _getIconByColor(backgroudColor);
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: Colors.transparent,
-        // behavior: SnackBarBehavior.floating, // cao ngang floadting
+        elevation: 0,
         duration: duration,
         content: Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: bgColor,
+            color: backgroudColor,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Row(
@@ -55,15 +58,26 @@ class SnackbarApp {
       ),
     );
   }
-}
 
+  static IconData _getIconByColor(Color color) {
+    if (color == BackgroundColors.backgroundErrorPrimary ) {
+      return Icons.error_outline;
+    } else if (color == BackgroundColors.backgroundSuccessPrimary ) {
+      return Icons.check_circle_outline;
+    } else if (color == BackgroundColors.backgroundWarningPrimary) {
+      return Icons.warning_amber_rounded;
+    } else {
+      return Icons.info_outline;
+    }
+  }
+}
 
 // // báo lỗi
 // SnackbarApp.show(
 //   context,
 //   title: "Thiếu thông tin",
 //   message: "Vui lòng chọn lý do báo cáo",
-//   bgColor: Colors.redAccent,
+//   backgroudColor: Colors.redAccent,
 //   icon: Icons.error_outline,
 // );
 
@@ -72,7 +86,7 @@ class SnackbarApp {
 //   context,
 //   title: "Thành công",
 //   message: "Báo cáo đã được gửi",
-//   bgColor: Colors.green,
+//   backgroudColor: Colors.green,
 //   icon: Icons.check_circle_outline,
 // );
 
@@ -81,6 +95,6 @@ class SnackbarApp {
 //   context,
 //   title: "Cảnh báo",
 //   message: "Bạn sắp rời khỏi trang",
-//   bgColor: Colors.orange,
+//   backgroudColor: Colors.orange,
 //   icon: Icons.warning_amber_rounded,
 // );

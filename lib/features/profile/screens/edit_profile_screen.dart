@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:job_connect/data/models/account_model.dart';
 import 'package:job_connect/data/models/candidate_info_model.dart';
-import 'package:job_connect/data/services/api.dart';
+import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/config/constant/api_constants.dart';
 import 'package:intl/intl.dart'; // For DatePicker
 
@@ -21,7 +21,7 @@ class _EditProfilePageState extends State<EditProfilePage>
   File? _profileImage;
   bool _isLoading = true;
   bool _isSaving = false; // Trạng thái khi đang lưu
-  final ApiService _apiService = ApiService(baseUrl: ApiConstants.baseUrl);
+  final ApiService _apiService = ApiService( );
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   late TextEditingController _nameController;
@@ -132,7 +132,7 @@ class _EditProfilePageState extends State<EditProfilePage>
   Future<Account?> _fetchAccount() async {
     try {
       final data = await _apiService.get(
-        '${ApiConstants.userEndpoint}/${widget.idUser}',
+        endpoint: '${ApiConstants.userEndpoint}/${widget.idUser}',
       );
       if (data.isNotEmpty) return Account.fromJson(data.first);
     } catch (e) {
@@ -145,7 +145,7 @@ class _EditProfilePageState extends State<EditProfilePage>
   Future<CandidateInfo?> _fetchCandidateInfo() async {
     try {
       final data = await _apiService.get(
-        '${ApiConstants.candidateInfoEndpoint}/${widget.idUser}',
+        endpoint: '${ApiConstants.candidateInfoEndpoint}/${widget.idUser}',
       );
       if (data.isNotEmpty) return CandidateInfo.fromJson(data.first);
       return CandidateInfo(
@@ -268,8 +268,8 @@ class _EditProfilePageState extends State<EditProfilePage>
       };
 
       await _apiService.put(
-        '${ApiConstants.userEndpoint}/${widget.idUser}',
-        userData,
+        endpoint: '${ApiConstants.userEndpoint}/${widget.idUser}',
+        body : userData,
       );
 
       Map<String, dynamic> candidateData = {
@@ -289,13 +289,13 @@ class _EditProfilePageState extends State<EditProfilePage>
           "idUser": widget.idUser, // Thêm idUser nếu là tạo mới
         });
         await _apiService.post(
-          ApiConstants.candidateInfoEndpoint,
-          candidateData,
+          endpoint: ApiConstants.candidateInfoEndpoint,
+          body: candidateData,
         );
       } else {
         await _apiService.put(
-          '${ApiConstants.candidateInfoEndpoint}/${widget.idUser}',
-          candidateData,
+          endpoint: '${ApiConstants.candidateInfoEndpoint}/${widget.idUser}',
+          body: candidateData,
         );
       }
 
@@ -358,20 +358,20 @@ class _EditProfilePageState extends State<EditProfilePage>
           prefixIcon != null
               ? Icon(
                 prefixIcon,
-                color: theme.primaryColor.withOpacity(0.7),
+                color: theme.primaryColor.withValues(alpha:0.7),
                 size: 20,
               )
               : null,
       suffixIcon: suffixIcon,
       labelStyle: TextStyle(
-        color: theme.colorScheme.onSurfaceVariant.withOpacity(0.8),
+        color: theme.colorScheme.onSurfaceVariant.withValues(alpha:0.8),
         fontWeight: FontWeight.w500,
       ),
       hintStyle: TextStyle(
-        color: theme.colorScheme.onSurfaceVariant.withOpacity(0.5),
+        color: theme.colorScheme.onSurfaceVariant.withValues(alpha:0.5),
       ),
       filled: true,
-      fillColor: theme.colorScheme.surfaceVariant.withOpacity(
+      fillColor: theme.colorScheme.surfaceVariant.withValues(alpha:
         0.3,
       ), // Màu nền nhẹ nhàng hơn
       border: OutlineInputBorder(
@@ -381,7 +381,7 @@ class _EditProfilePageState extends State<EditProfilePage>
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12.0),
         borderSide: BorderSide(
-          color: theme.dividerColor.withOpacity(0.5),
+          color: theme.dividerColor.withValues(alpha:0.5),
           width: 1,
         ), // Viền mỏng khi enable
       ),
@@ -417,8 +417,8 @@ class _EditProfilePageState extends State<EditProfilePage>
                     shape: BoxShape.circle,
                     gradient: LinearGradient(
                       colors: [
-                        theme.primaryColor.withOpacity(0.3),
-                        theme.colorScheme.secondary.withOpacity(0.3),
+                        theme.primaryColor.withValues(alpha:0.3),
+                        theme.colorScheme.secondary.withValues(alpha:0.3),
                       ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
@@ -442,7 +442,7 @@ class _EditProfilePageState extends State<EditProfilePage>
                           ? Icon(
                             Icons.person_add_alt_1_rounded,
                             size: 60,
-                            color: theme.primaryColor.withOpacity(0.6),
+                            color: theme.primaryColor.withValues(alpha:0.6),
                           )
                           : null,
                 ),
@@ -457,7 +457,7 @@ class _EditProfilePageState extends State<EditProfilePage>
                       border: Border.all(color: Colors.white, width: 2.5),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.15),
+                          color: Colors.black.withValues(alpha:0.15),
                           blurRadius: 6,
                           offset: const Offset(0, 3),
                         ),
@@ -521,10 +521,10 @@ class _EditProfilePageState extends State<EditProfilePage>
         decoration: _inputDecoration(label, hint, icon).copyWith(
           fillColor:
               readOnly
-                  ? Theme.of(context).dividerColor.withOpacity(0.1)
+                  ? Theme.of(context).dividerColor.withValues(alpha:0.1)
                   : Theme.of(
                     context,
-                  ).colorScheme.surfaceVariant.withOpacity(0.3),
+                  ).colorScheme.surfaceVariant.withValues(alpha:0.3),
           counterText: "", // Ẩn counter text của maxLength
         ),
         validator: validator,
@@ -549,7 +549,7 @@ class _EditProfilePageState extends State<EditProfilePage>
           Icons.calendar_today_rounded,
           suffixIcon: Icon(
             Icons.arrow_drop_down_rounded,
-            color: Theme.of(context).primaryColor.withOpacity(0.7),
+            color: Theme.of(context).primaryColor.withValues(alpha:0.7),
           ),
         ),
         onTap: _selectDate,
@@ -603,13 +603,13 @@ class _EditProfilePageState extends State<EditProfilePage>
         ),
         icon: Icon(
           Icons.arrow_drop_down_circle_outlined,
-          color: theme.primaryColor.withOpacity(0.7),
+          color: theme.primaryColor.withValues(alpha:0.7),
         ),
         hint: Text(
           // Hint sẽ hiển thị nếu _selectedApiGenderValue là null
           "Chọn giới tính",
           style: TextStyle(
-            color: theme.colorScheme.onSurfaceVariant.withOpacity(0.5),
+            color: theme.colorScheme.onSurfaceVariant.withValues(alpha:0.5),
           ),
         ),
       ),
@@ -820,7 +820,7 @@ class _EditProfilePageState extends State<EditProfilePage>
                             onPressed: () => Navigator.pop(context, false),
                             style: TextButton.styleFrom(
                               foregroundColor: theme.textTheme.bodyLarge?.color
-                                  ?.withOpacity(0.7),
+                                  ?.withValues(alpha:0.7),
                               padding: const EdgeInsets.symmetric(vertical: 14),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),

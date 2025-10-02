@@ -325,9 +325,9 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                   child: Container(
                     padding: const EdgeInsets.all(10), // Giảm padding chút
                     decoration: BoxDecoration(
-                      color: Colors.blue.withOpacity(0.05), // Màu nền nhẹ hơn
+                      color: Colors.blue.withValues(alpha:0.05), // Màu nền nhẹ hơn
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.blue.withOpacity(0.15)),
+                      border: Border.all(color: Colors.blue.withValues(alpha:0.15)),
                     ),
                     child: Row(
                       children: [
@@ -359,7 +359,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                                 decoration: BoxDecoration(
                                   color: _getStatusColor(
                                     widget.chat["jobStatus"]?.toString() ?? "",
-                                  ).withOpacity(0.15),
+                                  ).withValues(alpha:0.15),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Text(
@@ -451,7 +451,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.15), // Màu nền cho dấu ngày
+            color: Colors.black.withValues(alpha:0.15), // Màu nền cho dấu ngày
             borderRadius: BorderRadius.circular(12),
           ),
           child: Text(
@@ -474,7 +474,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.08),
+            color: Colors.grey.withValues(alpha:0.08),
             spreadRadius: 0,
             blurRadius: 10,
             offset: const Offset(0, -3),
@@ -601,7 +601,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: Colors.black.withValues(alpha:0.05),
                     spreadRadius: 1,
                     blurRadius: 2,
                     offset: const Offset(0, 1),
@@ -681,7 +681,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.blue.withOpacity(0.15),
+                    color: Colors.blue.withValues(alpha:0.15),
                     spreadRadius: 1,
                     blurRadius: 3,
                     offset: const Offset(0, 1),

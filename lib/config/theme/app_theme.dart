@@ -81,7 +81,7 @@ class AppTheme {
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: BorderSide(color: Colors.grey.withOpacity(0.1), width: 1), // viền mờ
+        side: BorderSide(color: Colors.grey.withValues(alpha:0.1), width: 1), // viền mờ
       ),
     ),
 
@@ -93,7 +93,7 @@ class AppTheme {
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: Colors.grey.withOpacity(0.2), width: 1), // viền khi enable
+        borderSide: BorderSide(color: Colors.grey.withValues(alpha:0.2), width: 1), // viền khi enable
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
@@ -108,7 +108,7 @@ class AppTheme {
 
     // ➖ Divider
     dividerTheme: DividerThemeData(
-      color: Colors.grey.withOpacity(0.1), // màu gạch ngăn
+      color: Colors.grey.withValues(alpha:0.1), // màu gạch ngăn
       thickness: 1,
       space: 40,
     ),
@@ -180,7 +180,7 @@ class AppTheme {
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: BorderSide(color: Colors.white.withOpacity(0.1), width: 1),
+        side: BorderSide(color: Colors.white.withValues(alpha:0.1), width: 1),
       ),
     ),
 
@@ -191,7 +191,7 @@ class AppTheme {
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: Colors.white.withOpacity(0.2), width: 1),
+        borderSide: BorderSide(color: Colors.white.withValues(alpha:0.2), width: 1),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
@@ -205,7 +205,7 @@ class AppTheme {
     ),
 
     dividerTheme: DividerThemeData(
-      color: Colors.white.withOpacity(0.1),
+      color: Colors.white.withValues(alpha:0.1),
       thickness: 1,
       space: 40,
     ),

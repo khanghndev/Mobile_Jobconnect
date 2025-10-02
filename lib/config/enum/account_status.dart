@@ -1,0 +1,1 @@
+enum AccountStatus { active, inactive, suspended, banned, unknown }

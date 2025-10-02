@@ -212,7 +212,7 @@ class _EditCVPageState extends State<EditCVPage> {
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             // ignore: deprecated_member_use
-            color: color.withOpacity(0.1),
+            color: color.withValues(alpha:0.1),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(icon, color: color, size: 24),
@@ -542,7 +542,7 @@ class _EditCVPageState extends State<EditCVPage> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         // ignore: deprecated_member_use
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha:0.1),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
@@ -948,7 +948,7 @@ Widget _buildOptionButton({
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         // ignore: deprecated_member_use
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha:0.1),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -957,7 +957,7 @@ Widget _buildOptionButton({
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               // ignore: deprecated_member_use
-              color: color.withOpacity(0.2),
+              color: color.withValues(alpha:0.2),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(icon, color: color, size: 24),

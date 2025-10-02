@@ -14,7 +14,7 @@ class SectionTitle extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(8.w),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha:0.2),
             borderRadius: BorderRadius.circular(12.r),
           ),
           child: Icon(icon, color: Colors.white, size: 20.sp),

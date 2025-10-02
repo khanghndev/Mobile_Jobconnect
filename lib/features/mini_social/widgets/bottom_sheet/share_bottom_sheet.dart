@@ -36,7 +36,7 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha:0.05),
             blurRadius: 12,
             offset: const Offset(0, -2),
           ),
@@ -96,7 +96,7 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
                     color: Colors.white,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.03),
+                        color: Colors.black.withValues(alpha:0.03),
                         blurRadius: 6,
                         offset: const Offset(0, 2),
                       ),

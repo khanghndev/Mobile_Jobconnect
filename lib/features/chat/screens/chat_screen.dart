@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:job_connect/config/constant/api_constants.dart';
 import 'package:job_connect/data/models/account_model.dart';
-import 'package:job_connect/data/services/api.dart';
+import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/features/chat/screens/chat_detail_screen.dart';
 //import 'package:intl/intl.dart'; // Thêm package để định dạng thời gian
 
@@ -19,7 +19,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class ChatPage extends State<ChatScreen> {
-  final _apiService = ApiService(baseUrl: ApiConstants.baseUrl);
+  final _apiService = ApiService( );
   final TextEditingController _searchController = TextEditingController();
   String _selectedFilter = "Tất cả"; // Để quản lý tab đang active
 
@@ -205,7 +205,7 @@ class ChatPage extends State<ChatScreen> {
     }
     try {
       final data = await _apiService.get(
-        '${ApiConstants.userEndpoint}/${widget.idUser}',
+        endpoint: '${ApiConstants.userEndpoint}/${widget.idUser}',
       );
       if (data.isNotEmpty) {
         if (mounted) {
@@ -415,7 +415,7 @@ class ChatPage extends State<ChatScreen> {
           vertical: 10,
         ), // Tăng padding
         decoration: BoxDecoration(
-          color: isActive ? Colors.blue.withOpacity(0.1) : Colors.transparent,
+          color: isActive ? Colors.blue.withValues(alpha:0.1) : Colors.transparent,
           borderRadius: BorderRadius.circular(25), // Bo tròn nhiều hơn
           border:
               isActive
@@ -442,7 +442,7 @@ class ChatPage extends State<ChatScreen> {
       // Bọc ListTile bằng Material để có hiệu ứng ripple
       color:
           chat["unread"]!
-              ? Colors.blue.withOpacity(0.03)
+              ? Colors.blue.withValues(alpha:0.03)
               : Colors.white, // Nền nhẹ cho tin chưa đọc
       child: InkWell(
         // Sử dụng InkWell để có hiệu ứng khi nhấn
@@ -604,12 +604,12 @@ class ChatPage extends State<ChatScreen> {
                             decoration: BoxDecoration(
                               color: _getStatusColor(
                                 chat["jobStatus"],
-                              ).withOpacity(0.15),
+                              ).withValues(alpha:0.15),
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
                                 color: _getStatusColor(
                                   chat["jobStatus"],
-                                ).withOpacity(0.5),
+                                ).withValues(alpha:0.5),
                                 width: 0.5,
                               ),
                             ),

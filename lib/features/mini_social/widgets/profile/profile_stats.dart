@@ -11,7 +11,7 @@ class ProfileStats extends StatelessWidget {
       children: [
         _buildStat(Icons.person_add, "4.5k \nfollowers", Colors.white, Colors.blue),
         SizedBox(width: 40.w),
-        _buildStat(Icons.thumb_up, "4.5k \nlikes", Colors.orange, Colors.white),
+        _buildStat(Icons.thumb_up, "4.5k \nthích", Colors.orange, Colors.white),
       ],
     );
   }
@@ -27,7 +27,7 @@ class ProfileStats extends StatelessWidget {
             borderRadius: BorderRadius.circular(12.r),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withValues(alpha:0.1),
                 blurRadius: 6,
                 spreadRadius: 2,
                 offset: const Offset(0, 3),

@@ -4,16 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:job_connect/config/constant/api_constants.dart';
 import 'package:job_connect/config/constant/app_string.dart';
-import 'package:job_connect/data/models/company_model.dart';
 import 'package:job_connect/data/models/job_application_model.dart';
 import 'package:job_connect/data/models/job_posting_model.dart';
 import 'package:job_connect/data/models/job_saved_model.dart';
 import 'package:job_connect/config/providers/theme_provider.dart';
-import 'package:job_connect/data/services/api.dart';
+import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/config/utils/format.dart';
 import 'package:job_connect/features/auth/screens/login_screen.dart';
 import 'package:job_connect/features/company/screens/company_detail_screen.dart';
-import 'package:intl/intl.dart';
 import 'package:job_connect/features/job/screens/apply_job_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart'; // Thêm cho animation
@@ -36,7 +34,7 @@ class JobDetailScreen extends StatefulWidget {
 class JobDetailState extends State<JobDetailScreen>
     with TickerProviderStateMixin {
   // Thêm TickerProviderStateMixin
-  final _apiService = ApiService(baseUrl: ApiConstants.baseUrl);
+  final _apiService = ApiService( );
   JobPosting? _jobPosting;
   JobSaved? _jobSaved; // Sẽ lưu trạng thái đã lưu của công việc này
   bool _isLoading = true;
@@ -110,7 +108,7 @@ class JobDetailState extends State<JobDetailScreen>
   Future<void> _fetchJob() async {
     try {
       final data = await _apiService.get(
-        '${ApiConstants.jobPostingEndpoint}/${widget.idJobPost}',
+        endpoint: '${ApiConstants.jobPostingEndpoint}/${widget.idJobPost}',
       );
       if (data.isNotEmpty) {
         _jobPosting = JobPosting.fromJson(data.first);
@@ -131,7 +129,7 @@ class JobDetailState extends State<JobDetailScreen>
     }
     try {
       final data = await _apiService.get(
-        '${ApiConstants.jobSaveJobPostdEndpoint}/${widget.idJobPost}/${widget.idUser}',
+        endpoint: '${ApiConstants.jobSaveJobPostdEndpoint}/${widget.idJobPost}/${widget.idUser}',
       );
       if (data.isNotEmpty) {
         _jobSaved = JobSaved.fromJson(data.first);
@@ -151,7 +149,7 @@ class JobDetailState extends State<JobDetailScreen>
       // API này cần trả về danh sách ứng viên cho một job post cụ thể
       // Hoặc một API khác trả về số lượng ứng viên
       final data = await _apiService.get(
-        '${ApiConstants.jobApplicationJobPostEndpoint}/${widget.idJobPost}',
+         endpoint: '${ApiConstants.jobApplicationJobPostEndpoint}/${widget.idJobPost}',
       );
       if (mounted) {
         _appJobList =
@@ -193,7 +191,7 @@ class JobDetailState extends State<JobDetailScreen>
       if (currentlySaved) {
         // Nếu đang lưu -> thực hiện bỏ lưu
         await _apiService.delete(
-          "${ApiConstants.jobSaveJobPostdEndpoint}/${widget.idJobPost}/${widget.idUser}",
+           endpoint: "${ApiConstants.jobSaveJobPostdEndpoint}/${widget.idJobPost}/${widget.idUser}",
         );
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -213,8 +211,8 @@ class JobDetailState extends State<JobDetailScreen>
           "idUser": widget.idUser,
         };
         final response = await _apiService.post(
-          ApiConstants.jobSavedPostEndpoint,
-          data,
+          endpoint: ApiConstants.jobSavedPostEndpoint,
+          body : data,
         );
         if (response == 200 || response == 201) {
           if (mounted) {
@@ -290,10 +288,10 @@ class JobDetailState extends State<JobDetailScreen>
         Container(
           padding: const EdgeInsets.all(14), // Tăng padding
           decoration: BoxDecoration(
-            color: color.withOpacity(0.15), // Nền đậm hơn
+            color: color.withValues(alpha:0.15), // Nền đậm hơn
             shape: BoxShape.circle,
             border: Border.all(
-              color: color.withOpacity(0.3),
+              color: color.withValues(alpha:0.3),
               width: 1.5,
             ), // Thêm border
           ),
@@ -303,7 +301,7 @@ class JobDetailState extends State<JobDetailScreen>
         Text(
           title,
           style: theme.textTheme.bodyMedium?.copyWith(
-            color: theme.colorScheme.onSurfaceVariant.withOpacity(0.9),
+            color: theme.colorScheme.onSurfaceVariant.withValues(alpha:0.9),
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -353,10 +351,10 @@ class JobDetailState extends State<JobDetailScreen>
             decoration: BoxDecoration(
               color: theme.cardColor, // Nền card
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: theme.dividerColor.withOpacity(0.4)),
+              border: Border.all(color: theme.dividerColor.withValues(alpha:0.4)),
               boxShadow: [
                 BoxShadow(
-                  color: theme.shadowColor.withOpacity(0.05),
+                  color: theme.shadowColor.withValues(alpha:0.05),
                   blurRadius: 8,
                   offset: const Offset(0, 3),
                 ),
@@ -366,7 +364,7 @@ class JobDetailState extends State<JobDetailScreen>
               content,
               style: theme.textTheme.bodyLarge?.copyWith(
                 height: 1.65,
-                color: theme.colorScheme.onSurface.withOpacity(0.9),
+                color: theme.colorScheme.onSurface.withValues(alpha:0.9),
               ),
             ),
           ),
@@ -391,11 +389,11 @@ class JobDetailState extends State<JobDetailScreen>
         color: theme.cardColor,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: theme.dividerColor.withOpacity(isDarkMode ? 0.3 : 0.2),
+          color: theme.dividerColor.withValues(alpha:isDarkMode ? 0.3 : 0.2),
         ),
         boxShadow: [
           BoxShadow(
-            color: theme.shadowColor.withOpacity(isDarkMode ? 0.1 : 0.05),
+            color: theme.shadowColor.withValues(alpha:isDarkMode ? 0.1 : 0.05),
             blurRadius: 12,
             offset: const Offset(0, 5),
           ),
@@ -424,7 +422,7 @@ class JobDetailState extends State<JobDetailScreen>
                         CircleAvatar(
                           radius: 24, // Tăng kích thước
                           backgroundColor: theme.colorScheme.primaryContainer
-                              .withOpacity(0.2),
+                              .withValues(alpha:0.2),
                           child: Icon(
                             Icons.work_history_outlined,
                             color: theme.colorScheme.primary,
@@ -449,7 +447,7 @@ class JobDetailState extends State<JobDetailScreen>
                                 company,
                                 style: theme.textTheme.bodySmall?.copyWith(
                                   color: theme.textTheme.bodySmall?.color
-                                      ?.withOpacity(0.85),
+                                      ?.withValues(alpha:0.85),
                                 ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -485,7 +483,7 @@ class JobDetailState extends State<JobDetailScreen>
                     gradient: LinearGradient(
                       colors: [
                         theme.primaryColor,
-                        theme.primaryColor.withOpacity(0.8),
+                        theme.primaryColor.withValues(alpha:0.8),
                       ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
@@ -531,10 +529,10 @@ class JobDetailState extends State<JobDetailScreen>
                 (coverPhotoUrl == null || coverPhotoUrl.isEmpty)
                     ? LinearGradient(
                       colors: [
-                        theme.primaryColor.withOpacity(
+                        theme.primaryColor.withValues(alpha:
                           0.9,
                         ), // Màu đậm hơn ở trên
-                        theme.primaryColor.withOpacity(
+                        theme.primaryColor.withValues(alpha:
                           0.6,
                         ), // Màu nhạt hơn ở dưới
                       ],
@@ -549,7 +547,7 @@ class JobDetailState extends State<JobDetailScreen>
                       fit: BoxFit.cover,
                       // Lớp phủ nhẹ lên ảnh bìa để text/logo nổi hơn
                       colorFilter: ColorFilter.mode(
-                        Colors.black.withOpacity(0.35),
+                        Colors.black.withValues(alpha:0.35),
                         BlendMode.darken,
                       ),
                     )
@@ -573,12 +571,12 @@ class JobDetailState extends State<JobDetailScreen>
                   shape: BoxShape.circle,
                   color: theme.cardColor, // Nền cho logo
                   border: Border.all(
-                    color: theme.primaryColor.withOpacity(0.8),
+                    color: theme.primaryColor.withValues(alpha:0.8),
                     width: 3,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: theme.shadowColor.withOpacity(0.25),
+                      color: theme.shadowColor.withValues(alpha:0.25),
                       blurRadius: 15,
                       spreadRadius: 1,
                       offset: const Offset(0, 6),
@@ -628,7 +626,7 @@ class JobDetailState extends State<JobDetailScreen>
                           ? [
                             // Shadow cho chữ trên ảnh
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.7),
+                              color: Colors.black.withValues(alpha:0.7),
                               blurRadius: 5,
                               offset: Offset(0, 1),
                             ),
@@ -644,8 +642,8 @@ class JobDetailState extends State<JobDetailScreen>
                   style: theme.textTheme.titleMedium?.copyWith(
                     color:
                         (coverPhotoUrl != null && coverPhotoUrl.isNotEmpty)
-                            ? Colors.white.withOpacity(0.9)
-                            : theme.colorScheme.onPrimary.withOpacity(0.8),
+                            ? Colors.white.withValues(alpha:0.9)
+                            : theme.colorScheme.onPrimary.withValues(alpha:0.8),
                     fontWeight: FontWeight.w500,
                   ),
                   textAlign: TextAlign.center,
@@ -671,9 +669,9 @@ class JobDetailState extends State<JobDetailScreen>
         vertical: 7,
       ), // Tăng padding
       decoration: BoxDecoration(
-        color: color.withOpacity(0.15), // Nền đậm hơn
+        color: color.withValues(alpha:0.15), // Nền đậm hơn
         borderRadius: BorderRadius.circular(10), // Bo góc lớn hơn
-        // border: Border.all(color: color.withOpacity(0.4), width: 1) // Có thể thêm border
+        // border: Border.all(color: color.withValues(alpha:0.4), width: 1) // Có thể thêm border
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -703,7 +701,7 @@ class JobDetailState extends State<JobDetailScreen>
       context: context,
       barrierDismissible: true,
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-      barrierColor: Colors.black.withOpacity(0.6),
+      barrierColor: Colors.black.withValues(alpha:0.6),
       transitionDuration: const Duration(milliseconds: 350),
       pageBuilder: (context, animation1, animation2) => Container(),
       transitionBuilder: (context, animation, secondaryAnimation, child) {
@@ -742,7 +740,7 @@ class JobDetailState extends State<JobDetailScreen>
                           end: Alignment.bottomCenter,
                           colors: [
                             theme.colorScheme.primary,
-                            theme.colorScheme.primary.withOpacity(0.8),
+                            theme.colorScheme.primary.withValues(alpha:0.8),
                           ],
                         ),
                         borderRadius: const BorderRadius.only(
@@ -755,11 +753,11 @@ class JobDetailState extends State<JobDetailScreen>
                           Container(
                             padding: const EdgeInsets.all(14),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.9),
+                              color: Colors.white.withValues(alpha:0.9),
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(0.15),
+                                  color: Colors.black.withValues(alpha:0.15),
                                   blurRadius: 8,
                                   offset: const Offset(0, 3),
                                 ),
@@ -838,7 +836,7 @@ class JobDetailState extends State<JobDetailScreen>
                                     .textTheme
                                     .bodyMedium
                                     ?.color
-                                    ?.withOpacity(0.7),
+                                    ?.withValues(alpha:0.7),
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 12,
                                 ),
@@ -1022,7 +1020,7 @@ class JobDetailState extends State<JobDetailScreen>
                     // Thêm shadow để dễ đọc hơn khi co lại trên nền ảnh (nếu ảnh bìa phức tạp)
                     shadows: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.5),
+                        color: Colors.black.withValues(alpha:0.5),
                         blurRadius: 3,
                         offset: Offset(0, 1),
                       ),
@@ -1128,7 +1126,7 @@ class JobDetailState extends State<JobDetailScreen>
   Widget _buildJobOverviewCard(ThemeData theme) {
     return Card(
       elevation: 4, // Tăng elevation
-      shadowColor: theme.shadowColor.withOpacity(0.15),
+      shadowColor: theme.shadowColor.withValues(alpha:0.15),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       color: theme.cardColor,
       child: Padding(
@@ -1144,9 +1142,9 @@ class JobDetailState extends State<JobDetailScreen>
                   height: 70,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
-                    color: theme.colorScheme.primaryContainer.withOpacity(0.1),
+                    color: theme.colorScheme.primaryContainer.withValues(alpha:0.1),
                     border: Border.all(
-                      color: theme.dividerColor.withOpacity(0.3),
+                      color: theme.dividerColor.withValues(alpha:0.3),
                     ),
                   ),
                   child: ClipRRect(
@@ -1187,7 +1185,7 @@ class JobDetailState extends State<JobDetailScreen>
                       Text(
                         _jobPosting!.company.companyName,
                         style: theme.textTheme.titleMedium?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant.withOpacity(
+                          color: theme.colorScheme.onSurfaceVariant.withValues(alpha:
                             0.9,
                           ),
                           fontWeight: FontWeight.w500,
@@ -1237,7 +1235,7 @@ class JobDetailState extends State<JobDetailScreen>
             Divider(
               height: 35,
               thickness: 0.8,
-              color: theme.dividerColor.withOpacity(0.5),
+              color: theme.dividerColor.withValues(alpha:0.5),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -1255,7 +1253,7 @@ class JobDetailState extends State<JobDetailScreen>
                 Container(
                   height: 50,
                   width: 1,
-                  color: theme.dividerColor.withOpacity(0.4),
+                  color: theme.dividerColor.withValues(alpha:0.4),
                 ), // Vertical divider
                 Expanded(
                   child: _buildDetailItem(
@@ -1304,7 +1302,7 @@ class JobDetailState extends State<JobDetailScreen>
             color: theme.cardColor,
             borderRadius: BorderRadius.circular(16),
             elevation: 1.5,
-            shadowColor: theme.shadowColor.withOpacity(0.05),
+            shadowColor: theme.shadowColor.withValues(alpha:0.05),
             child: InkWell(
               onTap: () {
                 Navigator.push(
@@ -1319,14 +1317,14 @@ class JobDetailState extends State<JobDetailScreen>
                 ).then((_) => _onRefresh());
               },
               borderRadius: BorderRadius.circular(16),
-              splashColor: theme.primaryColor.withOpacity(0.1),
-              highlightColor: theme.primaryColor.withOpacity(0.05),
+              splashColor: theme.primaryColor.withValues(alpha:0.1),
+              highlightColor: theme.primaryColor.withValues(alpha:0.05),
               child: Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   // color: theme.cardColor, // Đã set ở Material
                   border: Border.all(
-                    color: theme.dividerColor.withOpacity(0.3),
+                    color: theme.dividerColor.withValues(alpha:0.3),
                   ),
                   borderRadius: BorderRadius.circular(16),
                 ),
@@ -1335,7 +1333,7 @@ class JobDetailState extends State<JobDetailScreen>
                     CircleAvatar(
                       radius: 32, // Tăng kích thước
                       backgroundColor: theme.colorScheme.primaryContainer
-                          .withOpacity(0.15),
+                          .withValues(alpha:0.15),
                       child:
                           (_jobPosting!.company.logoCompany != null &&
                                   _jobPosting!.company.logoCompany!.isNotEmpty)
@@ -1376,7 +1374,7 @@ class JobDetailState extends State<JobDetailScreen>
                               Icon(
                                 Icons.visibility_outlined,
                                 size: 18,
-                                color: theme.colorScheme.primary.withOpacity(
+                                color: theme.colorScheme.primary.withValues(alpha:
                                   0.8,
                                 ),
                               ),
@@ -1396,7 +1394,7 @@ class JobDetailState extends State<JobDetailScreen>
                     Icon(
                       Icons.arrow_forward_ios_rounded,
                       size: 20,
-                      color: theme.iconTheme.color?.withOpacity(0.7),
+                      color: theme.iconTheme.color?.withValues(alpha:0.7),
                     ),
                   ],
                 ),
@@ -1521,7 +1519,7 @@ class JobDetailState extends State<JobDetailScreen>
         color: theme.bottomAppBarTheme.color ?? theme.cardColor,
         boxShadow: [
           BoxShadow(
-            color: theme.shadowColor.withOpacity(
+            color: theme.shadowColor.withValues(alpha:
               theme.brightness == Brightness.dark ? 0.2 : 0.1,
             ),
             spreadRadius: 1,
@@ -1543,10 +1541,10 @@ class JobDetailState extends State<JobDetailScreen>
               child: Container(
                 padding: const EdgeInsets.all(14), // Tăng padding
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.surfaceVariant.withOpacity(0.5),
+                  color: theme.colorScheme.surfaceVariant.withValues(alpha:0.5),
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: theme.primaryColor.withOpacity(
+                    color: theme.primaryColor.withValues(alpha:
                       isJobCurrentlySaved ? 0.7 : 0.3,
                     ),
                     width: 1.5,

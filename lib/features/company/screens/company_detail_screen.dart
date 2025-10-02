@@ -3,7 +3,7 @@ import 'package:flutter/services.dart'; // For SystemUiOverlayStyle
 import 'package:job_connect/config/constant/api_constants.dart';
 import 'package:job_connect/data/models/company_model.dart';
 import 'package:job_connect/data/models/job_posting_model.dart';
-import 'package:job_connect/data/services/api.dart';
+import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/config/utils/format.dart';
 import 'package:job_connect/features/job/screens/job_detail_screen.dart';
 import 'package:share_plus/share_plus.dart';
@@ -27,7 +27,7 @@ class CompanyDetailsScreen extends StatefulWidget {
 class CompanyDetailState extends State<CompanyDetailsScreen>
     with TickerProviderStateMixin {
   // Thêm TickerProviderStateMixin
-  final _apiService = ApiService(baseUrl: ApiConstants.baseUrl);
+  final _apiService = ApiService( );
   List<JobPosting> _companyJobsList = [];
   bool _isLoadingCompanyJobs = true;
   String _companyJobsError = '';
@@ -64,7 +64,7 @@ class CompanyDetailState extends State<CompanyDetailsScreen>
     });
     try {
       final responseData = await _apiService.get(
-        ApiConstants.jobPostingEndpoint,
+        endpoint:  ApiConstants.jobPostingEndpoint,
       );
       List<JobPosting> allJobs =
           responseData
@@ -140,10 +140,10 @@ class CompanyDetailState extends State<CompanyDetailsScreen>
                 (coverPhotoUrl == null || coverPhotoUrl.isEmpty)
                     ? LinearGradient(
                       colors: [
-                        theme.primaryColor.withOpacity(
+                        theme.primaryColor.withValues(alpha:
                           0.9,
                         ), // Màu đậm hơn ở trên
-                        theme.primaryColor.withOpacity(
+                        theme.primaryColor.withValues(alpha:
                           0.6,
                         ), // Màu nhạt hơn ở dưới
                       ],
@@ -158,7 +158,7 @@ class CompanyDetailState extends State<CompanyDetailsScreen>
                       fit: BoxFit.cover,
                       // Lớp phủ nhẹ lên ảnh bìa để text/logo nổi hơn
                       colorFilter: ColorFilter.mode(
-                        Colors.black.withOpacity(0.35),
+                        Colors.black.withValues(alpha:0.35),
                         BlendMode.darken,
                       ),
                     )
@@ -182,12 +182,12 @@ class CompanyDetailState extends State<CompanyDetailsScreen>
                   shape: BoxShape.circle,
                   color: theme.cardColor, // Nền cho logo
                   border: Border.all(
-                    color: theme.primaryColor.withOpacity(0.8),
+                    color: theme.primaryColor.withValues(alpha:0.8),
                     width: 3,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: theme.shadowColor.withOpacity(0.25),
+                      color: theme.shadowColor.withValues(alpha:0.25),
                       blurRadius: 15,
                       spreadRadius: 1,
                       offset: const Offset(0, 6),
@@ -237,7 +237,7 @@ class CompanyDetailState extends State<CompanyDetailsScreen>
                           ? [
                             // Shadow cho chữ trên ảnh
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.7),
+                              color: Colors.black.withValues(alpha:0.7),
                               blurRadius: 5,
                               offset: Offset(0, 1),
                             ),
@@ -253,8 +253,8 @@ class CompanyDetailState extends State<CompanyDetailsScreen>
                   style: theme.textTheme.titleMedium?.copyWith(
                     color:
                         (coverPhotoUrl != null && coverPhotoUrl.isNotEmpty)
-                            ? Colors.white.withOpacity(0.9)
-                            : theme.colorScheme.onPrimary.withOpacity(0.8),
+                            ? Colors.white.withValues(alpha:0.9)
+                            : theme.colorScheme.onPrimary.withValues(alpha:0.8),
                     fontWeight: FontWeight.w500,
                   ),
                   textAlign: TextAlign.center,
@@ -288,7 +288,7 @@ class CompanyDetailState extends State<CompanyDetailsScreen>
           Container(
             padding: const EdgeInsets.all(10), // Tăng padding icon
             decoration: BoxDecoration(
-              color: theme.colorScheme.primaryContainer.withOpacity(
+              color: theme.colorScheme.primaryContainer.withValues(alpha:
                 0.6,
               ), // Màu nền icon
               borderRadius: BorderRadius.circular(12), // Bo góc lớn hơn
@@ -309,7 +309,7 @@ class CompanyDetailState extends State<CompanyDetailsScreen>
                   style: theme.textTheme.labelLarge?.copyWith(
                     // Sử dụng labelLarge
                     fontWeight: FontWeight.w600, // Đậm hơn
-                    color: theme.colorScheme.onSurfaceVariant.withOpacity(0.9),
+                    color: theme.colorScheme.onSurfaceVariant.withValues(alpha:0.9),
                   ),
                 ),
                 const SizedBox(height: 5),
@@ -324,7 +324,7 @@ class CompanyDetailState extends State<CompanyDetailsScreen>
                             fontWeight: FontWeight.w500, // Link đậm hơn
                           )
                           : theme.textTheme.bodyLarge?.copyWith(
-                            color: theme.colorScheme.onSurface.withOpacity(0.9),
+                            color: theme.colorScheme.onSurface.withValues(alpha:0.9),
                             height: 1.45, // Tăng chiều cao dòng
                           ),
                 ),
@@ -372,8 +372,8 @@ class CompanyDetailState extends State<CompanyDetailsScreen>
           ).then((_) => _onRefresh());
         },
         borderRadius: BorderRadius.circular(16.0),
-        splashColor: theme.primaryColor.withOpacity(0.1),
-        highlightColor: theme.primaryColor.withOpacity(0.05),
+        splashColor: theme.primaryColor.withValues(alpha:0.1),
+        highlightColor: theme.primaryColor.withValues(alpha:0.05),
         child: Padding(
           padding: const EdgeInsets.all(16.0), // Tăng padding
           child: Column(
@@ -387,10 +387,10 @@ class CompanyDetailState extends State<CompanyDetailsScreen>
                     width: 60,
                     height: 60, // Tăng kích thước logo
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.surfaceVariant.withOpacity(0.6),
+                      color: theme.colorScheme.surfaceVariant.withValues(alpha:0.6),
                       borderRadius: BorderRadius.circular(12), // Bo góc lớn hơn
                       border: Border.all(
-                        color: theme.dividerColor.withOpacity(0.3),
+                        color: theme.dividerColor.withValues(alpha:0.3),
                         width: 0.8,
                       ),
                     ),
@@ -466,7 +466,7 @@ class CompanyDetailState extends State<CompanyDetailsScreen>
                           jobCompanyName,
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: theme.colorScheme.onSurfaceVariant
-                                .withOpacity(0.85),
+                                .withValues(alpha:0.85),
                             fontWeight: FontWeight.w500,
                           ),
                           maxLines: 1,
@@ -477,7 +477,7 @@ class CompanyDetailState extends State<CompanyDetailsScreen>
                   ),
                   Icon(
                     Icons.chevron_right_rounded,
-                    color: theme.colorScheme.onSurfaceVariant.withOpacity(0.7),
+                    color: theme.colorScheme.onSurfaceVariant.withValues(alpha:0.7),
                     size: 26,
                   ),
                 ],
@@ -540,9 +540,9 @@ class CompanyDetailState extends State<CompanyDetailsScreen>
         vertical: 7,
       ), // Tăng padding
       decoration: BoxDecoration(
-        color: color.withOpacity(0.15), // Nền đậm hơn
+        color: color.withValues(alpha:0.15), // Nền đậm hơn
         borderRadius: BorderRadius.circular(10), // Bo góc lớn hơn
-        // border: Border.all(color: color.withOpacity(0.4), width: 1) // Có thể thêm border
+        // border: Border.all(color: color.withValues(alpha:0.4), width: 1) // Có thể thêm border
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -596,7 +596,7 @@ class CompanyDetailState extends State<CompanyDetailsScreen>
   }) {
     return Card(
       elevation: 1.5,
-      shadowColor: theme.shadowColor.withOpacity(0.05),
+      shadowColor: theme.shadowColor.withValues(alpha:0.05),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       color: theme.cardColor,
       child: Padding(
@@ -605,7 +605,7 @@ class CompanyDetailState extends State<CompanyDetailsScreen>
           content.isNotEmpty ? content : "Chưa có thông tin.",
           style: theme.textTheme.bodyLarge?.copyWith(
             height: 1.6,
-            color: theme.colorScheme.onSurface.withOpacity(0.85),
+            color: theme.colorScheme.onSurface.withValues(alpha:0.85),
           ),
         ),
       ),
@@ -672,7 +672,7 @@ class CompanyDetailState extends State<CompanyDetailsScreen>
                     // Thêm shadow để dễ đọc hơn khi co lại trên nền ảnh (nếu ảnh bìa phức tạp)
                     shadows: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.5),
+                        color: Colors.black.withValues(alpha:0.5),
                         blurRadius: 3,
                         offset: Offset(0, 1),
                       ),
@@ -762,7 +762,7 @@ class CompanyDetailState extends State<CompanyDetailsScreen>
                                   themeData: theme,
                                 ),
                                 Divider(
-                                  color: theme.dividerColor.withOpacity(0.3),
+                                  color: theme.dividerColor.withValues(alpha:0.3),
                                   height: 1,
                                 ),
                                 if (widget.company.websiteUrl != null &&
@@ -783,7 +783,7 @@ class CompanyDetailState extends State<CompanyDetailsScreen>
                                   ),
                                 if (widget.company.scale!.isNotEmpty) ...[
                                   Divider(
-                                    color: theme.dividerColor.withOpacity(0.3),
+                                    color: theme.dividerColor.withValues(alpha:0.3),
                                     height: 1,
                                   ),
                                   _buildInfoRow(
@@ -826,7 +826,7 @@ class CompanyDetailState extends State<CompanyDetailsScreen>
                                 horizontal: 16,
                               ),
                               decoration: BoxDecoration(
-                                color: theme.cardColor.withOpacity(0.7),
+                                color: theme.cardColor.withValues(alpha:0.7),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Center(

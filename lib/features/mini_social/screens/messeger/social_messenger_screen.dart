@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:job_connect/features/mini_social/screens/messeger/social_messenger_item_screen.dart';
+import 'package:job_connect/config/constant/app_colors.dart';
 
-// Model dữ liệu
 class StoryModel {
   final String name;
   final String url;
@@ -12,6 +12,26 @@ class StoryModel {
     required this.name,
     required this.url,
     required this.isLocked,
+  });
+}
+
+class MessageModel {
+  final String? avatar;
+  final IconData? icon;
+  final Color? color;
+  final String name;
+  final String lastMessage;
+  final String? badge;
+  final bool? isVideo;
+
+  MessageModel({
+    this.avatar,
+    this.icon,
+    this.color,
+    required this.name,
+    required this.lastMessage,
+    this.badge,
+    this.isVideo,
   });
 }
 
@@ -31,65 +51,53 @@ class SocialMessengerScreen extends StatefulWidget {
 
 class _SocialMessengerScreenState extends State<SocialMessengerScreen> {
   final List<StoryModel> fakeStories = [
-    StoryModel(
-      name: "Tôi",
-      url: "https://i.imgur.com/BoN9kdC.png",
-      isLocked: false,
+    StoryModel(name: "Tôi", url: "https://i.imgur.com/BoN9kdC.png", isLocked: false),
+    StoryModel(name: "Kỷ niệm xưa", url: "https://i.imgur.com/BoN9kdC.png", isLocked: true),
+    StoryModel(name: "Cream_dSi", url: "https://i.imgur.com/BoN9kdC.png", isLocked: false),
+    StoryModel(name: "꽃거지", url: "https://i.imgur.com/BoN9kdC.png", isLocked: false),
+    StoryModel(name: "Jenny", url: "https://i.imgur.com/BoN9kdC.png", isLocked: false),
+  ];
+
+  final List<MessageModel> fakeMessages = [
+    MessageModel(
+      icon: Icons.group,
+      color: Colors.blue,
+      name: "Những Follower mới",
+      lastMessage: "Tiệm Pizza màu xanh đã bắt đầu foll...",
     ),
-    StoryModel(
-      name: "Kỷ niệm xưa",
-      url: "https://i.imgur.com/BoN9kdC.png",
-      isLocked: true,
+    MessageModel(
+      icon: Icons.notifications,
+      color: Colors.pink,
+      name: "Hoạt động",
+      lastMessage: "Trọng Khang đã nhắc đến bạn...",
+      badge: "19",
     ),
-    StoryModel(
-      name: "Cream_dSi",
-      url: "https://i.imgur.com/BoN9kdC.png",
-      isLocked: false,
+    MessageModel(
+      avatar: "https://i.imgur.com/BoN9kdC.png",
+      name: "Trọng Khang",
+      lastMessage: "Vừa gửi",
+      isVideo: true,
     ),
-    StoryModel(
-      name: "꽃거지",
-      url: "https://i.imgur.com/BoN9kdC.png",
-      isLocked: false,
+    MessageModel(
+      avatar: "https://i.imgur.com/BoN9kdC.png",
+      name: "ngoczuynw25",
+      lastMessage: "Chia sẻ bài đăng này...",
     ),
-    StoryModel(
-      name: "Cream_dSi",
-      url: "https://i.imgur.com/BoN9kdC.png",
-      isLocked: false,
+    MessageModel(
+      avatar: "https://i.imgur.com/BoN9kdC.png",
+      name: "Lztrunn",
+      lastMessage: "Cmt cho mình · 8 tháng 9",
+      badge: "2",
     ),
-    StoryModel(
-      name: "꽃거지",
-      url: "https://i.imgur.com/BoN9kdC.png",
-      isLocked: false,
-    ),
-    StoryModel(
-      name: "Cream_dSi",
-      url: "https://i.imgur.com/BoN9kdC.png",
-      isLocked: false,
-    ),
-    StoryModel(
-      name: "꽃거지",
-      url: "https://i.imgur.com/BoN9kdC.png",
-      isLocked: false,
-    ),
-    StoryModel(
-      name: "Cream_dSi",
-      url: "https://i.imgur.com/BoN9kdC.png",
-      isLocked: false,
-    ),
-    StoryModel(
-      name: "꽃거지",
-      url: "https://i.imgur.com/BoN9kdC.png",
-      isLocked: false,
+    MessageModel(
+      avatar: "https://i.imgur.com/BoN9kdC.png",
+      name: "Alice",
+      lastMessage: "Hey, how are you?",
     ),
   ];
 
   Future<void> _onRefresh() async {
     await Future.delayed(const Duration(seconds: 1));
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override
@@ -99,223 +107,89 @@ class _SocialMessengerScreenState extends State<SocialMessengerScreen> {
       body: RefreshIndicator(
         onRefresh: _onRefresh,
         child: ListView(
-          padding: const EdgeInsets.all(12),
+          padding: EdgeInsets.all(12.w),
           children: [
-            SizedBox(height: 12),
+            SizedBox(height: 12.h),
             SizedBox(
-              height: 90,
+              height: 90.h,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: fakeStories.length,
                 itemBuilder: (context, index) {
                   final story = fakeStories[index];
-                  if(index == 0) {
-                    return _buildStory(
-                      name: 'Minh Tiến',
-                      url: story.url,
-                      isLocked: story.isLocked,
-                      onTap: () {
-                        
-                      },
-                    );
-                  }
                   return _buildStory(
-                    name: story.name,
+                    context: context,
+                    name: index == 0 ? "Minh Tiến" : story.name,
                     url: story.url,
                     isLocked: story.isLocked,
                     onTap: () {
-                      print("Bấm vào story: ${story.name}");
+                      context.push(
+                        '/messenger-detail',
+                        extra: {
+                          'isLoggedIn': widget.isLoggedIn,
+                          'idUser': widget.idUser,
+                        },
+                      );
                     },
                   );
                 },
               ),
             ),
-            const SizedBox(height: 12),
-
-            // 👉 Các item hệ thống
-            _buildMessageItem(
-              icon: Icons.group,
-              color: Colors.blue,
-              title: "Những Follower mới",
-              latsMessage: "Tiệm Pizza màu xanh đã bắt đầu foll...",
-              onTap: () {
-                
-              },
-            ),
-            _buildMessageItem(
-              icon: Icons.notifications,
-              color: Colors.pink,
-              title: "Hoạt động",
-              latsMessage: "Trọng Khang đã nhắc đến bạn...",
-              badge: "19",
-              onTap: () {
-                context.push(
-                  '/messenger-item',
-                  extra: {
-                    'isLoggedIn': widget.isLoggedIn,
-                    'idUser': widget.idUser,
-                  }
-                );
-              },
-            ),
-            _buildUserMessage(
-              avatar: "https://i.imgur.com/BoN9kdC.png",
-              name: "Trọng Khang",
-              latsMessage: "Vừa gửi",
-              isVideo: true,
-              onTap: () {
-                context.push(
-                  '/messenger-item',
-                  extra: {
-                    'isLoggedIn': widget.isLoggedIn,
-                    'idUser': widget.idUser,
-                  }
-                );
-              },         
-            ),
-            _buildUserMessage(
-              avatar: "https://i.imgur.com/BoN9kdC.png",
-              name: "ngoczuynw25",
-              latsMessage: "Chia sẻ bài đăng này...",
-              onTap: () {
-                context.push(
-                  '/messenger-item',
-                  extra: {
-                    'isLoggedIn': widget.isLoggedIn,
-                    'idUser': widget.idUser,
-                  }
-                );
-              },
-            ),
-                        
-            _buildUserMessage(
-              avatar: "https://i.imgur.com/BoN9kdC.png",
-              name: "Lztrunn",
-              latsMessage: "Cmt cho mình · 8 tháng 9",
-              badge: "2",
-              onTap: () {
-                
-              },
-            ),
-             _buildUserMessage(
-              avatar: "https://i.imgur.com/BoN9kdC.png",
-              name: "Lztrunn",
-              latsMessage: "Cmt cho mình · 8 tháng 9",
-              badge: "2",
-              onTap: () {
-                context.push(
-                  '/messenger-item',
-                  extra: {
-                    'isLoggedIn': widget.isLoggedIn,
-                    'idUser': widget.idUser,
-                  }
-                );
-              },
-            ),
-             _buildUserMessage(
-              avatar: "https://i.imgur.com/BoN9kdC.png",
-              name: "Lztrunn",
-              latsMessage: "Cmt cho mình · 8 tháng 9",
-              badge: "2",
-              onTap: () {
-                context.push(
-                  '/messenger-item',
-                  extra: {
-                    'isLoggedIn': widget.isLoggedIn,
-                    'idUser': widget.idUser,
-                  }
-                );
-              },           
-            ),
-             _buildUserMessage(
-              avatar: "https://i.imgur.com/BoN9kdC.png",
-              name: "Lztrunn",
-              latsMessage: "Cmt cho mình · 8 tháng 9",
-              badge: "2",
-              onTap: () {
-                context.push(
-                  '/messenger-item',
-                  extra: {
-                    'isLoggedIn': widget.isLoggedIn,
-                    'idUser': widget.idUser,
-                  }
-                );
-              },            
-            ),
-             _buildUserMessage(
-              avatar: "https://i.imgur.com/BoN9kdC.png",
-              name: "Lztrunn",
-              latsMessage: "Cmt cho mình · 8 tháng 9",
-              badge: "2",
-              onTap: () {
-                context.push(
-                  '/messenger-item',
-                  extra: {
-                    'isLoggedIn': widget.isLoggedIn,
-                    'idUser': widget.idUser,
-                  }
-                );
-              },            
-            ),
-             _buildUserMessage(
-              avatar: "https://i.imgur.com/BoN9kdC.png",
-              name: "Lztrunn",
-              latsMessage: "Cmt cho mình · 8 tháng 9",
-              badge: "2",
-              onTap: () {
-                context.push(
-                  '/messenger-item',
-                  extra: {
-                    'isLoggedIn': widget.isLoggedIn,
-                    'idUser': widget.idUser,
-                  }
-                );
-              },            
-            ),
-             _buildUserMessage(
-              avatar: "https://i.imgur.com/BoN9kdC.png",
-              name: "Lztrunn",
-              latsMessage: "Cmt cho mình · 8 tháng 9",
-              badge: "2",
-              onTap: () {
-                context.push(
-                  '/messenger-item',
-                  extra: {
-                    'isLoggedIn': widget.isLoggedIn,
-                    'idUser': widget.idUser,
-                  }
-                );
-              },            
-            ),
+            SizedBox(height: 12.h),
+            ...fakeMessages.map((msg) {
+              return _buildMessageItem(
+                context: context,
+                msg: msg,
+                onTap: () {
+                  context.push(
+                    '/messenger-detail',
+                    extra: {
+                      'isLoggedIn': widget.isLoggedIn,
+                      'idUser': widget.idUser,
+                    },
+                  );
+                },
+              );
+            }),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildStory({ required String name, required String url, required VoidCallback onTap, bool isLocked = false}) {
+  Widget _buildStory({
+    required BuildContext context,
+    required String name,
+    required String url,
+    required VoidCallback onTap,
+    bool isLocked = false,
+  }) {
     return GestureDetector(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.only(right: 12),
+        padding: EdgeInsets.only(right: 12.w),
         child: Column(
           children: [
-            GestureDetector(
-              onTap: onTap,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundImage: NetworkImage(url),
-                  ),
-                  if (isLocked)
-                    const Icon(Icons.lock, size: 20, color: Colors.white),
-                ],
-              ),
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                CircleAvatar(
+                  radius: 30.r,
+                  backgroundImage: NetworkImage(url),
+                ),
+                if (isLocked)
+                  Icon(Icons.lock, size: 20.sp, color: IconColors.iconBrandOnbrand),
+              ],
             ),
-            const SizedBox(height: 6),
-            Text(name, style: const TextStyle(fontSize: 12)),
+            SizedBox(height: 6.h),
+            Text(
+              name,
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                    color: TextColors.textDefaultPrimary,
+                  ),
+            ),
           ],
         ),
       ),
@@ -323,70 +197,59 @@ class _SocialMessengerScreenState extends State<SocialMessengerScreen> {
   }
 
   Widget _buildMessageItem({
-    required IconData icon,
-    required Color color,
-    required String title,
-    required String latsMessage,
-    required Function() onTap,
-    String? badge,
-    bool dot = false,
+    required BuildContext context,
+    required MessageModel msg,
+    required VoidCallback onTap,
   }) {
     return GestureDetector(
       onTap: onTap,
       child: ListTile(
-        leading: CircleAvatar(
-          radius: 32,
-          backgroundColor: color,
-          child: Icon(icon, color: Colors.white),
-        ),
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Text(latsMessage, overflow: TextOverflow.ellipsis),
-        trailing: badge != null
+        leading: msg.avatar != null
             ? CircleAvatar(
-                radius: 12,
-                backgroundColor: Colors.red,
+                radius: 28.r,
+                backgroundImage: NetworkImage(msg.avatar!),
+              )
+            : CircleAvatar(
+                radius: 28.r,
+                backgroundColor: msg.color ??
+                    BackgroundColors.backgroundDefaultPrimarySub.withValues(alpha: 0.1),
+                child: Icon(msg.icon, color: IconColors.iconBrandOnbrand, size: 20.sp),
+              ),
+        title: Text(
+          msg.name,
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w600,
+                color: TextColors.textDefaultPrimary,
+              ),
+        ),
+        subtitle: Text(
+          msg.lastMessage,
+          overflow: TextOverflow.ellipsis,
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                fontSize: 13.sp,
+                fontWeight: FontWeight.w400,
+                color: TextColors.textDefaultSecondary,
+              ),
+        ),
+        trailing: msg.badge != null
+            ? CircleAvatar(
+                radius: 12.r,
+                backgroundColor: BackgroundColors.backgroundBadgeDefault,
                 child: Text(
-                  badge,
-                  style: const TextStyle(fontSize: 12, color: Colors.white),
+                  msg.badge!,
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w600,
+                        color: TextColors.textBrandOnbrand,
+                      ),
                 ),
               )
-            : dot
-                ? const CircleAvatar(
-                    radius: 6,
-                    backgroundColor: Colors.red,
-                  )
+            : msg.isVideo == true
+                ? Icon(Icons.party_mode_outlined,
+                    color: IconColors.iconDefaultPrimary.withValues(alpha: 0.5),
+                    size: 18.sp)
                 : null,
-      ),
-    );
-  }
-
-  Widget _buildUserMessage({
-    required String avatar,
-    required String name,
-    required String latsMessage,
-    required Function() onTap,
-    String? badge,
-    bool? isVideo = false,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundImage: NetworkImage(avatar),
-          radius: 32,
-        ),
-        title: Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Text(latsMessage, overflow: TextOverflow.ellipsis),
-        trailing: badge != null
-            ? CircleAvatar(
-                radius: 12,
-                backgroundColor: Colors.red,
-                child: Text(
-                  badge,
-                  style: const TextStyle(fontSize: 12, color: Colors.white),
-                ),
-              )
-            : isVideo == true ? Icon( Icons.party_mode_outlined, color: Colors.grey) : null,
       ),
     );
   }

@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:job_connect/config/constant/api_constants.dart';
 import 'package:job_connect/data/models/company_model.dart';
 import 'package:job_connect/data/models/job_posting_model.dart';
-import 'package:job_connect/data/services/api.dart';
+import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/features/company/screens/company_detail_screen.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart'; // Thêm thư viện
 
@@ -19,7 +19,7 @@ class CompanyScreen extends StatefulWidget {
 class _CompanyScreenState extends State<CompanyScreen>
     with TickerProviderStateMixin {
   // Thêm TickerProviderStateMixin
-  final _apiService = ApiService(baseUrl: ApiConstants.baseUrl);
+  final _apiService = ApiService( );
   List<Company> _companyList = [];
   bool _isLoading = true;
   List<JobPosting> _jobList = [];
@@ -77,7 +77,7 @@ class _CompanyScreenState extends State<CompanyScreen>
 
   Future<void> _fetchJobs() async {
     try {
-      final response = await _apiService.get(ApiConstants.jobPostingEndpoint);
+      final response = await _apiService.get(endpoint:  ApiConstants.jobPostingEndpoint);
       if (mounted) {
         // setState(() { // Không cần setState ở đây nữa
         _jobList.clear();
@@ -91,7 +91,7 @@ class _CompanyScreenState extends State<CompanyScreen>
 
   Future<void> _fetchCompanyList() async {
     try {
-      final data = await _apiService.get(ApiConstants.companiesEndpoint);
+      final data = await _apiService.get(endpoint:  ApiConstants.companiesEndpoint);
       if (mounted) {
         // setState(() { // Không cần setState ở đây nữa
         _companyList.clear();
@@ -402,7 +402,7 @@ class _CompanyScreenState extends State<CompanyScreen>
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: theme.shadowColor.withOpacity(0.1),
+            color: theme.shadowColor.withValues(alpha:0.1),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -417,7 +417,7 @@ class _CompanyScreenState extends State<CompanyScreen>
         decoration: InputDecoration(
           hintText: 'Tìm theo tên, ngành nghề, địa chỉ...',
           hintStyle: theme.textTheme.bodyLarge?.copyWith(
-            color: theme.hintColor.withOpacity(0.7),
+            color: theme.hintColor.withValues(alpha:0.7),
           ),
           prefixIcon: Container(
             padding: const EdgeInsets.all(12),
@@ -431,7 +431,7 @@ class _CompanyScreenState extends State<CompanyScreen>
               ? IconButton(
                   icon: Icon(
                     Icons.clear_rounded,
-                    color: theme.iconTheme.color?.withOpacity(0.6),
+                    color: theme.iconTheme.color?.withValues(alpha:0.6),
                     size: 20,
                   ),
                   onPressed: () => _searchController.clear(),
@@ -478,7 +478,7 @@ class _CompanyScreenState extends State<CompanyScreen>
             Icon(
               Icons.cloud_off_rounded,
               size: 70,
-              color: theme.colorScheme.error.withOpacity(0.7),
+              color: theme.colorScheme.error.withValues(alpha:0.7),
             ),
             const SizedBox(height: 20),
             Text(
@@ -530,7 +530,7 @@ class _CompanyScreenState extends State<CompanyScreen>
                   ? Icons.search_off_rounded
                   : Icons.apartment_rounded, // Icon khác
               size: 80, // Icon lớn hơn
-              color: theme.colorScheme.onSurface.withOpacity(0.35),
+              color: theme.colorScheme.onSurface.withValues(alpha:0.35),
             ),
             const SizedBox(height: 24),
             Text(
@@ -539,7 +539,7 @@ class _CompanyScreenState extends State<CompanyScreen>
                   : "Chưa Có Dữ Liệu Công Ty",
               style: theme.textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
-                color: theme.colorScheme.onSurface.withOpacity(0.8),
+                color: theme.colorScheme.onSurface.withValues(alpha:0.8),
               ),
             ),
             const SizedBox(height: 12),
@@ -548,7 +548,7 @@ class _CompanyScreenState extends State<CompanyScreen>
                   ? "Vui lòng thử lại với từ khóa tìm kiếm khác hoặc kiểm tra kết nối mạng."
                   : "Chúng tôi đang cập nhật dữ liệu. Vui lòng quay lại sau hoặc thử làm mới.",
               style: theme.textTheme.bodyLarge?.copyWith(
-                color: theme.colorScheme.onSurface.withOpacity(0.65),
+                color: theme.colorScheme.onSurface.withValues(alpha:0.65),
                 height: 1.5,
               ),
               textAlign: TextAlign.center,
@@ -592,13 +592,13 @@ class _CompanyScreenState extends State<CompanyScreen>
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       elevation: 0,
-      shadowColor: theme.shadowColor.withOpacity(isDarkMode ? 0.15 : 0.08),
+      shadowColor: theme.shadowColor.withValues(alpha:isDarkMode ? 0.15 : 0.08),
       color: theme.cardColor,
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
         side: BorderSide(
-          color: theme.dividerColor.withOpacity(0.1),
+          color: theme.dividerColor.withValues(alpha:0.1),
           width: 1,
         ),
       ),
@@ -615,8 +615,8 @@ class _CompanyScreenState extends State<CompanyScreen>
           ).then((_) => _onRefresh());
         },
         borderRadius: BorderRadius.circular(20),
-        splashColor: theme.primaryColor.withOpacity(0.1),
-        highlightColor: theme.primaryColor.withOpacity(0.05),
+        splashColor: theme.primaryColor.withValues(alpha:0.1),
+        highlightColor: theme.primaryColor.withValues(alpha:0.05),
         child: Container(
           padding: const EdgeInsets.all(16.0),
           decoration: BoxDecoration(
@@ -625,7 +625,7 @@ class _CompanyScreenState extends State<CompanyScreen>
               end: Alignment.bottomRight,
               colors: [
                 theme.cardColor,
-                theme.cardColor.withOpacity(0.95),
+                theme.cardColor.withValues(alpha:0.95),
               ],
             ),
           ),
@@ -637,14 +637,14 @@ class _CompanyScreenState extends State<CompanyScreen>
                 height: 75,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
-                  color: theme.colorScheme.primaryContainer.withOpacity(0.15),
+                  color: theme.colorScheme.primaryContainer.withValues(alpha:0.15),
                   border: Border.all(
-                    color: theme.dividerColor.withOpacity(0.2),
+                    color: theme.dividerColor.withValues(alpha:0.2),
                     width: 1,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: theme.shadowColor.withOpacity(0.05),
+                      color: theme.shadowColor.withValues(alpha:0.05),
                       blurRadius: 8,
                       offset: const Offset(0, 2),
                     ),
@@ -701,7 +701,7 @@ class _CompanyScreenState extends State<CompanyScreen>
                             Icons.business_rounded,
                             size: 16,
                             color: theme.colorScheme.onSurfaceVariant
-                                .withOpacity(0.7),
+                                .withValues(alpha:0.7),
                           ),
                           const SizedBox(width: 6),
                           Expanded(
@@ -709,7 +709,7 @@ class _CompanyScreenState extends State<CompanyScreen>
                               company.industry!,
                               style: theme.textTheme.bodyMedium?.copyWith(
                                 color: theme.colorScheme.onSurfaceVariant
-                                    .withOpacity(0.8),
+                                    .withValues(alpha:0.8),
                                 height: 1.2,
                               ),
                               maxLines: 1,
@@ -726,7 +726,7 @@ class _CompanyScreenState extends State<CompanyScreen>
                           Icons.location_on_rounded,
                           size: 16,
                           color: theme.colorScheme.onSurfaceVariant
-                              .withOpacity(0.7),
+                              .withValues(alpha:0.7),
                         ),
                         const SizedBox(width: 6),
                         Expanded(
@@ -734,7 +734,7 @@ class _CompanyScreenState extends State<CompanyScreen>
                             company.address ?? 'Chưa cập nhật',
                             style: theme.textTheme.bodyMedium?.copyWith(
                               color: theme.colorScheme.onSurfaceVariant
-                                  .withOpacity(0.8),
+                                  .withValues(alpha:0.8),
                               height: 1.2,
                             ),
                             maxLines: 1,
@@ -750,10 +750,10 @@ class _CompanyScreenState extends State<CompanyScreen>
                         vertical: 6,
                       ),
                       decoration: BoxDecoration(
-                        color: theme.colorScheme.primary.withOpacity(0.12),
+                        color: theme.colorScheme.primary.withValues(alpha:0.12),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: theme.colorScheme.primary.withOpacity(0.2),
+                          color: theme.colorScheme.primary.withValues(alpha:0.2),
                           width: 0.8,
                         ),
                       ),
@@ -783,13 +783,13 @@ class _CompanyScreenState extends State<CompanyScreen>
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.surface.withOpacity(0.5),
+                  color: theme.colorScheme.surface.withValues(alpha:0.5),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
                   Icons.arrow_forward_ios_rounded,
                   size: 18,
-                  color: theme.iconTheme.color?.withOpacity(0.6),
+                  color: theme.iconTheme.color?.withValues(alpha:0.6),
                 ),
               ),
             ],

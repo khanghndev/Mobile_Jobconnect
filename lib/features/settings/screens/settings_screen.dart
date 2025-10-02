@@ -4,7 +4,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:job_connect/config/constant/api_constants.dart';
 import 'package:job_connect/config/constant/app_string.dart';
 import 'package:job_connect/data/models/account_model.dart';
-import 'package:job_connect/data/services/api.dart';
+import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/features/auth/screens/login_screen.dart';
 import 'package:job_connect/features/help/screens/help_screen.dart';
 import 'package:job_connect/features/payments/screens/payment_screen.dart';
@@ -34,7 +34,7 @@ class SettingScreen extends StatefulWidget {
 class SettingScreenState extends State<SettingScreen>
     with TickerProviderStateMixin {
   // Thêm TickerProviderStateMixin
-  final _apiService = ApiService(baseUrl: ApiConstants.baseUrl);
+  final _apiService = ApiService( );
   final LocalAuthentication auth = LocalAuthentication();
   bool _isLoading = true;
   Account? _account;
@@ -106,7 +106,7 @@ class SettingScreenState extends State<SettingScreen>
     }
     try {
       final response = await _apiService.get(
-        '${ApiConstants.userEndpoint}/${widget.idUser}',
+        endpoint: '${ApiConstants.userEndpoint}/${widget.idUser}',
       );
       if (response != null && response.isNotEmpty) {
         if (mounted)
@@ -289,7 +289,7 @@ class SettingScreenState extends State<SettingScreen>
         centerTitle: true,
         backgroundColor:
             isDarkMode
-                ? theme.colorScheme.surface.withOpacity(0.95)
+                ? theme.colorScheme.surface.withValues(alpha:0.95)
                 : Colors.white,
         elevation: 0.8,
         systemOverlayStyle: systemOverlayStyle,
@@ -524,7 +524,7 @@ class SettingScreenState extends State<SettingScreen>
                       child: Text(
                         "${AppStrings.appName} App v1.0.0", // Ví dụ
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant.withOpacity(
+                          color: theme.colorScheme.onSurfaceVariant.withValues(alpha:
                             0.6,
                           ),
                         ),
@@ -547,7 +547,7 @@ class SettingScreenState extends State<SettingScreen>
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            theme.colorScheme.primary.withOpacity(0.8),
+            theme.colorScheme.primary.withValues(alpha:0.8),
             theme.colorScheme.primary,
           ],
           begin: Alignment.topLeft,
@@ -556,7 +556,7 @@ class SettingScreenState extends State<SettingScreen>
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
-            color: theme.primaryColor.withOpacity(0.2),
+            color: theme.primaryColor.withValues(alpha:0.2),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -566,7 +566,7 @@ class SettingScreenState extends State<SettingScreen>
         children: [
           CircleAvatar(
             radius: 36, // Tăng kích thước avatar
-            backgroundColor: Colors.white.withOpacity(0.9),
+            backgroundColor: Colors.white.withValues(alpha:0.9),
             backgroundImage:
                 (_account?.avatarUrl != null && _account!.avatarUrl!.isNotEmpty)
                     ? NetworkImage(_account!.avatarUrl!)
@@ -602,7 +602,7 @@ class SettingScreenState extends State<SettingScreen>
                 Text(
                   _account?.email ?? "Chưa có email",
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: Colors.white.withOpacity(0.85),
+                    color: Colors.white.withValues(alpha:0.85),
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -637,7 +637,7 @@ class SettingScreenState extends State<SettingScreen>
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
-            color: theme.shadowColor.withOpacity(0.07),
+            color: theme.shadowColor.withValues(alpha:0.07),
             blurRadius: 10,
             offset: const Offset(0, 3),
           ),
@@ -648,7 +648,7 @@ class SettingScreenState extends State<SettingScreen>
           Icon(
             Icons.login_rounded,
             size: 48,
-            color: theme.primaryColor.withOpacity(0.8),
+            color: theme.primaryColor.withValues(alpha:0.8),
           ),
           const SizedBox(height: 16),
           Text(
@@ -730,7 +730,7 @@ class SettingScreenState extends State<SettingScreen>
         borderRadius: BorderRadius.circular(16), // Giữ nguyên bo góc
         boxShadow: [
           BoxShadow(
-            color: theme.shadowColor.withOpacity(
+            color: theme.shadowColor.withValues(alpha:
               theme.brightness == Brightness.dark ? 0.15 : 0.06,
             ), // Điều chỉnh shadow
             blurRadius: 12, // Tăng blur
@@ -750,7 +750,7 @@ class SettingScreenState extends State<SettingScreen>
                   child: Divider(
                     height: 0.5,
                     thickness: 0.5,
-                    color: theme.dividerColor.withOpacity(0.5),
+                    color: theme.dividerColor.withValues(alpha:0.5),
                   ),
                 ),
             ],
@@ -775,8 +775,8 @@ class SettingScreenState extends State<SettingScreen>
         borderRadius: BorderRadius.circular(
           16,
         ), // Cần khớp với bo góc của _buildSettingSection nếu item là con đầu/cuối
-        splashColor: theme.primaryColor.withOpacity(0.1),
-        highlightColor: theme.primaryColor.withOpacity(0.05),
+        splashColor: theme.primaryColor.withValues(alpha:0.1),
+        highlightColor: theme.primaryColor.withValues(alpha:0.05),
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 16,
@@ -788,7 +788,7 @@ class SettingScreenState extends State<SettingScreen>
                 width: 42,
                 height: 42, // Tăng kích thước icon container
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primaryContainer.withOpacity(
+                  color: theme.colorScheme.primaryContainer.withValues(alpha:
                     0.6,
                   ), // Màu nền khác
                   borderRadius: BorderRadius.circular(12), // Bo góc lớn hơn
@@ -815,7 +815,7 @@ class SettingScreenState extends State<SettingScreen>
                       Text(
                         subtitle,
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant.withOpacity(
+                          color: theme.colorScheme.onSurfaceVariant.withValues(alpha:
                             0.8,
                           ),
                           height: 1.3,
@@ -827,7 +827,7 @@ class SettingScreenState extends State<SettingScreen>
               ),
               Icon(
                 Icons.arrow_forward_ios_rounded,
-                color: theme.iconTheme.color?.withOpacity(0.6),
+                color: theme.iconTheme.color?.withValues(alpha:0.6),
                 size: 18,
               ),
             ],
@@ -855,7 +855,7 @@ class SettingScreenState extends State<SettingScreen>
             width: 42,
             height: 42,
             decoration: BoxDecoration(
-              color: theme.colorScheme.primaryContainer.withOpacity(0.6),
+              color: theme.colorScheme.primaryContainer.withValues(alpha:0.6),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(
@@ -880,11 +880,11 @@ class SettingScreenState extends State<SettingScreen>
               value: value,
               onChanged: onChanged,
               activeColor: theme.colorScheme.primary,
-              activeTrackColor: theme.colorScheme.primary.withOpacity(0.5),
+              activeTrackColor: theme.colorScheme.primary.withValues(alpha:0.5),
               inactiveThumbColor: theme.colorScheme.onSurfaceVariant
-                  .withOpacity(0.6),
+                  .withValues(alpha:0.6),
               inactiveTrackColor: theme.colorScheme.onSurfaceVariant
-                  .withOpacity(0.2),
+                  .withValues(alpha:0.2),
             ),
           ),
         ],
@@ -912,7 +912,7 @@ class SettingScreenState extends State<SettingScreen>
                 width: 42,
                 height: 42,
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primaryContainer.withOpacity(0.6),
+                  color: theme.colorScheme.primaryContainer.withValues(alpha:0.6),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
@@ -942,10 +942,10 @@ class SettingScreenState extends State<SettingScreen>
             // Custom SliderTheme
             data: SliderTheme.of(context).copyWith(
               activeTrackColor: theme.primaryColor,
-              inactiveTrackColor: theme.primaryColor.withOpacity(0.3),
+              inactiveTrackColor: theme.primaryColor.withValues(alpha:0.3),
               thumbColor: theme.primaryColor,
-              overlayColor: theme.primaryColor.withOpacity(0.2),
-              valueIndicatorColor: theme.primaryColor.withOpacity(0.8),
+              overlayColor: theme.primaryColor.withValues(alpha:0.2),
+              valueIndicatorColor: theme.primaryColor.withValues(alpha:0.8),
               valueIndicatorTextStyle: const TextStyle(
                 color: Colors.white,
                 fontSize: 12,
@@ -976,19 +976,19 @@ class SettingScreenState extends State<SettingScreen>
                 Text(
                   "Nhỏ",
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant.withOpacity(0.7),
+                    color: theme.colorScheme.onSurfaceVariant.withValues(alpha:0.7),
                   ),
                 ),
                 Text(
                   "Vừa",
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant.withOpacity(0.7),
+                    color: theme.colorScheme.onSurfaceVariant.withValues(alpha:0.7),
                   ),
                 ),
                 Text(
                   "Lớn",
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant.withOpacity(0.7),
+                    color: theme.colorScheme.onSurfaceVariant.withValues(alpha:0.7),
                   ),
                 ),
               ],
@@ -1018,7 +1018,7 @@ class SettingScreenState extends State<SettingScreen>
             width: 42,
             height: 42,
             decoration: BoxDecoration(
-              color: theme.colorScheme.primaryContainer.withOpacity(0.6),
+              color: theme.colorScheme.primaryContainer.withValues(alpha:0.6),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(
@@ -1085,7 +1085,7 @@ class SettingScreenState extends State<SettingScreen>
           ),
         ),
         style: ElevatedButton.styleFrom(
-          backgroundColor: theme.colorScheme.errorContainer.withOpacity(0.8),
+          backgroundColor: theme.colorScheme.errorContainer.withValues(alpha:0.8),
           foregroundColor: theme.colorScheme.onErrorContainer,
           elevation: 0,
           padding: const EdgeInsets.symmetric(vertical: 15),
@@ -1093,7 +1093,7 @@ class SettingScreenState extends State<SettingScreen>
             borderRadius: BorderRadius.circular(14),
           ),
           side: BorderSide(
-            color: theme.colorScheme.error.withOpacity(0.5),
+            color: theme.colorScheme.error.withValues(alpha:0.5),
           ), // Viền nhẹ
         ),
       ),
@@ -1148,7 +1148,7 @@ class SettingScreenState extends State<SettingScreen>
                 end: Alignment.bottomCenter,
                 colors: [
                   theme.colorScheme.primary,
-                  theme.colorScheme.primary.withOpacity(0.8),
+                  theme.colorScheme.primary.withValues(alpha:0.8),
                 ],
               ),
               borderRadius: const BorderRadius.only(
@@ -1161,11 +1161,11 @@ class SettingScreenState extends State<SettingScreen>
                 Container(
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withValues(alpha:0.9),
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.15),
+                        color: Colors.black.withValues(alpha:0.15),
                         blurRadius: 8,
                         offset: const Offset(0, 3),
                       ),
@@ -1209,7 +1209,7 @@ class SettingScreenState extends State<SettingScreen>
                         style: OutlinedButton.styleFrom(
                           foregroundColor: theme.colorScheme.onSurfaceVariant,
                           side: BorderSide(
-                            color: theme.dividerColor.withOpacity(0.7),
+                            color: theme.dividerColor.withValues(alpha:0.7),
                             width: 1.5,
                           ),
                           padding: const EdgeInsets.symmetric(vertical: 14),
@@ -1263,7 +1263,7 @@ class SettingScreenState extends State<SettingScreen>
       context: context,
       barrierDismissible: true,
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-      barrierColor: Colors.black.withOpacity(0.6),
+      barrierColor: Colors.black.withValues(alpha:0.6),
       transitionDuration: const Duration(milliseconds: 350),
       pageBuilder: (context, animation1, animation2) => Container(),
       transitionBuilder: (context, animation, secondaryAnimation, child) {
@@ -1302,7 +1302,7 @@ class SettingScreenState extends State<SettingScreen>
                           end: Alignment.bottomCenter,
                           colors: [
                             theme.colorScheme.primary,
-                            theme.colorScheme.primary.withOpacity(0.8),
+                            theme.colorScheme.primary.withValues(alpha:0.8),
                           ],
                         ),
                         borderRadius: const BorderRadius.only(
@@ -1315,11 +1315,11 @@ class SettingScreenState extends State<SettingScreen>
                           Container(
                             padding: const EdgeInsets.all(14),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.9),
+                              color: Colors.white.withValues(alpha:0.9),
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(0.15),
+                                  color: Colors.black.withValues(alpha:0.15),
                                   blurRadius: 8,
                                   offset: const Offset(0, 3),
                                 ),
@@ -1398,7 +1398,7 @@ class SettingScreenState extends State<SettingScreen>
                                     .textTheme
                                     .bodyMedium
                                     ?.color
-                                    ?.withOpacity(0.7),
+                                    ?.withValues(alpha:0.7),
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 12,
                                 ),

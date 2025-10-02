@@ -6,11 +6,11 @@ import 'package:image_picker/image_picker.dart'; // Mặc dù không dùng trự
 import 'package:job_connect/config/constant/api_constants.dart';
 import 'package:job_connect/data/models/account_model.dart';
 import 'package:job_connect/data/models/resume_model.dart';
-import 'package:job_connect/data/services/api.dart';
+import 'package:job_connect/config/services/api_service.dart';
 import 'package:file_picker/file_picker.dart'; // Đã có
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:job_connect/config/utils/format.dart';
-import 'package:job_connect/features/home/screens/home_page.dart';
+import 'package:job_connect/features/navigation/screens/navigation_page.dart';
 import 'package:job_connect/features/job/screens/job_history_screen.dart'; // Thêm cho loading indicator đẹp hơn
 
 class ApplyJobScreen extends StatefulWidget {
@@ -47,7 +47,7 @@ class _ApplyJobScreenState extends State<ApplyJobScreen>
   bool _isLoadingData = true; // Đổi tên từ _isLoading
   Account? _account;
   // final ImagePicker _picker = ImagePicker(); // Không thấy dùng trong UI này
-  final _apiService = ApiService(baseUrl: ApiConstants.baseUrl);
+  final _apiService = ApiService( );
 
   late AnimationController _formAnimationController; // Animation cho form
   late Animation<double> _formFadeAnimation;
@@ -100,7 +100,7 @@ class _ApplyJobScreenState extends State<ApplyJobScreen>
   Future<void> _fetchAccount() async {
     try {
       final data = await _apiService.get(
-        '${ApiConstants.userEndpoint}/${widget.idUser}',
+        endpoint:  '${ApiConstants.userEndpoint}/${widget.idUser}',
       );
       if (data.isNotEmpty) _account = Account.fromJson(data.first);
     } catch (e) {
@@ -111,7 +111,7 @@ class _ApplyJobScreenState extends State<ApplyJobScreen>
   Future<void> _fetchResumeList() async {
     try {
       final response = await _apiService.get(
-        "${ApiConstants.resumeEndpoint}/${widget.idUser}",
+        endpoint:  "${ApiConstants.resumeEndpoint}/${widget.idUser}",
       );
       if (mounted) {
         setState(() {
@@ -245,7 +245,7 @@ class _ApplyJobScreenState extends State<ApplyJobScreen>
 
     try {
       // final response = // Bỏ biến response không dùng
-      await _apiService.post(ApiConstants.jobApplicationPostEndpoint, data);
+      await _apiService.post(endpoint:  ApiConstants.jobApplicationPostEndpoint, body:data);
       // Giả sử API trả về 200 hoặc 201 là thành công
       if (mounted) {
         _showSuccessDialog(finalCvNameToDisplay ?? "CV của bạn");
@@ -449,13 +449,13 @@ class _ApplyJobScreenState extends State<ApplyJobScreen>
       padding: const EdgeInsets.fromLTRB(20, 24, 20, 24), // Tăng padding
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [theme.primaryColor, theme.primaryColor.withOpacity(0.8)],
+          colors: [theme.primaryColor, theme.primaryColor.withValues(alpha:0.8)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         boxShadow: [
           BoxShadow(
-            color: theme.primaryColor.withOpacity(0.2),
+            color: theme.primaryColor.withValues(alpha:0.2),
             blurRadius: 15,
             offset: const Offset(0, 5),
           ),
@@ -477,7 +477,7 @@ class _ApplyJobScreenState extends State<ApplyJobScreen>
             children: [
               Icon(
                 Icons.business_center_outlined,
-                color: Colors.white.withOpacity(0.85),
+                color: Colors.white.withValues(alpha:0.85),
                 size: 20,
               ),
               const SizedBox(width: 10),
@@ -486,7 +486,7 @@ class _ApplyJobScreenState extends State<ApplyJobScreen>
                 child: Text(
                   widget.companyName,
                   style: theme.textTheme.titleMedium?.copyWith(
-                    color: Colors.white.withOpacity(0.85),
+                    color: Colors.white.withValues(alpha:0.85),
                     fontWeight: FontWeight.w500,
                   ),
                   overflow: TextOverflow.ellipsis,
@@ -559,7 +559,7 @@ class _ApplyJobScreenState extends State<ApplyJobScreen>
                     ),
                     style: OutlinedButton.styleFrom(
                       side: BorderSide(
-                        color: theme.primaryColor.withOpacity(0.7),
+                        color: theme.primaryColor.withValues(alpha:0.7),
                         width: 1.5,
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 12),
@@ -648,7 +648,7 @@ class _ApplyJobScreenState extends State<ApplyJobScreen>
     return Container(
       margin: const EdgeInsets.only(top: 16),
       decoration: BoxDecoration(
-        border: Border.all(color: theme.dividerColor.withOpacity(0.5)),
+        border: Border.all(color: theme.dividerColor.withValues(alpha:0.5)),
         borderRadius: BorderRadius.circular(10),
       ),
       constraints: const BoxConstraints(maxHeight: 200), // Giữ lại constraints
@@ -659,7 +659,7 @@ class _ApplyJobScreenState extends State<ApplyJobScreen>
         //     (context, index) => Divider(
         //       height: 1,
         //       thickness: 1,
-        //       color: theme.dividerColor.withOpacity(0.3),
+        //       color: theme.dividerColor.withValues(alpha:0.3),
         //     ),
         itemBuilder: (context, index) {
           final resume = _savedCVs[index];
@@ -675,7 +675,7 @@ class _ApplyJobScreenState extends State<ApplyJobScreen>
                   color:
                       isCurrentlySelected
                           ? theme.primaryColor
-                          : theme.colorScheme.onSurfaceVariant.withOpacity(0.7),
+                          : theme.colorScheme.onSurfaceVariant.withValues(alpha:0.7),
                   size: 22,
                 ),
                 title: Text(
@@ -690,13 +690,13 @@ class _ApplyJobScreenState extends State<ApplyJobScreen>
                 subtitle: Text(
                   "Cập nhật: ${FormatUtils.formattedDateTime(resume.updatedAt)}",
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant.withOpacity(0.7),
+                    color: theme.colorScheme.onSurfaceVariant.withValues(alpha:0.7),
                   ),
                 ),
                 onTap: () => _selectSavedCV(resume),
                 dense: true,
                 selected: isCurrentlySelected,
-                selectedTileColor: theme.primaryColor.withOpacity(0.05),
+                selectedTileColor: theme.primaryColor.withValues(alpha:0.05),
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 12,
                   vertical: 4,
@@ -712,7 +712,7 @@ class _ApplyJobScreenState extends State<ApplyJobScreen>
                   child: Divider(
                     height: 1,
                     thickness: 1,
-                    color: theme.dividerColor.withOpacity(0.3),
+                    color: theme.dividerColor.withValues(alpha:0.3),
                   ),
                 ),
             ],
@@ -727,9 +727,9 @@ class _ApplyJobScreenState extends State<ApplyJobScreen>
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: theme.primaryColor.withOpacity(0.08),
+        color: theme.primaryColor.withValues(alpha:0.08),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: theme.primaryColor.withOpacity(0.3)),
+        border: Border.all(color: theme.primaryColor.withValues(alpha:0.3)),
       ),
       child: Row(
         children: [
@@ -773,7 +773,7 @@ class _ApplyJobScreenState extends State<ApplyJobScreen>
             icon: Icon(
               Icons.close_rounded,
               size: 20,
-              color: theme.colorScheme.error.withOpacity(0.8),
+              color: theme.colorScheme.error.withValues(alpha:0.8),
             ),
             onPressed:
                 () => setState(() {
@@ -810,7 +810,7 @@ class _ApplyJobScreenState extends State<ApplyJobScreen>
             hintText:
                 "Viết một vài dòng giới thiệu bản thân, kinh nghiệm và tại sao bạn phù hợp với vị trí này...",
             hintStyle: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.hintColor.withOpacity(0.7),
+              color: theme.hintColor.withValues(alpha:0.7),
             ),
             contentPadding: const EdgeInsets.all(16),
             border: InputBorder.none, // Bỏ border của TextField
@@ -830,7 +830,7 @@ class _ApplyJobScreenState extends State<ApplyJobScreen>
         style: ElevatedButton.styleFrom(
           backgroundColor: theme.primaryColor,
           foregroundColor: theme.colorScheme.onPrimary,
-          disabledBackgroundColor: theme.primaryColor.withOpacity(0.5),
+          disabledBackgroundColor: theme.primaryColor.withValues(alpha:0.5),
           padding: const EdgeInsets.symmetric(vertical: 16), // Tăng padding
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -862,11 +862,11 @@ class _ApplyJobScreenState extends State<ApplyJobScreen>
       margin: const EdgeInsets.only(top: 16), // Thêm margin top
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: theme.colorScheme.secondaryContainer.withOpacity(
+        color: theme.colorScheme.secondaryContainer.withValues(alpha:
           isDarkMode ? 0.3 : 0.5,
         ), // Màu nền khác
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: theme.colorScheme.secondary.withOpacity(0.3)),
+        border: Border.all(color: theme.colorScheme.secondary.withValues(alpha:0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -921,14 +921,14 @@ class _ApplyJobScreenState extends State<ApplyJobScreen>
             child: Icon(
               Icons.check_circle_outline_rounded,
               size: 16,
-              color: theme.colorScheme.onSecondaryContainer.withOpacity(0.8),
+              color: theme.colorScheme.onSecondaryContainer.withValues(alpha:0.8),
             ),
           ),
           Expanded(
             child: Text(
               text,
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSecondaryContainer.withOpacity(0.9),
+                color: theme.colorScheme.onSecondaryContainer.withValues(alpha:0.9),
                 height: 1.4,
               ),
             ),

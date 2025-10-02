@@ -339,7 +339,7 @@ class _CVManagementPageState extends State<CVManagementPage> {
         backgroundColor: Theme.of(
           context,
           // ignore: deprecated_member_use
-        ).colorScheme.primaryContainer.withOpacity(0.8),
+        ).colorScheme.primaryContainer.withValues(alpha:0.8),
         actions: [
           IconButton(
             icon: Icon(_isGridView ? Icons.view_list : Icons.grid_view),

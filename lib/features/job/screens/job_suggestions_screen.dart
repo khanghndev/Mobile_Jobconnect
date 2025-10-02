@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:job_connect/config/constant/api_constants.dart';
 import 'package:job_connect/data/models/job_posting_model.dart';
-import 'package:job_connect/data/services/api.dart';
+import 'package:job_connect/config/services/api_service.dart';
 import 'package:intl/intl.dart';
 import 'package:job_connect/features/job/screens/apply_job_screen.dart';
 import 'package:job_connect/features/job/screens/job_detail_screen.dart'; // Thêm để định dạng tiền tệ và ngày tháng
@@ -16,7 +16,7 @@ class JobSuggestionsPage extends StatefulWidget {
 }
 
 class _JobSuggestionsPageState extends State<JobSuggestionsPage> {
-  final _apiService = ApiService(baseUrl: ApiConstants.baseUrl);
+  final _apiService = ApiService( );
 
   List<JobPosting> _allJobs = []; // Lưu trữ tất cả công việc đã fetch
   List<JobPosting> _suggestedJobs =
@@ -51,7 +51,7 @@ class _JobSuggestionsPageState extends State<JobSuggestionsPage> {
     });
 
     try {
-      final response = await _apiService.get(ApiConstants.jobPostingEndpoint);
+      final response = await _apiService.get(endpoint: ApiConstants.jobPostingEndpoint);
 
       if (!mounted) return; // Kiểm tra mounted sau khi await
 
@@ -193,7 +193,7 @@ class _JobSuggestionsPageState extends State<JobSuggestionsPage> {
                                   Icon(
                                     Icons.sentiment_dissatisfied,
                                     size: 80,
-                                    color: theme.hintColor.withOpacity(0.5),
+                                    color: theme.hintColor.withValues(alpha:0.5),
                                   ),
                                   const SizedBox(height: 24),
                                   Text(
@@ -252,7 +252,7 @@ class _JobSuggestionsPageState extends State<JobSuggestionsPage> {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
       // Background color from theme
-      color: theme.colorScheme.primary.withOpacity(0.08), // Màu primary nhẹ
+      color: theme.colorScheme.primary.withValues(alpha:0.08), // Màu primary nhẹ
       child: Row(
         children: [
           Icon(Icons.info_outline, color: theme.colorScheme.primary, size: 24),
@@ -342,7 +342,7 @@ class _JobSuggestionsPageState extends State<JobSuggestionsPage> {
                           theme.colorScheme.surfaceVariant, // Màu nền cho logo
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: theme.dividerColor.withOpacity(0.5),
+                        color: theme.dividerColor.withValues(alpha:0.5),
                       ),
                     ),
                     alignment: Alignment.center,
@@ -393,7 +393,7 @@ class _JobSuggestionsPageState extends State<JobSuggestionsPage> {
                         Text(
                           job.location,
                           style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.hintColor.withOpacity(0.7),
+                            color: theme.hintColor.withValues(alpha:0.7),
                           ),
                         ),
                       ],
@@ -456,12 +456,12 @@ class _JobSuggestionsPageState extends State<JobSuggestionsPage> {
                         vertical: 6,
                       ),
                       decoration: BoxDecoration(
-                        color: theme.colorScheme.primary.withOpacity(
+                        color: theme.colorScheme.primary.withValues(alpha:
                           0.1,
                         ), // Màu primary nhẹ
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: theme.colorScheme.primary.withOpacity(0.3),
+                          color: theme.colorScheme.primary.withValues(alpha:0.3),
                         ),
                       ),
                       child: Text(
@@ -562,9 +562,9 @@ class _JobSuggestionsPageState extends State<JobSuggestionsPage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-        color: _getMatchColor(percentage).withOpacity(0.2), // Màu badge nhẹ
+        color: _getMatchColor(percentage).withValues(alpha:0.2), // Màu badge nhẹ
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: _getMatchColor(percentage).withOpacity(0.5)),
+        border: Border.all(color: _getMatchColor(percentage).withValues(alpha:0.5)),
       ),
       child: Text(
         '${percentage.toStringAsFixed(0)}% phù hợp',
@@ -631,7 +631,7 @@ class _JobSuggestionsPageState extends State<JobSuggestionsPage> {
                               }
                             },
                             selectedColor: theme.colorScheme.primary
-                                .withOpacity(0.15), // Màu nền khi chọn
+                                .withValues(alpha:0.15), // Màu nền khi chọn
                             backgroundColor:
                                 theme
                                     .colorScheme

@@ -5,9 +5,9 @@ import 'package:job_connect/data/models/account_model.dart';
 import 'package:job_connect/data/models/candidate_info_model.dart';
 import 'package:job_connect/data/models/job_application_model.dart';
 import 'package:job_connect/data/models/job_saved_model.dart';
-import 'package:job_connect/data/services/api.dart';
+import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/features/auth/screens/login_screen.dart';
-import 'package:job_connect/features/home/screens/home_page.dart';
+import 'package:job_connect/features/navigation/screens/navigation_page.dart';
 import 'package:job_connect/features/job/screens/job_history_screen.dart';
 import 'package:job_connect/features/profile/screens/edit_profile_screen.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -73,7 +73,7 @@ class _BreathingBorderAvatarState extends State<BreathingBorderAvatar>
             ),
             boxShadow: [
               BoxShadow(
-                color: widget.borderColors.first.withOpacity(0.5),
+                color: widget.borderColors.first.withValues(alpha:0.5),
                 blurRadius: _animation.value * 2,
                 spreadRadius: _animation.value / 2,
               ),
@@ -109,7 +109,7 @@ class ProfilePageState extends State<ProfilePageScreen>
   // =======================================================================
   // PHẦN LOGIC VÀ STATE MANAGEMENT - GIỮ NGUYÊN
   // =======================================================================
-  final _apiService = ApiService(baseUrl: ApiConstants.baseUrl);
+  final _apiService = ApiService( );
   Account? _account;
   CandidateInfo? _candidateInfo;
   final List<JobApplication> _applicationJobs = [];
@@ -181,7 +181,7 @@ class ProfilePageState extends State<ProfilePageScreen>
   Future<void> _fetchAccount() async {
     try {
       final data = await _apiService.get(
-        '${ApiConstants.userEndpoint}/${widget.idUser}',
+        endpoint: '${ApiConstants.userEndpoint}/${widget.idUser}',
       );
       if (data != null && data.isNotEmpty) {
         _account = Account.fromJson(data.first);
@@ -194,7 +194,7 @@ class ProfilePageState extends State<ProfilePageScreen>
   Future<void> _fetchCandidateInfo() async {
     try {
       final data = await _apiService.get(
-        '${ApiConstants.candidateInfoEndpoint}/${widget.idUser}',
+        endpoint: '${ApiConstants.candidateInfoEndpoint}/${widget.idUser}',
       );
       if (data.isNotEmpty) {
         _candidateInfo = CandidateInfo.fromJson(data.first);
@@ -209,7 +209,7 @@ class ProfilePageState extends State<ProfilePageScreen>
   Future<void> _fetchApplicationJobs() async {
     try {
       final response = await _apiService.get(
-        "${ApiConstants.jobApplicationEndpoint}/${widget.idUser}",
+        endpoint: "${ApiConstants.jobApplicationEndpoint}/${widget.idUser}",
       );
       _applicationJobs.clear();
       _applicationJobs.addAll(
@@ -223,7 +223,7 @@ class ProfilePageState extends State<ProfilePageScreen>
   Future<void> _fetchSavedJobs() async {
     try {
       final response = await _apiService.get(
-        "${ApiConstants.jobSavedEndpoint}/${widget.idUser}",
+        endpoint: "${ApiConstants.jobSavedEndpoint}/${widget.idUser}",
       );
       _savedJobs.clear();
       _savedJobs.addAll(response.map((job) => JobSaved.fromJson(job)));
@@ -308,7 +308,7 @@ class ProfilePageState extends State<ProfilePageScreen>
             children: [
               Icon(
                 Icons.check_circle_outline,
-                color: Colors.white.withOpacity(0.8),
+                color: Colors.white.withValues(alpha:0.8),
               ),
               const SizedBox(width: 10),
               Expanded(
@@ -325,7 +325,7 @@ class ProfilePageState extends State<ProfilePageScreen>
           ),
           backgroundColor: Theme.of(
             context,
-          ).colorScheme.secondary.withOpacity(0.9),
+          ).colorScheme.secondary.withValues(alpha:0.9),
           elevation: 4,
           margin: const EdgeInsets.all(16),
         ),
@@ -542,8 +542,8 @@ class ProfilePageState extends State<ProfilePageScreen>
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            theme.colorScheme.primary.withOpacity(0.25),
-            theme.scaffoldBackgroundColor.withOpacity(0.1),
+            theme.colorScheme.primary.withValues(alpha:0.25),
+            theme.scaffoldBackgroundColor.withValues(alpha:0.1),
           ],
         ),
       ),
@@ -565,7 +565,7 @@ class ProfilePageState extends State<ProfilePageScreen>
         borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(isDarkMode ? 0.15 : 0.08),
+            color: Colors.black.withValues(alpha:isDarkMode ? 0.15 : 0.08),
             blurRadius: 25,
             offset: const Offset(0, 8),
           ),
@@ -636,7 +636,7 @@ class ProfilePageState extends State<ProfilePageScreen>
           ),
 
           const SizedBox(height: 24),
-          Divider(color: theme.dividerColor.withOpacity(0.5), height: 1),
+          Divider(color: theme.dividerColor.withValues(alpha:0.5), height: 1),
           const SizedBox(height: 16),
 
           // Các chỉ số thống kê
@@ -662,7 +662,7 @@ class ProfilePageState extends State<ProfilePageScreen>
                 "Đã lưu",
                 Icons.bookmark_rounded,
                 theme.colorScheme.tertiary,
-                () => HomePage.goToSearchTab(context, initialTabIndex: 2),
+                () => NavigationPage.goToSearchTab(context, initialTabIndex: 2),
               ),
               _buildStatItem(
                 context,
@@ -751,7 +751,7 @@ class ProfilePageState extends State<ProfilePageScreen>
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(isDarkMode ? 0.1 : 0.05),
+            color: Colors.black.withValues(alpha:isDarkMode ? 0.1 : 0.05),
             blurRadius: 18,
             offset: const Offset(0, 5),
           ),
@@ -765,7 +765,7 @@ class ProfilePageState extends State<ProfilePageScreen>
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primary.withOpacity(0.1),
+                  color: theme.colorScheme.primary.withValues(alpha:0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
@@ -787,7 +787,7 @@ class ProfilePageState extends State<ProfilePageScreen>
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: Divider(
-              color: theme.dividerColor.withOpacity(0.5),
+              color: theme.dividerColor.withValues(alpha:0.5),
               height: 1,
             ),
           ),
@@ -815,7 +815,7 @@ class ProfilePageState extends State<ProfilePageScreen>
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: theme.colorScheme.secondary.withOpacity(0.1),
+              color: theme.colorScheme.secondary.withValues(alpha:0.1),
               shape: BoxShape.circle,
             ),
             child: Icon(icon, color: theme.colorScheme.secondary, size: 20),
@@ -829,7 +829,7 @@ class ProfilePageState extends State<ProfilePageScreen>
                 Text(
                   subtitle,
                   style: theme.textTheme.labelMedium?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant.withOpacity(0.7),
+                    color: theme.colorScheme.onSurfaceVariant.withValues(alpha:0.7),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -856,7 +856,7 @@ class ProfilePageState extends State<ProfilePageScreen>
                 child: Icon(
                   Icons.copy_rounded,
                   size: 20,
-                  color: theme.colorScheme.outline.withOpacity(0.8),
+                  color: theme.colorScheme.outline.withValues(alpha:0.8),
                 ),
               ),
             ),
@@ -884,7 +884,7 @@ class ProfilePageState extends State<ProfilePageScreen>
           child: Text(
             "Hãy cập nhật kỹ năng để nhà tuyển dụng tìm thấy bạn!",
             style: TextStyle(
-              color: theme.colorScheme.onSurfaceVariant.withOpacity(0.7),
+              color: theme.colorScheme.onSurfaceVariant.withValues(alpha:0.7),
               fontStyle: FontStyle.italic,
             ),
           ),
@@ -909,7 +909,7 @@ class ProfilePageState extends State<ProfilePageScreen>
                   return Chip(
                     avatar: Icon(
                       Icons.star_border_rounded,
-                      color: theme.colorScheme.onSecondaryContainer.withOpacity(
+                      color: theme.colorScheme.onSecondaryContainer.withValues(alpha:
                         0.8,
                       ),
                       size: 18,
@@ -922,7 +922,7 @@ class ProfilePageState extends State<ProfilePageScreen>
                       ),
                     ),
                     backgroundColor: theme.colorScheme.secondaryContainer
-                        .withOpacity(0.8),
+                        .withValues(alpha:0.8),
                     padding: const EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 8,
@@ -959,7 +959,7 @@ class ProfilePageState extends State<ProfilePageScreen>
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: theme.colorScheme.error.withOpacity(0.15),
+              color: theme.colorScheme.error.withValues(alpha:0.15),
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),
@@ -980,13 +980,13 @@ class ProfilePageState extends State<ProfilePageScreen>
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
                   colors: [
-                    theme.colorScheme.error.withOpacity(0.08),
-                    theme.colorScheme.error.withOpacity(0.03),
+                    theme.colorScheme.error.withValues(alpha:0.08),
+                    theme.colorScheme.error.withValues(alpha:0.03),
                   ],
                 ),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: theme.colorScheme.error.withOpacity(0.2),
+                  color: theme.colorScheme.error.withValues(alpha:0.2),
                   width: 1.5,
                 ),
               ),
@@ -1028,9 +1028,9 @@ class ProfilePageState extends State<ProfilePageScreen>
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              theme.colorScheme.primary.withOpacity(0.9),
-              theme.colorScheme.secondary.withOpacity(0.7),
-              theme.colorScheme.tertiary.withOpacity(0.5),
+              theme.colorScheme.primary.withValues(alpha:0.9),
+              theme.colorScheme.secondary.withValues(alpha:0.7),
+              theme.colorScheme.tertiary.withValues(alpha:0.5),
             ],
             stops: const [0.1, 0.6, 1.0],
           ),
@@ -1044,7 +1044,7 @@ class ProfilePageState extends State<ProfilePageScreen>
               Icon(
                 Icons.sentiment_very_dissatisfied_outlined,
                 size: 100,
-                color: Colors.white.withOpacity(0.8),
+                color: Colors.white.withValues(alpha:0.8),
               ),
               const SizedBox(height: 24),
               Text(
@@ -1067,7 +1067,7 @@ class ProfilePageState extends State<ProfilePageScreen>
                 "Khám phá tiềm năng, kết nối cơ hội. Đăng nhập để bắt đầu hành trình sự nghiệp của bạn!",
                 textAlign: TextAlign.center,
                 style: theme.textTheme.titleMedium?.copyWith(
-                  color: Colors.white.withOpacity(0.9),
+                  color: Colors.white.withValues(alpha:0.9),
                   height: 1.6,
                   fontWeight: FontWeight.w400,
                 ),
@@ -1094,7 +1094,7 @@ class ProfilePageState extends State<ProfilePageScreen>
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18),
                   ),
-                  shadowColor: Colors.black.withOpacity(0.3),
+                  shadowColor: Colors.black.withValues(alpha:0.3),
                 ),
               ),
               const SizedBox(height: 20),
@@ -1148,7 +1148,7 @@ class ProfilePageState extends State<ProfilePageScreen>
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withValues(alpha:0.2),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -1169,7 +1169,7 @@ class ProfilePageState extends State<ProfilePageScreen>
                 end: Alignment.bottomRight,
                 colors: [
                   theme.colorScheme.error,
-                  theme.colorScheme.error.withOpacity(0.8),
+                  theme.colorScheme.error.withValues(alpha:0.8),
                 ],
               ),
               borderRadius: const BorderRadius.only(
@@ -1182,11 +1182,11 @@ class ProfilePageState extends State<ProfilePageScreen>
                 Container(
                   padding: EdgeInsets.all(isSmallScreen ? 14 : 16),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withValues(alpha:0.9),
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
+                        color: Colors.black.withValues(alpha:0.2),
                         blurRadius: 12,
                         offset: const Offset(0, 4),
                       ),
@@ -1233,7 +1233,7 @@ class ProfilePageState extends State<ProfilePageScreen>
                         style: OutlinedButton.styleFrom(
                           foregroundColor: theme.colorScheme.onSurfaceVariant,
                           side: BorderSide(
-                            color: theme.dividerColor.withOpacity(0.7),
+                            color: theme.dividerColor.withValues(alpha:0.7),
                             width: 1.5,
                           ),
                           padding: EdgeInsets.symmetric(
@@ -1267,7 +1267,7 @@ class ProfilePageState extends State<ProfilePageScreen>
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
                           ),
-                          shadowColor: theme.colorScheme.error.withOpacity(0.3),
+                          shadowColor: theme.colorScheme.error.withValues(alpha:0.3),
                         ),
                         child: Text(
                           'ĐĂNG XUẤT',

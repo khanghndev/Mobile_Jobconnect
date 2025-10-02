@@ -230,7 +230,7 @@ class _PaymentPageState extends State<PaymentPage> {
                       width: 48, // Kích thước icon lớn hơn
                       height: 48,
                       decoration: BoxDecoration(
-                        color: theme.colorScheme.primary.withOpacity(
+                        color: theme.colorScheme.primary.withValues(alpha:
                           0.1,
                         ), // Màu primary nhẹ
                         borderRadius: BorderRadius.circular(12), // Bo tròn hơn
@@ -352,7 +352,7 @@ class _PaymentPageState extends State<PaymentPage> {
                       borderRadius: BorderRadius.circular(12),
                       color:
                           method.isSelected
-                              ? theme.colorScheme.primary.withOpacity(
+                              ? theme.colorScheme.primary.withValues(alpha:
                                 isDarkMode ? 0.1 : 0.05,
                               ) // Màu nền nhẹ khi chọn
                               : theme.cardColor, // Màu nền card khi không chọn
@@ -478,12 +478,12 @@ class _PaymentPageState extends State<PaymentPage> {
             decoration: InputDecoration(
               hintText: hint,
               hintStyle: theme.textTheme.bodyLarge?.copyWith(
-                color: theme.hintColor.withOpacity(0.7), // Màu hint nhạt hơn
+                color: theme.hintColor.withValues(alpha:0.7), // Màu hint nhạt hơn
               ),
               prefixIcon: Icon(
                 prefixIcon,
                 size: 22,
-                color: theme.iconTheme.color?.withOpacity(0.7),
+                color: theme.iconTheme.color?.withValues(alpha:0.7),
               ),
               filled: true,
               fillColor:
@@ -526,8 +526,8 @@ class _PaymentPageState extends State<PaymentPage> {
           BoxShadow(
             color:
                 isDarkMode
-                    ? Colors.black.withOpacity(0.2)
-                    : Colors.black.withOpacity(
+                    ? Colors.black.withValues(alpha:0.2)
+                    : Colors.black.withValues(alpha:
                       0.08,
                     ), // Điều chỉnh shadow cho dark mode
             blurRadius: 15, // Tăng blur
