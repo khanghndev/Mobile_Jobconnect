@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 
-class CVAnalysisPage extends StatefulWidget {
-  const CVAnalysisPage({super.key});
+class CvAnalysisScreen extends StatefulWidget {
+  const CvAnalysisScreen({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _CVAnalysisPageState createState() => _CVAnalysisPageState();
+  _CvAnalysisScreenState createState() => _CvAnalysisScreenState();
 }
 
-class _CVAnalysisPageState extends State<CVAnalysisPage> {
+class _CvAnalysisScreenState extends State<CvAnalysisScreen> {
   List<JobRecommendation> _recommendations = [];
   bool _isAnalyzed = false;
   bool _isProcessing =

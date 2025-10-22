@@ -8,7 +8,7 @@ import 'package:job_connect/features/mini_social/widgets/report_post/glass_card.
 import 'package:job_connect/features/mini_social/widgets/report_post/glow_circle.dart';
 import 'package:job_connect/features/mini_social/widgets/report_post/header_card.dart';
 import 'package:job_connect/features/mini_social/widgets/report_post/reason_wrap.dart';
-import 'package:job_connect/features/mini_social/widgets/report_post/section_title.dart';
+import 'package:job_connect/features/mini_social/widgets/report_post/social_section_title.dart';
 import 'package:job_connect/features/mini_social/widgets/report_post/submit_button.dart';
 import 'package:job_connect/config/widgets/unfocus_widget.dart';
 
@@ -85,7 +85,7 @@ class _ReportPostScreenState extends State<ReportPostScreen> {
         context,
         title: "Thiếu thông tin",
         message: "Vui lòng chọn lý do báo cáo",
-        backgroudColor: BackgroundColors.backgroundErrorPrimary,
+        backgroundColor: BackgroundColors.backgroundErrorPrimary,
       );
       return;
     }
@@ -111,7 +111,7 @@ class _ReportPostScreenState extends State<ReportPostScreen> {
       context,
       title: "Thành công",
       message: "Báo cáo đã được gửi",
-      backgroudColor: BackgroundColors.backgroundSuccessPrimary,
+      backgroundColor: BackgroundColors.backgroundSuccessPrimary,
     );
 
     context.pop(); // quay lại trang trước
@@ -172,7 +172,7 @@ class _ReportPostScreenState extends State<ReportPostScreen> {
                       thumbnailUrl: widget.thumbnailUrl,
                     ),
                     SizedBox(height: 16.h),
-                    const SectionTitle(icon: Icons.flag_rounded, text: 'Chọn lý do'),
+                    SocialSectionTitle(icon: Icons.flag_rounded, title: 'Chọn lý do'),
                     SizedBox(height: 10.h),
                     ReasonWrap(
                       reasons: _reasons,
@@ -180,7 +180,7 @@ class _ReportPostScreenState extends State<ReportPostScreen> {
                       onSelected: (r) => setState(() => _selectedReason = r),
                     ),
                     SizedBox(height: 18.h),
-                    const SectionTitle(icon: Icons.edit_note_rounded, text: 'Mô tả chi tiết'),
+                    SocialSectionTitle(icon: Icons.edit_note_rounded, title: 'Mô tả chi tiết'),
                     SizedBox(height: 10.h),
                     GlassCard(
                       isPadding: false,

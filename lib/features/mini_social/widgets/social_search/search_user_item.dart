@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:job_connect/config/utils/image_url.dart';
 
 class SearchUserItem extends StatefulWidget {
   final String avatar;
@@ -38,7 +39,7 @@ class _SearchUserItemState extends State<SearchUserItem> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CircleAvatar(
-            backgroundImage: NetworkImage(widget.avatar),
+            backgroundImage: ImageUtils.getImageProvider(widget.avatar),
             radius: 24,
           ),
           const SizedBox(width: 12),

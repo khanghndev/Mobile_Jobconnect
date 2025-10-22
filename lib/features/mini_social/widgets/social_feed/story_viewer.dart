@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:job_connect/config/constant/app_colors.dart';
-import 'package:job_connect/features/mini_social/screens/social_feed_screen.dart';
+import 'package:job_connect/features/mini_social/screens/home/social_feed_screen.dart';
 import 'package:job_connect/features/mini_social/widgets/social_feed/flying_emoji.dart';
 import 'package:job_connect/features/mini_social/widgets/social_feed/reaction_bar.dart';
 

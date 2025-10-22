@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/constant/app_colors.dart';
+import 'package:job_connect/config/utils/image_url.dart';
 import 'package:job_connect/config/utils/snackbar_app.dart';
 import 'package:job_connect/features/mini_social/screens/report/social_report_post_screem.dart';
 
@@ -45,19 +46,20 @@ class _PostItemHeaderState extends State<PostItemHeader> {
       context,
         title: "Thành công",
         message: "Sao chép link thành công",
-        backgroudColor: BackgroundColors.backgroundSuccessPrimary
+        backgroundColor: BackgroundColors.backgroundSuccessPrimary
     );
   }
- 
+  
+  @override
   Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         GestureDetector(
-          onTap:() => context.push('/profile'),
+          onTap:() => context.push('/social/profile'),
           child: CircleAvatar(
             radius: 20.r,
-            backgroundImage: NetworkImage(widget.avatarUrl),
+            backgroundImage: ImageUtils.getImageProvider(widget.avatarUrl),
           ),
         ),
         SizedBox(width: 12.h),
@@ -84,7 +86,7 @@ class _PostItemHeaderState extends State<PostItemHeader> {
                   const Icon(Icons.arrow_right, color: Colors.black, size: 16),
                   Flexible(
                     child: GestureDetector(
-                      onTap:() => context.push('/group'),
+                      onTap:() => context.push('/social/group'),
                       child: Text(
                         widget.group ?? "",
                         style: const TextStyle(

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/constant/app_colors.dart';
+import 'package:job_connect/config/utils/image_url.dart';
+import 'package:job_connect/features/chat/screens/ai_chat_screen.dart';
 
 class StoryModel {
   final String name;
@@ -50,6 +52,7 @@ class SocialMessengerScreen extends StatefulWidget {
 }
 
 class _SocialMessengerScreenState extends State<SocialMessengerScreen> {
+  // Fake Stories
   final List<StoryModel> fakeStories = [
     StoryModel(name: "Tôi", url: "https://i.imgur.com/BoN9kdC.png", isLocked: false),
     StoryModel(name: "Kỷ niệm xưa", url: "https://i.imgur.com/BoN9kdC.png", isLocked: true),
@@ -58,6 +61,7 @@ class _SocialMessengerScreenState extends State<SocialMessengerScreen> {
     StoryModel(name: "Jenny", url: "https://i.imgur.com/BoN9kdC.png", isLocked: false),
   ];
 
+  // Fake Messages (dynamic)
   final List<MessageModel> fakeMessages = [
     MessageModel(
       icon: Icons.group,
@@ -96,62 +100,96 @@ class _SocialMessengerScreenState extends State<SocialMessengerScreen> {
     ),
   ];
 
+  // Item cố định luôn xuất hiện đầu danh sách
+  final MessageModel fixedMessage = MessageModel(
+    icon: Icons.smart_toy,
+    color: Colors.blue,
+    name: "Chat với AI",
+    lastMessage: "Hãy tâm sự về công việc với AI...",
+  );
+
   Future<void> _onRefresh() async {
     await Future.delayed(const Duration(seconds: 1));
+    // Tương lai: fetch lại messages từ API
   }
 
   @override
   Widget build(BuildContext context) {
+    // Kết hợp item cố định + danh sách dynamic
     return Scaffold(
       backgroundColor: Colors.white,
       body: RefreshIndicator(
         onRefresh: _onRefresh,
-        child: ListView(
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
           padding: EdgeInsets.all(12.w),
-          children: [
-            SizedBox(height: 12.h),
-            SizedBox(
-              height: 90.h,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: fakeStories.length,
+          child: Column(
+            children: [
+              SizedBox(height: 12.h),
+              SizedBox(
+                height: 90.h,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: fakeStories.length,
+                  itemBuilder: (context, index) {
+                    final story = fakeStories[index];
+                    return _buildStory(
+                      context: context,
+                      name: index == 0 ? "Minh Tiến" : story.name,
+                      url: story.url,
+                      isLocked: story.isLocked,
+                      onTap: () {
+                        context.push(
+                          '/social/messenger-detail',
+                          extra: {
+                            'isLoggedIn': widget.isLoggedIn,
+                            'idUser': widget.idUser,
+                          },
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+              SizedBox(height: 12.h),
+              ListView.builder(
+                physics: const NeverScrollableScrollPhysics(), 
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                itemCount: 1 + fakeMessages.length,
                 itemBuilder: (context, index) {
-                  final story = fakeStories[index];
-                  return _buildStory(
-                    context: context,
-                    name: index == 0 ? "Minh Tiến" : story.name,
-                    url: story.url,
-                    isLocked: story.isLocked,
-                    onTap: () {
-                      context.push(
-                        '/messenger-detail',
-                        extra: {
-                          'isLoggedIn': widget.isLoggedIn,
-                          'idUser': widget.idUser,
-                        },
-                      );
-                    },
-                  );
+                  if (index == 0) {
+                    // Item cố định ở vị trí đầu
+                    return _buildMessageItem(
+                      context: context,
+                      msg: fixedMessage,
+                      onTap: () {
+                        Navigator.push(context, 
+                          MaterialPageRoute(builder: (context) => const AIChatScreen()));
+                      },
+                    );
+                  } else {
+                    // Các item còn lại từ fakeMessages
+                    final msg = fakeMessages[index - 1];
+                    return _buildMessageItem(
+                      context: context,
+                      msg: msg,
+                      onTap: () {
+                        context.push(
+                          '/social/messenger-detail',
+                          extra: {
+                            'isLoggedIn': widget.isLoggedIn,
+                            'idUser': widget.idUser,
+                          },
+                        );
+                      },
+                    );
+                  }
                 },
               ),
-            ),
-            SizedBox(height: 12.h),
-            ...fakeMessages.map((msg) {
-              return _buildMessageItem(
-                context: context,
-                msg: msg,
-                onTap: () {
-                  context.push(
-                    '/messenger-detail',
-                    extra: {
-                      'isLoggedIn': widget.isLoggedIn,
-                      'idUser': widget.idUser,
-                    },
-                  );
-                },
-              );
-            }),
-          ],
+          
+            ],
+          ),
         ),
       ),
     );
@@ -175,7 +213,7 @@ class _SocialMessengerScreenState extends State<SocialMessengerScreen> {
               children: [
                 CircleAvatar(
                   radius: 30.r,
-                  backgroundImage: NetworkImage(url),
+                  backgroundImage: ImageUtils.getImageProvider(url),
                 ),
                 if (isLocked)
                   Icon(Icons.lock, size: 20.sp, color: IconColors.iconBrandOnbrand),
@@ -207,7 +245,7 @@ class _SocialMessengerScreenState extends State<SocialMessengerScreen> {
         leading: msg.avatar != null
             ? CircleAvatar(
                 radius: 28.r,
-                backgroundImage: NetworkImage(msg.avatar!),
+                backgroundImage: ImageUtils.getImageProvider(msg.avatar!),
               )
             : CircleAvatar(
                 radius: 28.r,

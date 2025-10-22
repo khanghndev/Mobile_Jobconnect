@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:job_connect/config/utils/image_url.dart';
 
 class SocialCallScreen extends StatefulWidget {
   final String avatarUrl;
@@ -101,7 +102,7 @@ class _SocialCallScreenState extends State<SocialCallScreen>
               children: [
                 CircleAvatar(
                   radius: 60.r,
-                  backgroundImage: NetworkImage(widget.avatarUrl),
+                  backgroundImage: ImageUtils.getImageProvider(widget.avatarUrl),
                 ),
                 SizedBox(height: 16.h),
                 Text(

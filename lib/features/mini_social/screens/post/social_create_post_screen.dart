@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:job_connect/config/utils/image_url.dart';
 
 class CreatePostScreen extends StatefulWidget {
   const CreatePostScreen({super.key});
@@ -56,7 +57,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               children: [
                 CircleAvatar(
                   radius: 20.r,
-                  backgroundImage: NetworkImage('https://i.pravatar.cc/150?img=3'),
+                  backgroundImage: ImageUtils.getImageProvider('https://i.pravatar.cc/150?img=3'),
                 ),
                 SizedBox(width: 10.w),
                 Column(

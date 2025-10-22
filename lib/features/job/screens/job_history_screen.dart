@@ -22,8 +22,8 @@ class JobHistoryScreen extends StatefulWidget {
 class JobHistoryScreenState extends State<JobHistoryScreen>
     with TickerProviderStateMixin {
   final _apiService = ApiService( );
-  List<JobApplication> _allJobApplications = [];
-  List<JobApplication> _filteredJobApplications = [];
+  List<JobApplicationModel> _allJobApplications = [];
+  List<JobApplicationModel> _filteredJobApplications = [];
   bool _isLoading = true;
   String? _selectedStatusFilter;
 
@@ -86,8 +86,8 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
       if (mounted) {
         _allJobApplications =
             response
-                .map<JobApplication>(
-                  (jobJson) => JobApplication.fromJson(jobJson),
+                .map<JobApplicationModel>(
+                  (jobJson) => JobApplicationModel.fromJson(jobJson),
                 )
                 .toList();
         _allJobApplications.sort(
@@ -496,7 +496,7 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
   }
 
   // REFINED: Toàn bộ widget _buildJobHistoryCard được cấu trúc lại để rõ ràng và chuyên nghiệp hơn.
-  Widget _buildJobHistoryCard(JobApplication jobApp, ThemeData theme) {
+  Widget _buildJobHistoryCard(JobApplicationModel jobApp, ThemeData theme) {
     final isDarkMode = theme.brightness == Brightness.dark;
 
     return Card(
@@ -547,7 +547,7 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          jobApp.jobPosting.company.companyName,
+                          jobApp.jobPosting.company!.companyName,
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: theme.colorScheme.onSurfaceVariant
                                 .withValues(alpha:0.85),
@@ -569,7 +569,7 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
               _buildInfoRow(
                 theme,
                 icon: Icons.location_on_outlined,
-                text: jobApp.jobPosting.location ?? 'Chưa cập nhật',
+                text: jobApp.jobPosting.location ,
                 iconColor: theme.colorScheme.secondary,
               ),
               const SizedBox(height: 8),
@@ -623,11 +623,11 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
   }
 
   // NEW: Tách widget logo ra để code gọn hơn
-  Widget _buildCompanyLogo(JobApplication jobApp, ThemeData theme) {
-    final String? effectiveLogoCompany = jobApp.jobPosting.company.logoCompany;
+  Widget _buildCompanyLogo(JobApplicationModel jobApp, ThemeData theme) {
+    final String? effectiveLogoCompany = jobApp.jobPosting.company!.logoCompany;
     final String companyNameForPlaceholder =
-        jobApp.jobPosting.company.companyName.isNotEmpty
-            ? jobApp.jobPosting.company.companyName[0].toUpperCase()
+        jobApp.jobPosting.company!.companyName.isNotEmpty
+            ? jobApp.jobPosting.company!.companyName[0].toUpperCase()
             : 'C';
 
     Widget logoWidget;
@@ -714,7 +714,7 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
   void _handleCancelApplication(String idJobPost) async {
     try {
       await _apiService.delete(
-        endpoint: '${ApiConstants.jobApplicationPostEndpoint}/$idJobPost/${widget.idUser}',
+        endpoint: '${ApiConstants.jobApplicationEndpoint}/$idJobPost/${widget.idUser}',
       );
 
       if (mounted) {
@@ -739,7 +739,7 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
   // REFINED: Tinh chỉnh style của các nút bấm
   Widget _buildActionButtons(
     BuildContext context,
-    JobApplication jobApp,
+    JobApplicationModel jobApp,
     ThemeData theme,
   ) {
     final buttonStyle = OutlinedButton.styleFrom(

@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:job_connect/features/resume/screens/Info/education_screen.dart';
-import 'package:job_connect/features/resume/screens/Info/work_experience_screen.dart';
-// TODO: Add these imports when implementing actual file generation
-// import 'package:path_provider/path_provider.dart';
-// import 'package:open_file/open_file.dart';
-// import 'package:pdf/widgets.dart' as pw;
-// import 'dart:io';
 
 class DownloadScreen extends StatelessWidget {
   final Map<String, dynamic> personalInfo;

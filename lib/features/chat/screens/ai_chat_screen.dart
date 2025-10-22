@@ -6,17 +6,13 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:math' as math;
 
-import 'package:job_connect/config/constant/app_string.dart'; // For randomizing quick options
+import 'package:job_connect/config/constant/app_strings.dart'; // For randomizing quick options
 
 typedef RefreshCallback = Future<void> Function();
 
 class AIChatScreen extends StatefulWidget {
-  final bool isLoggedIn;
-  final String? idUser;
   const AIChatScreen({
     super.key,
-    required this.isLoggedIn,
-    this.idUser,
   });
 
   @override
@@ -372,7 +368,6 @@ class _AIChatScreenState extends State<AIChatScreen>
         ),
         backgroundColor: theme.primaryColor,
         centerTitle: true,
-        automaticallyImplyLeading: false, // Bỏ nút back mặc định
         elevation: 2, // Tăng elevation
         systemOverlayStyle:
             SystemUiOverlayStyle.light, // Icon status bar màu trắng

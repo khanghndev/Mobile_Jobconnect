@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:job_connect/features/mini_social/screens/social_profile_screen.dart';
+import 'package:job_connect/features/mini_social/screens/home/social_profile_screen.dart';
 
 class DiscoverCard extends StatelessWidget {
   final DiscoverCardModel card;

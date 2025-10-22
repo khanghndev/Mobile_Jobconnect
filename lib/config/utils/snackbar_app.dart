@@ -6,11 +6,11 @@ class SnackbarApp {
     BuildContext context, {
     required String title,
     required String message,
-    Color backgroudColor = BackgroundColors.backgroundInfoPrimary,
+    Color backgroundColor = BackgroundColors.backgroundInfoPrimary,
     IconData? icon,
     Duration duration = const Duration(seconds: 3),
   }) {
-    icon ??= _getIconByColor(backgroudColor);
+    icon ??= _getIconByColor(backgroundColor);
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -20,7 +20,7 @@ class SnackbarApp {
         content: Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: backgroudColor,
+            color: backgroundColor,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Row(
@@ -77,7 +77,7 @@ class SnackbarApp {
 //   context,
 //   title: "Thiếu thông tin",
 //   message: "Vui lòng chọn lý do báo cáo",
-//   backgroudColor: Colors.redAccent,
+//   backgroundColor: Colors.redAccent,
 //   icon: Icons.error_outline,
 // );
 
@@ -86,7 +86,7 @@ class SnackbarApp {
 //   context,
 //   title: "Thành công",
 //   message: "Báo cáo đã được gửi",
-//   backgroudColor: Colors.green,
+//   backgroundColor: Colors.green,
 //   icon: Icons.check_circle_outline,
 // );
 
@@ -95,6 +95,6 @@ class SnackbarApp {
 //   context,
 //   title: "Cảnh báo",
 //   message: "Bạn sắp rời khỏi trang",
-//   backgroudColor: Colors.orange,
+//   backgroundColor: Colors.orange,
 //   icon: Icons.warning_amber_rounded,
 // );

@@ -1,0 +1,1 @@
+enum JobTransactionStatus { pending, completed, rejected }

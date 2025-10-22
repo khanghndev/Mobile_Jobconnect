@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:job_connect/config/utils/image_url.dart';
 
 class SocialMessengerDetailScreen extends StatefulWidget {
   final bool isLoggedIn;
@@ -76,7 +77,7 @@ class _SocialMessengerDetailScreenState
     });
 
     context.push(
-      '/call',
+      '/social/call',
       extra: {
         'avatarUrl': "https://i.imgur.com/BoN9kdC.png",
         'userName': "Trọng Khang",
@@ -204,8 +205,7 @@ class _SocialMessengerDetailScreenState
                     icon: const Icon(Icons.arrow_back_ios_new),
                   ),
                   CircleAvatar(
-                    backgroundImage:
-                        const NetworkImage("https://i.imgur.com/BoN9kdC.png"),
+                    backgroundImage: ImageUtils.getImageProvider("https://i.imgur.com/BoN9kdC.png"),
                     radius: 20.r,
                   ),
                   SizedBox(width: 10.w),

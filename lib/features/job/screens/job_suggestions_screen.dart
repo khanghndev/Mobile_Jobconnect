@@ -18,8 +18,8 @@ class JobSuggestionsPage extends StatefulWidget {
 class _JobSuggestionsPageState extends State<JobSuggestionsPage> {
   final _apiService = ApiService( );
 
-  List<JobPosting> _allJobs = []; // Lưu trữ tất cả công việc đã fetch
-  List<JobPosting> _suggestedJobs =
+  List<JobPostingModel> _allJobs = []; // Lưu trữ tất cả công việc đã fetch
+  List<JobPostingModel> _suggestedJobs =
       []; // Danh sách hiển thị sau khi lọc và xử lý gợi ý
   bool _isLoading = true; // Trạng thái tải dữ liệu
   String _selectedFilter = 'Tất cả';
@@ -56,7 +56,7 @@ class _JobSuggestionsPageState extends State<JobSuggestionsPage> {
       if (!mounted) return; // Kiểm tra mounted sau khi await
 
       // Chuyển đổi dữ liệu JSON thành danh sách JobPosting
-      _allJobs.addAll(response.map((job) => JobPosting.fromJson(job)).toList());
+      _allJobs.addAll(response.map((job) => JobPostingModel.fromJson(job)).toList());
 
       // Giả lập logic gợi ý (ví dụ: chỉ lấy 5 công việc đầu tiên)
       // Trong thực tế, bạn sẽ có một thuật toán gợi ý phức tạp hơn dựa trên CV
@@ -300,7 +300,7 @@ class _JobSuggestionsPageState extends State<JobSuggestionsPage> {
     );
   }
 
-  Widget _buildJobCard(JobPosting job, ThemeData theme, bool isDarkMode) {
+  Widget _buildJobCard(JobPostingModel job, ThemeData theme, bool isDarkMode) {
     final double matchPercentage =
         job.idJobPost.hashCode % 100 * 1.0; // Random percentage
 
@@ -347,12 +347,12 @@ class _JobSuggestionsPageState extends State<JobSuggestionsPage> {
                     ),
                     alignment: Alignment.center,
                     child:
-                        job.company.logoCompany != null &&
-                                job.company.logoCompany!.isNotEmpty
+                        job.company!.logoCompany != null &&
+                                job.company!.logoCompany!.isNotEmpty
                             ? ClipRRect(
                               borderRadius: BorderRadius.circular(12),
                               child: Image.network(
-                                job.company.logoCompany!,
+                                job.company!.logoCompany!,
                                 fit: BoxFit.cover,
                                 errorBuilder:
                                     (context, error, stackTrace) => Icon(
@@ -384,7 +384,7 @@ class _JobSuggestionsPageState extends State<JobSuggestionsPage> {
                         ),
                         const SizedBox(height: 6),
                         Text(
-                          job.company.companyName,
+                          job.company!.companyName,
                           style: theme.textTheme.bodyLarge?.copyWith(
                             color: theme.hintColor,
                           ),
@@ -489,7 +489,7 @@ class _JobSuggestionsPageState extends State<JobSuggestionsPage> {
                           builder:
                               (context) => JobDetailScreen(
                                 idUser: widget.idUser,
-                                idJobPost: job.idJobPost,
+                                jobPosting: job,
                               ),
                         ),
                       ).then((_) {
@@ -523,7 +523,7 @@ class _JobSuggestionsPageState extends State<JobSuggestionsPage> {
                               (context) => ApplyJobScreen(
                                 jobId: job.idJobPost, // Truyền idJobPost
                                 jobTitle: job.title,
-                                companyName: job.company.companyName,
+                                companyName: job.company!.companyName,
                                 idUser: widget.idUser,
                               ),
                         ),

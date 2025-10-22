@@ -1,1 +1,1 @@
-enum PostStatus { open, closed, draft }
+enum PostStatus { open, closed, draft,  waiting, editing }

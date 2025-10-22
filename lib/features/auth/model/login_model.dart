@@ -1,8 +1,8 @@
-import '../../../data/models/account_model.dart';
+import '../../profile/model/user_model.dart';
 
 class LoginModel {
   final String token;
-  final Account user;
+  final UserModel user;
   final bool needProfile;
 
   LoginModel({
@@ -14,7 +14,7 @@ class LoginModel {
   factory LoginModel.fromJson(Map<String, dynamic> json) {
     return LoginModel(
       token: json['token'] as String,
-      user: Account.fromJson(json['user'] as Map<String, dynamic>),
+      user: UserModel.fromJson(json['user'] as Map<String, dynamic>),
       needProfile: json['needProfile'] as bool? ?? false, // default false
     );
   }

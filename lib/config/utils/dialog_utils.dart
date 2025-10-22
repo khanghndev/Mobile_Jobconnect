@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:job_connect/config/constant/app_colors.dart';
 import 'package:job_connect/config/enum/dialog_type.dart';
+import 'package:job_connect/config/enum/user_role.dart';
+import 'package:job_connect/config/utils/snackbar_app.dart';
+import 'package:job_connect/config/widgets/custom_dialog.dart';
+import 'package:job_connect/features/auth/viewmodel/auth_view_model.dart';
+import 'package:provider/provider.dart';
 
 
 class DialogUtils {
@@ -68,4 +75,92 @@ class DialogUtils {
       },
     );
   }
+
+  /// Hiển thị dialog xác nhận logout
+  static void showLogoutDialog(BuildContext context) {
+    final theme = Theme.of(context);
+    final authViewModel = context.read<AuthViewModel>();
+
+    CustomDialog.show(
+      context,
+      title: "Đăng xuất?",
+      message: "Bạn có chắc chắn muốn đăng xuất không?",
+      icon: Icons.logout,
+      iconColor: theme.colorScheme.error,
+      confirmButtonColor: theme.colorScheme.error,
+      backgroundColor: BackgroundColors.backgroundErrorPrimary,
+      onConfirm: () async {
+        await authViewModel.logout();
+
+        if (!context.mounted) return;
+
+        if (authViewModel.isSuccess) {
+          context.go(
+            '/auth/login', 
+            extra: {
+              'role': UserRole.candidate.name
+            }
+          );
+        } else if (authViewModel.errorMessage != null) {
+          // Hiển thị SnackBar nếu logout thất bại
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(authViewModel.errorMessage!)),
+          );
+          SnackbarApp.show(
+            context,
+            title: 'Thông báo',
+            message: 'Đăng xuất thất bại: ${authViewModel.errorMessage!}',
+            backgroundColor: BackgroundColors.backgroundErrorPrimary,
+          );
+        }
+      },
+    );
+  }
+
+  /// Hàm tiện ích chung để hiển thị dialog xác nhận với callback tùy ý
+  static void showConfirmationDialog({
+    required BuildContext context,
+    required String title,
+    required String message,
+    IconData? icon,
+    Color? iconColor,
+    Color? confirmButtonColor,
+    Color? backgroundColor,
+    required Future<void> Function() onConfirm,
+  }) {
+    final theme = Theme.of(context);
+
+    CustomDialog.show(
+      context,
+      title: title,
+      message: message,
+      icon: icon ?? Icons.info,
+      iconColor: iconColor ?? theme.colorScheme.primary,
+      confirmButtonColor: confirmButtonColor ?? theme.colorScheme.primary,
+      backgroundColor: backgroundColor ?? theme.colorScheme.primary,
+      onConfirm: () async {
+        await onConfirm();
+      },
+    );
+  }
 }
+
+//DialogUtils.showLogoutDialog(context);
+
+// DialogUtils.showConfirmationDialog(
+//   context: context,
+//   title: "Xóa dữ liệu?",
+//   message: "Bạn có chắc chắn muốn xóa không?",
+//   icon: Icons.delete,
+//   iconColor: Colors.red,
+//   confirmButtonColor: Colors.red,
+//   onConfirm: () async {
+//     await dataViewModel.deleteAll();
+//     SnackbarApp.show(
+//       context,
+//       title: "Thông báo",
+//       message: "Đã xóa dữ liệu",
+//       backgroundColor: Colors.green,
+//     );
+//   },
+// );

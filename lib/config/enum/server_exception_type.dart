@@ -7,5 +7,7 @@ enum ServerExceptionType {
   auth,
   cancelled,
   network,
-  timeout
+  timeout,
+  appwrite,
+  config,
 }

@@ -1,59 +1,179 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ApiConstants {
-  // static const String baseUrl = "http://10.0.2.2:5281";
   static final String baseUrl = dotenv.env['API_URL'] ?? "";
 
-  // 🔐 AUTHENTICATION - Đăng nhập/Đăng ký
-  static const String registerEndpoint = "/api/Auth/register";      // Đăng ký
-  static const String loginEndpoint = "/api/Auth/login";            // Đăng nhập
+  // AUTHENTICATION - Đăng nhập/Đăng ký
+  static const String registerEndpoint = "/api/Auth/register";
+  static const String loginEndpoint = "/api/Auth/login";
+  static const String socialLoginEndpoint = "/api/Auth/social-login";
+  static const String getUserByIdEndpoint = "/api/Auth/{id}";
 
-  // 👤 USER & ROLE - Người dùng & Vai trò
-  static const String userEndpoint = "/api/User";                   // Thông tin người dùng
-  static const String roleEndpoint = "/api/Role";                   // Danh sách vai trò
+  // USER & ROLE - Người dùng & Vai trò
+  static const String userEndpoint = "/api/User";
+  static const String roleEndpoint = "/api/Roles";
+  static const String userByIdEndpoint = "/api/User/{id}";
+  static const String userRoleEndpoint = "/api/User/{id}/role";
 
-  // 🧑‍💼 RECRUITER & CANDIDATE - Nhà tuyển dụng & Ứng viên
-  static const String recruiterInfoEndpoint = "/api/RecruiterInfo";   // Thông tin nhà tuyển dụng
-  static const String candidateInfoEndpoint = "/api/CandidateInfo";   // Thông tin ứng viên
+  // RECRUITER & CANDIDATE - Nhà tuyển dụng & Ứng viên
+  static const String recruiterInfoEndpoint = "/api/RecruiterInfo";
+  static const String candidateInfoEndpoint = "/api/CandidateInfo";
+  static const String candidateAvailabilityEndpoint = "/api/CandidateAvailability";
+  static const String candidateAvailabilityByUserEndpoint = "/api/CandidateAvailability/user/{idUser}";
+  static const String candidateAvailabilityByIdEndpoint = "/api/CandidateAvailability/{id}";
+  static const String candidateEvaluationEndpoint = "/api/CandidateEvaluation";
+  static const String candidateEvaluationByIdEndpoint = "/api/CandidateEvaluation/{id}";
+  static const String candidateProjectsEndpoint = "/api/CandidateProjects";
+  static const String candidateProjectsByUserEndpoint = "/api/CandidateProjects/user/{idUser}";
+  static const String candidateProjectsByIdEndpoint = "/api/CandidateProjects/{id}";
+  static const String candidateSkillsEndpoint = "/api/CandidateSkills";
+  static const String candidateSkillsByUserEndpoint = "/api/CandidateSkills/user/{idUser}";
+  static const String candidateSkillsByIdEndpoint = "/api/CandidateSkills/{id}";
+  static const String saveCandidateEndpoint = "/api/SaveCandidate";
 
-  // 📄 JOB POSTING - Tin tuyển dụng
-  static const String jobPostingEndpoint = "/api/JobPosting";                  // Danh sách tin tuyển dụng
-  static const String jobPostingSearchEndpoint = "/api/JobPosting/search";    // Tìm kiếm tin tuyển dụng
-  static const String jobPostingFeaturedEndpoint = "/api/JobPosting/featured";// Tin nổi bật
+  // JOB POSTING - Tin tuyển dụng
+  static const String jobPostingEndpoint = "/api/JobPosting";
+  static const String jobPostingAllEndpoint = "/api/JobPosting/all";
+  static const String jobPostingFeaturedEndpoint = "/api/JobPosting/featured";
+  static const String jobPostingByCompanyEndpoint = "/api/JobPosting/company/{companyId}";
+  static const String jobPostingSearchEndpoint = "/api/JobPosting/search";
+  static const String jobPostingNearbyEndpoint = "/api/JobPosting/nearby";
+  static const String jobPostingAreaEndpoint = "/api/JobPosting/area";
+  static const String jobPostingByIdEndpoint = "/api/JobPosting/{id}";
+  static const String jobPostingStatusEndpoint = "/api/JobPosting/{id}/status";
 
-  // 📝 JOB APPLICATION - Ứng tuyển việc làm
-  static const String jobApplicationPostEndpoint = "/api/JobApplication";             // Nộp đơn ứng tuyển
-  static const String jobApplicationEndpoint = "/api/JobApplication/user";            // Lấy ứng tuyển theo user
-  static const String jobApplicationJobPostEndpoint = "/api/JobApplication/jobposting"; // Lấy ứng tuyển theo bài đăng
+  // JOB APPLICATION - Ứng tuyển việc làm
+  static const String jobApplicationEndpoint = "/api/JobApplication";
+  static const String jobApplicationByUserEndpoint = "/api/JobApplication/user/{idUser}";
+  static const String jobApplicationByJobPostEndpoint = "/api/JobApplication/jobposting/{jobPost}";
+  static const String jobApplicationByIdEndpoint = "/api/JobApplication/{jobPost}/{user}";
 
-  // 💾 SAVED JOBS - Việc làm đã lưu
-  static const String jobSavedPostEndpoint = "/api/JobSaved";          // Lưu công việc
-  static const String jobSavedEndpoint = "/api/JobSaved/user";         // Lấy danh sách đã lưu theo user
-  static const String jobSaveJobPostdEndpoint = "/api/JobSaved";       // (Alias) Dùng chung endpoint
+  // SAVED JOBS - Việc làm đã lưu
+  static const String jobSavedEndpoint = "/api/JobSaved";
+  static const String jobSavedByUserEndpoint = "/api/JobSaved/user/{idUser}";
+  static const String jobSavedByJobPostEndpoint = "/api/JobSaved/{jobPost}/{user}";
 
-  // 📄 RESUME - Hồ sơ & Kỹ năng
-  static const String resumeEndpoint = "/api/Resume";                  // Hồ sơ ứng viên
-  static const String resumeSkillEndpoint = "/api/ResumeSkill";       // Kỹ năng trong hồ sơ
-  static const String savedResumeEndpoint = "/api/SavedResume";       // Hồ sơ đã lưu (cho nhà tuyển dụng)
+  // RESUME - Hồ sơ & Kỹ năng
+  static const String resumeEndpoint = "/api/Resume";
+  static const String resumeSkillEndpoint = "/api/ResumeSkill";
+  static const String savedResumeEndpoint = "/api/SavedResume";
+  static const String setDefaultResumeEndpoint = "/api/Resume/set-default";
 
-  // 🏢 COMPANIES - Doanh nghiệp
-  static const String companiesEndpoint = "/api/Companies";              // Danh sách công ty
-  static const String companiesFeaturedEndpoint = "/api/Companies/featured"; // Công ty nổi bật
+  // COMPANIES - Doanh nghiệp
+  static const String companiesEndpoint = "/api/Companies";
+  static const String companiesFeaturedEndpoint = "/api/Companies/featured";
+  static const String companyByIdEndpoint = "/api/Companies/{id}";
+  static const String companyReviewsEndpoint = "/api/CompanyReviews";
+  static const String companyReviewsByCompanyEndpoint = "/api/CompanyReviews/by-company/{companyId}";
+  static const String companyReviewByIdEndpoint = "/api/CompanyReviews/{id}";
 
-  // 🎧 PODCAST - Podcast nghề nghiệp
-  static const String podcastEndpoint = "/api/Podcast";              // Danh sách podcast
-  static const String podcastFeaturedEndpoint = "/api/Podcast/featured"; // Podcast nổi bật
+  // PODCAST - Podcast nghề nghiệp
+  static const String podcastEndpoint = "/api/Podcast";
+  static const String podcastFeaturedEndpoint = "/api/Podcast/featured";
+  static const String podcastByIdEndpoint = "/api/Podcast/{id}";
 
-  // 💬 CHAT & 🔔 NOTIFICATIONS - Trò chuyện & Thông báo
-  static const String chatEndpoint = "/api/Chat";                    // Trò chuyện ứng viên ↔ nhà tuyển dụng
-  static const String notificationEndpoint = "/api/Notification";    // Thông báo hệ thống
+  // CHAT & NOTIFICATIONS - Trò chuyện & Thông báo
+  static const String conversationsEndpoint = "/api/Conversations";
+  static const String conversationsByUserEndpoint = "/api/Conversations/by-user/{userId}";
+  static const String conversationMessagesEndpoint = "/api/Conversations/{conversationId}/messages";
+  static const String conversationMembersEndpoint = "/api/Conversations/{conversationId}/members";
+  static const String conversationMemberByIdEndpoint = "/api/Conversations/{conversationId}/members/{userId}";
+  static const String notificationEndpoint = "/api/Notification";
+  static const String notificationByIdEndpoint = "/api/Notification/{id}";
+  static const String notificationMarkReadEndpoint = "/api/Notification/mark-read";
+  static const String socialMessageEndpoint = "/api/SocialMessages";
+  static const String socialMessageByIdEndpoint = "/api/SocialMessages/{id}";
+  static const String socialMessageMarkReadEndpoint = "/api/SocialMessages/mark-read";
+  static const String socialMessageUnreadCountEndpoint = "/api/SocialMessages/unread-count";
 
-  // 📅 INTERVIEW SCHEDULE - Lịch phỏng vấn
-  static const String interviewScheduleEndpoint = "/api/InterviewSchedule"; // Quản lý lịch phỏng vấn
+  // CHAT - Trò chuyện 
+  static const String chatEndpoint = "/api/Chat"; 
+  static const String chatThreadsEndpoint = "/api/chat/threads";
+  static const String chatMessagesEndpoint = "/api/chat/threads";
 
-  // 📰 NEWS - Tin tức
-  static const String newsEndpoint = "/api/News";                    // Tin tức hệ thống
+  // INTERVIEW SCHEDULE - Lịch phỏng vấn
+  static const String interviewScheduleEndpoint = "/api/InterviewSchedule";
+  static const String interviewScheduleByIdEndpoint = "/api/InterviewSchedule/{id}";
 
-  // 💼 SUBSCRIPTION - Gói dịch vụ
-  static const String subcriptionPackaageEndpoint = "/api/SubcriptionPackage"; // Gói dịch vụ
+  // NEWS - Tin tức
+  static const String newsEndpoint = "/api/News";
+  static const String newsByIdEndpoint = "/api/News/{id}";
+
+  // SUBSCRIPTION - Gói dịch vụ
+  static const String subscriptionPackageEndpoint = "/api/SubscriptionPackage"; 
+  static const String subscriptionPackageByIdEndpoint = "/api/SubscriptionPackage/{id}";
+  static const String jobTransactionEndpoint = "/api/JobTransaction";
+  static const String jobTransactionByIdEndpoint = "/api/JobTransaction/{id}";
+  static const String jobTransactionDetailEndpoint = "/api/JobTransaction/detail/{idTransaction}";
+
+  // SOCIAL - Bài viết, comment, like, kết nối, story, tag
+  static const String socialPostEndpoint = "/api/SocialPosts"; 
+  static const String socialPostByIdEndpoint = "/api/SocialPosts/{id}";
+  static const String socialCommentEndpoint = "/api/SocialComments"; 
+  static const String socialCommentByIdEndpoint = "/api/SocialComments/{id}";
+  static const String socialLikeEndpoint = "/api/SocialLikes";
+  static const String socialLikeByIdEndpoint = "/api/SocialLikes/{id}";
+  static const String socialConnectionEndpoint = "/api/SocialConnections"; 
+  static const String socialConnectionByIdEndpoint = "/api/SocialConnections/{id}";
+  static const String socialStoryEndpoint = "/api/SocialStory";
+  static const String socialStoryByIdEndpoint = "/api/SocialStory/{id}";
+  static const String socialTagEndpoint = "/api/SocialTags"; 
+  static const String socialPostTagEndpoint = "/api/SocialPostTags";
+  static const String socialPostActivityLogEndpoint = "/api/SocialPostActivityLog";
+
+  // GROUP - Nhóm, thành viên, post, comment, reaction, tag, activity log
+  static const String socialGroupEndpoint = "/api/SocialGroups";
+  static const String socialGroupByIdEndpoint = "/api/SocialGroups/{id}";
+  static const String socialGroupJoinedEndpoint = "/api/SocialGroups/joined";
+  static const String socialGroupSearchEndpoint = "/api/SocialGroups/search";
+  static const String socialGroupJoinEndpoint = "/api/SocialGroups/{id}/join";
+  static const String socialGroupLeaveEndpoint = "/api/SocialGroups/{id}/leave";
+  static const String socialGroupMembersEndpoint = "/api/SocialGroups/{id}/members";
+  static const String socialGroupMemberRoleEndpoint = "/api/SocialGroups/{id}/members/role";
+  static const String groupPostsEndpoint = "/api/GroupPosts";
+  static const String groupPostsByGroupEndpoint = "/api/GroupPosts/by-group/{groupId}";
+  static const String groupPostByIdEndpoint = "/api/GroupPosts/{id}";
+  static const String groupPostApproveEndpoint = "/api/GroupPosts/approve";
+  static const String groupCommentsEndpoint = "/api/GroupComments";
+  static const String groupCommentByIdEndpoint = "/api/GroupComments/{id}";
+  static const String groupReactionsEndpoint = "/api/GroupReactions";
+  static const String groupReactionByIdEndpoint = "/api/GroupReactions/{id}";
+  static const String groupTagsEndpoint = "/api/GroupTags";
+  static const String groupPostActivityLogEndpoint = "/api/GroupPostActivityLog";
+
+  // EVALUATION - Đánh giá ứng viên
+  static const String evaluationCriteriaEndpoint = "/api/EvaluationCriteria";
+  static const String evaluationCriteriaByIdEndpoint = "/api/EvaluationCriteria/{id}";
+  static const String evaluationDetailEndpoint = "/api/EvaluationDetail";
+  static const String evaluationDetailAllEndpoint = "/api/EvaluationDetail/all";
+  static const String evaluationDetailByIdEndpoint = "/api/EvaluationDetail/{id}";
+
+  // LOGGING - Nhật ký hoạt động
+  static const String userActivityLogEndpoint = "/api/UserActivityLog";
+  static const String jobPostUsageLogEndpoint = "/api/JobPostUsageLog";
+  static const String cvViewUsageLogEndpoint = "/api/CvViewUsageLog";
+  static const String cvViewUsageLogByIdEndpoint = "/api/CvViewUsageLog/{id}";
+
+  // REPORT - Báo cáo
+  static const String reportEndpoint = "/api/Report";
+  static const String reportByIdEndpoint = "/api/Report/{id}";
+  static const String reportTypeEndpoint = "/api/ReportType";
+  static const String reportTypeByIdEndpoint = "/api/ReportType/{id}";
+
+  // SUPPORT TICKETS - Vé hỗ trợ
+  static const String supportTicketsEndpoint = "/api/SupportTickets";
+  static const String supportTicketByIdEndpoint = "/api/SupportTickets/{id}";
+  static const String supportTicketStatusEndpoint = "/api/SupportTickets/{id}/status";
+
+  // JOB RECOMMENDATION - Gợi ý việc làm
+  static const String jobRecommendationPersonalizedEndpoint = "/api/JobRecommendation/personalized";
+  static const String jobRecommendationHomepageEndpoint = "/api/JobRecommendation/homepage";
+  static const String jobRecommendationTrendingSkillsEndpoint = "/api/JobRecommendation/trending-skills";
+  static const String jobRecommendationPopularLocationsEndpoint = "/api/JobRecommendation/popular-locations";
+  static const String jobRecommendationMatchScoreEndpoint = "/api/JobRecommendation/match-score/{jobId}";
+
+  // WEBSITES - Website
+  static const String websiteEndpoint = "/api/Websites";
+  static const String websiteByIdEndpoint = "/api/Websites/{id}";
+
 }

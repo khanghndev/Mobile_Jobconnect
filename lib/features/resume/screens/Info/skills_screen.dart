@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:job_connect/features/resume/screens/Info/career_objective_screen.dart';
 import 'package:job_connect/features/resume/screens/Info/education_screen.dart';
-import 'package:job_connect/features/resume/screens/Info/work_experience_screen.dart';
-// import 'package:flutter_chips_input/flutter_chips_input.dart'; // Ví dụ nếu dùng package
 
 class SkillsScreen extends StatefulWidget {
   final Map<String, dynamic> personalInfo;

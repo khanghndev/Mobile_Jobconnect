@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:job_connect/config/constant/api_constants.dart';
 import 'package:job_connect/data/models/job_posting_model.dart';
-import 'package:job_connect/data/models/account_model.dart';
-import 'package:job_connect/data/models/candidate_info_model.dart';
+import 'package:job_connect/features/profile/model/user_model.dart';
+import 'package:job_connect/features/profile/model/candidate_info_model.dart';
 import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/config/utils/format.dart';
 import 'package:job_connect/features/job/screens/job_detail_screen.dart';
@@ -18,9 +18,9 @@ class JobMatchingScreen extends StatefulWidget {
 
 class _JobMatchingScreenState extends State<JobMatchingScreen> {
   List<JobMatch> _matchedJobs = [];
-  Account? _account;
-  CandidateInfo? _candidateInfo;
-  final List<JobPosting> _jobs = [];
+  UserModel? _account;
+  CandidateInfoModel? _candidateInfo;
+  final List<JobPostingModel> _jobs = [];
   final ApiService _apiService = ApiService( );
   bool _isLoading = true;
 
@@ -54,7 +54,7 @@ class _JobMatchingScreenState extends State<JobMatchingScreen> {
         endpoint: '${ApiConstants.userEndpoint}/${widget.idUser}',
       );
       if (mounted && data.isNotEmpty) {
-        setState(() => _account = Account.fromJson(data.first));
+        setState(() => _account = UserModel.fromJson(data.first));
       }
     } catch (e) {
       print('Error fetching account: $e');
@@ -67,7 +67,7 @@ class _JobMatchingScreenState extends State<JobMatchingScreen> {
         endpoint: '${ApiConstants.candidateInfoEndpoint}/${widget.idUser}',
       );
       if (mounted && data.isNotEmpty) {
-        setState(() => _candidateInfo = CandidateInfo.fromJson(data.first));
+        setState(() => _candidateInfo = CandidateInfoModel.fromJson(data.first));
       }
     } catch (e) {
       print('Error fetching candidate info: $e');
@@ -79,14 +79,14 @@ class _JobMatchingScreenState extends State<JobMatchingScreen> {
       final response = await _apiService.get(endpoint: ApiConstants.jobPostingEndpoint);
       if (mounted) {
         _jobs.clear();
-        _jobs.addAll(response.map((job) => JobPosting.fromJson(job)));
+        _jobs.addAll(response.map((job) => JobPostingModel.fromJson(job)));
       }
     } catch (e) {
       print('Error fetching jobs: $e');
     }
   }
 
-  Future<List<JobMatch>> _calculateJobMatches(List<JobPosting> jobs) async {
+  Future<List<JobMatch>> _calculateJobMatches(List<JobPostingModel> jobs) async {
     List<JobMatch> matches = [];
 
     for (var job in jobs) {
@@ -131,7 +131,7 @@ class _JobMatchingScreenState extends State<JobMatchingScreen> {
     return matches;
   }
 
-  double _calculateSkillScore(JobPosting job) {
+  double _calculateSkillScore(JobPostingModel job) {
     if (_candidateInfo == null ||
         _candidateInfo!.skills == null ||
         _candidateInfo!.skills!.isEmpty) {
@@ -161,7 +161,7 @@ class _JobMatchingScreenState extends State<JobMatchingScreen> {
     return (matchingSkills / requiredSkills.length) * 25;
   }
 
-  double _calculateExperienceScore(JobPosting job) {
+  double _calculateExperienceScore(JobPostingModel job) {
     if (_candidateInfo == null || _candidateInfo!.experienceYears == null) {
       return 0;
     }
@@ -228,7 +228,7 @@ class _JobMatchingScreenState extends State<JobMatchingScreen> {
     return expScore;
   }
 
-  double _calculateEducationScore(JobPosting job) {
+  double _calculateEducationScore(JobPostingModel job) {
     if (_candidateInfo == null || _candidateInfo!.educationLevel == null) {
       return 0;
     }
@@ -303,7 +303,7 @@ class _JobMatchingScreenState extends State<JobMatchingScreen> {
     }
   }
 
-  double _calculatePositionScore(JobPosting job) {
+  double _calculatePositionScore(JobPostingModel job) {
     if (_candidateInfo == null ||
         _candidateInfo!.workPosition == null ||
         _candidateInfo!.workPosition!.isEmpty) {
@@ -382,7 +382,7 @@ class _JobMatchingScreenState extends State<JobMatchingScreen> {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              jobMatch.job.company.companyName,
+                              jobMatch.job.company!.companyName,
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey[600],
@@ -476,7 +476,7 @@ class _JobMatchingScreenState extends State<JobMatchingScreen> {
                             builder:
                                 (context) => JobDetailScreen(
                                   idUser: widget.idUser,
-                                  idJobPost: jobMatch.job.idJobPost,
+                                  jobPosting: jobMatch.job,
                                 ),
                           ),
                         );
@@ -630,7 +630,7 @@ class _JobMatchingScreenState extends State<JobMatchingScreen> {
                                               child: Text(
                                                 jobMatch
                                                     .job
-                                                    .company
+                                                    .company!
                                                     .companyName,
                                                 style: TextStyle(
                                                   fontSize: 14,
@@ -721,8 +721,8 @@ class _JobMatchingScreenState extends State<JobMatchingScreen> {
                                           builder:
                                               (context) => JobDetailScreen(
                                                 idUser: widget.idUser,
-                                                idJobPost:
-                                                    jobMatch.job.idJobPost,
+                                                jobPosting:
+                                                    jobMatch.job,
                                               ),
                                         ),
                                       );
@@ -787,7 +787,7 @@ class _JobMatchingScreenState extends State<JobMatchingScreen> {
 }
 
 class JobMatch {
-  final JobPosting job;
+  final JobPostingModel job;
   final double matchPercentage;
   final double skillScore;
   final double experienceScore;

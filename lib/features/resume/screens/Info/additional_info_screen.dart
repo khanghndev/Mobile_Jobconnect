@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:job_connect/features/resume/screens/Info/customize_style_screen.dart';
 import 'package:job_connect/features/resume/screens/Info/education_screen.dart';
-import 'package:job_connect/features/resume/screens/Info/work_experience_screen.dart';
-
-// (Tương tự màn hình Kinh nghiệm/Học vấn, bạn có thể tạo các model và UI để thêm nhiều mục)
-// Ví dụ đơn giản với các TextField lớn:
 
 class AdditionalInfoScreen extends StatefulWidget {
   final Map<String, dynamic> personalInfo;

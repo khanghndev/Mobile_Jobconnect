@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/constant/app_colors.dart';
 import 'package:job_connect/config/utils/get_adaptive_back_icon.dart';
 import 'package:job_connect/config/utils/image_review_zoom.dart';
+import 'package:job_connect/config/utils/image_url.dart';
 import 'package:job_connect/config/widgets/custom_adaptive_tap_effect.dart';
 import 'package:job_connect/config/widgets/custom_appbar.dart';
 import 'package:job_connect/config/widgets/custom_bottom_button.dart';
@@ -55,12 +56,9 @@ class SocialJobBoardDetailPage extends StatelessWidget {
                       ),
                     );
                   },
-                  child: Hero(
-                    tag: job.image,
-                    child: Image.network(
-                      job.image,
-                      fit: BoxFit.cover,
-                    ),
+                  child: Image.network(
+                    job.image,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
@@ -98,8 +96,7 @@ class SocialJobBoardDetailPage extends StatelessWidget {
                       children: [
                         CircleAvatar(
                           radius: 16.r,
-                          backgroundImage:
-                              const NetworkImage('https://i.pravatar.cc/100'),
+                          backgroundImage: ImageUtils.getImageProvider('https://i.pravatar.cc/100'),
                         ),
                         SizedBox(width: 8.w),
                         Expanded(

@@ -102,7 +102,7 @@ class CustomInputField extends StatelessWidget {
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.r),
           borderSide: BorderSide(
-            color: borderColor ?? Theme.of(context).primaryColor,
+            color: Theme.of(context).primaryColor,
             width: 2.w,
           ),
         ),

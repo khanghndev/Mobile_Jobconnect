@@ -3,22 +3,26 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:job_connect/config/constant/app_colors.dart';
 import 'package:job_connect/config/constant/app_images.dart';
-import 'package:job_connect/config/constant/app_string.dart';
+import 'package:job_connect/config/constant/app_strings.dart';
+import 'package:job_connect/config/enum/user_role.dart';
 import 'package:job_connect/config/widgets/custom_buttom_leading_icon.dart';
 import 'package:job_connect/features/auth/screens/register_screen.dart';
 
 class SocialLoginView extends StatelessWidget {
+  final String role;
   final VoidCallback onShowTraditionalLogin;
   final void Function(BuildContext) onGoogleLogin;
 
   const SocialLoginView({
     super.key,
     required this.onShowTraditionalLogin,
-    required this.onGoogleLogin,
+    required this.onGoogleLogin, 
+    required this.role,
   });
 
   @override
   Widget build(BuildContext context) {
+    final isCandidate = role == UserRole.candidate.name ;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 24.h),
       child: Column(
@@ -34,7 +38,7 @@ class SocialLoginView extends StatelessWidget {
             ),
             child: ClipOval(
               child: Image.asset(
-                AppImages.logo,
+                AppImages.logoApp,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) => Icon(
                   FontAwesomeIcons.userTie,
@@ -48,7 +52,9 @@ class SocialLoginView extends StatelessWidget {
 
           // Title
           Text(
-            '${AppStrings.appName} Chào Bạn',
+            isCandidate
+              ? '${AppStrings.appName} Chào Bạn'
+              : 'Nhà Tuyển Dụng ${AppStrings.appName}',
             style: Theme.of(context).textTheme.titleMedium!.copyWith(
               fontSize: 22.sp,
               fontWeight: FontWeight.bold,
@@ -56,7 +62,8 @@ class SocialLoginView extends StatelessWidget {
           ),
           SizedBox(height: 8.h),
           Text(
-            'Đăng nhập để tiếp tục với ${AppStrings.appName}',
+            'Đăng nhập để tiếp tục tìm kiếm ${isCandidate ? 'công việc' : 'ứng viên'} với ${AppStrings.appName}',
+            textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium!.copyWith(
               fontSize: 14.sp,
               fontWeight: FontWeight.w400,
@@ -98,92 +105,91 @@ class SocialLoginView extends StatelessWidget {
 
           // Google login button
           Center(
-            child: SizedBox(
-              width: 240.w,
-              child: ElevatedButton.icon(
-                onPressed: () => onGoogleLogin(context),
-                icon: Image.asset(
-                  'assets/icons/google.png',
-                  width: 24.w,
-                  height: 24.w,
+            child: ElevatedButton.icon(
+              onPressed: () => onGoogleLogin(context),
+              icon: Image.asset(
+                AppImages.google,
+                width: 24.w,
+                height: 24.w,
+              ),
+              label: Text(
+                'Đăng nhập bằng Google',
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
+                  color: TextColors.textDefaultPrimary,
                 ),
-                label: Text(
-                  'Đăng nhập bằng Google',
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w600,
-                    color: TextColors.textDefaultPrimary,
-                  ),
+              ),
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.black,
+                backgroundColor: Colors.white,
+                elevation: 4,
+                shadowColor: Colors.grey.withAlpha(77),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.black,
-                  backgroundColor: Colors.white,
-                  elevation: 4,
-                  shadowColor: Colors.grey.withAlpha(77),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                  side: BorderSide(
-                    color: Colors.grey.shade300,
-                    width: 1.w,
-                  ),
-                  padding: EdgeInsets.symmetric(
-                    vertical: 12.h,
-                    horizontal: 16.w,
-                  ),
+                side: BorderSide(
+                  color: Colors.grey.shade300,
+                  width: 1.w,
+                ),
+                padding: EdgeInsets.symmetric(
+                  vertical: 12.h,
+                  horizontal: 16.w,
                 ),
               ),
             ),
           ),
 
           SizedBox(height: 48.h),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Chưa có tài khoản ${AppStrings.appName}?',
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => const RegisterScreen(),
-                      transitionsBuilder:
-                          (context, animation, secondaryAnimation, child) {
-                        var curve = Curves.easeInOut;
-                        var tween = Tween(begin: 0.0, end: 1.0).chain(CurveTween(curve: curve));
-                        return FadeTransition(
-                          opacity: animation.drive(tween),
-                          child: child,
-                        );
-                      },
-                      transitionDuration: const Duration(milliseconds: 500),
-                    ),
-                  );
-                },
-                style: TextButton.styleFrom(
-                  foregroundColor: BackgroundColors.backgroundBrandPrimary,
-                  minimumSize: Size.zero,
-                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 5.h),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                child: Text(
-                  'Đăng Ký',
+          if(isCandidate)...[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Chưa có tài khoản ${AppStrings.appName}?',
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
-                    color: TextColors.textBrandPrimary,
                   ),
                 ),
-              ),
-            ],
-          ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) => const RegisterScreen(),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          var curve = Curves.easeInOut;
+                          var tween = Tween(begin: 0.0, end: 1.0).chain(CurveTween(curve: curve));
+                          return FadeTransition(
+                            opacity: animation.drive(tween),
+                            child: child,
+                          );
+                        },
+                        transitionDuration: const Duration(milliseconds: 500),
+                      ),
+                    );
+                  },
+                  style: TextButton.styleFrom(
+                    foregroundColor: BackgroundColors.backgroundBrandPrimary,
+                    minimumSize: Size.zero,
+                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 5.h),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  child: Text(
+                    'Đăng Ký',
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                      color: TextColors.textBrandPrimary,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+          
           SizedBox(height: 16.h),
 
           // Terms and Privacy

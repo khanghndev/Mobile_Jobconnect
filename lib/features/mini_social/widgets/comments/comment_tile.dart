@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:job_connect/config/utils/image_url.dart';
 
 class CommentTile extends StatelessWidget {
   final String username;
@@ -28,7 +29,7 @@ class CommentTile extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: 16.r,
-          backgroundImage: NetworkImage('https://i.pravatar.cc/150?img=1'),
+          backgroundImage: ImageUtils.getImageProvider('https://i.pravatar.cc/150?img=1'),
         ),
         SizedBox(width: 8.w),
         Expanded(

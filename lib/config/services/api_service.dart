@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:job_connect/config/constant/api_constants.dart';
 import 'package:job_connect/config/enum/api_method.dart';
@@ -17,33 +18,23 @@ class ApiService {
   });
 
   Future<dynamic> get({required String endpoint}) async {
-    return _request(
-      method: ApiMethod.get,
-      endpoint: endpoint,
-    );
+    return _request(method: ApiMethod.get, endpoint: endpoint);
   }
 
-  Future<dynamic> post({required String endpoint,required dynamic body}) async {
-    return _request(
-      method: ApiMethod.post,
-      endpoint: endpoint,
-      body: body,
-    );
+  Future<dynamic> post({required String endpoint, required dynamic body}) async {
+    return _request(method: ApiMethod.post, endpoint: endpoint, body: body);
   }
 
-  Future<dynamic> put({required String endpoint,required dynamic body}) async {
-    return _request(
-      method: ApiMethod.put,
-      endpoint: endpoint,
-      body: body,
-    );
+  Future<dynamic> put({required String endpoint, required dynamic body}) async {
+    return _request(method: ApiMethod.put, endpoint: endpoint, body: body);
+  }
+
+  Future<dynamic> patch({required String endpoint, required dynamic body}) async {
+    return _request(method: ApiMethod.patch, endpoint: endpoint, body: body);
   }
 
   Future<dynamic> delete({required String endpoint}) async {
-    return _request(
-      method: ApiMethod.delete,
-      endpoint: endpoint,
-    );
+    return _request(method: ApiMethod.delete, endpoint: endpoint);
   }
 
   Future<dynamic> _request({
@@ -54,31 +45,40 @@ class ApiService {
     final url = Uri.parse(ApiConstants.baseUrl + endpoint);
     http.Response response;
 
+    final stopwatch = Stopwatch()..start();
+
     try {
+      debugPrint('\n===== 🌐 API REQUEST =====');
+      debugPrint('➡️ METHOD: ${method.name.toUpperCase()}');
+      debugPrint('📍 URL: $url');
+      debugPrint('📦 HEADERS: $defaultHeaders');
+      if (body != null) debugPrint('🧾 BODY: ${jsonEncode(body)}');
+
       switch (method) {
         case ApiMethod.get:
           response = await http.get(url, headers: defaultHeaders);
           break;
         case ApiMethod.post:
-          response = await http.post(
-            url,
-            headers: defaultHeaders,
-            body: _encodeBody(body),
-          );
+          response = await http.post(url, headers: defaultHeaders, body: _encodeBody(body));
           break;
         case ApiMethod.put:
-          response = await http.put(
-            url,
-            headers: defaultHeaders,
-            body: _encodeBody(body),
-          );
+          response = await http.put(url, headers: defaultHeaders, body: _encodeBody(body));
           break;
         case ApiMethod.delete:
           response = await http.delete(url, headers: defaultHeaders);
           break;
-        default:
-          throw ArgumentError('Unsupported HTTP method: $method');
+        case ApiMethod.patch:
+          response = await http.patch(url, headers: defaultHeaders, body: _encodeBody(body));
+          break;
       }
+
+      stopwatch.stop();
+
+      debugPrint('\n===== 📩 API RESPONSE =====');
+      debugPrint('✅ STATUS: ${response.statusCode}');
+      debugPrint('⏱️ TIME: ${stopwatch.elapsedMilliseconds} ms');
+      debugPrint('📃 BODY: ${_shorten(response.body)}');
+      debugPrint('=============================\n');
 
       return handleResponse(response, method);
     } on SocketException {
@@ -99,6 +99,12 @@ class ApiService {
     }
   }
 
+  /// Giới hạn log body nếu quá dài
+  String _shorten(String body, {int maxLength = 500}) {
+    if (body.length <= maxLength) return body;
+    return '${body.substring(0, maxLength)}... (truncated)';
+  }
+
   /// Encode body phù hợp: Map, List, String hoặc null
   String? _encodeBody(dynamic body) {
     if (body == null) return null;
@@ -108,13 +114,11 @@ class ApiService {
 
   dynamic handleResponse(http.Response response, ApiMethod method) {
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      if (response.body.isEmpty) {
-        return response.statusCode; // trả về status nếu không có body
-      }
+      if (response.body.isEmpty) return response.statusCode;
       try {
-        return jsonDecode(response.body); // Map hoặc List
+        return jsonDecode(response.body);
       } catch (_) {
-        return response.body; // fallback raw string
+        return response.body;
       }
     } else {
       String errorMessage = "Unknown error";
@@ -137,11 +141,14 @@ class ApiService {
           }
         }
       } catch (_) {
-        errorMessage = response.body; // fallback nếu không parse được
+        errorMessage = response.body;
       }
 
+      debugPrint('❌ API ERROR: $errorMessage');
+
       throw ServerException(
-        err: '$method failed: ${response.statusCode} - $errorMessage',
+        // err: '$method failed: ${response.statusCode} - $errorMessage',
+        err: 'Lỗi: $errorMessage',
         type: ServerExceptionType.api,
       );
     }

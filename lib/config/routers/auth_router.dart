@@ -6,6 +6,7 @@ import 'package:job_connect/features/auth/screens/forgot_password_screen.dart';
 import 'package:job_connect/features/auth/screens/login_screen.dart';
 import 'package:job_connect/features/auth/screens/register_screen.dart';
 import 'package:job_connect/features/auth/screens/reset_password_screen.dart';
+import 'package:job_connect/features/auth/screens/role_selection_screen.dart';
 
 class AuthRouter {
   AuthRouter._();
@@ -16,14 +17,27 @@ class AuthRouter {
         buildPageWithSlideTransition(SizedBox(), state),
     routes: [
       GoRoute(
+        path: 'role',
+        pageBuilder: (context, state) => buildPageWithSlideTransition(RoleSelectionScreen(), state)
+      ),
+      
+      GoRoute(
         path: 'login',
-        pageBuilder: (context, state) =>
-            buildPageWithSlideTransition(LoginScreen(), state),
+        pageBuilder: (context, state) {
+          final extraData = state.extra as Map<String, dynamic>;
+          final role = extraData['role'] ?? '';
+          return buildPageWithSlideTransition(
+            LoginScreen(
+              role: role
+            ), 
+            state
+          );
+        }
+            
       ),
       GoRoute(
         path: 'signup',
-        pageBuilder: (context, state) =>
-            buildPageWithSlideTransition(RegisterScreen(), state),
+        pageBuilder: (context, state) =>buildPageWithSlideTransition(RegisterScreen(), state),
       ),
       GoRoute(
         path: 'enter-otp',
@@ -31,10 +45,12 @@ class AuthRouter {
           final extraData = state.extra is Map<String, dynamic>
               ? state.extra as Map<String, dynamic>
               : {};
+          final title = extraData['title'] ?? '';
+          final email = extraData['email'] ?? '';
           return buildPageWithSlideTransition(
             EnterOtpPage(
-              title: extraData['title'] ?? '',
-              email: extraData['email'] ?? '',
+              title: title,
+              email: email,
             ),
             state,
           );

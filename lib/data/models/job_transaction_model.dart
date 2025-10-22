@@ -1,4 +1,4 @@
-class JobTransaction {
+class JobTransactionModel {
   final String idTransaction;
   final String idUser;
   final String idPackage;
@@ -7,7 +7,7 @@ class JobTransaction {
   final DateTime transactionDate;
   final String? status;
 
-  JobTransaction({
+  JobTransactionModel({
     required this.idTransaction,
     required this.idUser,
     required this.idPackage,
@@ -17,25 +17,47 @@ class JobTransaction {
     this.status,
   });
 
-  factory JobTransaction.fromJson(Map<String, dynamic> json) {
-    return JobTransaction(
-      idTransaction: json['idTransaction'] as String,
-      idUser: json['idUser'] as String,
-      idPackage: json['idPackage'] as String,
-      amount: (json['amount'] as num).toDouble(),
-      paymentMethod: json['paymentMethod'] as String?,
-      transactionDate: DateTime.parse(json['transactionDate'] as String),
-      status: json['status'] as String?,
+  factory JobTransactionModel.fromJson(Map<String, dynamic> json) =>
+      JobTransactionModel(
+        idTransaction: json['idTransaction'],
+        idUser: json['idUser'],
+        idPackage: json['idPackage'],
+        amount: (json['amount'] as num).toDouble(),
+        paymentMethod: json['paymentMethod'],
+        transactionDate: DateTime.parse(json['transactionDate']),
+        status: json['status'],
+      );
+
+  Map<String, dynamic> toJson() => {
+        'idTransaction': idTransaction,
+        'idUser': idUser,
+        'idPackage': idPackage,
+        'amount': amount,
+        'paymentMethod': paymentMethod,
+        'transactionDate': transactionDate.toIso8601String(),
+        'status': status,
+      };
+
+  JobTransactionModel copyWith({
+    String? idTransaction,
+    String? idUser,
+    String? idPackage,
+    double? amount,
+    String? paymentMethod,
+    DateTime? transactionDate,
+    String? status,
+  }) {
+    return JobTransactionModel(
+      idTransaction: idTransaction ?? this.idTransaction,
+      idUser: idUser ?? this.idUser,
+      idPackage: idPackage ?? this.idPackage,
+      amount: amount ?? this.amount,
+      paymentMethod: paymentMethod ?? this.paymentMethod,
+      transactionDate: transactionDate ?? this.transactionDate,
+      status: status ?? this.status,
     );
   }
 
-  Map<String, dynamic> toJson() => {
-    'idTransaction': idTransaction,
-    'idUser': idUser,
-    'idPackage': idPackage,
-    'amount': amount,
-    'paymentMethod': paymentMethod,
-    'transactionDate': transactionDate.toIso8601String(),
-    'status': status,
-  };
+  @override
+  String toString() => 'JobTransactionModel($idTransaction - $amount)';
 }

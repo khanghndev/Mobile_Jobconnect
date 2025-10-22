@@ -1,6 +1,6 @@
-import 'company_model.dart';
+import 'package:job_connect/features/company/model/company_model.dart';
 
-class JobPosting {
+class JobPostingModel {
   final String idJobPost;
   final String title;
   final String description;
@@ -18,9 +18,9 @@ class JobPosting {
   final DateTime updatedAt;
   final String postStatus;
   final int isFeatured;
-  final Company company;
+  final CompanyModel? company;
 
-  JobPosting({
+  JobPostingModel({
     required this.idJobPost,
     required this.title,
     required this.description,
@@ -38,62 +38,97 @@ class JobPosting {
     required this.updatedAt,
     required this.postStatus,
     required this.isFeatured,
-    required this.company,
+    this.company,
   });
 
-  factory JobPosting.fromJson(Map<String, dynamic> json) {
-    return JobPosting(
-      idJobPost: json['idJobPost'],
-      title: json['title'],
-      description: json['description'],
-      requirements: json['requirements'],
-      salary:
-          (json['salary'] != null) ? (json['salary'] as num).toDouble() : null,
-      location: json['location'] as String? ?? '',
-      latitude: (json['latitude'] as num?)?.toDouble(),
-      longitude: (json['longitude'] as num?)?.toDouble(),
-      workType: json['workType'],
-      experienceLevel: json['experienceLevel'],
-      idCompany: json['idCompany'],
-      applicationDeadline:
-          json['applicationDeadline'] != null
-              ? DateTime.parse(json['applicationDeadline'])
-              : null,
-      benefits: json['benefits'],
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
-      postStatus: json['postStatus'],
-      isFeatured: json['isFeatured'] ?? 0,
-      company: Company.fromJson(json['company']),
+  factory JobPostingModel.fromJson(Map<String, dynamic> json) =>
+      JobPostingModel(
+        idJobPost: json['idJobPost'],
+        title: json['title'],
+        description: json['description'],
+        requirements: json['requirements'],
+        salary:
+            (json['salary'] != null) ? (json['salary'] as num).toDouble() : null,
+        location: json['location'] as String? ?? '',
+        latitude: (json['latitude'] as num?)?.toDouble(),
+        longitude: (json['longitude'] as num?)?.toDouble(),
+        workType: json['workType'],
+        experienceLevel: json['experienceLevel'],
+        idCompany: json['idCompany'],
+        applicationDeadline: json['applicationDeadline'] != null
+            ? DateTime.parse(json['applicationDeadline'])
+            : null,
+        benefits: json['benefits'],
+        createdAt: DateTime.parse(json['createdAt']),
+        updatedAt: DateTime.parse(json['updatedAt']),
+        postStatus: json['postStatus'],
+        isFeatured: json['isFeatured'] ?? 0,
+        company: CompanyModel.fromJson(json['company']),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'idJobPost': idJobPost,
+        'title': title,
+        'description': description,
+        'requirements': requirements,
+        'salary': salary,
+        'location': location,
+        'latitude': latitude,
+        'longitude': longitude,
+        'workType': workType,
+        'experienceLevel': experienceLevel,
+        'idCompany': idCompany,
+        'applicationDeadline': applicationDeadline?.toIso8601String(),
+        'benefits': benefits,
+        'createdAt': createdAt.toIso8601String(),
+        'updatedAt': updatedAt.toIso8601String(),
+        'postStatus': postStatus,
+        'isFeatured': isFeatured,
+        'company': company?.toJson(),
+      };
+
+  JobPostingModel copyWith({
+    String? idJobPost,
+    String? title,
+    String? description,
+    String? requirements,
+    double? salary,
+    String? location,
+    double? latitude,
+    double? longitude,
+    String? workType,
+    String? experienceLevel,
+    String? idCompany,
+    DateTime? applicationDeadline,
+    String? benefits,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? postStatus,
+    int? isFeatured,
+    CompanyModel? company,
+  }) {
+    return JobPostingModel(
+      idJobPost: idJobPost ?? this.idJobPost,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      requirements: requirements ?? this.requirements,
+      salary: salary ?? this.salary,
+      location: location ?? this.location,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+      workType: workType ?? this.workType,
+      experienceLevel: experienceLevel ?? this.experienceLevel,
+      idCompany: idCompany ?? this.idCompany,
+      applicationDeadline: applicationDeadline ?? this.applicationDeadline,
+      benefits: benefits ?? this.benefits,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      postStatus: postStatus ?? this.postStatus,
+      isFeatured: isFeatured ?? this.isFeatured,
+      company: company ?? this.company,
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'idJobPost': idJobPost,
-      'title': title,
-      'description': description,
-      'requirements': requirements,
-      'salary': salary,
-      'location': location,
-      'latitude': latitude,
-      'longitude': longitude,
-      'workType': workType,
-      'experienceLevel': experienceLevel,
-      'idCompany': idCompany,
-      'applicationDeadline': applicationDeadline?.toIso8601String(),
-      'benefits': benefits,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
-      'postStatus': postStatus,
-      'isFeatured': isFeatured,
-      'company': company.toJson(),
-    };
-  }
-
   @override
-  String toString() {
-    return 'JobPosting(idJobPost: $idJobPost, title: $title, description: $description, requirements: $requirements, salary: $salary, location: $location, latitude: $latitude, longitude: $longitude, workType: $workType, experienceLevel: $experienceLevel, ' +
-        'idCompany: $idCompany, applicationDeadline: $applicationDeadline, benefits: $benefits, createdAt: $createdAt, updatedAt: $updatedAt, postStatus: $postStatus, isFeatured: $isFeatured, company: $company)';
-  }
+  String toString() => 'JobPostingModel($idJobPost - $title)';
 }

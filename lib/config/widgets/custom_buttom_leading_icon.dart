@@ -10,6 +10,7 @@ class CustomButtomLeadingIcon extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
   final bool hasBorder;
+  final double? width;
 
   const CustomButtomLeadingIcon({
     super.key,
@@ -19,14 +20,15 @@ class CustomButtomLeadingIcon extends StatelessWidget {
     required this.textColor,
     required this.icon,
     required this.iconColor,
-    this.hasBorder = false,
+    this.hasBorder = false, 
+    this.width,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
-      height: 50.h, // scale height
+      width: width ?? double.infinity,
+      height: 50.h, 
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(

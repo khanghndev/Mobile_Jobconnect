@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GooeyFABMenu extends StatefulWidget {
   final List<GooeyFABItem> items;
@@ -12,14 +13,14 @@ class GooeyFABMenu extends StatefulWidget {
 
 class _GooeyFABMenuState extends State<GooeyFABMenu>
     with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
+  late final AnimationController _controller;
   bool _isOpen = false;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 500));
+    _controller =
+        AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
   }
 
   void _toggleMenu() {
@@ -28,9 +29,7 @@ class _GooeyFABMenuState extends State<GooeyFABMenu>
     } else {
       _controller.forward();
     }
-    setState(() {
-      _isOpen = !_isOpen;
-    });
+    setState(() => _isOpen = !_isOpen);
   }
 
   @override
@@ -49,7 +48,6 @@ class _GooeyFABMenuState extends State<GooeyFABMenu>
           final double angle = 90 / (widget.items.length - 1) * index;
           final double rad = angle * pi / 180;
 
-          // delay cho từng nút để bung ra lần lượt
           final intervalStart = index * 0.1;
           final intervalEnd = intervalStart + 0.4;
 
@@ -72,7 +70,7 @@ class _GooeyFABMenuState extends State<GooeyFABMenu>
                   child: Opacity(
                     opacity: animation.value.clamp(0.0, 1.0),
                     child: FloatingActionButton(
-                      heroTag: null,
+                      heroTag: null, 
                       mini: true,
                       backgroundColor: item.color,
                       onPressed: () {
@@ -87,10 +85,13 @@ class _GooeyFABMenuState extends State<GooeyFABMenu>
             },
           );
         }),
+
+        // FAB chính
         Positioned(
-          right: 20,
-          bottom: 20,
+          right: 20.w,
+          bottom: 20.h,
           child: FloatingActionButton(
+            heroTag: 'gooey_main_fab', 
             backgroundColor: Colors.orange,
             onPressed: _toggleMenu,
             child: Icon(_isOpen ? Icons.close : Icons.menu),

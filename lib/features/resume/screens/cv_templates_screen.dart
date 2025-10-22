@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'create_cv_screen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:job_connect/config/constant/app_images.dart';
+import 'package:job_connect/config/widgets/custom_appbar_title_large.dart';
+import 'package:job_connect/features/resume/widgets/cv_templates/template_card.dart';
 
 class CVTemplate {
   final String id;
@@ -30,7 +34,7 @@ class _CVTemplatesScreenState extends State<CVTemplatesScreen> {
     CVTemplate(
       id: 'professional',
       name: 'Professional',
-      imageUrl: 'assets/images/cv_templates/professional.png',
+      imageUrl: AppImages.logoApp,
       description: 'Mẫu CV chuyên nghiệp, phù hợp cho các vị trí công nghệ',
       sections: {
         'personal_info': true,
@@ -46,7 +50,7 @@ class _CVTemplatesScreenState extends State<CVTemplatesScreen> {
     CVTemplate(
       id: 'creative',
       name: 'Creative',
-      imageUrl: 'assets/images/cv_templates/creative.png',
+      imageUrl: AppImages.logoApp,
       description: 'Mẫu CV sáng tạo, phù hợp cho các vị trí thiết kế',
       sections: {
         'personal_info': true,
@@ -62,7 +66,7 @@ class _CVTemplatesScreenState extends State<CVTemplatesScreen> {
     CVTemplate(
       id: 'minimal',
       name: 'Minimal',
-      imageUrl: 'assets/images/cv_templates/minimal.png',
+      imageUrl: AppImages.logoApp,
       description: 'Mẫu CV tối giản, tập trung vào nội dung',
       sections: {
         'personal_info': true,
@@ -78,26 +82,31 @@ class _CVTemplatesScreenState extends State<CVTemplatesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Chọn mẫu CV'), centerTitle: true),
+      appBar: const CustomAppbarTitleLarge(title: "Chọn mẫu CV"),
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(16.w),
             child: Text(
               'Chọn mẫu CV phù hợp với bạn',
-              style: Theme.of(context).textTheme.titleLarge,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontSize: 20.sp,
+                  ),
             ),
           ),
           Expanded(
             child: MasonryGridView.count(
-              crossAxisCount: 2,
-              mainAxisSpacing: 16,
-              crossAxisSpacing: 16,
-              padding: const EdgeInsets.all(16),
+              crossAxisCount: 1,
+              mainAxisSpacing: 16.h,
+              crossAxisSpacing: 16.w,
+              padding: EdgeInsets.all(16.w),
               itemCount: _templates.length,
               itemBuilder: (context, index) {
                 final template = _templates[index];
-                return _buildTemplateCard(template);
+                return TemplateCard(
+                  template: template,
+                  onSelected: () => _onOpenCreateCV(template),
+                );
               },
             ),
           ),
@@ -106,76 +115,10 @@ class _CVTemplatesScreenState extends State<CVTemplatesScreen> {
     );
   }
 
-  Widget _buildTemplateCard(CVTemplate template) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: InkWell(
-        onTap: () => _onTemplateSelected(template),
-        borderRadius: BorderRadius.circular(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(12),
-              ),
-              child: Image.asset(
-                template.imageUrl,
-                height: 200,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    height: 200,
-                    color: Colors.grey[200],
-                    child: const Center(
-                      child: Icon(Icons.image_not_supported, size: 50),
-                    ),
-                  );
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    template.name,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    template.description,
-                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-                  ),
-                  const SizedBox(height: 12),
-                  ElevatedButton(
-                    onPressed: () => _onTemplateSelected(template),
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 40),
-                    ),
-                    child: const Text('Sử dụng mẫu này'),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _onTemplateSelected(CVTemplate template) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CreateCVScreen(template: template),
-      ),
+  void _onOpenCreateCV(CVTemplate template) {
+    context.push(
+      '/resume/create',
+      extra: {'template': template},
     );
   }
 }

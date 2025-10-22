@@ -43,7 +43,7 @@ class CustomPassField extends StatelessWidget {
       suffixIcon: CustomAdaptiveTapEffect(
         onPressed: () {},
         child: Icon(
-         true ? Icons.visibility : Icons.visibility_off,
+         showPrefixIcon ? Icons.visibility : Icons.visibility_off,
           color: IconColors.iconDefaultSecondary,
           size: 22.sp,
         ),

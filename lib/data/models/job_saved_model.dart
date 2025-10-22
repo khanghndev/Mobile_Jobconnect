@@ -1,15 +1,32 @@
-class JobSaved {
+class JobSavedModel {
   final String idJobPost;
   final String idUser;
 
-  JobSaved({required this.idJobPost, required this.idUser});
+  JobSavedModel({
+    required this.idJobPost,
+    required this.idUser,
+  });
 
-  factory JobSaved.fromJson(Map<String, dynamic> json) {
-    return JobSaved(
-      idJobPost: json['idJobPost'] as String,
-      idUser: json['idUser'] as String,
+  factory JobSavedModel.fromJson(Map<String, dynamic> json) => JobSavedModel(
+        idJobPost: json['idJobPost'],
+        idUser: json['idUser'],
+      );
+
+  Map<String, dynamic> toJson() => {
+        'idJobPost': idJobPost,
+        'idUser': idUser,
+      };
+
+  JobSavedModel copyWith({
+    String? idJobPost,
+    String? idUser,
+  }) {
+    return JobSavedModel(
+      idJobPost: idJobPost ?? this.idJobPost,
+      idUser: idUser ?? this.idUser,
     );
   }
 
-  Map<String, dynamic> toJson() => {'idJobPost': idJobPost, 'idUser': idUser};
+  @override
+  String toString() => 'JobSavedModel($idJobPost - $idUser)';
 }

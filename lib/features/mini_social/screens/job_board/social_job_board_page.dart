@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/constant/app_colors.dart';
-import 'package:job_connect/config/utils/custom_search_add.dart';
+import 'package:job_connect/config/utils/image_url.dart';
+import 'package:job_connect/config/widgets/custom_search_add.dart';
 import 'package:job_connect/config/utils/get_adaptive_back_icon.dart';
-import 'package:job_connect/config/widgets/custom_adaptive_button.dart';
 import 'package:job_connect/config/widgets/custom_adaptive_tap_effect.dart';
 import 'package:job_connect/config/widgets/custom_appbar.dart';
 import 'package:job_connect/features/mini_social/screens/job_board/social_job_board_detail_page.dart';
@@ -262,7 +262,7 @@ class _JobBoardPageState extends State<JobBoardPage> {
                                 children: [
                                   CircleAvatar(
                                     radius: 10.r,
-                                    backgroundImage: const NetworkImage(
+                                    backgroundImage: ImageUtils.getImageProvider(
                                       'https://i.pravatar.cc/100',
                                     ),
                                   ),

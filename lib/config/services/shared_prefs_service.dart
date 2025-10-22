@@ -19,7 +19,7 @@ class SharedPrefsService {
   }
 
   // Clear
-  void clearLocalData() => _prefs.clear();
+  Future<void> clearLocalData() => _prefs.clear();
 
   // Delete value
   Future<void> remove(SharedPrefsKey key) async {

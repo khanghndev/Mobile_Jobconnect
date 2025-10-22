@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:job_connect/config/utils/image_url.dart';
 
 class ShareBottomSheet extends StatefulWidget {
   final List<Map<String, String>> initialUsers;
@@ -107,7 +108,7 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
                       // Avatar
                       CircleAvatar(
                         radius: 26.r,
-                        backgroundImage: NetworkImage(user['avatar']!),
+                        backgroundImage: ImageUtils.getImageProvider(user['avatar']!),
                       ),
                       SizedBox(width: 14.w),
 

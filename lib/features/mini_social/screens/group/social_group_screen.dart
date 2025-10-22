@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:job_connect/config/utils/image_url.dart';
 import 'package:job_connect/features/mini_social/widgets/social_feed/post_item.dart';
 import 'package:job_connect/config/widgets/reusable_bottom_sheet.dart';
 
@@ -248,7 +249,7 @@ class _GroupScreenState extends State<GroupScreen> {
                       GestureDetector(
                         onTap: () => context.push('/profile'),
                         child: CircleAvatar(
-                          backgroundImage:NetworkImage("https://i.pravatar.cc/150?img=15"),
+                          backgroundImage:ImageUtils.getImageProvider("https://i.pravatar.cc/150?img=15"),
                           radius: 20,
                         ),
                       ),

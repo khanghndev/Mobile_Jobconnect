@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/constant/app_colors.dart';
 import 'package:job_connect/config/constant/app_images.dart';
-import 'package:job_connect/config/utils/get_adaptive_back_icon.dart';
 import 'package:job_connect/config/widgets/custom_primary_button.dart';
 import 'package:job_connect/features/auth/screens/forgot_password_screen.dart';
 import 'package:job_connect/features/auth/screens/register_screen.dart';
@@ -38,19 +38,20 @@ class LoginForm extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: IconButton(
-                icon: Icon(
-                  getAdaptiveBackIcon(context),
-                  color: IconColors.iconBrandPrimary,
-                  size: 22.sp,
-                ),
-                onPressed: onBack,
-              ),
-            ),
+            // Align(
+            //   alignment: Alignment.topLeft,
+            //   child: IconButton(
+            //     icon: Icon(
+            //       getAdaptiveBackIcon(context),
+            //       color: IconColors.iconBrandPrimary,
+            //       size: 22.sp,
+            //     ),
+            //     onPressed: onBack,
+            //   ),
+            // ),
 
-            // Logo
+            SizedBox(height: 8.h,),
+            // Logo   
             Container(
               decoration: BoxDecoration(
                 color: BackgroundColors.backgroundDefaultPrimary,
@@ -65,7 +66,7 @@ class LoginForm extends StatelessWidget {
               ),
               child: ClipOval(
                 child: Image.asset(
-                  AppImages.logo,
+                  AppImages.logoApp,
                   width: 120.w,
                   height: 120.w,
                   fit: BoxFit.cover,
@@ -250,20 +251,10 @@ class LoginForm extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (context, animation, secondaryAnimation) =>
-                            const RegisterScreen(),
-                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                          return FadeTransition(opacity: animation, child: child);
-                        },
-                        transitionDuration: const Duration(milliseconds: 800),
-                      ),
-                    );
+                    context.push('/auth/signup');
                   },
                   child: Text(
-                    '  Đăng ký ngay',
+                    '  Đăng ký',
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w600,

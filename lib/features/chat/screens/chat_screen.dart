@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:job_connect/config/constant/api_constants.dart';
-import 'package:job_connect/data/models/account_model.dart';
+import 'package:job_connect/features/profile/model/user_model.dart';
 import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/features/chat/screens/chat_detail_screen.dart';
 //import 'package:intl/intl.dart'; // Thêm package để định dạng thời gian
@@ -85,7 +85,7 @@ class ChatPage extends State<ChatScreen> {
 
   List<Map<String, dynamic>> _filteredChats = [];
 
-  Account? _account;
+  UserModel? _account;
   bool _isLoading = true;
 
   @override
@@ -210,7 +210,7 @@ class ChatPage extends State<ChatScreen> {
       if (data.isNotEmpty) {
         if (mounted) {
           setState(() {
-            _account = Account.fromJson(data.first);
+            _account = UserModel.fromJson(data.first);
           });
         }
       } else {

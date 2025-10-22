@@ -10,6 +10,8 @@ class CustomPrimaryButton extends StatelessWidget {
   final Color? disabledColor;
   final double height;
   final double borderRadius;
+  final Color? textColor;
+  final double? width;
 
   const CustomPrimaryButton({
     super.key,
@@ -20,14 +22,16 @@ class CustomPrimaryButton extends StatelessWidget {
     this.foregroundColor,
     this.disabledColor,
     this.height = 55,
-    this.borderRadius = 16,
+    this.borderRadius = 16, 
+    this.textColor,
+    this.width
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: double.infinity,
-      height: height.h,
+      width: width ?? double.infinity,
+      height: height,
       child: ElevatedButton(
         onPressed: isLoading ? null : onPressed,
         style: ElevatedButton.styleFrom(
@@ -53,7 +57,7 @@ class CustomPrimaryButton extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
-                color: foregroundColor,
+                color: textColor ?? Colors.white,
               ),
             ),
       ),

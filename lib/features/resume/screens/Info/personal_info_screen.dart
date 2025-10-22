@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:job_connect/features/resume/screens/Info/work_experience_screen.dart';
-import 'work_experience_screen.dart';
 
 class PersonalInfoScreen extends StatefulWidget {
   final bool isAIGenerated;

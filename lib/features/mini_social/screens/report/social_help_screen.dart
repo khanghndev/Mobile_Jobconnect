@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:job_connect/config/constant/app_strings.dart';
 
 class HelpScreen extends StatelessWidget {
   const HelpScreen({super.key});
@@ -110,7 +111,7 @@ class HelpScreen extends StatelessWidget {
   Widget _buildFAQSection(BuildContext context) {
     final List<Map<String, String>> faqItems = [
       {
-        'question': 'Làm sao để tạo tài khoản trên JobSocial?',
+        'question': 'Làm sao để tạo tài khoản trên ${AppStrings.appName}?',
         'answer':
             'Bạn có thể tạo tài khoản bằng cách:\n1. Chọn "Đăng ký"\n2. Điền email hoặc đăng nhập bằng Google/Facebook\n3. Tạo mật khẩu an toàn\n4. Nhấn "Hoàn tất" để sử dụng ứng dụng',
       },
@@ -127,7 +128,7 @@ class HelpScreen extends StatelessWidget {
       {
         'question': 'Ứng dụng có thu phí khi ứng tuyển không?',
         'answer':
-            'Ứng dụng JobSocial hoàn toàn miễn phí cho ứng viên khi tạo hồ sơ và ứng tuyển.\nMột số tính năng cao cấp (như làm nổi bật hồ sơ) có thể yêu cầu trả phí.',
+            'Ứng dụng ${AppStrings.appName} hoàn toàn miễn phí cho ứng viên khi tạo hồ sơ và ứng tuyển.\nMột số tính năng cao cấp (như làm nổi bật hồ sơ) có thể yêu cầu trả phí.',
       },
       {
         'question': 'Tôi quên mật khẩu thì làm thế nào?',
@@ -202,7 +203,7 @@ class HelpScreen extends StatelessWidget {
               context: context,
               icon: Icons.email_rounded,
               title: 'Email hỗ trợ',
-              subtitle: 'support@jobsocial.com',
+              subtitle: 'support@${AppStrings.appName}.com',
               color: Colors.blue,
               onTap: () {},
             ),
@@ -296,7 +297,7 @@ class HelpScreen extends StatelessWidget {
         onPressed: () {},
         icon: const Icon(Icons.rate_review_rounded),
         label: const Text(
-          'Gửi phản hồi cho JobSocial',
+          'Gửi phản hồi cho ${AppStrings.appName}',
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
         style: ElevatedButton.styleFrom(

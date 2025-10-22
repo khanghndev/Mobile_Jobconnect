@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // For SystemUiOverlayStyle
+import 'package:flutter/services.dart';
 import 'package:job_connect/data/models/job_application_model.dart';
 import 'package:job_connect/config/utils/format.dart';
 import 'package:job_connect/config/utils/status_helper.dart';
-// Giả sử bạn có ApiService và ApiConstants để gọi API hủy
-import 'package:job_connect/config/services/api_service.dart';
-import 'package:job_connect/config/constant/api_constants.dart';
-import 'package:job_connect/features/file/screens/file_viewer_screen.dart';
-// import 'package:job_connect/features/file/file_viewer_screen.dart';
+import 'package:job_connect/features/resume/screens/file_viewer_screen.dart';
 
 class JobApplicationDetailScreen extends StatefulWidget {
   // Chuyển thành StatefulWidget
-  final JobApplication jobApplication;
+  final JobApplicationModel jobApplication;
 
   const JobApplicationDetailScreen({super.key, required this.jobApplication});
 
@@ -22,10 +18,9 @@ class JobApplicationDetailScreen extends StatefulWidget {
 
 class _JobApplicationDetailScreenState
     extends State<JobApplicationDetailScreen> {
-  late JobApplication
+  late JobApplicationModel
   _currentJobApplication; // Để có thể cập nhật trạng thái sau khi hủy
   bool _isCancelling = false; // Cờ để theo dõi trạng thái hủy
-  final ApiService _apiService = ApiService( );
 
   @override
   void initState() {
@@ -382,9 +377,9 @@ class _JobApplicationDetailScreenState
     final company = jobPosting.company;
 
     Widget logoWidget;
-    final String? effectiveLogoCompany = company.logoCompany;
+    final String? effectiveLogoCompany = company?.logoCompany;
     final String companyNameForPlaceholder =
-        company.companyName.isNotEmpty
+        company!.companyName.isNotEmpty
             ? company.companyName[0].toUpperCase()
             : 'C';
 

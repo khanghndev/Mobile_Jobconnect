@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/constant/app_colors.dart';
-import 'package:job_connect/config/enum/reset_method.dart';
+import 'package:job_connect/config/enum/user_role.dart';
 import 'package:job_connect/config/utils/get_adaptive_back_icon.dart';
 import 'package:job_connect/config/utils/snackbar_app.dart';
 import 'package:job_connect/config/widgets/custom_adaptive_tap_effect.dart';
@@ -50,7 +50,7 @@ class _EnterOtpPageState extends State<EnterOtpPage> {
         context,
         title: "Thành công",
         message: 'Mã OTP đã được gửi lại',
-        backgroudColor: BackgroundColors.backgroundSuccessPrimary,
+        backgroundColor: BackgroundColors.backgroundSuccessPrimary,
       );
       // TODO: gọi API gửi lại OTP ở đây nếu cần
     }
@@ -92,11 +92,11 @@ class _EnterOtpPageState extends State<EnterOtpPage> {
           context,
           title: "Thành công",
           message: '${widget.title} thành công',
-          backgroudColor: BackgroundColors.backgroundSuccessPrimary,
+          backgroundColor: BackgroundColors.backgroundSuccessPrimary,
         );
         Navigator.push(
           context, 
-          MaterialPageRoute(builder: (context) => LoginScreen()),
+          MaterialPageRoute(builder: (context) => LoginScreen(role: UserRole.candidate.name)),
         );
       }
     } else {

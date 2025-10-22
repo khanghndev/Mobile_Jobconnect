@@ -1,1 +1,1 @@
-enum UserRole { candidate, employer }
+enum UserRole { candidate, recruiter, guest }

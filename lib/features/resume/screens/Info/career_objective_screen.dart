@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:job_connect/features/resume/screens/Info/additional_info_screen.dart';
 import 'package:job_connect/features/resume/screens/Info/education_screen.dart';
-import 'package:job_connect/features/resume/screens/Info/work_experience_screen.dart';
 
 class CareerObjectiveScreen extends StatefulWidget {
   final Map<String, dynamic> personalInfo;

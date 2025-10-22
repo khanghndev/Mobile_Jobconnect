@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:job_connect/config/utils/image_url.dart';
 
 class UserInfoModel {
   final String avatarUrl;
@@ -36,7 +37,7 @@ class CreatePostInput extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 20,
-              backgroundImage: NetworkImage(user.avatarUrl),
+              backgroundImage: ImageUtils.getImageProvider(user.avatarUrl),
             ),
             const SizedBox(width: 12),
             Expanded(

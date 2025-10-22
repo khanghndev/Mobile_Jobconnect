@@ -241,8 +241,8 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen>
   City? _currentCity;
   // bool _isRenderingMarkers = false; // Đã tích hợp vào _isLoading
   final ApiService _apiService = ApiService( );
-  List<JobPosting> _allFetchedJobs = [];
-  List<JobPosting> _jobsInView =
+  List<JobPostingModel> _allFetchedJobs = [];
+  List<JobPostingModel> _jobsInView =
       []; // Jobs hiển thị trong DraggableScrollableSheet, được lọc theo map bounds
 
   final TextEditingController _searchLocationController =
@@ -282,164 +282,6 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen>
     _sheetAnimationController.dispose();
     _cameraIdleDebounce?.cancel();
     super.dispose();
-  }
-
-  String _removeDiacritics(String input) {
-    final diacriticsMap = {
-      'á': 'a',
-      'à': 'a',
-      'ả': 'a',
-      'ã': 'a',
-      'ạ': 'a',
-      'ă': 'a',
-      'ắ': 'a',
-      'ằ': 'a',
-      'ẳ': 'a',
-      'ẵ': 'a',
-      'ặ': 'a',
-      'â': 'a',
-      'ấ': 'a',
-      'ầ': 'a',
-      'ẩ': 'a',
-      'ẫ': 'a',
-      'ậ': 'a',
-      'é': 'e',
-      'è': 'e',
-      'ẻ': 'e',
-      'ẽ': 'e',
-      'ẹ': 'e',
-      'ê': 'e',
-      'ế': 'e',
-      'ề': 'e',
-      'ể': 'e',
-      'ễ': 'e',
-      'ệ': 'e',
-      'í': 'i',
-      'ì': 'i',
-      'ỉ': 'i',
-      'ĩ': 'i',
-      'ị': 'i',
-      'ó': 'o',
-      'ò': 'o',
-      'ỏ': 'o',
-      'õ': 'o',
-      'ọ': 'o',
-      'ô': 'o',
-      'ố': 'o',
-      'ồ': 'o',
-      'ổ': 'o',
-      'ỗ': 'o',
-      'ộ': 'o',
-      'ơ': 'o',
-      'ớ': 'o',
-      'ờ': 'o',
-      'ở': 'o',
-      'ỡ': 'o',
-      'ợ': 'o',
-      'ú': 'u',
-      'ù': 'u',
-      'ủ': 'u',
-      'ũ': 'u',
-      'ụ': 'u',
-      'ư': 'u',
-      'ứ': 'u',
-      'ừ': 'u',
-      'ử': 'u',
-      'ữ': 'u',
-      'ự': 'u',
-      'ý': 'y',
-      'ỳ': 'y',
-      'ỷ': 'y',
-      'ỹ': 'y',
-      'ỵ': 'y',
-      'đ': 'd',
-      'Á': 'A',
-      'À': 'A',
-      'Ả': 'A',
-      'Ã': 'A',
-      'Ạ': 'A',
-      'Ă': 'A',
-      'Ắ': 'A',
-      'Ằ': 'A',
-      'Ẳ': 'A',
-      'Ẵ': 'A',
-      'Ặ': 'A',
-      'Â': 'A',
-      'Ấ': 'A',
-      'Ầ': 'A',
-      'Ẩ': 'A',
-      'Ẫ': 'A',
-      'Ậ': 'A',
-      'É': 'E',
-      'È': 'E',
-      'Ẻ': 'E',
-      'Ẽ': 'E',
-      'Ẹ': 'E',
-      'Ê': 'E',
-      'Ế': 'E',
-      'Ề': 'E',
-      'Ể': 'E',
-      'Ễ': 'E',
-      'Ệ': 'E',
-      'Í': 'I',
-      'Ì': 'I',
-      'Ỉ': 'I',
-      'Ĩ': 'I',
-      'Ị': 'I',
-      'Ó': 'O',
-      'Ò': 'O',
-      'Ỏ': 'O',
-      'Õ': 'O',
-      'Ọ': 'O',
-      'Ô': 'O',
-      'Ố': 'O',
-      'Ồ': 'O',
-      'Ổ': 'O',
-      'Ỗ': 'O',
-      'Ộ': 'O',
-      'Ơ': 'O',
-      'Ớ': 'O',
-      'Ờ': 'O',
-      'Ở': 'O',
-      'Ỡ': 'O',
-      'Ợ': 'O',
-      'Ú': 'U',
-      'Ù': 'U',
-      'Ủ': 'U',
-      'Ũ': 'U',
-      'Ụ': 'U',
-      'Ư': 'U',
-      'Ứ': 'U',
-      'Ừ': 'U',
-      'Ử': 'U',
-      'Ữ': 'U',
-      'Ự': 'U',
-      'Ý': 'Y',
-      'Ỳ': 'Y',
-      'Ỷ': 'Y',
-      'Ỹ': 'Y',
-      'Ỵ': 'Y',
-      'Đ': 'D',
-    };
-    return input.split('').map((char) => diacriticsMap[char] ?? char).join();
-  }
-
-  String _normalizeCityName(String cityName) {
-    if (cityName.isEmpty) return "";
-    String normalized = _removeDiacritics(cityName).trim();
-    normalized = normalized.replaceAll(
-      RegExp(r'^(Thành Phố|tp\.|t\.p\.|Tỉnh)\s*'),
-      '',
-    );
-    normalized = normalized.replaceAll(
-      RegExp(r'\s*(Thành phố|tp\.|t\.p\.|Tỉnh)$'),
-      '',
-    );
-    normalized = normalized.replaceAll(RegExp(r'^(City|Province)\s*'), '');
-    normalized = normalized.replaceAll(RegExp(r'\s*(City|Province)$'), '');
-    normalized = normalized.replaceAll(RegExp(r'\s*Thành phố\s*'), ' ');
-    normalized = normalized.replaceAll(RegExp(r'\s*Tỉnh\s*'), ' ');
-    return normalized.trim();
   }
 
   Future<void> _determinePositionAndCity() async {
@@ -509,7 +351,7 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen>
       );
       _allFetchedJobs.addAll(
         (responseData as List)
-            .map((job) => JobPosting.fromJson(job as Map<String, dynamic>))
+            .map((job) => JobPostingModel.fromJson(job as Map<String, dynamic>))
             .toList(),
       );
     } catch (e) {
@@ -701,7 +543,7 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen>
             icon: _jobMarkerIcon!, // Sử dụng custom icon
             infoWindow: InfoWindow(
               title: job.title,
-              snippet: '${job.company.companyName} - $salarySnippet',
+              snippet: '${job.company!.companyName} - $salarySnippet',
               onTap:
                   () => Navigator.push(
                     context,
@@ -709,7 +551,7 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen>
                       builder:
                           (context) => JobDetailScreen(
                             idUser: widget.idUser,
-                            idJobPost: job.idJobPost,
+                            jobPosting: job,
                           ),
                     ),
                   ),
@@ -810,7 +652,7 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen>
               SpinKitFadingCube(
                 color: theme.primaryColor,
                 size: 40.0,
-              ), // Loading indicator đẹp
+              ),
               const SizedBox(height: 20),
               Text(
                 "Đang xác định vị trí và tải việc làm...",
@@ -1270,7 +1112,7 @@ class City {
 
 // --- JobCard Widget (Cập nhật giao diện) ---
 class JobCard extends StatelessWidget {
-  final JobPosting jobPosting;
+  final JobPostingModel jobPosting;
   final String idUser;
 
   const JobCard({Key? key, required this.jobPosting, required this.idUser})
@@ -1279,10 +1121,9 @@ class JobCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDarkMode = theme.brightness == Brightness.dark;
     final companyInitial =
-        (jobPosting.company.companyName.isNotEmpty)
-            ? jobPosting.company.companyName[0].toUpperCase()
+        (jobPosting.company!.companyName.isNotEmpty)
+            ? jobPosting.company!.companyName[0].toUpperCase()
             : "C";
     final salaryText =
         (jobPosting.salary != null && jobPosting.salary! > 0)
@@ -1305,7 +1146,7 @@ class JobCard extends StatelessWidget {
                 builder:
                     (context) => JobDetailScreen(
                       idUser: idUser,
-                      idJobPost: jobPosting.idJobPost,
+                      jobPosting: jobPosting,
                     ),
               ),
             ),
@@ -1332,10 +1173,10 @@ class JobCard extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(11),
                   child:
-                      (jobPosting.company.logoCompany != null &&
-                              jobPosting.company.logoCompany!.isNotEmpty)
+                      (jobPosting.company!.logoCompany != null &&
+                              jobPosting.company!.logoCompany!.isNotEmpty)
                           ? Image.network(
-                            jobPosting.company.logoCompany!,
+                            jobPosting.company!.logoCompany!,
                             fit: BoxFit.contain,
                             errorBuilder:
                                 (c, e, s) => Center(
@@ -1376,7 +1217,7 @@ class JobCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      jobPosting.company.companyName,
+                      jobPosting.company!.companyName,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant.withValues(alpha:
                           0.85,

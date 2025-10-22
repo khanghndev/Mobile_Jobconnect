@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:job_connect/config/utils/image_url.dart';
 
 class SavedJobsScreen extends StatelessWidget {
-  const SavedJobsScreen({super.key});
+  final String idUser;
+  const SavedJobsScreen({super.key, required this.idUser});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class SavedJobsScreen extends StatelessWidget {
           salary: '15-25 triệu',
           type: 'Toàn thời gian',
           postedDate: '2 ngày trước',
-          logoUrl: 'https://via.placeholder.com/50',
+          logoUrl: '',
           isExpired: index == 2,
         );
       },
@@ -57,7 +59,7 @@ class SavedJobsScreen extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 24,
-                      backgroundImage: NetworkImage(logoUrl),
+                      backgroundImage: ImageUtils.getImageProvider(logoUrl),
                     ),
                     const SizedBox(width: 16),
                     Expanded(

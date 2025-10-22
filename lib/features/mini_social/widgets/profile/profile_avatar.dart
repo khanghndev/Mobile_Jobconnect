@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:job_connect/config/utils/image_url.dart';
 
-class ProfileAvatar extends StatelessWidget {
+class ProfileAMainAvatar extends StatelessWidget {
   final String imageUrl;
-  const ProfileAvatar({super.key, required this.imageUrl});
+  const ProfileAMainAvatar({super.key, required this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,7 @@ class ProfileAvatar extends StatelessWidget {
           ),
           child: CircleAvatar(
             radius: 50.r,
-            backgroundImage: NetworkImage(imageUrl),
+            backgroundImage: ImageUtils.getImageProvider(imageUrl),
           ),
         ),
         Positioned(

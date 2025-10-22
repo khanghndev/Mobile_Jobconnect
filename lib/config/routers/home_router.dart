@@ -1,12 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/navigation/app_navigation.dart';
-import 'package:job_connect/features/auth/screens/enter_otp_page.dart';
-import 'package:job_connect/features/auth/screens/forgot_password_screen.dart';
-import 'package:job_connect/features/auth/screens/login_screen.dart';
-import 'package:job_connect/features/auth/screens/register_screen.dart';
-import 'package:job_connect/features/auth/screens/reset_password_screen.dart';
+import 'package:job_connect/features/company/screens/company_screen.dart';
+import 'package:job_connect/features/home/screens/nearby_jobs_map_screen.dart';
+import 'package:job_connect/features/home/screens/podcast_screen.dart';
 import 'package:job_connect/features/navigation/screens/navigation_page.dart';
+import 'package:job_connect/features/search/screens/search_screen.dart';
 
 class HomeRouter {
   HomeRouter._();
@@ -17,7 +15,6 @@ class HomeRouter {
       final extraData = state.extra as Map<String, dynamic>;
       final isLoggedIn = extraData['isLoggedIn'];
       final idUser = extraData['idUser'];
-
       return buildPageWithSlideTransition(
         NavigationPage(
           isLoggedIn: isLoggedIn,
@@ -27,45 +24,65 @@ class HomeRouter {
       );
     },
     routes: [
+      // TODO: Trang công việc gần bạn
       GoRoute(
-        path: 'login',
-        pageBuilder: (context, state) =>
-            buildPageWithSlideTransition(LoginScreen(), state),
-      ),
-      GoRoute(
-        path: 'signup',
-        pageBuilder: (context, state) =>
-            buildPageWithSlideTransition(RegisterScreen(), state),
-      ),
-      GoRoute(
-        path: 'enter-otp',
+        path: 'near-job',
         pageBuilder: (context, state) {
-          final extraData = state.extra is Map<String, dynamic>
-              ? state.extra as Map<String, dynamic>
-              : {};
+          final extraData = state.extra as Map<String, dynamic>;
+          final isLoggedIn = extraData['isLoggedIn'];
+          final idUser = extraData['idUser'];
           return buildPageWithSlideTransition(
-            EnterOtpPage(
-              title: extraData['title'] ?? '',
-              email: extraData['email'] ?? '',
-            ),
-            state,
+            NearbyJobsMapScreen(
+              isLoggedIn: isLoggedIn,
+              idUser: idUser,
+            ), 
+            state
           );
         },
       ),
+
+      // TODO: Trang các doanh nghiệp
       GoRoute(
-        path: 'forgot-pass',
+        path: 'company',
         pageBuilder: (context, state) {
+          final extraData = state.extra as Map<String, dynamic>;
+          final idUser = extraData['idUser'];
           return buildPageWithSlideTransition(
-            ForgotPasswordScreen(),
-            state,
+            CompanyScreen(
+              idUser: idUser,
+            ), 
+            state
           );
         },
       ),
+
+      // TODO: Trang tìm kiếm công việc
       GoRoute(
-        path: 'reset-pass',
+        path: 'search',
+        pageBuilder: (context, state) {
+          final extraData = state.extra as Map<String, dynamic>;
+          final isLoggedIn = extraData['isLoggedIn'];
+          final idUser = extraData['idUser'];
+          final initialTabIndex = extraData['initialTabIndex'];
+          return buildPageWithSlideTransition(
+            SearchPage(
+              isLoggedIn: isLoggedIn,
+              idUser: idUser,
+              initialTabIndex: initialTabIndex
+            ), 
+          state
+          );
+        }
+      ),
+
+      // TODO: Trang podcast
+      GoRoute(
+        path: 'podcast',
         pageBuilder: (context, state) {
           return buildPageWithSlideTransition(
-              ResetPasswordScreen(), state);
+            PodcastScreen(),
+            state
+          );
         },
       ),
     ],

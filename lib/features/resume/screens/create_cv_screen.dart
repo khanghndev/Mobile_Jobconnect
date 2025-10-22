@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:job_connect/config/widgets/custom_appbar_title_large.dart';
 import 'cv_templates_screen.dart';
 
 class CreateCVScreen extends StatefulWidget {
@@ -21,14 +22,22 @@ class _CreateCVScreenState extends State<CreateCVScreen> {
     _initializeCVData();
   }
 
+
   void _initializeCVData() {
-    // Initialize CV data based on template sections
     widget.template.sections.forEach((key, value) {
       if (value == true) {
-        if (key == 'experience') {
-          _cvData[key] = []; // Initialize as empty list
+        // Các section dạng danh sách
+        if ([
+          'experience',
+          'education',
+          'projects',
+          'certificates',
+          'languages',
+          'portfolio',
+        ].contains(key)) {
+          _cvData[key] = []; // danh sách
         } else {
-          _cvData[key] = {};
+          _cvData[key] = {}; // map đơn
         }
       }
     });
@@ -37,17 +46,16 @@ class _CreateCVScreenState extends State<CreateCVScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tạo CV'),
-        centerTitle: true,
+      appBar: CustomAppbarTitleLarge(
+        title: "Tạo CV",
         actions: [
           IconButton(
-            icon: const Icon(Icons.preview),
+            icon: Icon(Icons.preview),
             onPressed: _previewCV,
             tooltip: 'Xem trước',
           ),
           IconButton(
-            icon: const Icon(Icons.save),
+            icon: Icon(Icons.save),
             onPressed: _saveCV,
             tooltip: 'Lưu CV',
           ),

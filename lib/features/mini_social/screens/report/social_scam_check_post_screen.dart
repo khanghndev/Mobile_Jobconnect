@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/features/mini_social/widgets/report_post/glass_card.dart';
 import 'package:job_connect/features/mini_social/widgets/report_post/glow_circle.dart';
-import 'package:job_connect/features/mini_social/widgets/report_post/section_title.dart';
+import 'package:job_connect/features/mini_social/widgets/report_post/social_section_title.dart';
 import 'package:job_connect/features/mini_social/widgets/report_post/submit_button.dart';
 import 'package:job_connect/config/widgets/unfocus_widget.dart';
 
@@ -103,7 +103,7 @@ class _ScamCheckPostScreenState extends State<ScamCheckPostScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     SizedBox(height: 16.h),
-                    const SectionTitle(icon: Icons.link_rounded, text: 'Nhập link bài viết'),
+                    const SocialSectionTitle(icon: Icons.link_rounded, title: 'Nhập link bài viết'),
 
                     SizedBox(height: 10.h),
                     GlassCard(
@@ -134,7 +134,7 @@ class _ScamCheckPostScreenState extends State<ScamCheckPostScreen> {
 
                     if (_summaryResult != null) ...[
                       SizedBox(height: 24.h),
-                      const SectionTitle(icon: Icons.analytics_outlined, text: 'Kết quả phân tích'),
+                      const SocialSectionTitle(icon: Icons.analytics_outlined, title: 'Kết quả phân tích'),
                       SizedBox(height: 10.h),
 
                       // Kết luận
