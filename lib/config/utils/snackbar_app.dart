@@ -4,7 +4,7 @@ import 'package:job_connect/config/constant/app_colors.dart';
 class SnackbarApp {
   static void show(
     BuildContext context, {
-    required String title,
+    String? title,
     required String message,
     Color backgroundColor = BackgroundColors.backgroundInfoPrimary,
     IconData? icon,
@@ -34,7 +34,7 @@ class SnackbarApp {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      title,
+                      title ?? 'Thông báo',
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

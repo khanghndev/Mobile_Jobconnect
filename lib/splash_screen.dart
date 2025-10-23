@@ -2,9 +2,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:job_connect/config/constant/app_colors.dart';
 import 'package:job_connect/config/constant/app_images.dart';
 import 'package:job_connect/config/constant/app_strings.dart';
 import 'package:job_connect/config/enum/user_role.dart';
+import 'package:job_connect/config/utils/snackbar_app.dart';
 import 'package:job_connect/config/utils/string_utils.dart';
 import 'package:job_connect/features/auth/viewmodel/auth_view_model.dart';
 import 'package:job_connect/features/notifications/viewmodel/notification_view_model.dart';
@@ -57,34 +59,56 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     final authVM = context.read<AuthViewModel>();
     final userVM = context.read<UserViewModel>();
     final notifVM = context.read<NotificationViewModel>();
-    await authVM.checkLoginStatus();
 
-    if (authVM.isLoggedIn && authVM.idUser != null) {
-      await userVM.getUserDetail(authVM.idUser!);
-      await notifVM.getUnreadCount(authVM.idUser!);
+    try {
+      // Thêm timeout để tránh bị treo nếu BE không phản hồi
+      await authVM.checkLoginStatus().timeout(const Duration(seconds: 5));
 
-      if (!mounted) return;
-      if(userVM.roleName == StringUtils.capitalize(UserRole.candidate.name)){
-        context.go(
-          '/home', 
-          extra: {
-          'isLoggedIn': authVM.isLoggedIn,
-          'idUser': authVM.idUser,
-          }
-        );
-      } else if(userVM.roleName == StringUtils.capitalize(UserRole.recruiter.name)){
-        context.go(
-          '/recruiter',
-           extra: {
-            'userAccount': userVM.userDetail,
-            'isLoggedIn' : authVM.isLoggedIn,
-            'currentIndex': 0,
-          }
-        );
+      if (authVM.isLoggedIn && authVM.idUser != null) {
+        await userVM.getUserDetail(authVM.idUser!).timeout(const Duration(seconds: 5));
+        await notifVM.getUnreadCount(authVM.idUser!).timeout(const Duration(seconds: 5));
+
+        if (!mounted) return;
+
+        // Kiểm tra role
+        if (userVM.roleName == StringUtils.capitalize(UserRole.candidate.name)) {
+          context.go(
+            '/home',
+            extra: {
+              'isLoggedIn': authVM.isLoggedIn,
+              'idUser': authVM.idUser,
+            },
+          );
+        } else if (userVM.roleName == StringUtils.capitalize(UserRole.recruiter.name)) {
+          context.go(
+            '/recruiter',
+            extra: {
+              'userAccount': userVM.userDetail,
+              'isLoggedIn': authVM.isLoggedIn,
+              'currentIndex': 0,
+            },
+          );
+        }
+      } else {
+        if (!mounted) return;
+        context.go('/auth/role');
       }
-      
-    } else {
+    } on TimeoutException {
       if (!mounted) return;
+      SnackbarApp.show(
+        context,
+        message: 'Không thể kết nối đến máy chủ, vui lòng thử lại sau.',
+        backgroundColor: BackgroundColors.backgroundErrorPrimary,
+      );
+      context.go('/auth/role');
+    } catch (e) {
+      if (!mounted) return;
+      SnackbarApp.show(
+        context,
+        message: 'Đã xảy ra lỗi, vui lòng thử lại.',
+        backgroundColor: BackgroundColors.backgroundErrorPrimary,
+      );
+      ('Đã xảy ra lỗi, vui lòng thử lại.');
       context.go('/auth/role');
     }
   }
