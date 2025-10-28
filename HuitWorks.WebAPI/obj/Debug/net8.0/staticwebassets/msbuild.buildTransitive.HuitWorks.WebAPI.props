@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\HuitWorks.WebAPI.props" />
+</Project>

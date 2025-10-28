@@ -1,0 +1,1406 @@
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.Development.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.staticwebassets.endpoints.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.exe
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.deps.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.runtimeconfig.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.pdb
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.OpenApi.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\MySqlConnector.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.AssemblyReference.cache
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfoInputs.cache
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfo.cs
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.CoreCompileInputs.cache
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cs
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cache
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.sourcelink.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\obj\Debug\net8.0\scopedcss\bundle\HuitWorks.WebAPI.styles.css
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.development.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssets.props
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.build.HuitWorks.WebAPI.props
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.HuitWorks.WebAPI.props
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.HuitWorks.WebAPI.props
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.pack.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWork.340DD37F.Up2Date
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\obj\Debug\net8.0\refint\HuitWorks.WebAPI.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.pdb
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.genruntimeconfig.cache
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_Web_API\HuitWorks.WebAPI\obj\Debug\net8.0\ref\HuitWorks.WebAPI.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.Development.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.staticwebassets.endpoints.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.exe
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.deps.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.runtimeconfig.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.pdb
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.OpenApi.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\MySqlConnector.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.AssemblyReference.cache
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfoInputs.cache
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfo.cs
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.CoreCompileInputs.cache
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cs
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cache
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.sourcelink.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\obj\Debug\net8.0\scopedcss\bundle\HuitWorks.WebAPI.styles.css
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.development.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssets.props
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.build.HuitWorks.WebAPI.props
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.HuitWorks.WebAPI.props
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.HuitWorks.WebAPI.props
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.pack.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWork.340DD37F.Up2Date
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\obj\Debug\net8.0\refint\HuitWorks.WebAPI.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.pdb
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.genruntimeconfig.cache
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\obj\Debug\net8.0\ref\HuitWorks.WebAPI.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.AssemblyReference.cache
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfoInputs.cache
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfo.cs
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.CoreCompileInputs.cache
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cs
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cache
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.sourcelink.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\obj\Debug\net8.0\refint\HuitWorks.WebAPI.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.pdb
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.Development.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.staticwebassets.endpoints.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.exe
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.deps.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.runtimeconfig.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.pdb
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.OpenApi.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\MySqlConnector.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\obj\Debug\net8.0\scopedcss\bundle\HuitWorks.WebAPI.styles.css
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.development.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssets.props
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.build.HuitWorks.WebAPI.props
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.HuitWorks.WebAPI.props
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.HuitWorks.WebAPI.props
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.pack.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWork.340DD37F.Up2Date
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.genruntimeconfig.cache
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api - tien\HuitWorks.WebAPI\obj\Debug\net8.0\ref\HuitWorks.WebAPI.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.Development.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.staticwebassets.endpoints.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.exe
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.deps.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.runtimeconfig.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.pdb
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.OpenApi.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\MySqlConnector.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.AssemblyReference.cache
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfoInputs.cache
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfo.cs
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.CoreCompileInputs.cache
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cs
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cache
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.sourcelink.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\scopedcss\bundle\HuitWorks.WebAPI.styles.css
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.development.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssets.props
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.build.HuitWorks.WebAPI.props
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.HuitWorks.WebAPI.props
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.HuitWorks.WebAPI.props
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.pack.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWork.340DD37F.Up2Date
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\refint\HuitWorks.WebAPI.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.pdb
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.genruntimeconfig.cache
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\ref\HuitWorks.WebAPI.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.Development.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.staticwebassets.endpoints.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.exe
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.deps.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.runtimeconfig.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.pdb
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.OpenApi.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\MySqlConnector.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.AssemblyReference.cache
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfoInputs.cache
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfo.cs
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.CoreCompileInputs.cache
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cs
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cache
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.sourcelink.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\scopedcss\bundle\HuitWorks.WebAPI.styles.css
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.development.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssets.props
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.build.HuitWorks.WebAPI.props
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.HuitWorks.WebAPI.props
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.HuitWorks.WebAPI.props
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.pack.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWork.340DD37F.Up2Date
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\refint\HuitWorks.WebAPI.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.pdb
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.genruntimeconfig.cache
+H:\Mobile\Project\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\ref\HuitWorks.WebAPI.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.Development.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.staticwebassets.endpoints.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.exe
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.deps.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.runtimeconfig.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.pdb
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.OpenApi.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\MySqlConnector.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.AssemblyReference.cache
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfoInputs.cache
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfo.cs
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.CoreCompileInputs.cache
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cs
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cache
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.sourcelink.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\scopedcss\bundle\HuitWorks.WebAPI.styles.css
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.development.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssets.props
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.build.HuitWorks.WebAPI.props
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.HuitWorks.WebAPI.props
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.HuitWorks.WebAPI.props
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.pack.json
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWork.340DD37F.Up2Date
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\refint\HuitWorks.WebAPI.dll
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.pdb
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.genruntimeconfig.cache
+D:\HK2_Nam3\LapTrinhDiDong\DOAN_MOBILE\Mobile_Jobconnect_api_new\HuitWorks.WebAPI\obj\Debug\net8.0\ref\HuitWorks.WebAPI.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.Development.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.staticwebassets.endpoints.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.exe
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.deps.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.runtimeconfig.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.pdb
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.OpenApi.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\MySqlConnector.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.AssemblyReference.cache
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfoInputs.cache
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfo.cs
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.CoreCompileInputs.cache
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cs
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cache
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.sourcelink.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\obj\Debug\net8.0\scopedcss\bundle\HuitWorks.WebAPI.styles.css
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.development.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssets.props
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.build.HuitWorks.WebAPI.props
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.HuitWorks.WebAPI.props
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.HuitWorks.WebAPI.props
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.pack.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWork.340DD37F.Up2Date
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\obj\Debug\net8.0\refint\HuitWorks.WebAPI.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.pdb
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.genruntimeconfig.cache
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_26_5\HuitWorks.WebAPI\obj\Debug\net8.0\ref\HuitWorks.WebAPI.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.Development.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.staticwebassets.endpoints.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.exe
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.deps.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.runtimeconfig.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.pdb
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.OpenApi.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\MySqlConnector.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.AssemblyReference.cache
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfoInputs.cache
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfo.cs
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.CoreCompileInputs.cache
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cs
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cache
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.sourcelink.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\obj\Debug\net8.0\scopedcss\bundle\HuitWorks.WebAPI.styles.css
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.development.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssets.props
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.build.HuitWorks.WebAPI.props
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.HuitWorks.WebAPI.props
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.HuitWorks.WebAPI.props
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.pack.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWork.340DD37F.Up2Date
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\obj\Debug\net8.0\refint\HuitWorks.WebAPI.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.pdb
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.genruntimeconfig.cache
+H:\Mobile\Project\Mobile_Jobconnect_api_new_27_5\HuitWorks.WebAPI\obj\Debug\net8.0\ref\HuitWorks.WebAPI.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.AssemblyReference.cache
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfoInputs.cache
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfo.cs
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.CoreCompileInputs.cache
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cs
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cache
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.sourcelink.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\refint\HuitWorks.WebAPI.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.pdb
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.Development.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.staticwebassets.endpoints.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.exe
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.deps.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.runtimeconfig.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.pdb
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.OpenApi.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\MySqlConnector.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\scopedcss\bundle\HuitWorks.WebAPI.styles.css
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.development.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssets.props
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.build.HuitWorks.WebAPI.props
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.HuitWorks.WebAPI.props
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.HuitWorks.WebAPI.props
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.pack.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWork.340DD37F.Up2Date
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.genruntimeconfig.cache
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\ref\HuitWorks.WebAPI.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.Development.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.staticwebassets.endpoints.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.exe
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.deps.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.runtimeconfig.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.pdb
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.OpenApi.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\MySqlConnector.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.AssemblyReference.cache
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfoInputs.cache
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfo.cs
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.CoreCompileInputs.cache
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cs
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cache
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.sourcelink.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\scopedcss\bundle\HuitWorks.WebAPI.styles.css
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.development.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssets.props
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.build.HuitWorks.WebAPI.props
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.HuitWorks.WebAPI.props
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.HuitWorks.WebAPI.props
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.pack.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWork.340DD37F.Up2Date
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\refint\HuitWorks.WebAPI.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.pdb
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.genruntimeconfig.cache
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\obj\Debug\net8.0\ref\HuitWorks.WebAPI.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\serviceAccountKey.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\FirebaseAdmin.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Api.Gax.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Api.Gax.Rest.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.Auth.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.Core.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\System.CodeDom.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\System.Management.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v2\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Management.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.Development.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\serviceAccountKey.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.staticwebassets.endpoints.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.exe
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.deps.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.runtimeconfig.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.pdb
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\FirebaseAdmin.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Api.Gax.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Api.Gax.Rest.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.Auth.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.Core.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.OpenApi.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\MySqlConnector.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\System.CodeDom.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\System.Management.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Management.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.AssemblyReference.cache
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfoInputs.cache
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfo.cs
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.CoreCompileInputs.cache
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cs
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cache
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.sourcelink.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\obj\Debug\net8.0\scopedcss\bundle\HuitWorks.WebAPI.styles.css
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.development.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssets.props
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.build.HuitWorks.WebAPI.props
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.HuitWorks.WebAPI.props
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.HuitWorks.WebAPI.props
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.pack.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWork.340DD37F.Up2Date
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\obj\Debug\net8.0\refint\HuitWorks.WebAPI.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.pdb
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.genruntimeconfig.cache
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_new_v3\HuitWorks.WebAPI\obj\Debug\net8.0\ref\HuitWorks.WebAPI.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.Development.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\serviceAccountKey.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.staticwebassets.endpoints.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.exe
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.deps.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.runtimeconfig.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.pdb
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\FirebaseAdmin.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Api.Gax.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Api.Gax.Rest.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.Auth.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.Core.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.OpenApi.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\MySqlConnector.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\System.CodeDom.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\System.Management.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Management.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.AssemblyReference.cache
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfoInputs.cache
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfo.cs
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.CoreCompileInputs.cache
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cs
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cache
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.sourcelink.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\scopedcss\bundle\HuitWorks.WebAPI.styles.css
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.development.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssets.props
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.build.HuitWorks.WebAPI.props
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.HuitWorks.WebAPI.props
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.HuitWorks.WebAPI.props
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.pack.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWork.340DD37F.Up2Date
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\refint\HuitWorks.WebAPI.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.pdb
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.genruntimeconfig.cache
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\ref\HuitWorks.WebAPI.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.Development.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\serviceAccountKey.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.staticwebassets.endpoints.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.exe
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.deps.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.runtimeconfig.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.pdb
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\FirebaseAdmin.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Api.Gax.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Api.Gax.Rest.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.Auth.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.Core.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.OpenApi.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\MySqlConnector.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\System.CodeDom.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\System.Management.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Management.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.AssemblyReference.cache
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfoInputs.cache
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfo.cs
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.CoreCompileInputs.cache
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cs
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cache
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.sourcelink.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\scopedcss\bundle\HuitWorks.WebAPI.styles.css
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.development.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssets.props
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.build.HuitWorks.WebAPI.props
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.HuitWorks.WebAPI.props
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.HuitWorks.WebAPI.props
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.pack.json
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWork.340DD37F.Up2Date
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\refint\HuitWorks.WebAPI.dll
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.pdb
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.genruntimeconfig.cache
+H:\Mobile\Project\Mobile_Jobconnect_api_new_v4\HuitWorks.WebAPI\obj\Debug\net8.0\ref\HuitWorks.WebAPI.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.Development.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\serviceAccountKey.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.staticwebassets.endpoints.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.exe
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.deps.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.runtimeconfig.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.pdb
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\FirebaseAdmin.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Api.Gax.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Api.Gax.Rest.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.Auth.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.Core.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.OpenApi.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\MySqlConnector.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\System.CodeDom.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\System.Management.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Management.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.AssemblyReference.cache
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfoInputs.cache
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfo.cs
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.CoreCompileInputs.cache
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cs
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cache
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.sourcelink.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\scopedcss\bundle\HuitWorks.WebAPI.styles.css
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.development.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssets.props
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.build.HuitWorks.WebAPI.props
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.HuitWorks.WebAPI.props
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.HuitWorks.WebAPI.props
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.pack.json
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWork.340DD37F.Up2Date
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\refint\HuitWorks.WebAPI.dll
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.pdb
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.genruntimeconfig.cache
+D:\LTDD\Tech Innovators Challenge\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\ref\HuitWorks.WebAPI.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.Development.json
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.json
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\serviceAccountKey.json
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.staticwebassets.endpoints.json
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.exe
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.deps.json
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.runtimeconfig.json
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.pdb
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\FirebaseAdmin.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Api.Gax.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Api.Gax.Rest.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.Auth.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.Core.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.OpenApi.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\MySqlConnector.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\System.CodeDom.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\System.Management.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Management.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.AssemblyReference.cache
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfoInputs.cache
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfo.cs
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.CoreCompileInputs.cache
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cs
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cache
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.sourcelink.json
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\scopedcss\bundle\HuitWorks.WebAPI.styles.css
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.json
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.development.json
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssets.props
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.build.HuitWorks.WebAPI.props
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.HuitWorks.WebAPI.props
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.HuitWorks.WebAPI.props
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.pack.json
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWork.340DD37F.Up2Date
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\refint\HuitWorks.WebAPI.dll
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.pdb
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.genruntimeconfig.cache
+D:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\ref\HuitWorks.WebAPI.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.Development.json
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.json
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\serviceAccountKey.json
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.staticwebassets.endpoints.json
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.exe
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.deps.json
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.runtimeconfig.json
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.pdb
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\FirebaseAdmin.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Api.Gax.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Api.Gax.Rest.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.Auth.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.Core.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.OpenApi.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\MySqlConnector.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\System.CodeDom.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\System.Management.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Management.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.AssemblyReference.cache
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfoInputs.cache
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfo.cs
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.CoreCompileInputs.cache
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cs
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cache
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.sourcelink.json
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\scopedcss\bundle\HuitWorks.WebAPI.styles.css
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.json
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.development.json
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssets.props
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.build.HuitWorks.WebAPI.props
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.HuitWorks.WebAPI.props
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.HuitWorks.WebAPI.props
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.pack.json
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWork.340DD37F.Up2Date
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\refint\HuitWorks.WebAPI.dll
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.pdb
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.genruntimeconfig.cache
+E:\file_tumlum\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\ref\HuitWorks.WebAPI.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.Development.json
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.json
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\serviceAccountKey.json
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.staticwebassets.endpoints.json
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.exe
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.deps.json
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.runtimeconfig.json
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.pdb
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\FirebaseAdmin.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Api.Gax.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Api.Gax.Rest.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.Auth.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.Core.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.OpenApi.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\MySqlConnector.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\System.CodeDom.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\System.Management.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Management.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.AssemblyReference.cache
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfoInputs.cache
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfo.cs
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.CoreCompileInputs.cache
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cs
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cache
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\scopedcss\bundle\HuitWorks.WebAPI.styles.css
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.json
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.development.json
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssets.props
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.build.HuitWorks.WebAPI.props
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.HuitWorks.WebAPI.props
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.HuitWorks.WebAPI.props
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.pack.json
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWork.340DD37F.Up2Date
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\refint\HuitWorks.WebAPI.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.pdb
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.genruntimeconfig.cache
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\ref\HuitWorks.WebAPI.dll
+E:\KL_CN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.sourcelink.json
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.Development.json
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.json
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\serviceAccountKey.json
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.staticwebassets.endpoints.json
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.exe
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.deps.json
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.runtimeconfig.json
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.pdb
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\FirebaseAdmin.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Api.Gax.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Api.Gax.Rest.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.Auth.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.Core.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.OpenApi.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\MySqlConnector.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\System.CodeDom.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\System.Management.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Management.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.AssemblyReference.cache
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfoInputs.cache
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfo.cs
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.CoreCompileInputs.cache
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cs
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cache
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.sourcelink.json
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\scopedcss\bundle\HuitWorks.WebAPI.styles.css
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.json
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.development.json
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssets.props
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.build.HuitWorks.WebAPI.props
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.HuitWorks.WebAPI.props
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.HuitWorks.WebAPI.props
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.pack.json
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWork.340DD37F.Up2Date
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\refint\HuitWorks.WebAPI.dll
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.pdb
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.genruntimeconfig.cache
+E:\KL_CN\File\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\ref\HuitWorks.WebAPI.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.AssemblyReference.cache
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfoInputs.cache
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfo.cs
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.CoreCompileInputs.cache
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cs
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cache
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.sourcelink.json
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\refint\HuitWorks.WebAPI.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.pdb
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.Development.json
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.json
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\serviceAccountKey.json
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.staticwebassets.endpoints.json
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-Black.ttf
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-BlackItalic.ttf
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-Bold.ttf
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-BoldItalic.ttf
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-ExtraBold.ttf
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-ExtraBoldItalic.ttf
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-ExtraLight.ttf
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-ExtraLightItalic.ttf
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-Italic.ttf
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-Light.ttf
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-LightItalic.ttf
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-Medium.ttf
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-MediumItalic.ttf
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-Regular.ttf
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-SemiBold.ttf
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-SemiBoldItalic.ttf
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-Thin.ttf
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-ThinItalic.ttf
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\OFL.txt
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.exe
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.deps.json
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.runtimeconfig.json
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.pdb
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\FirebaseAdmin.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Api.Gax.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Api.Gax.Rest.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.Auth.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.Core.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.OpenApi.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\MySqlConnector.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\QuestPDF.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\System.CodeDom.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\System.Management.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\linux-arm64\native\libQuestPdfSkia.so
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\linux-arm64\native\libqpdf.so
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\linux-musl-x64\native\libQuestPdfSkia.so
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\linux-musl-x64\native\libqpdf.so
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\linux-x64\native\libQuestPdfSkia.so
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\linux-x64\native\libqpdf.so
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\osx-arm64\native\libQuestPdfSkia.dylib
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\osx-arm64\native\libqpdf.dylib
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\osx-x64\native\libQuestPdfSkia.dylib
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\osx-x64\native\libqpdf.dylib
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x64\native\QuestPdfSkia.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x64\native\libgcc_s_seh-1.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x64\native\libstdc++-6.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x64\native\libwinpthread-1.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x64\native\qpdf.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x86\native\QuestPdfSkia.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x86\native\libgcc_s_dw2-1.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x86\native\libstdc++-6.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x86\native\libwinpthread-1.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x86\native\qpdf.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Management.dll
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\scopedcss\bundle\HuitWorks.WebAPI.styles.css
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.json
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.development.json
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssets.props
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.build.HuitWorks.WebAPI.props
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.HuitWorks.WebAPI.props
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.HuitWorks.WebAPI.props
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.pack.json
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWork.340DD37F.Up2Date
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.genruntimeconfig.cache
+E:\KL_CN\test\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\ref\HuitWorks.WebAPI.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.Development.json
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.json
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\serviceAccountKey.json
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.staticwebassets.endpoints.json
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-Black.ttf
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-BlackItalic.ttf
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-Bold.ttf
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-BoldItalic.ttf
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-ExtraBold.ttf
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-ExtraBoldItalic.ttf
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-ExtraLight.ttf
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-ExtraLightItalic.ttf
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-Italic.ttf
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-Light.ttf
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-LightItalic.ttf
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-Medium.ttf
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-MediumItalic.ttf
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-Regular.ttf
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-SemiBold.ttf
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-SemiBoldItalic.ttf
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-Thin.ttf
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-ThinItalic.ttf
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\OFL.txt
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.exe
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.deps.json
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.runtimeconfig.json
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.pdb
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\FirebaseAdmin.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Api.Gax.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Api.Gax.Rest.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.Auth.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.Core.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.OpenApi.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\MySqlConnector.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\QuestPDF.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\System.CodeDom.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\System.Management.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\linux-arm64\native\libQuestPdfSkia.so
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\linux-arm64\native\libqpdf.so
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\linux-musl-x64\native\libQuestPdfSkia.so
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\linux-musl-x64\native\libqpdf.so
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\linux-x64\native\libQuestPdfSkia.so
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\linux-x64\native\libqpdf.so
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\osx-arm64\native\libQuestPdfSkia.dylib
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\osx-arm64\native\libqpdf.dylib
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\osx-x64\native\libQuestPdfSkia.dylib
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\osx-x64\native\libqpdf.dylib
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x64\native\QuestPdfSkia.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x64\native\libgcc_s_seh-1.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x64\native\libstdc++-6.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x64\native\libwinpthread-1.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x64\native\qpdf.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x86\native\QuestPdfSkia.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x86\native\libgcc_s_dw2-1.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x86\native\libstdc++-6.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x86\native\libwinpthread-1.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x86\native\qpdf.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Management.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.AssemblyReference.cache
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfoInputs.cache
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfo.cs
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.CoreCompileInputs.cache
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cs
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cache
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.sourcelink.json
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\scopedcss\bundle\HuitWorks.WebAPI.styles.css
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.json
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.development.json
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssets.props
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.build.HuitWorks.WebAPI.props
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.HuitWorks.WebAPI.props
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.HuitWorks.WebAPI.props
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.pack.json
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWork.340DD37F.Up2Date
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\refint\HuitWorks.WebAPI.dll
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.pdb
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.genruntimeconfig.cache
+E:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\ref\HuitWorks.WebAPI.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\huitworks.webapi\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.AssemblyReference.cache
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\huitworks.webapi\obj\Debug\net8.0\HuitWorks.WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\huitworks.webapi\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfoInputs.cache
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\huitworks.webapi\obj\Debug\net8.0\HuitWorks.WebAPI.AssemblyInfo.cs
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\huitworks.webapi\obj\Debug\net8.0\HuitWorks.WebAPI.csproj.CoreCompileInputs.cache
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\huitworks.webapi\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cs
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\huitworks.webapi\obj\Debug\net8.0\HuitWorks.WebAPI.MvcApplicationPartsAssemblyInfo.cache
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\huitworks.webapi\obj\Debug\net8.0\HuitWorks.WebAPI.sourcelink.json
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.Development.json
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\appsettings.json
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\serviceAccountKey.json
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.staticwebassets.endpoints.json
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-Black.ttf
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-BlackItalic.ttf
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-Bold.ttf
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-BoldItalic.ttf
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-ExtraBold.ttf
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-ExtraBoldItalic.ttf
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-ExtraLight.ttf
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-ExtraLightItalic.ttf
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-Italic.ttf
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-Light.ttf
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-LightItalic.ttf
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-Medium.ttf
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-MediumItalic.ttf
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-Regular.ttf
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-SemiBold.ttf
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-SemiBoldItalic.ttf
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-Thin.ttf
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\Lato-ThinItalic.ttf
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\LatoFont\OFL.txt
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.exe
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.deps.json
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.runtimeconfig.json
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\HuitWorks.WebAPI.pdb
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\FirebaseAdmin.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Api.Gax.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Api.Gax.Rest.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.Auth.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Google.Apis.Core.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Microsoft.OpenApi.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\MySqlConnector.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\QuestPDF.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\System.CodeDom.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\System.Management.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\linux-arm64\native\libQuestPdfSkia.so
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\linux-arm64\native\libqpdf.so
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\linux-musl-x64\native\libQuestPdfSkia.so
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\linux-musl-x64\native\libqpdf.so
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\linux-x64\native\libQuestPdfSkia.so
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\linux-x64\native\libqpdf.so
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\osx-arm64\native\libQuestPdfSkia.dylib
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\osx-arm64\native\libqpdf.dylib
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\osx-x64\native\libQuestPdfSkia.dylib
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\osx-x64\native\libqpdf.dylib
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x64\native\QuestPdfSkia.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x64\native\libgcc_s_seh-1.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x64\native\libstdc++-6.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x64\native\libwinpthread-1.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x64\native\qpdf.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x86\native\QuestPdfSkia.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x86\native\libgcc_s_dw2-1.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x86\native\libstdc++-6.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x86\native\libwinpthread-1.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win-x86\native\qpdf.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Management.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\scopedcss\bundle\HuitWorks.WebAPI.styles.css
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.json
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.development.json
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssets.props
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.HuitWorks.WebAPI.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.build.HuitWorks.WebAPI.props
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.HuitWorks.WebAPI.props
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.HuitWorks.WebAPI.props
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\staticwebassets.pack.json
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWork.340DD37F.Up2Date
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\refint\HuitWorks.WebAPI.dll
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.pdb
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\HuitWorks.WebAPI.genruntimeconfig.cache
+D:\KHOA_LUAN_TN\Mobile_Jobconnect_api_final\HuitWorks.WebAPI\obj\Debug\net8.0\ref\HuitWorks.WebAPI.dll

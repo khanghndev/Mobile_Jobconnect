@@ -1,0 +1,6 @@
+@HuitWorks.WebAPI_HostAddress = http://localhost:5271
+
+GET {{HuitWorks.WebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
