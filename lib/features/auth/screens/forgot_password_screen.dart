@@ -8,7 +8,7 @@ import 'package:job_connect/config/utils/formatter_service.dart';
 import 'package:job_connect/config/utils/get_adaptive_back_icon.dart';
 import 'package:job_connect/config/utils/input_validators.dart';
 import 'package:job_connect/config/widgets/custom_adaptive_tap_effect.dart';
-import 'package:job_connect/config/widgets/custom_appbar.dart';
+import 'package:job_connect/config/widgets/custom_app_bar.dart';
 import 'package:job_connect/config/widgets/custom_input_field.dart';
 import 'package:job_connect/features/auth/screens/enter_otp_page.dart';
 

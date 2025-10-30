@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/utils/download_file.dart';
+import 'package:job_connect/config/widgets/custom_app_bar_title_large.dart';
 import 'package:job_connect/config/widgets/custom_dialog.dart';
 import 'package:job_connect/features/resume/view_model/resum_view_model.dart';
 import 'package:provider/provider.dart';
@@ -368,6 +369,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
 
         return Scaffold(
           backgroundColor: theme.scaffoldBackgroundColor,
+          appBar: const CustomAppbarTitleLarge(title: "Quản lý hồ sơ"),
           body: UnfocusWidget(
             child: SafeArea(
               child: RefreshIndicator(

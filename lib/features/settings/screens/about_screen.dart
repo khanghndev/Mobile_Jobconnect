@@ -5,7 +5,7 @@ import 'package:job_connect/config/constant/app_colors.dart';
 import 'package:job_connect/config/constant/app_images.dart'; 
 import 'package:job_connect/config/constant/app_strings.dart';
 import 'package:job_connect/config/utils/snackbar_app.dart';
-import 'package:job_connect/config/widgets/custom_appbar_title_large.dart';
+import 'package:job_connect/config/widgets/custom_app_bar_title_large.dart';
 import 'package:job_connect/features/settings/widgets/settings/setting_item.dart';
 import 'package:job_connect/features/settings/widgets/settings/setting_section.dart';
 import 'package:package_info_plus/package_info_plus.dart';

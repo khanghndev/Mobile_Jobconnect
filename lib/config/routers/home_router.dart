@@ -4,6 +4,7 @@ import 'package:job_connect/features/company/screens/company_screen.dart';
 import 'package:job_connect/features/home/screens/nearby_jobs_map_screen.dart';
 import 'package:job_connect/features/home/screens/podcast_screen.dart';
 import 'package:job_connect/features/navigation/screens/navigation_page.dart';
+import 'package:job_connect/features/resume/screens/cv_options_screen.dart';
 import 'package:job_connect/features/search/screens/search_screen.dart';
 
 class HomeRouter {
@@ -81,6 +82,22 @@ class HomeRouter {
         pageBuilder: (context, state) {
           return buildPageWithSlideTransition(
             PodcastScreen(),
+            state
+          );
+        },
+      ),
+
+      GoRoute(
+        path: 'cv',
+        pageBuilder: (context, state) {
+          final extraData = state.extra as Map<String, dynamic>;
+          final isLoggedIn = extraData['isLoggedIn'];
+          final idUser = extraData['idUser'];
+          return buildPageWithSlideTransition(
+            CVOptionsScreen(
+              isLoggedIn: isLoggedIn,
+              idUser: idUser,
+            ), 
             state
           );
         },

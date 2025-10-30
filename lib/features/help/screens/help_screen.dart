@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:job_connect/config/constant/app_strings.dart';
-import 'package:job_connect/config/widgets/custom_appbar_title_large.dart';
+import 'package:job_connect/config/widgets/custom_app_bar_title_large.dart';
 import 'package:job_connect/config/widgets/custom_buttom_leading_icon.dart';
 import 'package:job_connect/config/widgets/custom_search_bar_main.dart';
 import 'package:job_connect/config/widgets/section_title.dart';

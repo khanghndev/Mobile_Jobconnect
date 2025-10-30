@@ -6,7 +6,7 @@ import 'package:job_connect/config/utils/get_adaptive_back_icon.dart';
 import 'package:job_connect/config/utils/image_review_zoom.dart';
 import 'package:job_connect/config/utils/image_url.dart';
 import 'package:job_connect/config/widgets/custom_adaptive_tap_effect.dart';
-import 'package:job_connect/config/widgets/custom_appbar.dart';
+import 'package:job_connect/config/widgets/custom_app_bar.dart';
 import 'package:job_connect/config/widgets/custom_bottom_button.dart';
 import 'package:job_connect/features/mini_social/screens/job_board/social_job_board_page.dart';
 

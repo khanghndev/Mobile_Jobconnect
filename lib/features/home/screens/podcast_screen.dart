@@ -6,7 +6,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import 'package:job_connect/config/widgets/background_empty_state.dart';
 import 'package:job_connect/config/widgets/background_error_state.dart';
-import 'package:job_connect/config/widgets/custom_appbar_title_large.dart';
+import 'package:job_connect/config/widgets/custom_app_bar_title_large.dart';
 import 'package:job_connect/config/widgets/custom_search_bar_main.dart';
 import 'package:job_connect/config/widgets/unfocus_widget.dart';
 

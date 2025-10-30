@@ -54,7 +54,7 @@ class NavigationPageState extends State<NavigationPage> with TickerProviderState
   List<Widget> _screens = [];
   final List<String> routes = [
     '/home',
-    '/resume/analysis',
+    '/home/search',
     '/social/job-board',
     '/social/messages',
     '/social/profile',

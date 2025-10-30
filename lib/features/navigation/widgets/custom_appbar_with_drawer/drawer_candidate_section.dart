@@ -38,25 +38,38 @@ class DrawerCandidateSection extends StatelessWidget {
             isSelected: selectedRoute == '/home',
           ),
           DrawerItem(
+            icon: Icons.file_copy,
+            title: 'Quản lý hồ sơ',
+            onTap: () => _checkLoginOrRouter(
+              context: context, 
+              route: '/home/cv',
+              extra: {
+                'isLoggedIn': isLoggedIn,
+                'idUser': idUser,
+              }
+            ),
+            isSelected: selectedRoute == '/home/cv',
+          ),
+          DrawerItem(
             icon: Icons.document_scanner_outlined,
             title: 'Phân tích CV',
             onTap: () => _checkLoginOrRouter(context: context, route: '/resume/analysis'),
             isSelected: selectedRoute == '/resume/analysis',
           ),
-          DrawerItem(
-            icon: Icons.bookmark_added_outlined,
-            title: 'Công việc đã lưu',
-            onTap: () => _checkLoginOrRouter(
-              context: context, 
-              route: '/home/search',
-              extra: {
-                'isLoggedIn': isLoggedIn,
-                'idUser': idUser,
-                'initialTabIndex' : 2,
-              }
-            ),
-            isSelected: selectedRoute == '/home/search',
-          ),
+          // DrawerItem(
+          //   icon: Icons.bookmark_added_outlined,
+          //   title: 'Công việc đã lưu',
+          //   onTap: () => _checkLoginOrRouter(
+          //     context: context, 
+          //     route: '/home/search',
+          //     extra: {
+          //       'isLoggedIn': isLoggedIn,
+          //       'idUser': idUser,
+          //       'initialTabIndex' : 2,
+          //     }
+          //   ),
+          //   isSelected: selectedRoute == '/home/search',
+          // ),
           DrawerItem(
             icon: Icons.history_edu_outlined,
             title: 'Lịch sử ứng tuyển',

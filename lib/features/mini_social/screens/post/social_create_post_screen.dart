@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:job_connect/config/constant/app_strings.dart';
 import 'package:job_connect/config/enum/user_role.dart';
 import 'package:job_connect/config/utils/image_url.dart';
-import 'package:job_connect/config/widgets/custom_appbar.dart';
+import 'package:job_connect/config/widgets/custom_app_bar.dart';
 import 'package:job_connect/features/profile/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
 

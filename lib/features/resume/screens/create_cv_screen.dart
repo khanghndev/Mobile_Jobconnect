@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:job_connect/config/widgets/custom_appbar_title_large.dart';
+import 'package:job_connect/config/widgets/custom_app_bar_title_large.dart';
 import 'cv_templates_screen.dart';
 
 class CreateCVScreen extends StatefulWidget {

@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/constant/app_colors.dart';
 import 'package:job_connect/config/utils/format.dart';
 import 'package:job_connect/config/utils/snackbar_app.dart';
-import 'package:job_connect/config/widgets/custom_appbar_title_large.dart';
+import 'package:job_connect/config/widgets/custom_app_bar_title_large.dart';
 import 'package:job_connect/features/payments/widgets/payment/payment_info_customer_form.dart';
 import 'package:job_connect/features/payments/widgets/payment/payment_bottom_bar.dart';
 import 'package:job_connect/features/payments/widgets/payment/payment_method.dart';

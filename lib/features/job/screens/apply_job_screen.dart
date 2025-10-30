@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:job_connect/config/constant/api_constants.dart';
 import 'package:job_connect/config/constant/app_strings.dart';
 import 'package:job_connect/config/widgets/app_dialog.dart';
-import 'package:job_connect/config/widgets/custom_appbar_title_large.dart';
+import 'package:job_connect/config/widgets/custom_app_bar_title_large.dart';
 import 'package:job_connect/config/widgets/custom_submit_button.dart';
 import 'package:job_connect/config/widgets/section_title.dart';
 import 'package:job_connect/config/widgets/unfocus_widget.dart';

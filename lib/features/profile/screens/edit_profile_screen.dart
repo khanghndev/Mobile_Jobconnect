@@ -8,7 +8,7 @@ import 'package:job_connect/config/utils/input_validators.dart';
 import 'package:job_connect/config/utils/pick_date.dart';
 import 'package:job_connect/config/utils/pick_image.dart';
 import 'package:job_connect/config/utils/snackbar_app.dart';
-import 'package:job_connect/config/widgets/custom_appbar_title_large.dart';
+import 'package:job_connect/config/widgets/custom_app_bar_title_large.dart';
 import 'package:job_connect/config/widgets/custom_buttom_leading_icon.dart';
 import 'package:job_connect/config/widgets/custom_text_field_with_label.dart';
 import 'package:job_connect/config/widgets/section_title.dart';

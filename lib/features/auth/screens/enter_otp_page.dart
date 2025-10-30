@@ -8,7 +8,7 @@ import 'package:job_connect/config/enum/user_role.dart';
 import 'package:job_connect/config/utils/get_adaptive_back_icon.dart';
 import 'package:job_connect/config/utils/snackbar_app.dart';
 import 'package:job_connect/config/widgets/custom_adaptive_tap_effect.dart';
-import 'package:job_connect/config/widgets/custom_appbar.dart';
+import 'package:job_connect/config/widgets/custom_app_bar.dart';
 import 'package:job_connect/config/widgets/custom_pincode_field.dart';
 import 'package:job_connect/config/widgets/unfocus_widget.dart';
 import 'package:job_connect/features/auth/screens/login_screen.dart';

@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/constant/app_colors.dart';
 import 'package:job_connect/config/utils/get_adaptive_back_icon.dart';
 import 'package:job_connect/config/widgets/custom_adaptive_tap_effect.dart';
-import 'package:job_connect/config/widgets/custom_appbar.dart';
+import 'package:job_connect/config/widgets/custom_app_bar.dart';
 import 'package:job_connect/features/mini_social/model/social_post_model.dart';
 import 'package:job_connect/features/mini_social/widgets/comments/comment_tile.dart';
 import 'package:job_connect/features/mini_social/widgets/social_feed/post_action_bar.dart';

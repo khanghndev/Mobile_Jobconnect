@@ -9,7 +9,7 @@ import 'package:job_connect/config/enum/user_role.dart';
 import 'package:job_connect/config/utils/dialog_utils.dart';
 import 'package:job_connect/config/utils/snackbar_app.dart';
 import 'package:job_connect/config/widgets/card_prompt_to_page.dart';
-import 'package:job_connect/config/widgets/custom_appbar_title_large.dart';
+import 'package:job_connect/config/widgets/custom_app_bar_title_large.dart';
 import 'package:job_connect/config/widgets/custom_button_border.dart';
 import 'package:job_connect/config/widgets/custom_drop_down.dart';
 import 'package:job_connect/config/widgets/custom_slider_setting.dart';
