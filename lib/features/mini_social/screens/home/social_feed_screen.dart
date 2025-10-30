@@ -78,9 +78,12 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
     socialCommentVm = context.read<SocialCommentViewModel>();
     userVm = context.read<UserViewModel>();
     socialSavePostVm = context.read<SocialSavePostViewModel>();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      userVm.loadRoleName();
-      socialPostVm.getPostsByRole( roleName: userVm.roleName!);
+    WidgetsBinding.instance.addPostFrameCallback((_) async{
+      await userVm.loadRoleName();
+      if (userVm.roleName != null) {
+        // await socialPostVm.getPostsByRole(roleName: userVm.roleName!);
+        await socialPostVm.getAllPosts();
+      }
     });
 
     _scrollController.addListener(() {
@@ -432,9 +435,6 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
   Widget build(BuildContext context) {
     super.build(context);
     final theme = Theme.of(context);
-  print('role: ${userVm.roleName}');
-  print('role: ${UserRole.recruiter.name}');
-
     return Consumer<SocialPostViewModel>(
       builder: (context, socialPostVm, _) {
         if(socialPostVm.isLoading){

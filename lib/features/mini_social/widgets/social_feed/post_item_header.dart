@@ -145,7 +145,6 @@ class PostItemHeader extends StatelessWidget {
             },
             itemBuilder: (_) => const [
               PopupMenuItem(value: 1, child: Text("Báo cáo bài viết")),
-              PopupMenuItem(value: 2, child: Text("Theo dõi / Nhận việc")),
               PopupMenuItem(value: 3, child: Text("Ẩn bài viết")),
               PopupMenuItem(value: 4, child: Text("Sao chép link bài viết")),
             ],

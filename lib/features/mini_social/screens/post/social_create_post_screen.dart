@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:job_connect/config/constant/app_strings.dart';
+import 'package:job_connect/config/enum/user_role.dart';
 import 'package:job_connect/config/utils/image_url.dart';
+import 'package:job_connect/config/widgets/custom_appbar.dart';
+import 'package:job_connect/features/profile/view_model/user_view_model.dart';
+import 'package:provider/provider.dart';
 
 class CreatePostScreen extends StatefulWidget {
   const CreatePostScreen({super.key});
@@ -18,11 +23,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
+      backgroundColor: theme.scaffoldBackgroundColor,
+      appBar: CustomAppbar(
         backgroundColor: Colors.white,
-        surfaceTintColor: Colors.white,
-        elevation: 0.5,
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () => Navigator.pop(context),
@@ -44,7 +47,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 ),
               ),
               onPressed: () {},
-              child: Text("Post", style: TextStyle(color: Colors.white, fontSize: 14.sp)),
+              child: Text("Đăng", style: TextStyle(color: Colors.white, fontSize: 14.sp)),
             ),
           )
         ],
@@ -53,28 +56,41 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         children: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-            child: Row(
-              children: [
-                CircleAvatar(
-                  radius: 20.r,
-                  backgroundImage: ImageUtils.getImageProvider('https://i.pravatar.cc/150?img=3'),
-                ),
-                SizedBox(width: 10.w),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+            child: Consumer<UserViewModel>(
+              builder: (context, userVm, child) {
+                return Row(
                   children: [
-                    Text("Martin Kenter", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16.sp)),
-                    Row(
+                    CircleAvatar(
+                      radius: 20.r,
+                      backgroundImage: ImageUtils.getImageProvider(userVm.currentUser?.avatarUrl ?? ''),
+                    ),
+                    SizedBox(width: 10.w),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(Icons.verified, color: Colors.blue, size: 16.r),
-                        SizedBox(width: 4.w),
-                        Text("Verified", style: TextStyle(fontSize: 12.sp, color: Colors.grey[600])),
+                        Text(
+                          userVm.currentUser?.userName ?? "Người dùng ${AppStrings.appName}",
+                          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16.sp),
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              userVm.roleName == UserRole.candidate.name ? Icons.person : Icons.verified, 
+                              color: Colors.blue, 
+                              size: 16.sp
+                            ),
+                            SizedBox(width: 4.w),
+                            Text(
+                              userVm.roleName == UserRole.candidate.name ? "Ứng viên" : "Nhà tuyển dụng", 
+                              style: TextStyle(fontSize: 12.sp, color: Colors.grey[600])),
+                          ],
+                        ),
                       ],
-                    )
+                    ),
                   ],
-                )
-              ],
-            ),
+                );
+              },
+            )
           ),
           Expanded(
             child: Padding(
@@ -82,17 +98,17 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               child: TextField(
                 controller: _controller,
                 maxLines: null,
-                cursorColor: Colors.blue[200], // Tuỳ chọn màu con trỏ nếu muốn
-                style: TextStyle(fontSize: 16.sp), // Tuỳ chỉnh text style nếu cần
+                cursorColor: Colors.blue[200],
+                style: TextStyle(fontSize: 16.sp),
                 decoration: const InputDecoration(
-                  hintText: "What do you want to talk about?",
+                  hintText: "Bạn muốn nói về điều gì?",
                   hintStyle: TextStyle(color: Colors.grey),
                   border: InputBorder.none,
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,
                   disabledBorder: InputBorder.none,
-                  filled: false, // Không có nền riêng
-                  isCollapsed: true, // Giảm padding mặc định
+                  filled: false,
+                  isCollapsed: true,
                   contentPadding: EdgeInsets.zero,
                 ),
                 onTap: () => setState(() => _showFullOptions = false),

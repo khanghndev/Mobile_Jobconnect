@@ -44,55 +44,52 @@ class SearchHeader extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Padding(
-            padding: EdgeInsets.fromLTRB(20.w, 10.h, 20.w, 0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      GestureDetector(
-                        onTap: () => context.pop(),
-                        child: Icon(
-                          Icons.arrow_back_ios_new,
-                          color: Colors.white,
-                          size: 24.sp,
-                        ),
-                      ),
-                      SizedBox(height: 8.h),
-                      Text(
-                        'Khám Phá Việc Làm',
-                        style: theme.textTheme.headlineSmall?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: 6.h),
-                      Text(
-                        'Hàng ngàn việc làm đang chờ bạn.',
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: Colors.white.withValues(alpha: 0.9),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 8.h),
+          // Padding(
+          //   padding: EdgeInsets.fromLTRB(20.w, 10.h, 20.w, 0),
+          //   child: Row(
+          //     children: [
+          //       Expanded(
+          //         child: Column(
+          //           crossAxisAlignment: CrossAxisAlignment.start,
+          //           children: [
+          //             GestureDetector(
+          //               onTap: () => context.pop(),
+          //               child: Icon(
+          //                 Icons.arrow_back_ios_new,
+          //                 color: Colors.white,
+          //                 size: 24.sp,
+          //               ),
+          //             ),
+          //             SizedBox(height: 8.h),
+          //             Text(
+          //               'Khám Phá Việc Làm',
+          //               style: theme.textTheme.headlineSmall?.copyWith(
+          //                 color: Colors.white,
+          //                 fontWeight: FontWeight.bold,
+          //               ),
+          //             ),
+          //             SizedBox(height: 6.h),
+          //             Text(
+          //               'Hàng ngàn việc làm đang chờ bạn.',
+          //               style: theme.textTheme.bodyMedium?.copyWith(
+          //                 color: Colors.white.withValues(alpha: 0.9),
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          // SizedBox(height: 8.h),
           Row(
             children: [
               Expanded(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: CustomSearchBarMain(
-                    controller: searchController,
-                    onChanged: (_) {},
-                    onClear: searchController.clear,
-                    hinText: "Tìm theo tên, ngành nghề, địa chỉ...",
-                  ),
+                child: CustomSearchBarMain(
+                  controller: searchController,
+                  onChanged: (_) {},
+                  onClear: searchController.clear,
+                  hinText: "Tìm theo tên, ngành nghề, địa chỉ...",
                 ),
               ),
               Padding(

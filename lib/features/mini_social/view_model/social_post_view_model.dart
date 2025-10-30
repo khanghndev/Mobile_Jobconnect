@@ -79,7 +79,27 @@ class SocialPostViewModel extends ChangeNotifier {
     return user.role?.roleName ?? UserRole.candidate.name;
   }
 
-  Future<void> getPostsByRole({ required String roleName }) async {
+  Future<void> getAllPosts() async {
+    await _handleApiCall<List<SocialPostModel>>(
+      apiCall: () => _socialPostService.getAllPosts(),
+      onSuccess: (data) async {
+        data.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+        _posts = data;
+
+        //TODO: Lấy danh sách user đã like từng post
+        for (var post in _posts) {
+          final likes = await _socialPostService.getPostLikes(id: post.idPost);
+          if (likes.contains(currentUserId)) {
+            _likedPosts.add(post.idPost);
+          }
+        }
+      },
+    );
+  }
+  
+  Future<void> getPostsByRole({required String roleName}) async {
+    _setState(isLoading: true, errorMessage: null);
+
     await _handleApiCall<List<SocialPostModel>>(
       apiCall: () => _socialPostService.getAllPosts(),
       onSuccess: (data) async {
@@ -97,8 +117,8 @@ class SocialPostViewModel extends ChangeNotifier {
             continue;
           }
         }
-        _posts = filteredPosts;
-        notifyListeners();
+
+        _setState(isLoading: false, isSuccess: true, posts: filteredPosts);
       },
     );
   }

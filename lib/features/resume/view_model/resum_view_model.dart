@@ -19,7 +19,7 @@ class ResumeViewModel extends ChangeNotifier {
   List<ResumeModel> _filteredResumes = [];
   ResumeModel? _defaultResume;
 
-  // ===== Getters =====
+  // Getters
   bool get isLoading => _isLoading;
   bool get isSuccess => _isSuccess;
   bool get isDetailLoading => _isDetailLoading;
@@ -28,7 +28,7 @@ class ResumeViewModel extends ChangeNotifier {
   List<ResumeModel> get filteredResumes => _filteredResumes;
   ResumeModel? get defaultResume => _defaultResume;
 
-  // ===== Internal state setter =====
+  // Internal state setter
   void _setState({
     bool? isLoading,
     bool? isSuccess,
@@ -48,7 +48,7 @@ class ResumeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ===== TODO: Lấy tất cả CV =====
+  // TODO: Lấy tất cả CV
   Future<void> getAllResumes() async {
     _setState(isLoading: true, errorMessage: null);
     try {
@@ -63,7 +63,7 @@ class ResumeViewModel extends ChangeNotifier {
     }
   }
 
-  // ===== TODO: Lấy danh sách CV theo userId =====
+  // TODO: Lấy danh sách CV theo userId
   Future<void> getResumesByUser({required String idUser}) async {
     _setState(isLoading: true, errorMessage: null);
     try {
@@ -76,7 +76,7 @@ class ResumeViewModel extends ChangeNotifier {
     }
   }
 
-  // ===== TODO: Lấy CV mặc định (CV hiển thị) =====
+  // TODO: Lấy CV mặc định (CV hiển thị)
   Future<void> getDefaultResume({required String candidateId}) async {
     _setState(isDetailLoading: true);
     try {
@@ -90,7 +90,7 @@ class ResumeViewModel extends ChangeNotifier {
     }
   }
 
-  // ===== TODO: Tạo mới CV (upload file lên Appwrite trước) =====
+  // TODO: Tạo mới CV (upload file lên Appwrite trước)
   Future<void> createResume({
     required ResumeModel resume,
     required File file,
@@ -122,7 +122,7 @@ class ResumeViewModel extends ChangeNotifier {
     }
   }
 
-  // ===== TODO: Cập nhật CV (nếu đổi file → upload mới & xóa file cũ) =====
+  // TODO: Cập nhật CV (nếu đổi file → upload mới & xóa file cũ)
   Future<void> updateResume({
     required String id,
     required ResumeModel updated,
@@ -155,7 +155,7 @@ class ResumeViewModel extends ChangeNotifier {
     }
   }
 
-  // ===== TODO: Xóa CV (và file trên Appwrite) =====
+  // TODO: Xóa CV (và file trên Appwrite)
   Future<void> deleteResume({
     required String idResume,
     required String fileId,
@@ -177,7 +177,7 @@ class ResumeViewModel extends ChangeNotifier {
     }
   }
 
-  // ===== TODO: Đặt CV mặc định =====
+  // TODO: Đặt CV mặc định
   Future<void> setDefaultResume({
     required String userId,
     required String fileId,
@@ -193,7 +193,7 @@ class ResumeViewModel extends ChangeNotifier {
     }
   }
 
-  // ===== TODO: Tìm kiếm CV =====
+  // TODO: Tìm kiếm CV
   void searchResumes({required String keyword}) {
     if (keyword.isEmpty) {
       _filteredResumes = _resumes;
@@ -206,7 +206,7 @@ class ResumeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ===== TODO: Reset toàn bộ =====
+  // TODO: Reset toàn bộ
   void reset() {
     _setState(
       isLoading: false,

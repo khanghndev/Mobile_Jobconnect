@@ -10,6 +10,7 @@ import 'package:job_connect/features/navigation/widgets/custom_appbar_with_drawe
 import 'package:job_connect/features/navigation/widgets/navigation/nav_bottom_bar.dart';
 import 'package:job_connect/features/profile/screens/profile_screen.dart';
 import 'package:job_connect/features/resume/screens/cv_options_screen.dart';
+import 'package:job_connect/features/search/screens/search_screen.dart';
 
 class NavigationPage extends StatefulWidget {
   final bool isLoggedIn;
@@ -96,7 +97,8 @@ class NavigationPageState extends State<NavigationPage> with TickerProviderState
 
     final List<Widget> bodies = [
       HomeScreen(isLoggedIn: args.loggedIn, idUser: args.userId),
-      CVOptionsScreen(isLoggedIn: args.loggedIn, idUser: args.userId),
+      // CVOptionsScreen(isLoggedIn: args.loggedIn, idUser: args.userId),
+      SearchPage(idUser: args.userId, isLoggedIn: args.loggedIn),
       SocialFeedScreen(isLoggedIn: args.loggedIn, idUser: args.userId, onSearch: _onSearch,),
       SocialMessengerScreen(isLoggedIn: args.loggedIn, idUser: args.userId),
       ProfilePageScreen(isLoggedIn: args.loggedIn, idUser: args.userId),
@@ -104,7 +106,8 @@ class NavigationPageState extends State<NavigationPage> with TickerProviderState
 
     final List<String> titles = [
       AppStrings.appName,
-      AppStrings.appCV,
+      // AppStrings.appCV,
+      AppStrings.search,
       AppStrings.appSocial,
       AppStrings.appMessage,
       AppStrings.appProfile,
