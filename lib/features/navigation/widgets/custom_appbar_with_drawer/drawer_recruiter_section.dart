@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:job_connect/config/constant/app_strings.dart';
 import 'package:job_connect/config/enum/user_role.dart';
 import 'package:job_connect/config/utils/dialog_utils.dart';
+import 'package:job_connect/config/utils/label_title_small.dart';
 import 'package:job_connect/config/widgets/login_required_dialog.dart';
-import 'package:job_connect/features/navigation/widgets/custom_appbar_with_drawer/profile_avatar.dart';
-import 'package:job_connect/features/profile/view_model/user_view_model.dart';
+import 'package:job_connect/features/navigation/widgets/custom_appbar_with_drawer/drawer_infor_header.dart';
 import 'package:job_connect/features/navigation/widgets/custom_appbar_with_drawer/drawer_item_widget.dart';
-import 'package:provider/provider.dart';
 
 class DrawerRecruiterSection extends StatelessWidget {
   final bool isLoggedIn;
   final String idUser;
+  final String? selectedRoute;
 
   const DrawerRecruiterSection({
     super.key,
     required this.isLoggedIn,
-    required this.idUser,
+    required this.idUser, 
+    this.selectedRoute,
   });
 
   @override
@@ -30,17 +30,19 @@ class DrawerRecruiterSection extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          _buildHeader(context, theme),
+          DrawerInforHeader(isLoggedIn: isLoggedIn,),
 
-          /// --- DANH MỤC CHÍNH ---
           DrawerItem(
             icon: Icons.people_outline,
             title: 'Quản lý ứng viên',
             onTap: () => _checkLoginOrRouter(
               context: context,
-              route: '/recruiter/candidates',
-              extra: {'idUser': idUser},
+              route: '/recruiter/candidates-management',
+              extra: {
+                'recruiterId': idUser
+              },
             ),
+            isSelected: selectedRoute == '/recruiter/candidates',
           ),
           DrawerItem(
             icon: Icons.work_outline,
@@ -50,6 +52,7 @@ class DrawerRecruiterSection extends StatelessWidget {
               route: '/recruiter/jobs',
               extra: {'idUser': idUser},
             ),
+            isSelected: selectedRoute == '/recruiter/jobs',
           ),
           DrawerItem(
             icon: Icons.topic_outlined,
@@ -58,6 +61,7 @@ class DrawerRecruiterSection extends StatelessWidget {
               context: context,
               route: '/recruiter/report',
             ),
+            isSelected: selectedRoute == '/recruiter/report',
           ),
           DrawerItem(
             icon: Icons.calendar_today_outlined,
@@ -66,10 +70,10 @@ class DrawerRecruiterSection extends StatelessWidget {
               context: context,
               route: '/recruiter/interview-schedules',
             ),
+            isSelected: selectedRoute == '/recruiter/interview-schedules',
           ),
 
-          Container(height: 12.h, color: Colors.grey.withValues(alpha: 0.03)),
-          _buildSectionTitle(context, 'Hệ thống'),
+          LabelTitleSmall(title: 'Hệ thống',),
 
           DrawerItem(
             icon: Icons.settings_outlined,
@@ -82,6 +86,7 @@ class DrawerRecruiterSection extends StatelessWidget {
                 'idUser': idUser,
               },
             ),
+            isSelected: selectedRoute == '/setting',
           ),
           DrawerItem(
             icon: Icons.support_agent_outlined,
@@ -90,6 +95,7 @@ class DrawerRecruiterSection extends StatelessWidget {
               context: context,
               route: '/setting/help',
             ),
+            isSelected: selectedRoute == '/setting/help',
           ),
           DrawerItem(
             icon: Icons.policy_outlined,
@@ -98,6 +104,7 @@ class DrawerRecruiterSection extends StatelessWidget {
               context: context,
               route: '/setting/policy',
             ),
+            isSelected: selectedRoute == '/setting/policy',
           ),
 
           Container(height: 16.w, color: Colors.grey.withValues(alpha: 0.01)),
@@ -118,48 +125,9 @@ class DrawerRecruiterSection extends StatelessWidget {
                 );
               }
             },
+            isSelected: false,
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildHeader(BuildContext context, ThemeData theme) {
-    final userVM = context.watch<UserViewModel>();
-    final user = userVM.userDetail;
-    return UserAccountsDrawerHeader(
-      accountName: Text(
-        isLoggedIn ? user!.userName : "Người dùng ${AppStrings.appName}",
-        style: theme.textTheme.titleLarge?.copyWith(color: Colors.white),
-      ),
-      accountEmail: Text(
-        isLoggedIn ? "Chào mừng bạn quay lại!" : "Vui lòng đăng nhập",
-        style: theme.textTheme.bodyMedium?.copyWith(color: Colors.white70),
-      ),
-      currentAccountPicture: ProfileAvatar(),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            theme.colorScheme.primary,
-            theme.colorScheme.secondary,
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSectionTitle(BuildContext context, String title) {
-    final theme = Theme.of(context);
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-      child: Text(
-        title,
-        style: theme.textTheme.titleSmall?.copyWith(
-          fontWeight: FontWeight.bold,
-          color: theme.colorScheme.primary,
-        ),
       ),
     );
   }

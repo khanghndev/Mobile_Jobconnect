@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:job_connect/features/mini_social/screens/home/social_profile_screen.dart';
+import 'package:job_connect/config/constant/app_images.dart';
+import 'package:job_connect/features/mini_social/model/social_post_model.dart';
 
 class DiscoverCard extends StatelessWidget {
-  final DiscoverCardModel card;
-  const DiscoverCard({super.key, required this.card});
+  final SocialPostModel socialPostModel;
+  const DiscoverCard({super.key, required this.socialPostModel});
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +28,22 @@ class DiscoverCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(12.r),
-            child: Image.asset(
-              card.imagePath,
-              height: 100.h, 
-              width: 100.w, 
-              fit: BoxFit.cover
+            child: Image.network(
+              socialPostModel.imageUrl ?? '',
+              height: 100.h,
+              width: 100.w,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Image.asset(
+                  AppImages.connect,
+                  height: 100.h,
+                  width: 100.w,
+                  fit: BoxFit.cover,
+                );
+              },
             ),
           ),
+
           SizedBox(width: 12.w),
           Expanded(
             child: SizedBox(
@@ -46,7 +56,8 @@ class DiscoverCard extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: Text(card.title,
+                        child: Text(
+                          socialPostModel.content,
                           style: TextStyle(
                             fontSize: 14.sp, 
                             fontWeight: FontWeight.bold
@@ -63,15 +74,15 @@ class DiscoverCard extends StatelessWidget {
                     children: [
                       Icon(Icons.favorite, color: Colors.pink, size: 16.sp),
                       SizedBox(width: 4.w),
-                      Text(card.likes, style: TextStyle(fontSize: 12.sp)),
+                      Text("${socialPostModel.likesCount}", style: TextStyle(fontSize: 12.sp)),
                       SizedBox(width: 16.w),
                       Icon(Icons.comment, color: Colors.amber, size: 16.sp),
                       SizedBox(width: 4.w),
-                      Text(card.comments, style: TextStyle(fontSize: 12.sp)),
+                      Text("${socialPostModel.commentsCount}", style: TextStyle(fontSize: 12.sp)),
                       SizedBox(width: 16.w),
                       Icon(Icons.remove_red_eye, color: Colors.grey, size: 16.sp),
                       SizedBox(width: 4.w),
-                      Text(card.views, style: TextStyle(fontSize: 12.sp)),
+                      Text("${socialPostModel.sharesCount}", style: TextStyle(fontSize: 12.sp)),
                     ],
                   ),
                 ],

@@ -6,7 +6,6 @@ import 'package:job_connect/config/constant/app_images.dart';
 import 'package:job_connect/config/utils/formatter_service.dart';
 import 'package:job_connect/config/utils/input_validators.dart';
 import 'package:job_connect/config/utils/snackbar_app.dart';
-import 'package:job_connect/config/widgets/custom_input_field.dart';
 import 'package:job_connect/config/widgets/custom_pass_field_with_label.dart';
 import 'package:job_connect/config/widgets/custom_primary_button.dart';
 import 'package:job_connect/config/widgets/custom_text_field_with_label.dart';
@@ -47,6 +46,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Form(
       key: widget.formKey,
       child: Column(
@@ -54,6 +54,7 @@ class _RegisterFormState extends State<RegisterForm> {
         children: [
           // Họ tên
           CustomTextFieldWithLabel(
+            labelTextColor: theme.hintColor.withValues(alpha: 0.5), 
             controller: widget.nameController,
             label: 'Họ và tên',
             icon: Icons.person_outline,
@@ -67,6 +68,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
           // Email
           CustomTextFieldWithLabel(
+            labelTextColor: theme.hintColor.withValues(alpha: 0.5), 
             controller: widget.emailController,
             label: 'Email',
             icon: Icons.email_outlined,
@@ -107,11 +109,13 @@ class _RegisterFormState extends State<RegisterForm> {
               ),
               SizedBox(width: 8.w),
               Expanded(
-                child: CustomInputField(
+                child: CustomTextFieldWithLabel(
+                  labelTextColor: theme.hintColor.withValues(alpha: 0.5), 
                   controller: widget.phoneController,
                   keyboardType: TextInputType.phone,
                   hintText: 'Nhập số điện thoại',
-                  prefixIcon: Icon(Icons.phone, color: Colors.grey),
+                  label: 'Số điện thoại',
+                  icon: Icons.phone,
                   fillColor: BackgroundColors.backgroundInputFieldDefault,
                   inputFormatters: [FormatterService.phoneFormatter],
                   contentPadding: EdgeInsets.all(16.w),
@@ -129,6 +133,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
           // Password
           CustomPassFieldWithLabel(
+            labelTextColor: theme.hintColor.withValues(alpha: 0.5), 
             controller: widget.passwordController,
             label: 'Mật khẩu',
             isObscure: _isObscurePassword,
@@ -146,6 +151,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
           // Confirm Password
           CustomPassFieldWithLabel(
+            labelTextColor: theme.hintColor.withValues(alpha: 0.5), 
             controller: widget.confirmPasswordController,
             label: 'Xác nhận mật khẩu',
             isObscure: _isObscureConfirmPassword,

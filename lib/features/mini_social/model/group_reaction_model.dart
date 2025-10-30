@@ -1,44 +1,43 @@
 class GroupReactionModel {
-  final String idPost;
+  final String idReaction;
+  final String entityType;
+  final String entityId;
   final String idUser;
-  final String reactionType;
+  final String userName;
+  final String userAvatar;
+  final String reaction;
   final DateTime createdAt;
 
   GroupReactionModel({
-    required this.idPost,
+    required this.idReaction,
+    required this.entityType,
+    required this.entityId,
     required this.idUser,
-    required this.reactionType,
+    required this.userName,
+    required this.userAvatar,
+    required this.reaction,
     required this.createdAt,
   });
 
   factory GroupReactionModel.fromJson(Map<String, dynamic> json) => GroupReactionModel(
-        idPost: json['idPost'],
-        idUser: json['idUser'],
-        reactionType: json['reactionType'],
-        createdAt: DateTime.parse(json['createdAt']),
+        idReaction: json['idReaction'] ?? '',
+        entityType: json['entityType'] ?? '',
+        entityId: json['entityId'] ?? '',
+        idUser: json['idUser'] ?? '',
+        userName: json['userName'] ?? '',
+        userAvatar: json['userAvatar'] ?? '',
+        reaction: json['reaction'] ?? '',
+        createdAt: DateTime.tryParse(json['createdAt'] ?? '') ?? DateTime.now(),
       );
 
   Map<String, dynamic> toJson() => {
-        'idPost': idPost,
+        'idReaction': idReaction,
+        'entityType': entityType,
+        'entityId': entityId,
         'idUser': idUser,
-        'reactionType': reactionType,
+        'userName': userName,
+        'userAvatar': userAvatar,
+        'reaction': reaction,
         'createdAt': createdAt.toIso8601String(),
       };
-
-  GroupReactionModel copyWith({
-    String? idPost,
-    String? idUser,
-    String? reactionType,
-    DateTime? createdAt,
-  }) {
-    return GroupReactionModel(
-      idPost: idPost ?? this.idPost,
-      idUser: idUser ?? this.idUser,
-      reactionType: reactionType ?? this.reactionType,
-      createdAt: createdAt ?? this.createdAt,
-    );
-  }
-
-  @override
-  String toString() => 'GroupReactionModel($reactionType on $idPost)';
 }

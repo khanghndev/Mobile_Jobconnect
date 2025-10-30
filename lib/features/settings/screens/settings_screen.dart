@@ -200,7 +200,7 @@ class SettingScreenState extends State<SettingScreen> with TickerProviderStateMi
     final textSizeProvider = Provider.of<TextSizeProvider>(context);
     final theme = Theme.of(context);
     final userVM = context.watch<UserViewModel>();
-    final user = userVM.userDetail;
+    final user = userVM.currentUser;
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,

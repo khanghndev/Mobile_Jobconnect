@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/constant/app_strings.dart';
 import 'package:job_connect/config/widgets/login_required_dialog.dart';
 import 'package:job_connect/features/home/screens/home_screen.dart';
@@ -50,6 +51,13 @@ class NavigationPageState extends State<NavigationPage> with TickerProviderState
   late AnimationController _navBarController;
   late Animation<double> _fadeAnimation;
   List<Widget> _screens = [];
+  final List<String> routes = [
+    '/home',
+    '/resume/analysis',
+    '/social/job-board',
+    '/social/messages',
+    '/social/profile',
+  ];
 
   @override
   void initState() {
@@ -69,79 +77,52 @@ class NavigationPageState extends State<NavigationPage> with TickerProviderState
     }
   }
 
+  void _onSearch(){
+    context.push(
+      '/home/search', 
+      extra: {
+        'isLoggedIn': widget.isLoggedIn,
+        'idUser': widget.idUser,
+        'initialTabIndex' : 1,
+      }
+    );
+  }
+
   void _updateScreens() {
     final args = (
       loggedIn: widget.isLoggedIn,
       userId: widget.idUser,
     );
 
-    final newScreens = [
-      CustomAppBarWithDrawer(
-        isLoggedIn: args.loggedIn,
-        idUser: args.userId,
-        title: AppStrings.appName,
-        bodyBuilder: HomeScreen(
-          isLoggedIn: args.loggedIn,
-          idUser: args.userId,
-        ),
-        drawer: DrawerCandidateSection( 
-          isLoggedIn: widget.isLoggedIn,
-          idUser: widget.idUser,
-        ),
-      ),
-      CustomAppBarWithDrawer(
-        isLoggedIn: args.loggedIn,
-        idUser: args.userId,
-        title: AppStrings.appCV,
-        bodyBuilder: CVOptionsScreen(
-          isLoggedIn: args.loggedIn,
-          idUser: args.userId,
-        ),
-        drawer: DrawerCandidateSection( 
-          isLoggedIn: widget.isLoggedIn,
-          idUser: widget.idUser,
-        ),
-      ),
-      CustomAppBarWithDrawer(
-        isLoggedIn: args.loggedIn,
-        idUser: args.userId,
-        title: AppStrings.appSocial,
-        bodyBuilder: SocialFeedScreen(
-          isLoggedIn: args.loggedIn,
-          idUser: args.userId,
-        ),
-        drawer: DrawerCandidateSection( 
-          isLoggedIn: widget.isLoggedIn,
-          idUser: widget.idUser,
-        ),
-      ),
-      CustomAppBarWithDrawer(
-        isLoggedIn: args.loggedIn,
-        idUser: args.userId,
-        title: AppStrings.appMessage,
-        bodyBuilder: SocialMessengerScreen(
-          isLoggedIn: args.loggedIn,
-          idUser: args.userId,
-        ),
-        drawer: DrawerCandidateSection( 
-          isLoggedIn: widget.isLoggedIn,
-          idUser: widget.idUser,
-        ),
-      ),
-      CustomAppBarWithDrawer(
-        isLoggedIn: args.loggedIn,
-        idUser: args.userId,
-        title: AppStrings.appProfile,
-        bodyBuilder: ProfilePageScreen(
-          isLoggedIn: args.loggedIn,
-          idUser: args.userId,
-        ),
-        drawer: DrawerCandidateSection( 
-          isLoggedIn: widget.isLoggedIn,
-          idUser: widget.idUser,
-        ),
-      ),
+    final List<Widget> bodies = [
+      HomeScreen(isLoggedIn: args.loggedIn, idUser: args.userId),
+      CVOptionsScreen(isLoggedIn: args.loggedIn, idUser: args.userId),
+      SocialFeedScreen(isLoggedIn: args.loggedIn, idUser: args.userId, onSearch: _onSearch,),
+      SocialMessengerScreen(isLoggedIn: args.loggedIn, idUser: args.userId),
+      ProfilePageScreen(isLoggedIn: args.loggedIn, idUser: args.userId),
     ];
+
+    final List<String> titles = [
+      AppStrings.appName,
+      AppStrings.appCV,
+      AppStrings.appSocial,
+      AppStrings.appMessage,
+      AppStrings.appProfile,
+    ];
+
+    final newScreens = List.generate(routes.length, (index) {
+      return CustomAppBarWithDrawer(
+        isLoggedIn: args.loggedIn,
+        idUser: args.userId,
+        title: titles[index],
+        bodyBuilder: bodies[index],
+        drawer: DrawerCandidateSection(
+          isLoggedIn: widget.isLoggedIn,
+          idUser: widget.idUser,
+          selectedRoute: routes[index], 
+        ),
+      );
+    });
 
     if (mounted) setState(() => _screens = newScreens);
   }

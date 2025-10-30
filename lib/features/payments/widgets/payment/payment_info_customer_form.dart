@@ -31,7 +31,7 @@ class PaymentInfoCustomerForm extends StatelessWidget {
 
     // Lấy dữ liệu từ UserViewModel
     final userViewModel = context.watch<UserViewModel>();
-    final user = userViewModel.userDetail;
+    final user = userViewModel.currentUser;
     nameController.text = user?.userName ?? '';
     phoneController.text = FormatUtils.formatPhoneNumber(user?.phoneNumber ?? '');
     emailController.text = user?.email ?? '';

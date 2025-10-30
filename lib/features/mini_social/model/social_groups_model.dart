@@ -4,10 +4,14 @@ class SocialGroupsModel {
   final String? description;
   final String privacy;
   final String? coverImageUrl;
-  final bool requirePostApproval;
-  final String createdBy;
+  final String creatorName;
   final DateTime createdAt;
-  final DateTime updatedAt;
+  final int memberCount;
+  final int postCount;
+  final List<String> tags;
+  final bool requirePostApproval;
+  final String? userRole;
+  final String? userStatus;
 
   SocialGroupsModel({
     required this.idGroup,
@@ -15,24 +19,30 @@ class SocialGroupsModel {
     this.description,
     this.privacy = 'public',
     this.coverImageUrl,
-    this.requirePostApproval = true,
-    required this.createdBy,
+    required this.creatorName,
     required this.createdAt,
-    required this.updatedAt,
+    this.memberCount = 0,
+    this.postCount = 0,
+    this.tags = const [],
+    this.requirePostApproval = true,
+    this.userRole,
+    this.userStatus,
   });
 
-  factory SocialGroupsModel.fromJson(Map<String, dynamic> json) =>
-      SocialGroupsModel(
+  factory SocialGroupsModel.fromJson(Map<String, dynamic> json) => SocialGroupsModel(
         idGroup: json['idGroup'],
         groupName: json['groupName'],
         description: json['description'],
-        privacy: json['privacy'],
+        privacy: json['privacy'] ?? 'public',
         coverImageUrl: json['coverImageUrl'],
-        requirePostApproval:
-            json['requirePostApproval'] == 1 || json['requirePostApproval'] == true,
-        createdBy: json['createdBy'],
+        creatorName: json['creatorName'],
         createdAt: DateTime.parse(json['createdAt']),
-        updatedAt: DateTime.parse(json['updatedAt']),
+        memberCount: json['memberCount'] ?? 0,
+        postCount: json['postCount'] ?? 0,
+        tags: json['tags'] != null ? List<String>.from(json['tags']) : [],
+        requirePostApproval: json['requirePostApproval'] == true,
+        userRole: json['userRole'],
+        userStatus: json['userStatus'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -41,10 +51,14 @@ class SocialGroupsModel {
         'description': description,
         'privacy': privacy,
         'coverImageUrl': coverImageUrl,
-        'requirePostApproval': requirePostApproval ? 1 : 0,
-        'createdBy': createdBy,
+        'creatorName': creatorName,
         'createdAt': createdAt.toIso8601String(),
-        'updatedAt': updatedAt.toIso8601String(),
+        'memberCount': memberCount,
+        'postCount': postCount,
+        'tags': tags,
+        'requirePostApproval': requirePostApproval,
+        'userRole': userRole,
+        'userStatus': userStatus,
       };
 
   SocialGroupsModel copyWith({
@@ -53,10 +67,14 @@ class SocialGroupsModel {
     String? description,
     String? privacy,
     String? coverImageUrl,
-    bool? requirePostApproval,
-    String? createdBy,
+    String? creatorName,
     DateTime? createdAt,
-    DateTime? updatedAt,
+    int? memberCount,
+    int? postCount,
+    List<String>? tags,
+    bool? requirePostApproval,
+    String? userRole,
+    String? userStatus,
   }) {
     return SocialGroupsModel(
       idGroup: idGroup ?? this.idGroup,
@@ -64,10 +82,14 @@ class SocialGroupsModel {
       description: description ?? this.description,
       privacy: privacy ?? this.privacy,
       coverImageUrl: coverImageUrl ?? this.coverImageUrl,
-      requirePostApproval: requirePostApproval ?? this.requirePostApproval,
-      createdBy: createdBy ?? this.createdBy,
+      creatorName: creatorName ?? this.creatorName,
       createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
+      memberCount: memberCount ?? this.memberCount,
+      postCount: postCount ?? this.postCount,
+      tags: tags ?? this.tags,
+      requirePostApproval: requirePostApproval ?? this.requirePostApproval,
+      userRole: userRole ?? this.userRole,
+      userStatus: userStatus ?? this.userStatus,
     );
   }
 

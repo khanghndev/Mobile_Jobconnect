@@ -5,22 +5,50 @@ import 'package:job_connect/config/constant/app_colors.dart';
 import 'package:job_connect/config/utils/get_adaptive_back_icon.dart';
 import 'package:job_connect/config/widgets/custom_adaptive_tap_effect.dart';
 import 'package:job_connect/config/widgets/custom_appbar.dart';
+import 'package:job_connect/features/mini_social/model/social_post_model.dart';
 import 'package:job_connect/features/mini_social/widgets/comments/comment_tile.dart';
 import 'package:job_connect/features/mini_social/widgets/social_feed/post_action_bar.dart';
 import 'package:job_connect/features/mini_social/widgets/social_feed/post_item_header.dart';
 
-import '../../widgets/social_feed/post_item.dart';
+class SocialPostDetailScreen extends StatefulWidget {
+  final SocialPostModel socialPostModel;
+  final bool isLiked;
+  final bool isSaved;
+  final String roleName;
+  final VoidCallback onLike;
+  final VoidCallback onSave;
+  final VoidCallback onShare;
+  final VoidCallback onComment;
+  final VoidCallback onShowReactions;
+  final VoidCallback onFollow;
+  final VoidCallback onHide;
+  final VoidCallback onReport;
+  final VoidCallback onCopyLink;
+  final VoidCallback onOpenProfile;
 
-class PostDetailScreen extends StatefulWidget {
-  final PostModel post;
-
-  const PostDetailScreen({super.key, required this.post});
+  const SocialPostDetailScreen({
+    super.key,
+    required this.socialPostModel,
+    required this.isLiked,
+    required this.isSaved,
+    required this.roleName,
+    required this.onLike,
+    required this.onSave,
+    required this.onShare,
+    required this.onComment,
+    required this.onShowReactions,
+    required this.onFollow,
+    required this.onHide,
+    required this.onReport,
+    required this.onCopyLink,
+    required this.onOpenProfile,
+  });
 
   @override
-  State<PostDetailScreen> createState() => _PostDetailScreenState();
+  State<SocialPostDetailScreen> createState() => _SocialPostDetailScreenState();
 }
 
-class _PostDetailScreenState extends State<PostDetailScreen> {
+class _SocialPostDetailScreenState extends State<SocialPostDetailScreen> {
   final TextEditingController _commentController = TextEditingController();
   String _selectedFilter = "Phù hợp nhất";
   String? _replyingTo;
@@ -80,7 +108,6 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
   }
 
   void _submitComment() {
-    print("Send: ${_commentController.text}");
     _commentController.clear();
     setState(() {
       hasText = false;
@@ -95,7 +122,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
         backgroundColor: BackgroundColors.backgroundDefaultPrimary,
         automaticallyImplyLeading: true,
         title: Text(
-          'Bài viết của ${widget.post.username}',
+          'Bài viết của ${widget.socialPostModel.userName}',
           style: Theme.of(context).textTheme.titleLarge!.copyWith(
             fontSize: 20.sp,
             fontWeight: FontWeight.w600,
@@ -121,30 +148,34 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                   child: PostItemHeader(
-                    postId: widget.post.postId,
-                    avatarUrl: widget.post.avatarUrl,
-                    username: widget.post.username,
-                    group: widget.post.group,
-                    timeAgo: widget.post.timeAgo,
-                    onFollow: () {},
+                    socialPostModel: widget.socialPostModel,
+                    roleName: widget.roleName,
+                    onFollow: widget.onFollow,
+                    onHide: widget.onHide,
+                    onCopyLink: widget.onCopyLink,
+                    onReport: widget.onReport,
+                    onOpenProfile: widget.onOpenProfile,
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
                   child: Text(
-                    widget.post.content,
+                    widget.socialPostModel.content,
                     style: TextStyle(fontSize: 15.sp, height: 1.6),
                   ),
                 ),
                 SizedBox(height: 12.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w),
-                  child: PostActionBar(
-                    reactionCount: widget.post.likeCount,
-                    commentCount: widget.post.commentCount,
-                    shareCount: widget.post.shareCount,
-                    isComment: false,
-                  ),
+                PostActionBar(
+                  likesCount: widget.socialPostModel.likesCount,
+                  commentCount: widget.socialPostModel.commentsCount,
+                  shareCount: widget.socialPostModel.sharesCount,
+                  isLiked: widget.isLiked,
+                  isSaved: widget.isSaved,
+                  onLike: widget.onLike,
+                  onSave: widget.onSave,
+                  onShare: widget.onShare,
+                  onComment: widget.onComment,
+                  onShowReactions: widget.onShowReactions,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
@@ -153,11 +184,11 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     underline: SizedBox.shrink(),
                     icon: Icon(Icons.arrow_drop_down),
                     items: filters
-                        .map((e) => DropdownMenuItem(
-                              value: e,
-                              child: Text(e, style: TextStyle(fontSize: 14.sp)),
-                            ))
-                        .toList(),
+                      .map((e) => DropdownMenuItem(
+                            value: e,
+                            child: Text(e, style: TextStyle(fontSize: 14.sp)),
+                          ))
+                      .toList(),
                     onChanged: (value) {
                       if (value != null) {
                         setState(() => _selectedFilter = value);
@@ -175,6 +206,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                       text: c['text'] as String,
                       time: c['time'] as String,
                       icon: c['reactionIcon'] as String,
+                      avatarUrl: c['avatarUrl'] as String,
                       count: c['reactions'] as int,
                       onReplyTap: () => _replyTo(c['user'] as String),
                       onReactTap: () => _pickReaction(i),

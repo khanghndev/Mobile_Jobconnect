@@ -1,19 +1,32 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:job_connect/config/utils/date_utils_helper.dart';
+import 'package:job_connect/config/widgets/reaction_picker.dart';
+import 'package:job_connect/features/mini_social/model/social_comment_model.dart';
 import 'package:job_connect/features/mini_social/widgets/comments/comment_filter_dropdown.dart';
 import 'package:job_connect/features/mini_social/widgets/comments/comment_input_field.dart';
 import 'package:job_connect/features/mini_social/widgets/comments/comment_tile.dart';
 
 class CommentBottomSheet extends StatefulWidget {
   final TextEditingController commentController;
-  final VoidCallback onSubmit;
+  final Future<void> Function(String text, String? parentId) onSubmit;
+  final List<SocialCommentModel> comments;
+  final Future<void> Function()? onRefresh;
+  final Function(SocialCommentModel)? onReply;
+  final Function(SocialCommentModel)? onReact;
+  final String Function(String userId)? resolveUsername;
+  final String Function(String userId)? resolveUserAvatar;
 
   const CommentBottomSheet({
     super.key,
     required this.commentController,
     required this.onSubmit,
+    required this.comments,
+    this.onRefresh,
+    this.onReply,
+    this.onReact,
+    this.resolveUsername,
+    this.resolveUserAvatar,
   });
 
   @override
@@ -22,133 +35,214 @@ class CommentBottomSheet extends StatefulWidget {
 
 class _CommentBottomSheetState extends State<CommentBottomSheet> {
   String _selectedFilter = "Phù hợp nhất";
-  String? _replyingTo;
-  bool hasText = false;
+  SocialCommentModel? _replyingComment;
+  bool _hasText = false;
   String? _selectedReaction;
 
-  final List<String> filters = ["Phù hợp nhất", "Mới nhất", "Tất cả bình luận"];
+  final List<String> _filters = ["Phù hợp nhất", "Mới nhất", "Tất cả bình luận"];
 
-  final comments = List.generate(3, (i) => {
-        'user': 'Phạm Trường Vũ',
-        'time': '10 giờ',
-        'text': 'Tự do làm những điều mình thích đi b.',
-        'reactions': 4,
-        'reactionIcon': '😆',
-      });
+  @override
+  void initState() {
+    super.initState();
+    widget.commentController.addListener(_onTextChanged);
+  }
 
-  void _pickReaction() async {
-    final reactions = ['😂', '😍', '😢', '😡', '👍'];
-    final selected = await showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        content: Wrap(
-          children: reactions.map((e) => InkWell(
-            onTap: () => Navigator.pop(ctx, e),
-            child: Padding(
-              padding: EdgeInsets.all(8.r),
-              child: Text(e, style: TextStyle(fontSize: 24.sp)),
-            ),
-          )).toList(),
-        ),
-      ),
-    );
-    if (selected != null) {
-      setState(() => _selectedReaction = selected);
+  void _onTextChanged() {
+    final hasContent = widget.commentController.text.trim().isNotEmpty;
+    if (hasContent != _hasText) {
+      setState(() => _hasText = hasContent);
     }
   }
 
-  void _replyTo(String user) {
-    setState(() => _replyingTo = user);
-    widget.commentController.text = "@$user ";
+  @override
+  void dispose() {
+    widget.commentController.removeListener(_onTextChanged);
+    super.dispose();
+  }
+
+  Future<void> _onShowReactions(SocialCommentModel comment) async {
+    await ReactionPicker.show(
+      context,
+      onSelected: (reaction) {
+        setState(() => _selectedReaction = reaction);
+        widget.onReact?.call(comment);
+      },
+    );
+  }
+
+  void _onReply(SocialCommentModel comment) {
+    final username = widget.resolveUsername?.call(comment.idUser) ?? "Người dùng";
+    widget.commentController.text = "@$username ";
     widget.commentController.selection = TextSelection.fromPosition(
       TextPosition(offset: widget.commentController.text.length),
     );
-    hasText = true;
+
+    setState(() {
+      _replyingComment = comment;
+      _hasText = true;
+    });
+
+    widget.onReply?.call(comment);
   }
 
   void _cancelReply() {
-    setState(() {
-      _replyingTo = null;
-      hasText = false;
-    });
+    setState(() => _replyingComment = null);
     widget.commentController.clear();
+  }
+
+  void _onSend() {
+    final text = widget.commentController.text.trim();
+    if (text.isEmpty) return;
+    final parentId = _replyingComment?.idComment;
+    widget.onSubmit(text, parentId);
+    widget.commentController.clear();
+    setState(() {
+      _hasText = false;
+      _replyingComment = null;
+    });
+  }
+
+  /// --- Nhóm comment cha/con ---
+  Map<String?, List<SocialCommentModel>> _groupComments(List<SocialCommentModel> comments) {
+    final map = <String?, List<SocialCommentModel>>{};
+    for (final c in comments) {
+      final parent = c.parentComment;
+      map.putIfAbsent(parent, () => []).add(c);
+    }
+    return map;
+  }
+
+  /// --- Render 1 comment và replies ---
+  Widget _buildCommentWithReplies(
+    SocialCommentModel comment,
+    Map<String?, List<SocialCommentModel>> grouped,
+  ) {
+    final username = widget.resolveUsername?.call(comment.idUser) ?? "Người dùng";
+    final avatarUrl = widget.resolveUserAvatar?.call(comment.idUser) ?? "";
+
+    final replies = grouped[comment.idComment] ?? [];
+
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 12.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CommentTile(
+            username: username,
+            avatarUrl: avatarUrl,
+            text: comment.content,
+            time: DateUtilsHelper.getTimeAgo(comment.createdAt),
+            icon: _selectedReaction ?? '👍',
+            count: 0,
+            onReplyTap: () => _onReply(comment),
+            onReactTap: () => _onShowReactions(comment),
+          ),
+          // --- Replies ---
+          if (replies.isNotEmpty)
+            Padding(
+              padding: EdgeInsets.only(left: 40.w, top: 4.h),
+              child: Column(
+                children: replies
+                    .map((reply) => _buildCommentWithReplies(reply, grouped))
+                    .toList(),
+              ),
+            ),
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final grouped = _groupComments(widget.comments);
+    final rootComments = grouped[null] ?? [];
+
     return SafeArea(
-      child: Column(
-        children: [
-          SizedBox(height: 8.h),
-          Container(
-            height: 4.h,
-            width: 40.w,
-            decoration: BoxDecoration(
-              color: Colors.grey[400],
-              borderRadius: BorderRadius.circular(2.r),
-            ),
-          ),
-          SizedBox(height: 8.h),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.w),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: CommentFilterDropdown(
-                filters: filters,
-                selectedFilter: _selectedFilter,
-                onChanged: (val) {
-                  if (val != null) {
-                    setState(() => _selectedFilter = val);
-                  }
-                },
+      child: Padding(
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: Column(
+          children: [
+            SizedBox(height: 8.h),
+            // --- Drag handle ---
+            Container(
+              height: 4.h,
+              width: 40.w,
+              decoration: BoxDecoration(
+                color: Colors.grey[400],
+                borderRadius: BorderRadius.circular(2.r),
               ),
             ),
-          ),
-          SizedBox(height: 4.h),
-          Expanded(
-            child: ListView.builder(
-              itemCount: comments.length,
-              itemBuilder: (_, i) {
-                final c = comments[i];
-                return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                  child: CommentTile(
-                    username: c['user'] as String,
-                    text: c['text'] as String,
-                    time: c['time'] as String,
-                    icon: c['reactionIcon'] as String,
-                    count: c['reactions'] as int,
-                    onReplyTap: () => _replyTo(c['user'] as String),
-                    onReactTap: () => _pickReaction,
-                  ),
-                );
-              },
-            ),
-          ),
-          Divider(height: 1.h),
-          if (_replyingTo != null)
+            SizedBox(height: 8.h),
+
+            // --- Filter ---
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
-              child: Row(
-                children: [
-                  Text("Đang trả lời $_replyingTo", style: TextStyle(fontSize: 14.sp, color: Colors.grey)),
-                  Spacer(),
-                  GestureDetector(
-                    onTap: _cancelReply,
-                    child: Text("Huỷ", style: TextStyle(fontSize: 14.sp, color: Colors.blue)),
-                  ),
-                ],
+              padding: EdgeInsets.symmetric(horizontal: 12.w),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: CommentFilterDropdown(
+                  filters: _filters,
+                  selectedFilter: _selectedFilter,
+                  onChanged: (val) {
+                    if (val != null) setState(() => _selectedFilter = val);
+                  },
+                ),
               ),
             ),
-          Padding(
-            padding: EdgeInsets.all(8.w),
-            child: CommentInputField(
-              controller: widget.commentController,
-              hasText: hasText,
-              onSend: hasText ? widget.onSubmit : null,
+            SizedBox(height: 4.h),
+
+            // --- Comment list ---
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: widget.onRefresh ?? () async {},
+                child: rootComments.isEmpty
+                    ? const Center(child: Text("Chưa có bình luận nào"))
+                    : ListView.builder(
+                        itemCount: rootComments.length,
+                        itemBuilder: (_, i) =>
+                            _buildCommentWithReplies(rootComments[i], grouped),
+                      ),
+              ),
             ),
-          ),
-        ],
+
+            Divider(height: 1.h),
+
+            // --- Replying bar ---
+            if (_replyingComment != null)
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "Đang trả lời ${widget.resolveUsername?.call(_replyingComment!.idUser) ?? "người dùng"}",
+                        style: TextStyle(fontSize: 14.sp, color: Colors.grey),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: _cancelReply,
+                      child: Text(
+                        "Huỷ",
+                        style: TextStyle(fontSize: 14.sp, color: Colors.blue),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+            // --- Input field ---
+            Padding(
+              padding: EdgeInsets.all(8.w),
+              child: CommentInputField(
+                controller: widget.commentController,
+                hasText: _hasText,
+                onChanged: (value) =>
+                    setState(() => _hasText = value.trim().isNotEmpty),
+                onSend: _hasText ? _onSend : null,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

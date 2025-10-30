@@ -4,25 +4,23 @@ import 'package:job_connect/features/profile/model/user_model.dart';
 import 'package:job_connect/features/profile/service/candidate_info_service.dart';
 import 'package:job_connect/features/profile/service/user_service.dart';
 import '../../../../data/models/save_candidate_model.dart';
-import '../../../services/chat_service.dart';
 import '../../../services/resum_skill_service.dart';
 import '../../../services/save_candidate_service.dart';
 import '../../candidate/screens/detail_candidate_of_hr.dart';
 import 'hr_saved_candidates_screen.dart'; 
 
-// ignore: must_be_immutable
-class SearchHrScreen extends StatefulWidget {
+class HrSearchScreen extends StatefulWidget {
   String recruiterId;
-  SearchHrScreen({
+  HrSearchScreen({
     super.key,
     required this.recruiterId,
   });
 
   @override
-  State<SearchHrScreen> createState() => _SearchHrScreenState();
+  State<HrSearchScreen> createState() => _HrSearchScreenState();
 }
 
-class _SearchHrScreenState extends State<SearchHrScreen> {
+class _HrSearchScreenState extends State<HrSearchScreen> {
   // Controller của thanh tìm kiếm
   final TextEditingController _searchController = TextEditingController();
 

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:job_connect/config/constant/app_images.dart';
+import 'package:job_connect/config/constant/app_strings.dart';
+import 'package:job_connect/features/mini_social/view_model/social_post_view_model.dart';
 import 'package:job_connect/features/mini_social/widgets/profile/posted_list.dart';
 import 'package:job_connect/features/mini_social/widgets/profile/profile_actions.dart';
 import 'package:job_connect/features/mini_social/widgets/profile/profile_avatar.dart';
@@ -7,24 +10,13 @@ import 'package:job_connect/features/mini_social/widgets/profile/profile_goals.d
 import 'package:job_connect/features/mini_social/widgets/profile/profile_header.dart';
 import 'package:job_connect/features/mini_social/widgets/profile/profile_stats.dart';
 import 'package:job_connect/config/widgets/unfocus_widget.dart';
+import 'package:job_connect/features/mini_social/widgets/profile/social_profile_shimmer.dart';
+import 'package:job_connect/features/profile/view_model/user_view_model.dart';
+import 'package:provider/provider.dart';
 
-class DiscoverCardModel {
-  final String title;
-  final String imagePath;
-  final String views;
-  final String comments;
-  final String likes;
-
-  DiscoverCardModel({
-    required this.title,
-    required this.imagePath,
-    required this.views,
-    required this.comments,
-    required this.likes,
-  });
-}
 class SocialProfileScreen extends StatefulWidget {
-  const SocialProfileScreen({super.key});
+  final String idUser;
+  const SocialProfileScreen({super.key, required this.idUser});
 
   @override
   State<SocialProfileScreen> createState() => _SocialProfileScreenState();
@@ -33,38 +25,55 @@ class SocialProfileScreen extends StatefulWidget {
 class _SocialProfileScreenState extends State<SocialProfileScreen> {
   bool _isExpanded = false;
 
-  final List<DiscoverCardModel> discoverCards = List.generate(
-    10, // số lượng phần tử muốn tạo
-    (index) => DiscoverCardModel(
-      title: "Discover CardDiscover CardDiscover Card ${index + 1}",
-      imagePath: "assets/images/connect.png", // hoặc đổi tuỳ ý
-      views: "${(index + 1) * 1000} views",
-      comments: "${(index + 1) * 5}",
-      likes: "${(index + 1) * 300}",
-    ),
-  );
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _onRefresh();
+    });
+  }
 
+  Future<void> _onRefresh() async {
+    context.read<UserViewModel>().getViewUser(widget.idUser);
+    await context.read<SocialPostViewModel>().getPostsByUserId(widget.idUser);
+  }
 
   @override
   Widget build(BuildContext context) {
+    final userVm = context.watch<UserViewModel>();
+    final socialPostVm = context.watch<SocialPostViewModel>();
+    final user = userVm.viewedUser;
+    final posts = socialPostVm.posts;
+    final theme = Theme.of(context);
+
+    if (userVm.isDetailLoading) {
+      return const SocialProfileShimmer();
+    }
+
     return Scaffold(
-      backgroundColor: const Color(0xffEAF4FF),
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: UnfocusWidget(
           child: RefreshIndicator(
-            onRefresh: () async {},
+            onRefresh: _onRefresh,
             child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
               child: Padding(
                 padding: EdgeInsets.all(16.w),
                 child: Column(
                   children: [
                     const ProfileHeader(),
                     SizedBox(height: 12.h),
-                    const ProfileAMainAvatar(imageUrl: "https://i.pravatar.cc/150?img=12"),
+                    ProfileAMainAvatar(
+                      imageUrl: user?.avatarUrl ?? AppImages.logoApp,
+                    ),
                     SizedBox(height: 12.h),
                     Text(
-                      "Kimberly",
-                      style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold)
+                      user?.userName ?? "Người dùng ${AppStrings.appName}",
+                      style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     SizedBox(height: 16.h),
                     const ProfileStats(),
@@ -74,11 +83,11 @@ class _SocialProfileScreenState extends State<SocialProfileScreen> {
                     const ProfileGoals(),
                     SizedBox(height: 24.h),
                     DefaultTabController(
-                      length: 3, // số tab
+                      length: 3,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          TabBar(
+                          const TabBar(
                             labelColor: Colors.black,
                             unselectedLabelColor: Colors.grey,
                             indicatorColor: Colors.blue,
@@ -89,27 +98,27 @@ class _SocialProfileScreenState extends State<SocialProfileScreen> {
                             ],
                           ),
                           SizedBox(
-                            height: 420.h, 
+                            height: MediaQuery.of(context).size.height * 0.7,
                             child: TabBarView(
+                              physics: const NeverScrollableScrollPhysics(),
                               children: [
-                                // Tab 1 - đã đăng
                                 DiscoverList(
-                                  cards: discoverCards,
+                                  socialPostModels: posts,
                                   isExpanded: _isExpanded,
                                   onToggle: () => setState(() => _isExpanded = !_isExpanded),
                                 ),
-                                // Tab 2 - đã ẩn 
                                 Center(
                                   child: Text(
                                     "Chưa có bài viết ẩn",
-                                    style: TextStyle(fontSize: 16.sp, color: Colors.grey),
+                                    style: TextStyle(
+                                        fontSize: 16.sp, color: Colors.grey),
                                   ),
                                 ),
-                                // Tab 3 - đã xóa
                                 Center(
                                   child: Text(
                                     "Chưa có bài viết bị xóa",
-                                    style: TextStyle(fontSize: 16.sp, color: Colors.grey),
+                                    style: TextStyle(
+                                        fontSize: 16.sp, color: Colors.grey),
                                   ),
                                 ),
                               ],

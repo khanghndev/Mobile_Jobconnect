@@ -52,6 +52,10 @@ class SocialCommentModel {
     );
   }
 
+  bool get isRoot => parentComment == null;
+
+  bool get isReply => parentComment != null;
+
   @override
   String toString() =>
       'SocialCommentModel(idComment: $idComment, idPost: $idPost, idUser: $idUser)';

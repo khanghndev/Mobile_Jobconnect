@@ -106,40 +106,71 @@ class ApiConstants {
   static const String jobTransactionByIdEndpoint = "/api/JobTransaction/{id}";
   static const String jobTransactionDetailEndpoint = "/api/JobTransaction/detail/{idTransaction}";
 
-  // SOCIAL - Bài viết, comment, like, kết nối, story, tag
-  static const String socialPostEndpoint = "/api/SocialPosts"; 
+  // SOCIAL - Bài viết, comment, like, kết nối, story, tag, messgae
+  static const String socialPostsEndpoint = "/api/SocialPosts";
   static const String socialPostByIdEndpoint = "/api/SocialPosts/{id}";
-  static const String socialCommentEndpoint = "/api/SocialComments"; 
-  static const String socialCommentByIdEndpoint = "/api/SocialComments/{id}";
-  static const String socialLikeEndpoint = "/api/SocialLikes";
-  static const String socialLikeByIdEndpoint = "/api/SocialLikes/{id}";
-  static const String socialConnectionEndpoint = "/api/SocialConnections"; 
-  static const String socialConnectionByIdEndpoint = "/api/SocialConnections/{id}";
-  static const String socialStoryEndpoint = "/api/SocialStory";
-  static const String socialStoryByIdEndpoint = "/api/SocialStory/{id}";
-  static const String socialTagEndpoint = "/api/SocialTags"; 
-  static const String socialPostTagEndpoint = "/api/SocialPostTags";
-  static const String socialPostActivityLogEndpoint = "/api/SocialPostActivityLog";
+  static const String socialPostLikeEndpoint = "/api/SocialPosts/{id}/like";
+  static const String socialPostLikesEndpoint = "/api/SocialPosts/{id}/likes";
+  static const String socialPostsFeedByUserEndpoint = "/api/SocialPosts/feed/{userId}";
 
-  // GROUP - Nhóm, thành viên, post, comment, reaction, tag, activity log
-  static const String socialGroupEndpoint = "/api/SocialGroups";
+  static const String socialMessagesSendEndpoint = "/api/SocialMessages/send";
+  static const String socialMessagesThreadEndpoint = "/api/SocialMessages/thread";
+  static const String socialMessagesMarkReadEndpoint = "/api/SocialMessages/mark-read";
+  static const String socialMessagesUnreadCountEndpoint = "/api/SocialMessages/unread-count/{userId}";
+
+  static const String socialCommentEndpoint = "/api/SocialComments";
+  static const String socialCommentByIdEndpoint = "/api/SocialComments/{id}";
+  static const String socialCommentsByPostEndpoint = "/api/SocialComments/by-post/{postId}";
+  static const String socialCommentsRepliesEndpoint = "/api/SocialComments/replies/{parentId}";
+
+  static const String socialConnectionsRequestEndpoint = "/api/SocialConnections/request";
+  static const String socialConnectionsAcceptEndpoint = "/api/SocialConnections/accept";
+  static const String socialConnectionsBlockEndpoint = "/api/SocialConnections/block";
+  static const String socialConnectionsUnfriendEndpoint = "/api/SocialConnections/unfriend";
+  static const String socialConnectionsFriendsByUserEndpoint = "/api/SocialConnections/friends/{userId}";
+  static const String socialConnectionsRequestsByUserEndpoint = "/api/SocialConnections/requests/{userId}";
+
+  static const String socialGroupsEndpoint = "/api/SocialGroups";
   static const String socialGroupByIdEndpoint = "/api/SocialGroups/{id}";
-  static const String socialGroupJoinedEndpoint = "/api/SocialGroups/joined";
-  static const String socialGroupSearchEndpoint = "/api/SocialGroups/search";
+  static const String socialGroupsJoinedEndpoint = "/api/SocialGroups/joined";
+  static const String socialGroupsSearchEndpoint = "/api/SocialGroups/search";
   static const String socialGroupJoinEndpoint = "/api/SocialGroups/{id}/join";
   static const String socialGroupLeaveEndpoint = "/api/SocialGroups/{id}/leave";
   static const String socialGroupMembersEndpoint = "/api/SocialGroups/{id}/members";
-  static const String socialGroupMemberRoleEndpoint = "/api/SocialGroups/{id}/members/role";
+  static const String socialGroupMembersRoleEndpoint = "/api/SocialGroups/{id}/members/role";
+  static const String socialGroupMemberByIdEndpoint = "/api/SocialGroups/{id}/members/{userId}";
+  static const String socialGroupsTagsEndpoint = "/api/SocialGroups/tags";
+  static const String socialGroupsStatsEndpoint = "/api/SocialGroups/stats";
+
+  // GROUP SOCIAL - Nhóm mạng xã hội
   static const String groupPostsEndpoint = "/api/GroupPosts";
-  static const String groupPostsByGroupEndpoint = "/api/GroupPosts/by-group/{groupId}";
   static const String groupPostByIdEndpoint = "/api/GroupPosts/{id}";
+  static const String groupPostsByGroupEndpoint = "/api/GroupPosts/group/{groupId}";
+  static const String groupPostReactionEndpoint = "/api/GroupPosts/{id}/reaction";
+  static const String groupPostReactionsEndpoint = "/api/GroupPosts/{id}/reactions";
+  static const String groupPostsPendingEndpoint = "/api/GroupPosts/pending/{groupId}";
   static const String groupPostApproveEndpoint = "/api/GroupPosts/approve";
+  static const String groupPostStatsEndpoint = "/api/GroupPosts/stats/{groupId}";
+  static const String groupPostNotificationsEndpoint = "/api/GroupPosts/notifications/{userId}";
+
+
   static const String groupCommentsEndpoint = "/api/GroupComments";
   static const String groupCommentByIdEndpoint = "/api/GroupComments/{id}";
+  static const String groupCommentsByPostEndpoint = "/api/GroupComments/post/{postId}";
+  static const String groupCommentRepliesEndpoint = "/api/GroupComments/{id}/replies";
+  static const String groupCommentReactionEndpoint = "/api/GroupComments/{id}/reaction";
+  static const String groupCommentReactionsEndpoint = "/api/GroupComments/{id}/reactions";
+
   static const String groupReactionsEndpoint = "/api/GroupReactions";
-  static const String groupReactionByIdEndpoint = "/api/GroupReactions/{id}";
-  static const String groupTagsEndpoint = "/api/GroupTags";
-  static const String groupPostActivityLogEndpoint = "/api/GroupPostActivityLog";
+  static const String groupReactionByEntityEndpoint = "/api/GroupReactions/{entityType}/{entityId}";
+  static const String groupReactionDeleteEndpoint = "/api/GroupReactions/{entityType}/{entityId}/{userId}";
+
+  // SAVE POST - Lưu bài viết
+  static const String savedPostsByUser = "/api/SavedPosts/user/{idUser}";
+  static const String savedPostsFolders = "/api/SavedPosts/folders/{idUser}";
+  static const String createSavedPost = "/api/SavedPosts";
+  static const String updateSavedPost = "/api/SavedPosts";
+  static const String deleteSavedPost = "/api/SavedPosts";
 
   // EVALUATION - Đánh giá ứng viên
   static const String evaluationCriteriaEndpoint = "/api/EvaluationCriteria";

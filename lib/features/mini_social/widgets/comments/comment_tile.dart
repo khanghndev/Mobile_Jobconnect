@@ -8,6 +8,7 @@ class CommentTile extends StatelessWidget {
   final String time;
   final String icon;
   final int count;
+  final String avatarUrl;
   final VoidCallback onReplyTap;
   final VoidCallback onReactTap;
 
@@ -18,6 +19,7 @@ class CommentTile extends StatelessWidget {
     required this.time,
     required this.icon,
     required this.count,
+    required this.avatarUrl,
     required this.onReplyTap,
     required this.onReactTap,
   });
@@ -29,7 +31,7 @@ class CommentTile extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: 16.r,
-          backgroundImage: ImageUtils.getImageProvider('https://i.pravatar.cc/150?img=1'),
+          backgroundImage: ImageUtils.getImageProvider(avatarUrl),
         ),
         SizedBox(width: 8.w),
         Expanded(

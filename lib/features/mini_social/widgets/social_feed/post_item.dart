@@ -1,41 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:job_connect/features/mini_social/screens/post/social_post_detail_screen.dart';
+import 'package:job_connect/features/mini_social/model/social_post_model.dart';
 import 'package:job_connect/features/mini_social/widgets/social_feed/post_action_bar.dart';
 import 'package:job_connect/features/mini_social/widgets/social_feed/post_item_header.dart';
 
-class PostModel {
-  final String postId;
-  final String avatarUrl;
-  final String username;
-  final String group;
-  final String timeAgo;
-  final String content;
-  final int likeCount;
-  final int commentCount;
-  final int shareCount;
-
-  PostModel({
-    required this.postId,
-    required this.avatarUrl,
-    required this.username,
-    required this.group,
-    required this.timeAgo,
-    required this.content,
-    this.likeCount = 0,
-    this.commentCount = 0,
-    this.shareCount = 0,
-  });
-}
-
 class PostItem extends StatelessWidget {
-  final PostModel post;
-  final VoidCallback onFolow;
+  final SocialPostModel socialPostModel;
+  final bool isLiked;
+  final bool isSaved;
+  final String roleName;
+  final bool isFollowedOrTaken;
+  final VoidCallback onFollow;
+  final VoidCallback onLike;
+  final VoidCallback onSave;
+  final VoidCallback onShare;
+  final VoidCallback onHide;
+  final VoidCallback onCopyLink;
+  final VoidCallback onReport;
+  final VoidCallback onOpenDetail;
+  final VoidCallback onOpenProfile;
+  final VoidCallback onComment;
+  final VoidCallback onShowReactions;
 
   const PostItem({
-    super.key, 
-    required this.post, 
-    required this.onFolow
+    super.key,
+    required this.socialPostModel,
+    required this.isLiked,
+    required this.isSaved,
+    required this.roleName,
+    required this.isFollowedOrTaken,
+    required this.onFollow,
+    required this.onLike,
+    required this.onSave,
+    required this.onShare,
+    required this.onHide,
+    required this.onCopyLink,
+    required this.onReport,
+    required this.onOpenDetail,
+    required this.onOpenProfile,
+    required this.onComment,
+    required this.onShowReactions,
   });
 
   @override
@@ -47,43 +52,53 @@ class PostItem extends StatelessWidget {
         children: [
           SizedBox(height: 16.h),
 
-          // Header: Avatar + Info + Follow
+          // Header: Avatar + Info + Theo dõi / Nhận việc
           PostItemHeader(
-            postId: post.postId,
-            avatarUrl: post.avatarUrl,
-            username: post.username,
-            group: post.group,
-            timeAgo: post.timeAgo,
-            onFollow: onFolow
+            socialPostModel: socialPostModel,
+            roleName: roleName,
+            isFollowedOrTaken: isFollowedOrTaken,
+            onFollow: onFollow,
+            onHide: onHide,
+            onCopyLink: onCopyLink,
+            onReport: onReport,
+            onOpenProfile: onOpenProfile,
           ),
 
-          SizedBox(height: 12.h),
+          SizedBox(height: 16.h),
 
-          // Content
+          // Nội dung bài viết
           InkWell(
-            splashColor: Colors.transparent, 
+            splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => PostDetailScreen(post: post),
+            onTap: onOpenDetail,
+            child: Html(
+              data: socialPostModel.content,
+              style: {
+                "body": Style(
+                  fontSize: FontSize(14),
+                  lineHeight: LineHeight.number(1.5),
+                  margin: Margins.zero,
+                  padding: HtmlPaddings.zero,
+                  color: Colors.black87,
                 ),
-              );
-            },
-            child: Text(
-              post.content,
-              style: const TextStyle(fontSize: 14, height: 1.5),
+              },
             ),
           ),
 
-          SizedBox(height: 12.h),
+          SizedBox(height: 16.h),
 
-          // Action Bar
+          // Action Bar: like, save, share, comment, reactions
           PostActionBar(
-            reactionCount: post.likeCount,
-            commentCount: post.commentCount,
-            shareCount: post.shareCount,
+            likesCount: socialPostModel.likesCount,
+            commentCount: socialPostModel.commentsCount,
+            shareCount: socialPostModel.sharesCount,
+            isLiked: isLiked,
+            isSaved: isSaved,
+            onLike: onLike,
+            onSave: onSave,
+            onShare: onShare,
+            onComment: onComment,
+            onShowReactions: onShowReactions,
           ),
         ],
       ),

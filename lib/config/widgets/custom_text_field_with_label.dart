@@ -20,6 +20,9 @@ class CustomTextFieldWithLabel extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final EdgeInsetsGeometry? contentPadding;
   final Color? borderColor;
+  final Color? hintTextColor;
+  final Color? labelTextColor;
+  final double? borderRadius;
 
   const CustomTextFieldWithLabel({
     super.key,
@@ -39,6 +42,9 @@ class CustomTextFieldWithLabel extends StatelessWidget {
     this.inputFormatters,
     this.contentPadding,
     this.borderColor,
+    this.hintTextColor,
+    this.labelTextColor,
+    this.borderRadius
   });
 
   @override
@@ -55,23 +61,27 @@ class CustomTextFieldWithLabel extends StatelessWidget {
       style: TextStyle(
         color: theme.textTheme.bodyLarge?.color,
         fontSize: 16.sp,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w400,
       ),
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: theme.textTheme.bodyMedium?.copyWith(
-          color: theme.hintColor.withValues(alpha: 0.5),
+          color: hintTextColor ?? theme.hintColor.withValues(alpha: 0.5),
           fontSize: 16.sp,
         ),
         labelText: label,
-        prefixIcon: Icon(icon),
+        labelStyle: theme.textTheme.bodyMedium?.copyWith(
+          color: labelTextColor ?? theme.colorScheme.primary,
+          fontSize: 16.sp,
+        ),
+        prefixIcon: Icon(icon, size: 20.sp),
         prefixIconColor: prefixIconColor ?? theme.iconTheme.color,
         suffixIcon: suffixIcon != null
-            ? GestureDetector(
-                onTap: onSuffixIconTap,
-                child: Icon(suffixIcon),
-              )
-            : null,
+          ? GestureDetector(
+              onTap: onSuffixIconTap,
+              child: Icon(suffixIcon),
+            )
+          : null,
         suffixIconColor: suffixIconColor ?? theme.iconTheme.color,
         filled: true,
         fillColor: fillColor ?? theme.inputDecorationTheme.fillColor,
@@ -80,19 +90,19 @@ class CustomTextFieldWithLabel extends StatelessWidget {
           horizontal: 16.w,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(borderRadius ?? 12.r),
           borderSide: BorderSide(
             color: borderColor ?? BorderColors.borderDefaultDefault.withValues(alpha: 0.3),
           ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(borderRadius ?? 12.r),
           borderSide: BorderSide(
             color: borderColor ?? BorderColors.borderDefaultDefault.withValues(alpha: 0.3),
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(borderRadius ?? 12.r),
           borderSide: BorderSide(
             color: theme.primaryColor,
             width: 2.w,

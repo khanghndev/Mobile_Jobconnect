@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class DateUtilsHelper {
   /// Chuyển DateTime thành chuỗi định dạng dd/MM/yyyy
@@ -19,8 +20,21 @@ class DateUtilsHelper {
   /// Trả về chuỗi như: "5 phút trước", "2 giờ trước"
   static String timeAgo(DateTime dateTime) {
     final now = DateTime.now();
-    final diff = now.difference(dateTime);
+    Duration diff = now.difference(dateTime);
 
+    // Trường hợp trong tương lai
+    if (diff.isNegative) {
+      diff = diff.abs();
+      if (diff.inSeconds < 60) return 'Trong ${diff.inSeconds} giây tới';
+      if (diff.inMinutes < 60) return 'Trong ${diff.inMinutes} phút tới';
+      if (diff.inHours < 24) return 'Trong ${diff.inHours} giờ tới';
+      if (diff.inDays < 7) return 'Trong ${diff.inDays} ngày tới';
+      if (diff.inDays < 30) return 'Trong ${(diff.inDays / 7).floor()} tuần tới';
+      if (diff.inDays < 365) return 'Trong ${(diff.inDays / 30).floor()} tháng tới';
+      return 'Trong ${(diff.inDays / 365).floor()} năm tới';
+    }
+
+    // Trường hợp trong quá khứ
     if (diff.inSeconds < 60) return '${diff.inSeconds} giây trước';
     if (diff.inMinutes < 60) return '${diff.inMinutes} phút trước';
     if (diff.inHours < 24) return '${diff.inHours} giờ trước';
@@ -43,6 +57,12 @@ class DateUtilsHelper {
         date.month == yesterday.month &&
         date.day == yesterday.day;
   }
+
+  static String getTimeAgo(DateTime dateTime) {
+    timeago.setLocaleMessages('vi', timeago.ViMessages());
+    return timeago.format(dateTime, locale: 'vi');
+  }
+
 }
 
 // Cách sử dụng

@@ -1,3 +1,20 @@
+// Request model
+class SocialConnectionRequest {
+  final String fromUserId;
+  final String toUserId;
+
+  SocialConnectionRequest({
+    required this.fromUserId,
+    required this.toUserId,
+  });
+
+  Map<String, dynamic> toJson() => {
+        'fromUserId': fromUserId,
+        'toUserId': toUserId,
+      };
+}
+
+// Response model
 class SocialConnectionModel {
   final String idUser1;
   final String idUser2;
@@ -15,9 +32,9 @@ class SocialConnectionModel {
 
   factory SocialConnectionModel.fromJson(Map<String, dynamic> json) =>
       SocialConnectionModel(
-        idUser1: json['idUser1'],
-        idUser2: json['idUser2'],
-        status: json['status'],
+        idUser1: json['idUser1'] ?? '',
+        idUser2: json['idUser2'] ?? '',
+        status: json['status'] ?? '',
         createdAt: DateTime.parse(json['createdAt']),
         updatedAt: DateTime.parse(json['updatedAt']),
       );
@@ -29,24 +46,4 @@ class SocialConnectionModel {
         'createdAt': createdAt.toIso8601String(),
         'updatedAt': updatedAt.toIso8601String(),
       };
-
-  SocialConnectionModel copyWith({
-    String? idUser1,
-    String? idUser2,
-    String? status,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-  }) {
-    return SocialConnectionModel(
-      idUser1: idUser1 ?? this.idUser1,
-      idUser2: idUser2 ?? this.idUser2,
-      status: status ?? this.status,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-    );
-  }
-
-  @override
-  String toString() =>
-      'SocialConnectionModel($idUser1 <-> $idUser2, $status)';
 }

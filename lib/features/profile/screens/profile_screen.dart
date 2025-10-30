@@ -70,7 +70,7 @@ class ProfilePageState extends State<ProfilePageScreen> with TickerProviderState
     final candidateViewModel = context.read<CandidateInfoViewModel>();
 
     await Future.wait([
-      userViewModel.getUserDetail(widget.idUser),
+      userViewModel.getCurrentUser(widget.idUser),
       candidateViewModel.getCandidateDetail(widget.idUser),
       _fetchApplicationJobs(),
       _fetchSavedJobs(),
@@ -152,117 +152,116 @@ class ProfilePageState extends State<ProfilePageScreen> with TickerProviderState
     final theme = Theme.of(context);
     final userViewModel = context.watch<UserViewModel>();
     final candidateVM = context.watch<CandidateInfoViewModel>();
-    final account = userViewModel.userDetail;
+    final account = userViewModel.currentUser;
     final candidateInfo = candidateVM.candidateDetail;
     debugPrint("✅✅userName: ${account?.userName}✅✅");
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: !isLoggedIn
-          ? ProfileUnLoggin()
-          : SafeArea(
-              minimum: EdgeInsets.fromLTRB(16.w, 0.h, 16.w, 16.w),
-              child: RefreshIndicator(
-                onRefresh: _onRefresh,
-                child: SingleChildScrollView(
-                  controller: _scrollController,
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    children: [
-                      SizedBox(height: 16.w),
-                      ProfileHeaderCard(
-                        idUser: widget.idUser,
-                        completion: _onCompletion(account, candidateVM),
-                        applicationCount: _applicationJobs.length,
-                        savedJobsCount: _savedJobs.length,
-                        onOpenEditProfile: _onOpenEditProfile,
-                        userName: account?.userName,
-                        avatarUrl: account?.avatarUrl,
-                      ),
-                      SizedBox(height: 16.w),
-                      ProfileSectionCard(
-                        title: "Thông Tin Cá Nhân",
-                        titleIcon: Icons.face_retouching_natural,
-                        children: [
-                          ProfileInfoRow(
-                            icon: Icons.person_4_outlined,
-                            title: account?.userName ?? "Chưa cập nhật",
-                            subtitle: "Họ và tên",
-                          ),
-                          ProfileInfoRow(
-                            icon: Icons.celebration_outlined,
-                            title: account?.dateOfBirth != null
-                                ? DateFormat('dd/MM/yyyy').format(account?.dateOfBirth ?? DateTime.now())
-                                : "Chưa cập nhật",
-                            subtitle: "Ngày sinh",
-                          ),
-                          ProfileInfoRow(
-                            icon: Icons.wc_outlined,
-                            title: account?.gender.toLowerCase() == "male"
-                                ? "Nam"
-                                : account?.gender.toLowerCase() == "female"
-                                    ? "Nữ"
-                                    : "Chưa cập nhật",
-                            subtitle: "Giới tính",
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 16.w),
-                      ProfileSectionCard(
-                        title: "Học Vấn & Sự Nghiệp",
-                        titleIcon: Icons.auto_stories_outlined,
-                        children: [
-                          ProfileInfoRow(
-                            icon: Icons.account_balance_outlined,
-                            title: candidateInfo?.universityName ?? "Chưa có trường",
-                            subtitle: "Trường Đại học",
-                          ),
-                          ProfileInfoRow(
-                            icon: Icons.workspace_premium_outlined,
-                            title: candidateInfo?.educationLevel ?? "Chưa có trình độ",
-                            subtitle: "Trình độ học vấn",
-                          ),
-                          ProfileInfoRow(
-                            icon: Icons.workspaces_outline,
-                            title: candidateInfo?.workPosition ?? "Chưa có vị trí",
-                            subtitle: "Vị trí mong muốn",
-                          ),
-                          ProfileInfoRow(
-                            icon: Icons.model_training_outlined,
-                            title: candidateInfo?.experienceYears != null
-                                ?  "${candidateInfo?.experienceYears} năm"
-                                : "Chưa có kinh nghiệm",
-                            subtitle: "Kinh nghiệm",
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 16.w),
-                      ProfileSkillsSection(
-                        skills: candidateInfo?.skills
-                                ?.split(',')
-                                .map((e) => e.trim())
-                                .where((e) => e.isNotEmpty)
-                                .toList() ??
-                            [],
-                      ),
-                      SizedBox(height: 16.w),
-                      CustomButtonBorder(
-                        title: isLoggedIn ? "Đăng xuất" : "Đăng nhập",
-                        icon: isLoggedIn ? Icons.logout_outlined : Icons.login_outlined,
-                        onPressed: () => isLoggedIn
-                          ? DialogUtils.showLogoutDialog(context)
-                          : context.push(
-                            '/auth/login', 
-                            extra: {
-                              'role': UserRole.candidate.name
-                            }
-                          )
-                      ),
-                      SizedBox(height: 80.h),
-                    ],
-                  ),
+        ? ProfileUnLoggin()
+        : SafeArea(
+            minimum: EdgeInsets.fromLTRB(16.w, 0.h, 16.w, 16.w),
+            child: RefreshIndicator(
+              onRefresh: _onRefresh,
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  children: [
+                    SizedBox(height: 16.w),
+                    ProfileHeaderCard(
+                      idUser: widget.idUser,
+                      completion: _onCompletion(account, candidateVM),
+                      applicationCount: _applicationJobs.length,
+                      savedJobsCount: _savedJobs.length,
+                      onOpenEditProfile: _onOpenEditProfile,
+                      userName: account?.userName,
+                      avatarUrl: account?.avatarUrl,
+                    ),
+                    SizedBox(height: 16.w),
+                    ProfileSectionCard(
+                      title: "Thông Tin Cá Nhân",
+                      titleIcon: Icons.face_retouching_natural,
+                      children: [
+                        ProfileInfoRow(
+                          icon: Icons.person_4_outlined,
+                          title: account?.userName ?? "Chưa cập nhật",
+                          subtitle: "Họ và tên",
+                        ),
+                        ProfileInfoRow(
+                          icon: Icons.celebration_outlined,
+                          title: account?.dateOfBirth != null
+                              ? DateFormat('dd/MM/yyyy').format(account?.dateOfBirth ?? DateTime.now())
+                              : "Chưa cập nhật",
+                          subtitle: "Ngày sinh",
+                        ),
+                        ProfileInfoRow(
+                          icon: Icons.wc_outlined,
+                          title: account?.gender.toLowerCase() == "male"
+                              ? "Nam"
+                              : account?.gender.toLowerCase() == "female"
+                                  ? "Nữ"
+                                  : "Chưa cập nhật",
+                          subtitle: "Giới tính",
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16.w),
+                    ProfileSectionCard(
+                      title: "Học Vấn & Sự Nghiệp",
+                      titleIcon: Icons.auto_stories_outlined,
+                      children: [
+                        ProfileInfoRow(
+                          icon: Icons.account_balance_outlined,
+                          title: candidateInfo?.universityName ?? "Chưa có trường",
+                          subtitle: "Trường Đại học",
+                        ),
+                        ProfileInfoRow(
+                          icon: Icons.workspace_premium_outlined,
+                          title: candidateInfo?.educationLevel ?? "Chưa có trình độ",
+                          subtitle: "Trình độ học vấn",
+                        ),
+                        ProfileInfoRow(
+                          icon: Icons.workspaces_outline,
+                          title: candidateInfo?.workPosition ?? "Chưa có vị trí",
+                          subtitle: "Vị trí mong muốn",
+                        ),
+                        ProfileInfoRow(
+                          icon: Icons.model_training_outlined,
+                          title: candidateInfo?.experienceYears != null
+                              ?  "${candidateInfo?.experienceYears} năm"
+                              : "Chưa có kinh nghiệm",
+                          subtitle: "Kinh nghiệm",
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16.w),
+                    ProfileSkillsSection(
+                      skills: candidateInfo?.skills
+                        ?.split(',')
+                        .map((e) => e.trim())
+                        .where((e) => e.isNotEmpty)
+                        .toList() ?? [],
+                    ),
+                    SizedBox(height: 16.w),
+                    CustomButtonBorder(
+                      title: isLoggedIn ? "Đăng xuất" : "Đăng nhập",
+                      icon: isLoggedIn ? Icons.logout_outlined : Icons.login_outlined,
+                      onPressed: () => isLoggedIn
+                        ? DialogUtils.showLogoutDialog(context)
+                        : context.push(
+                          '/auth/login', 
+                          extra: {
+                            'role': UserRole.candidate.name
+                          }
+                        )
+                    ),
+                    SizedBox(height: 80.h),
+                  ],
                 ),
               ),
             ),
+          ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: ScaleTransition(
         scale: Tween<double>(begin: 0.9, end: 1.0).animate(

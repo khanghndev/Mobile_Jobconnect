@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/utils/image_url.dart';
 
 class ShareBottomSheet extends StatefulWidget {
+  final VoidCallback onShare;
   final List<Map<String, String>> initialUsers;
 
-  const ShareBottomSheet({super.key, required this.initialUsers});
+  const ShareBottomSheet({
+    super.key, 
+    required this.initialUsers, 
+    required this.onShare
+  });
 
   @override
   State<ShareBottomSheet> createState() => _ShareBottomSheetState();
@@ -71,7 +77,9 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
               const Spacer(),
               InkWell(
                 borderRadius: BorderRadius.circular(50),
-                onTap: () => Navigator.pop(context),
+                onTap: () {
+                  context.pop();
+                },
                 child: Padding(
                   padding: EdgeInsets.all(6.w),
                   child: Icon(Icons.close_rounded, size: 24.sp, color: Colors.grey[700]),

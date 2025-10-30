@@ -328,33 +328,33 @@ class _GroupScreenState extends State<GroupScreen> {
           ),
 
           /// Danh sách bài viết
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                return PostItem(
-                  post: PostModel(
-                    postId: index.toString(),
-                    avatarUrl: 'https://i.imgur.com/BoN9kdC.png',
-                    username: 'ngtrpm',
-                    group: 'Intern Jobs',
-                    timeAgo: '1 ngày',
-                    content: 'Cả đoàn dắt tay nhau apply Intern tại Edufit dùm em nha\n\n'
-                      '✨ Thực Tập Sinh Vận Hành CNTT\n'
-                      '✨ Thực Tập Sinh Business Analyst (BA)\n'
-                      '✨ Thực Tập Sinh Lập Trình (Dev)\n'
-                      '✨ Thực Tập Sinh Thiết Kế UI/UX\n\n'
-                      '🕒 offline từ 3 buổi/tuần trở lên\n📍 Starlake, Tây Hồ Tây\n\n'
-                      'Dịp đặc biệt chỉ 1 lần trong năm thôiii, apply nhanh kẻo bỏ lỡ !\n📩 tuyendung@edufit.vn',
-                    likeCount: 70,
-                    commentCount: 9,
-                    shareCount: 41,
-                  ),
-                  onFolow: onFolow,
-                );
-              },
-              childCount: 10,
-            ),
-          ),
+          // SliverList(
+          //   delegate: SliverChildBuilderDelegate(
+          //     (context, index) {
+          //       return PostItem(
+          //         socialPostModel: PostModel(
+          //           postId: index.toString(),
+          //           avatarUrl: 'https://i.imgur.com/BoN9kdC.png',
+          //           username: 'ngtrpm',
+          //           group: 'Intern Jobs',
+          //           timeAgo: '1 ngày',
+          //           content: 'Cả đoàn dắt tay nhau apply Intern tại Edufit dùm em nha\n\n'
+          //             '✨ Thực Tập Sinh Vận Hành CNTT\n'
+          //             '✨ Thực Tập Sinh Business Analyst (BA)\n'
+          //             '✨ Thực Tập Sinh Lập Trình (Dev)\n'
+          //             '✨ Thực Tập Sinh Thiết Kế UI/UX\n\n'
+          //             '🕒 offline từ 3 buổi/tuần trở lên\n📍 Starlake, Tây Hồ Tây\n\n'
+          //             'Dịp đặc biệt chỉ 1 lần trong năm thôiii, apply nhanh kẻo bỏ lỡ !\n📩 tuyendung@edufit.vn',
+          //           likeCount: 70,
+          //           commentCount: 9,
+          //           shareCount: 41,
+          //         ),
+          //         onFollow: onFolow,
+          //       );
+          //     },
+          //     childCount: 10,
+          //   ),
+          // ),
         ],
       ),
     );

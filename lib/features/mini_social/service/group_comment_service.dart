@@ -4,13 +4,13 @@ import 'package:job_connect/config/enum/server_exception_type.dart';
 import 'package:job_connect/config/error/server_exception.dart';
 import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/features/mini_social/model/group_comment_model.dart';
+import 'package:job_connect/features/mini_social/model/group_reaction_model.dart';
 
 class GroupCommentService {
   final ApiService _apiService;
 
   GroupCommentService() : _apiService = ApiService();
 
-  /// Helper chung để wrap API call và bắt lỗi unknown
   Future<T> _handleApi<T>(Future<T> Function() action, String errorMsg) async {
     try {
       return await action();
@@ -24,14 +24,14 @@ class GroupCommentService {
     }
   }
 
-  /// Lấy danh sách comment nhóm
+  //TODO: GET /api/GroupComments - Lấy danh sách tất cả comment nhóm
   Future<List<GroupCommentModel>> getGroupComments() async {
     return _handleApi(
       () async {
         final res = await _apiService.get(endpoint: ApiConstants.groupCommentsEndpoint);
         return ApiResponseParser.parseList(
           res: res,
-          fromJson: (json) => GroupCommentModel.fromJson(json),
+          fromJson: GroupCommentModel.fromJson,
           errorMsg: 'Phản hồi không hợp lệ từ API (group comments)',
         );
       },
@@ -39,24 +39,10 @@ class GroupCommentService {
     );
   }
 
-  /// Lấy chi tiết comment theo ID
-  Future<GroupCommentModel> getGroupCommentById({required String id}) async {
-    return _handleApi(
-      () async {
-        final endpoint = ApiConstants.groupCommentByIdEndpoint.replaceFirst('{id}', id);
-        final res = await _apiService.get(endpoint: endpoint);
-        return ApiResponseParser.parseObject(
-          res: res,
-          fromJson: (json) => GroupCommentModel.fromJson(json),
-          errorMsg: 'Phản hồi không hợp lệ từ API (chi tiết comment)',
-        );
-      },
-      'Lỗi khi tải chi tiết comment',
-    );
-  }
-
-  /// Thêm comment mới
-  Future<GroupCommentModel> createGroupComment({required GroupCommentModel comment}) async {
+  //TODO: POST /api/GroupComments - Tạo comment mới
+  Future<GroupCommentModel> createGroupComment({
+    required GroupCommentModel comment,
+  }) async {
     return _handleApi(
       () async {
         final res = await _apiService.post(
@@ -65,7 +51,7 @@ class GroupCommentService {
         );
         return ApiResponseParser.parseObject(
           res: res,
-          fromJson: (json) => GroupCommentModel.fromJson(json),
+          fromJson: GroupCommentModel.fromJson,
           errorMsg: 'Phản hồi không hợp lệ từ API (tạo comment)',
         );
       },
@@ -73,21 +59,81 @@ class GroupCommentService {
     );
   }
 
-  /// Cập nhật comment theo ID và model
-  Future<GroupCommentModel> updateGroupComment({
+  //TODO: GET /api/GroupComments/post/{postId} - Lấy danh sách comment theo postId
+  Future<List<GroupCommentModel>> getGroupCommentsByPost({
+    required String postId,
+  }) async {
+    return _handleApi(
+      () async {
+        final endpoint = ApiConstants.groupCommentsByPostEndpoint.replaceFirst('{postId}', postId);
+        final res = await _apiService.get(endpoint: endpoint);
+        return ApiResponseParser.parseList(
+          res: res,
+          fromJson: GroupCommentModel.fromJson,
+          errorMsg: 'Phản hồi không hợp lệ từ API (group comments theo bài viết)',
+        );
+      },
+      'Lỗi khi tải group comments theo bài viết',
+    );
+  }
+
+  //TODO: GET /api/GroupComments/{id}/replies - Lấy danh sách reply theo comment ID
+  Future<List<GroupCommentModel>> getRepliesByCommentId({
     required String id,
-    required GroupCommentModel comment,
+  }) async {
+    return _handleApi(
+      () async {
+        final endpoint = ApiConstants.groupCommentRepliesEndpoint.replaceFirst('{id}', id);
+        final res = await _apiService.get(endpoint: endpoint);
+        return ApiResponseParser.parseList(
+          res: res,
+          fromJson: GroupCommentModel.fromJson,
+          errorMsg: 'Phản hồi không hợp lệ từ API (replies)',
+        );
+      },
+      'Lỗi khi tải replies',
+    );
+  }
+
+  //TODO: GET /api/GroupComments/{id} - Lấy chi tiết comment theo ID
+  Future<GroupCommentModel> getGroupCommentById({
+    required String id,
   }) async {
     return _handleApi(
       () async {
         final endpoint = ApiConstants.groupCommentByIdEndpoint.replaceFirst('{id}', id);
+        final res = await _apiService.get(endpoint: endpoint);
+        return ApiResponseParser.parseObject(
+          res: res,
+          fromJson: GroupCommentModel.fromJson,
+          errorMsg: 'Phản hồi không hợp lệ từ API (chi tiết comment)',
+        );
+      },
+      'Lỗi khi tải chi tiết comment',
+    );
+  }
+
+  //TODO: PUT /api/GroupComments/{id} - Cập nhật comment
+  Future<GroupCommentModel> updateGroupComment({
+    required GroupCommentModel comment,
+  }) async {
+    if (comment.idComment.isEmpty) {
+      throw ServerException(
+        err: 'Thiếu idComment trong model khi cập nhật comment',
+        type: ServerExceptionType.invalidData,
+      );
+    }
+
+    return _handleApi(
+      () async {
+        final endpoint = ApiConstants.groupCommentByIdEndpoint.replaceFirst('{id}', comment.idComment);
         final res = await _apiService.put(
           endpoint: endpoint,
           body: comment.toJson(),
         );
         return ApiResponseParser.parseObject(
           res: res,
-          fromJson: (json) => GroupCommentModel.fromJson(json),
+          fromJson: GroupCommentModel.fromJson,
           errorMsg: 'Phản hồi không hợp lệ từ API (cập nhật comment)',
         );
       },
@@ -95,14 +141,61 @@ class GroupCommentService {
     );
   }
 
-  /// Xóa comment theo ID
-  Future<void> deleteGroupComment({required String id}) async {
+  //TODO: DELETE /api/GroupComments/{id} - Xóa comment
+  Future<void> deleteGroupComment({
+    required String id,
+  }) async {
     return _handleApi(
       () async {
         final endpoint = ApiConstants.groupCommentByIdEndpoint.replaceFirst('{id}', id);
         await _apiService.delete(endpoint: endpoint);
       },
       'Lỗi khi xóa comment',
+    );
+  }
+
+  //TODO: POST /api/GroupComments/{id}/reaction - Thêm reaction vào comment
+  Future<void> addReaction({
+    required String id,
+    required GroupReactionModel reaction,
+  }) async {
+    return _handleApi(
+      () async {
+        final endpoint = ApiConstants.groupCommentReactionEndpoint.replaceFirst('{id}', id);
+        await _apiService.post(endpoint: endpoint, body: reaction.toJson());
+      },
+      'Lỗi khi thêm reaction vào comment',
+    );
+  }
+
+  //TODO: DELETE /api/GroupComments/{id}/reaction - Xóa reaction khỏi comment
+  Future<void> removeReaction({
+    required String id,
+  }) async {
+    return _handleApi(
+      () async {
+        final endpoint = ApiConstants.groupCommentReactionEndpoint.replaceFirst('{id}', id);
+        await _apiService.delete(endpoint: endpoint);
+      },
+      'Lỗi khi xóa reaction khỏi comment',
+    );
+  }
+
+  //TODO: GET /api/GroupComments/{id}/reactions - Lấy danh sách reaction của comment
+  Future<List<GroupReactionModel>> getReactionsByCommentId({
+    required String id,
+  }) async {
+    return _handleApi(
+      () async {
+        final endpoint = ApiConstants.groupCommentReactionsEndpoint.replaceFirst('{id}', id);
+        final res = await _apiService.get(endpoint: endpoint);
+        return ApiResponseParser.parseList(
+          res: res,
+          fromJson: GroupReactionModel.fromJson,
+          errorMsg: 'Phản hồi không hợp lệ từ API (reactions)',
+        );
+      },
+      'Lỗi khi tải reactions của comment',
     );
   }
 }

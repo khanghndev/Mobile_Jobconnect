@@ -4,9 +4,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/constant/app_colors.dart';
 import 'package:job_connect/config/constant/app_images.dart';
+import 'package:job_connect/config/widgets/custom_pass_field_with_label.dart';
 import 'package:job_connect/config/widgets/custom_primary_button.dart';
+import 'package:job_connect/config/widgets/custom_text_field_with_label.dart';
 import 'package:job_connect/features/auth/screens/forgot_password_screen.dart';
-import 'package:job_connect/features/auth/screens/register_screen.dart';
 
 class LoginForm extends StatelessWidget {
   final GlobalKey<FormState> formKey;
@@ -15,6 +16,7 @@ class LoginForm extends StatelessWidget {
   final bool isLoading;
   final VoidCallback onLogin;
   final VoidCallback onBack;
+  final bool? isRemmeber;
 
   const LoginForm({
     super.key,
@@ -24,13 +26,14 @@ class LoginForm extends StatelessWidget {
     required this.isLoading,
     required this.onLogin,
     required this.onBack,
+    this.isRemmeber = true
   });
 
   @override
   Widget build(BuildContext context) {
     final passwordVisible = ValueNotifier<bool>(false);
     final rememberMe = ValueNotifier<bool>(false);
-
+    final theme = Theme.of(context);
     return Padding(
       padding: EdgeInsets.all(24.w),
       child: Form(
@@ -92,32 +95,15 @@ class LoginForm extends StatelessWidget {
             SizedBox(height: 20.h),
 
             // Email field
-            TextFormField(
+            CustomTextFieldWithLabel(
               controller: emailController,
-              decoration: InputDecoration(
-                labelText: 'Email',
-                hintText: 'Nhập Email',
-                labelStyle: TextStyle(color: const Color(0xFF1976D2), fontSize: 14.sp),
-                prefixIcon: Icon(Icons.email, color: const Color(0xFF1976D2), size: 20.sp),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16.r),
-                  borderSide: BorderSide(color: Colors.blue.withValues(alpha: 0.3)),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16.r),
-                  borderSide: const BorderSide(color: Color(0xFF1976D2), width: 2),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16.r),
-                  borderSide: const BorderSide(color: Colors.red),
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16.r),
-                  borderSide: const BorderSide(color: Colors.red, width: 2),
-                ),
-                filled: true,
-                fillColor: Colors.blue.withValues(alpha: 0.05),
-              ),
+              label: 'Email',
+              hintText: 'Nhập email',
+              fillColor: theme.colorScheme.primary.withValues(alpha: 0.05),
+              prefixIconColor: theme.colorScheme.primary,
+              borderColor: theme.colorScheme.primary.withValues(alpha: 0.3),
+              borderRadius: 16.r,
+              icon: Icons.email,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Vui lòng nhập email';
@@ -128,51 +114,26 @@ class LoginForm extends StatelessWidget {
 
             SizedBox(height: 16.h),
 
-            // Password field
             ValueListenableBuilder<bool>(
               valueListenable: passwordVisible,
-              builder: (_, visible, __) {
-                return TextFormField(
+              builder: (context, visible, _) {
+                return CustomPassFieldWithLabel(
                   controller: passwordController,
-                  obscureText: !visible,
-                  decoration: InputDecoration(
-                    labelText: 'Mật khẩu',
-                    hintText: 'Nhập mật khẩu',
-                    labelStyle: TextStyle(color: const Color(0xFF1976D2), fontSize: 14.sp),
-                    prefixIcon: Icon(Icons.lock, color: const Color(0xFF1976D2), size: 20.sp),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        visible ? Icons.visibility_off : Icons.visibility,
-                        color: const Color(0xFF1976D2),
-                        size: 20.sp,
-                      ),
-                      onPressed: () => passwordVisible.value = !visible,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16.r),
-                      borderSide: BorderSide(color: Colors.blue.withValues(alpha: 0.3)),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16.r),
-                      borderSide: const BorderSide(color: Color(0xFF1976D2), width: 2),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16.r),
-                      borderSide: const BorderSide(color: Colors.red),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16.r),
-                      borderSide: const BorderSide(color: Colors.red, width: 2),
-                    ),
-                    filled: true,
-                    fillColor: Colors.blue.withValues(alpha: 0.05),
-                  ),
+                  label: 'Mật khẩu',
+                  hintText: 'Nhập mật khẩu',
+                  isObscure: !visible,
+                  onToggleVisibility: () => passwordVisible.value = !visible,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Vui lòng nhập mật khẩu';
                     }
                     return null;
                   },
+                  fillColor: theme.colorScheme.primary.withValues(alpha: 0.05),
+                  prefixIconColor: theme.colorScheme.primary,
+                  suffixIconColor: theme.colorScheme.primary,
+                  borderColor: theme.colorScheme.primary.withValues(alpha: 0.3),
+                  borderRadius: 16.r,
                 );
               },
             ),
@@ -182,23 +143,25 @@ class LoginForm extends StatelessWidget {
             // Remember + Forgot password
             Row(
               children: [
-                ValueListenableBuilder<bool>(
-                  valueListenable: rememberMe,
-                  builder: (_, checked, __) {
-                    return Checkbox(
-                      value: checked,
-                      activeColor: const Color(0xFF1976D2),
-                      onChanged: (value) => rememberMe.value = value ?? false,
-                    );
-                  },
-                ),
-                Text(
-                  'Nhớ tài khoản',
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
+                if(isRemmeber == true)...[
+                  ValueListenableBuilder<bool>(
+                    valueListenable: rememberMe,
+                    builder: (_, checked, __) {
+                      return Checkbox(
+                        value: checked,
+                        activeColor: const Color(0xFF1976D2),
+                        onChanged: (value) => rememberMe.value = value ?? false,
+                      );
+                    },
                   ),
-                ),
+                  Text(
+                    'Nhớ tài khoản',
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
                 const Spacer(),
                 Padding(
                   padding: EdgeInsets.only(top: 4.w),

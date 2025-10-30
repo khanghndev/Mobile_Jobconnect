@@ -25,20 +25,20 @@ class CandidateCombined {
   });
 }
 
-class CandidateManagementScreen extends StatefulWidget {
+class HrCandidateManagementScreen extends StatefulWidget {
   final String recruiterId;
 
-  const CandidateManagementScreen({
+  const HrCandidateManagementScreen({
     super.key,
     required this.recruiterId,
   });
 
   @override
-  State<CandidateManagementScreen> createState() =>
-      _CandidateManagementScreenState();
+  State<HrCandidateManagementScreen> createState() =>
+      _HrCandidateManagementScreenState();
 }
 
-class _CandidateManagementScreenState extends State<CandidateManagementScreen>
+class _HrCandidateManagementScreenState extends State<HrCandidateManagementScreen>
     with SingleTickerProviderStateMixin {
   final TextEditingController _searchController = TextEditingController();
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:job_connect/config/constant/app_strings.dart';
 import 'package:job_connect/config/enum/post_status.dart';
 import 'package:job_connect/data/models/job_application_model.dart';
 import 'package:job_connect/data/models/job_posting_model.dart';
@@ -9,7 +10,6 @@ import 'package:job_connect/data/models/recruiter_info_model.dart';
 import 'package:job_connect/data/models/subscription_package_model.dart';
 import 'package:job_connect/features/company/model/company_model.dart';
 import 'package:job_connect/features/company/service/company_service.dart';
-import 'package:job_connect/features/help/screens/help_screen.dart';
 import 'package:job_connect/features/profile/model/user_model.dart';
 import 'package:job_connect/features/profile/service/user_service.dart';
 import '../../../services/job_application_service.dart';
@@ -21,15 +21,15 @@ import '../../job/screens/hr_job_detail_screen.dart';
 import 'dart:math';
 import '../../payments/screens/hr_subscription_screen.dart';
 
-class PostJobPage extends StatefulWidget {
+class HrPostJobScreen extends StatefulWidget {
   final String recruiterId;
-  const PostJobPage({super.key, required this.recruiterId});
+  const HrPostJobScreen({super.key, required this.recruiterId});
 
   @override
   // ignore: library_private_types_in_public_api
-  _PostJobPageState createState() => _PostJobPageState();
+  _HrPostJobScreenState createState() => _HrPostJobScreenState();
 }
-class _PostJobPageState extends State<PostJobPage> with SingleTickerProviderStateMixin {
+class _HrPostJobScreenState extends State<HrPostJobScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late final PageController _pageController;
 
@@ -359,368 +359,336 @@ class _PostJobPageState extends State<PostJobPage> with SingleTickerProviderStat
     }
     
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text(
-          "Quản lý đăng tin",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-            color: Colors.white,
-          ),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Color(0xFF2563EB), Color(0xFF1E40AF)],
-            ),
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.help_outline, color: Colors.white, size: 20),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const HelpScreen()),
-              );
-            },
-          ),
-        ],
-      ),
-      body: RefreshIndicator(
-       onRefresh: () async {
-          await _loadAllData();
-        },
-        child: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              // Header: thông tin nhà tuyển dụng và nút thanh toán
-              SliverToBoxAdapter(
-                child: Container(
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [Color(0xFF2563EB), Color(0xFF1E40AF)],
+      body: SafeArea(
+        child: RefreshIndicator(
+         onRefresh: () async {
+            await _loadAllData();
+          },
+          child: NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return [
+                // Header: thông tin nhà tuyển dụng và nút thanh toán
+                SliverToBoxAdapter(
+                  child: Container(
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [Color(0xFF2563EB), Color(0xFF1E40AF)],
+                      ),
                     ),
-                  ),
-                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          // Avatar nhà tuyển dụng
-                          Container(
-                            width: 50,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.white,
-                              border: Border.all(color: Colors.white, width: 2),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(25),
-                              child: user!.avatarUrl != null
-                                  ? Image.network(
-                                      user!.avatarUrl!,
-                                      fit: BoxFit.cover,
-                                      errorBuilder:
-                                          (context, error, stackTrace) =>
-                                              const Icon(
+                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            // Avatar nhà tuyển dụng
+                            Container(
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white,
+                                border: Border.all(color: Colors.white, width: 2),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(25),
+                                child: user?.avatarUrl != null
+                                    ? Image.network(
+                                        user!.avatarUrl!,
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) =>
+                                                const Icon(
+                                          Icons.person,
+                                          color: Color(0xFF2563EB),
+                                          size: 30,
+                                        ),
+                                      )
+                                    : const Icon(
                                         Icons.person,
                                         color: Color(0xFF2563EB),
                                         size: 30,
                                       ),
-                                    )
-                                  : const Icon(
-                                      Icons.person,
-                                      color: Color(0xFF2563EB),
-                                      size: 30,
-                                    ),
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 12),
-                          // Thông tin nhà tuyển dụng
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  user!.userName,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
+                            const SizedBox(width: 12),
+                            // Thông tin nhà tuyển dụng
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    user?.userName ?? 'Người dùng ${AppStrings.appName}',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
                                   ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    companyInfo?.companyName ?? 'Chưa có công ty',
+                                    style: TextStyle(
+                                      color: Colors.white.withValues(alpha:0.9),
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 6,
+                                          vertical: 2,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white.withValues(alpha:0.2),
+                                          borderRadius: BorderRadius.circular(4),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.badge_outlined,
+                                              color: Colors.white,
+                                              size: 12,
+                                            ),
+                                            const SizedBox(width: 4),
+                                            Text(
+                                              "Mã NTD: ${user?.idUser}",
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 6,
+                                          vertical: 2,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          // ignore: deprecated_member_use
+                                          color: const Color(0xFFFFD700).withValues(alpha:0.2),
+                                          borderRadius: BorderRadius.circular(4),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.star,
+                                              color: Color(0xFFFFD700),
+                                              size: 12,
+                                            ),
+                                            const SizedBox(width: 4),
+                                            Text(
+                                              _isPremiumUser
+                                                  ? subscriptionPackage!.packageName
+                                                  : "Gói Cơ bản",
+                                              style: const TextStyle(
+                                                color: Color(0xFFFFD700),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        // Hiển thị card tài khoản
+                        buildBalanceSection(
+                          context,
+                          _isHidden,
+                          balance: 0,
+                          onToggleVisibility: () {
+                            setState(() {
+                              _isHidden = !_isHidden;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 12),
+                        // Nút thanh toán dịch vụ đẩy tin
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HrSubscriptionScreen(
+                                        idBank: '1',
+                                        balance: 0,
+                                        recruiterId: widget.recruiterId,
+                                        currentPackageId: subscriptionPackage!.idPackage,
+                                      )),
+                            );
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8),
+                              boxShadow: [
+                                BoxShadow(
+                                  // ignore: deprecated_member_use
+                                  color: Colors.black.withValues(alpha:0.1),
+                                  blurRadius: 4,
+                                  offset: const Offset(0, 2),
                                 ),
-                                const SizedBox(height: 2),
-                                Text(
-                                  companyInfo!.companyName,
+                              ],
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.shopping_cart_outlined,
+                                  color: Color(0xFF10B981),
+                                  size: 18,
+                                ),
+                                const SizedBox(width: 8),
+                                const Text(
+                                  "Nâng cấp đăng tin",
                                   style: TextStyle(
-                                    color: Colors.white.withValues(alpha:0.9),
+                                    color: Color(0xFF10B981),
+                                    fontWeight: FontWeight.bold,
                                     fontSize: 14,
                                   ),
                                 ),
-                                const SizedBox(height: 4),
-                                Row(
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 6,
-                                        vertical: 2,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white.withValues(alpha:0.2),
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          const Icon(
-                                            Icons.badge_outlined,
-                                            color: Colors.white,
-                                            size: 12,
-                                          ),
-                                          const SizedBox(width: 4),
-                                          Text(
-                                            "Mã NTD: ${user!.idUser}",
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                const SizedBox(width: 8),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 6,
+                                    vertical: 2,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFF10B981),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: const Text(
+                                    "MỚI",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10,
                                     ),
-                                    const SizedBox(width: 8),
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 6,
-                                        vertical: 2,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        // ignore: deprecated_member_use
-                                        color: const Color(0xFFFFD700).withValues(alpha:0.2),
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          const Icon(
-                                            Icons.star,
-                                            color: Color(0xFFFFD700),
-                                            size: 12,
-                                          ),
-                                          const SizedBox(width: 4),
-                                          Text(
-                                            _isPremiumUser
-                                                ? subscriptionPackage!.packageName
-                                                : "Gói Cơ bản",
-                                            style: const TextStyle(
-                                              color: Color(0xFFFFD700),
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
                               ],
                             ),
                           ),
-                        ],
-                      ),
-                      // Hiển thị card tài khoản
-                      buildBalanceSection(
-                        context,
-                        _isHidden,
-                        balance: 0,
-                        onToggleVisibility: () {
-                          setState(() {
-                            _isHidden = !_isHidden;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 12),
-                      // Nút thanh toán dịch vụ đẩy tin
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HrSubscriptionScreen(
-                                      idBank: '1',
-                                      balance: 0,
-                                      recruiterId: widget.recruiterId,
-                                      currentPackageId: subscriptionPackage!.idPackage,
-                                    )),
-                          );
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                            boxShadow: [
-                              BoxShadow(
-                                // ignore: deprecated_member_use
-                                color: Colors.black.withValues(alpha:0.1),
-                                blurRadius: 4,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(
-                                Icons.shopping_cart_outlined,
-                                color: Color(0xFF10B981),
-                                size: 18,
-                              ),
-                              const SizedBox(width: 8),
-                              const Text(
-                                "Nâng cấp đăng tin",
-                                style: TextStyle(
-                                  color: Color(0xFF10B981),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 6,
-                                  vertical: 2,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFF10B981),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: const Text(
-                                  "MỚI",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              // TabBar
-              SliverToBoxAdapter(
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [Color(0xFF2563EB), Color(0xFF1E40AF)],
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        // ignore: deprecated_member_use
-                        color: Colors.black.withValues(alpha:0.1),
-                        blurRadius: 4,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Container(
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                    decoration: BoxDecoration(
-                      // ignore: deprecated_member_use
-                      color: Colors.white.withValues(alpha:0.15),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: TabBar(
-                      controller: _tabController,
-                      onTap: (idx) {
-                        _pageController.animateToPage(
-                          idx,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.ease,
-                        );
-                      },
-                      indicatorSize: TabBarIndicatorSize.tab,
-                      indicator: const UnderlineTabIndicator(
-                        borderSide:
-                            BorderSide(color: Colors.white, width: 3.0),
-                        insets: EdgeInsets.symmetric(horizontal: 10.0),
-                      ),
-                      labelColor: Colors.white,
-                      // ignore: deprecated_member_use
-                      unselectedLabelColor: Colors.white.withValues(alpha:0.7),
-                      labelStyle: const TextStyle(
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      unselectedLabelStyle: const TextStyle(
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      labelPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                      tabs: const [
-                        Tab(
-                          icon: Icon(Icons.work_outline, size: 20),
-                          text: "Tin tuyển dụng",
-                          iconMargin: EdgeInsets.only(bottom: 2.0),
-                        ),
-                        Tab(
-                          icon: Icon(Icons.history, size: 20),
-                          text: "Lịch sử",
-                          iconMargin: EdgeInsets.only(bottom: 2.0),
-                        ),
-                        Tab(
-                          icon: Icon(Icons.visibility_outlined, size: 20),
-                          text: "Đang hiển thị",
-                          iconMargin: EdgeInsets.only(bottom: 2.0),
-                        ),
-                        Tab(
-                          icon: Icon(Icons.pending_outlined, size: 20),
-                          text: "Chờ xác thực",
-                          iconMargin: EdgeInsets.only(bottom: 2.0),
                         ),
                       ],
                     ),
                   ),
                 ),
-              ),
-            ];
-          },
-          body: PageView.builder(
-            controller: _pageController,
-            itemCount: 4,
-            onPageChanged: (idx) => _tabController.index = idx,
-            itemBuilder: (ctx, idx) {
-              switch (idx) {
-                case 0:
-                  return _buildRecruitmentForm();
-                case 1:
-                  return _buildHistoryTab(jobPostingsList);
-                case 2:
-                  return _buildActiveJobsTab(jobPostingsList);
-                case 3:
-                  return _buildPendingJobsTab(jobPostingsList);
-                default:
-                  return const SizedBox.shrink();
-              }
+                // TabBar
+                SliverToBoxAdapter(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [Color(0xFF2563EB), Color(0xFF1E40AF)],
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          // ignore: deprecated_member_use
+                          color: Colors.black.withValues(alpha:0.1),
+                          blurRadius: 4,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Container(
+                      margin:
+                          const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                      decoration: BoxDecoration(
+                        // ignore: deprecated_member_use
+                        color: Colors.white.withValues(alpha:0.15),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: TabBar(
+                        controller: _tabController,
+                        onTap: (idx) {
+                          _pageController.animateToPage(
+                            idx,
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.ease,
+                          );
+                        },
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        indicator: const UnderlineTabIndicator(
+                          borderSide:
+                              BorderSide(color: Colors.white, width: 3.0),
+                          insets: EdgeInsets.symmetric(horizontal: 10.0),
+                        ),
+                        labelColor: Colors.white,
+                        // ignore: deprecated_member_use
+                        unselectedLabelColor: Colors.white.withValues(alpha:0.7),
+                        labelStyle: const TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        unselectedLabelStyle: const TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        labelPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        tabs: const [
+                          Tab(
+                            icon: Icon(Icons.work_outline, size: 20),
+                            text: "Tin tuyển dụng",
+                            iconMargin: EdgeInsets.only(bottom: 2.0),
+                          ),
+                          Tab(
+                            icon: Icon(Icons.history, size: 20),
+                            text: "Lịch sử",
+                            iconMargin: EdgeInsets.only(bottom: 2.0),
+                          ),
+                          Tab(
+                            icon: Icon(Icons.visibility_outlined, size: 20),
+                            text: "Đang hiển thị",
+                            iconMargin: EdgeInsets.only(bottom: 2.0),
+                          ),
+                          Tab(
+                            icon: Icon(Icons.pending_outlined, size: 20),
+                            text: "Chờ xác thực",
+                            iconMargin: EdgeInsets.only(bottom: 2.0),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ];
             },
+            body: PageView.builder(
+              controller: _pageController,
+              itemCount: 4,
+              onPageChanged: (idx) => _tabController.index = idx,
+              itemBuilder: (ctx, idx) {
+                switch (idx) {
+                  case 0:
+                    return _buildRecruitmentForm();
+                  case 1:
+                    return _buildHistoryTab(jobPostingsList);
+                  case 2:
+                    return _buildActiveJobsTab(jobPostingsList);
+                  case 3:
+                    return _buildPendingJobsTab(jobPostingsList);
+                  default:
+                    return const SizedBox.shrink();
+                }
+              },
+            ),
           ),
         ),
       )

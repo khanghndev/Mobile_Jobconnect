@@ -5,23 +5,22 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/enum/job_application_status.dart';
 import 'package:job_connect/config/enum/user_role.dart';
+import 'package:job_connect/config/utils/date_utils_helper.dart';
 import 'package:job_connect/data/models/interview_schedule_model.dart';
 import 'package:job_connect/data/models/job_application_model.dart';
 import 'package:job_connect/data/models/job_posting_model.dart';
 import 'package:job_connect/data/models/job_transaction_model.dart';
 import 'package:job_connect/data/models/recruiter_info_model.dart';
 import 'package:job_connect/data/models/subscription_package_model.dart';
-import 'package:job_connect/features/auth/screens/login_screen.dart';
 import 'package:job_connect/features/company/model/company_model.dart';
 import 'package:job_connect/features/company/service/company_service.dart';
 import 'package:job_connect/features/help/screens/help_screen.dart';
-import 'package:job_connect/features/notifications/screens/notification_screen.dart';
 import 'package:job_connect/features/profile/model/candidate_info_model.dart';
 import 'package:job_connect/features/profile/model/user_model.dart';
 import 'package:job_connect/features/profile/service/candidate_info_service.dart';
 import 'package:job_connect/features/profile/service/user_service.dart';
 import 'package:job_connect/features/settings/screens/settings_screen.dart';
-import 'package:job_connect/recruiter_app/features/job/navigation_recruiter/screen/navigation_recruiter_screen.dart';
+import 'package:job_connect/recruiter_app/features/hr/screens/hr_detail_recent_activitie_screen.dart';
 import 'package:job_connect/recruiter_app/features/job/screens/hr_job_list_screen.dart';
 import 'package:job_connect/recruiter_app/features/recruiter/screens/candidate_list_screen.dart';
 import 'package:job_connect/recruiter_app/services/interviewschedule_service.dart';
@@ -30,10 +29,9 @@ import 'package:job_connect/recruiter_app/services/job_posting_service.dart';
 import 'package:job_connect/recruiter_app/services/job_transaction_service.dart';
 import 'package:job_connect/recruiter_app/services/recruiter_service.dart';
 import 'package:job_connect/recruiter_app/services/subscriptionpackage_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'hr_all_interview_schedule.dart';
+import 'hr_interview_schedule.dart';
 import 'hr_pending_aplication_screen.dart';
-import 'hr_recent_activitie_sccreen.dart';
+import 'hr_recent_activitie_screen.dart';
 
 
 //Trang home của HR
@@ -127,120 +125,149 @@ class _HRHomeScreenState extends State<HRHomeScreen> {
     );
   }
 
-  // Hàm tải dữ liệu
-Future<void> _loadAllData() async {
-  // try {
-  //   // Lấy toàn bộ thông tin của Candidate
-  //   final allCandidates = await candidateInfoService.getAllCandidates();
+  Future<void> _loadAllData() async {
+    if (!mounted) return;
 
-  //   // 1) Lấy thông tin tài khoản
-  //   final acc = await accountService.getUserById(id: widget.userAccount.idUser);
+    setState(() {
+      isLoading = true;
+      error = null;
+    });
 
-  //   // 2) Lấy thông tin HR
-  //   final rec = await recruiterService.getRecruiterById(id: acc.idUser);
+    try {
+      // 🧠 1. Tải dữ liệu cơ bản
+      final allCandidates = await candidateInfoService.getAllCandidates();
 
-  //   // 3) Lấy thông tin công ty ứng với HR
-  //   final comp = await companyService.getCompanyById(id : rec!.idCompany);
+      final acc = await accountService.getUserById(id: widget.userAccount.idUser);
 
-  //   // 4) Lấy toàn bộ job thuộc công ty ứng với HR
-  //   List<JobPostingModel> jobPostings = [];
-  //   if (rec.idCompany != null && rec.idCompany!.isNotEmpty) {
-  //     jobPostings = await jobPostingService.getJobPostingsByCompany(companyId: rec.idCompany!);
-  //   }
+      final rec = await recruiterService.getRecruiterById(id: acc.idUser);
+      if (rec == null) throw Exception("Không tìm thấy thông tin nhà tuyển dụng.");
 
-  //   // 5) Lấy toàn bộ job applications ứng với job postings
-  //   List<List<JobApplicationModel>> jobApplications = [];
-  //   for (var job in jobPostings) {
-  //     final apps = await jobApplicationService.getJobApplicationsByJob(jobPostId: job.idJobPost);
-  //     jobApplications.add(apps);
-  //   }
+      CompanyModel? comp;
+      try {
+        comp = await companyService.getCompanyById(id: rec.idCompany);
+      } catch (e) {
+        comp = null; // Nếu công ty bị xóa hoặc lỗi API
+        debugPrint("⚠️ Không lấy được thông tin công ty: $e");
+      }
 
-  //   // Gộp thành 1 danh sách dài
-  //   List<JobApplicationModel> flatJobAppList = jobApplications.expand((e) => e).toList();
+      // 🧠 2. Lấy danh sách bài đăng việc làm
+      List<JobPostingModel> jobPostings = [];
+      if (rec.idCompany.isNotEmpty) {
+        try {
+          jobPostings = await jobPostingService.getJobPostingsByCompany(companyId: rec.idCompany);
+        } catch (e) {
+          debugPrint("⚠️ Không lấy được danh sách bài đăng: $e");
+        }
+      }
 
-  //   // Lấy danh sách user ứng tuyển
-  //   List<UserModel> userOfJobApp = [];
-  //   for (var job in flatJobAppList) {
-  //     final user = await accountService.getUserById( id: job.idUser);
-  //     userOfJobApp.add(user);
-  //   }
+      // 🧠 3. Lấy danh sách ứng tuyển
+      List<List<JobApplicationModel>> jobApplications = [];
+      for (var job in jobPostings) {
+        try {
+          final apps = await jobApplicationService.getJobApplicationsByJob(jobPostId: job.idJobPost);
+          jobApplications.add(apps);
+        } catch (e) {
+          if (e.toString().contains('Không tìm thấy hồ sơ ứng tuyển')) {
+            jobApplications.add([]); // job chưa có ứng viên
+          } else {
+            debugPrint("⚠️ Lỗi khi lấy ứng tuyển cho job ${job.idJobPost}: $e");
+            jobApplications.add([]);
+          }
+        }
+      }
 
-  //   // Lấy danh sách candidate đã ứng tuyển
-  //   List<CandidateInfoModel> candidateInforOfJobAppList = [];
-  //   for (var user in userOfJobApp) {
-  //     final candidateJobApp = await candidateInfoService.getCandidateById(id: user.idUser);
-  //     candidateInforOfJobAppList.add(candidateJobApp);
-  //   }
+      final flatJobAppList = jobApplications.expand((e) => e).toList();
 
-  //   // 6) Lấy toàn bộ interview schedules ứng với job postings
-  //   List<List<InterviewScheduleModel>> interviewSchedulesTemp = [];
-  //   for (var job in jobPostings) {
-  //     final schedules = await interviewScheduleService.getInterviewScheduleByJobId(jobId: job.idJobPost);
-  //     if (schedules.isNotEmpty) {
-  //       interviewSchedulesTemp.add(schedules);
-  //     }
-  //   }
+      // 🧠 4. Lấy thông tin user và candidate tương ứng với job application
+      final userOfJobApp = <UserModel>[];
+      final candidateInforOfJobAppList = <CandidateInfoModel>[];
 
-  //   // Gộp thành 1 danh sách dài
-  //   List<InterviewScheduleModel> flatList = interviewSchedulesTemp.expand((e) => e).toList();
+      for (final jobApp in flatJobAppList) {
+        try {
+          final user = await accountService.getUserById(id: jobApp.idUser);
+          userOfJobApp.add(user);
 
-  //   // Lấy toàn bộ thông tin account sau khi có interview schedules
-  //   List<UserModel>? accountList = [];
-  //   for (var schedule in flatList) {
-  //     final account = await accountService.getUserById(id: schedule.idUser);
-  //     accountList.add(account);
-  //   }
+          final candidate = await candidateInfoService.getCandidateById(id: user.idUser);
+          candidateInforOfJobAppList.add(candidate);
+        } catch (e) {
+          debugPrint("⚠️ Lỗi khi lấy user/candidate của jobApp: $e");
+        }
+      }
 
-  //   // Lấy toàn bộ thông tin candidate sau khi có account
-  //   List<CandidateInfoModel>? candidateList = [];
-  //   for (var account in accountList) {
-  //     final candidate = await candidateInfoService.getCandidateById(id: account.idUser);
-  //     candidateList.add(candidate);
-  //   }
+      // 🧠 5. Lịch phỏng vấn
+      final interviewSchedulesTemp = <List<InterviewScheduleModel>>[];
+      for (final job in jobPostings) {
+        try {
+          final schedules = await interviewScheduleService.getInterviewScheduleByJobId(jobId: job.idJobPost);
+          interviewSchedulesTemp.add(schedules);
+        } catch (e) {
+          debugPrint("⚠️ Lỗi khi lấy lịch phỏng vấn cho job ${job.idJobPost}: $e");
+          interviewSchedulesTemp.add([]);
+        }
+      }
 
-  //   // 7) Lấy toàn bộ giao dịch từ JobTransactionService
-  //   final jobTransactions = await jobTransactionService.getAllTransactions();
+      final flatList = interviewSchedulesTemp.expand((e) => e).toList();
 
-  //   // 8) Lấy toàn bộ gói dịch vụ từ SubscriptionpackageService
-  //   final subscriptionPackages = await SubscriptionPackageService().fetchSubscriptionPackages();
+      final accountList = <UserModel>[];
+      final candidateList = <CandidateInfoModel>[];
 
-  //   setState(() {
-  //     recruiterInfo = rec;
-  //     user = acc;
-  //     companyInfo = comp;
-  //     jobPostingsList = jobPostings;
-  //     jobApplicationsList = jobApplications;
-  //     flatJobApplicationList = flatJobAppList;
-  //     interviewSchedulesList = interviewSchedulesTemp;
-  //     flatInterviewSchedulesList = flatList;
-  //     upcomingInterviewSchedulesList = getUpcomingInterviews(flatList);
-  //     accountInterviewList = accountList;
-  //     accountJobApplicationList = userOfJobApp;
-  //     candidateJobApplicationList = candidateInforOfJobAppList;
-  //     candidateInterviewList = candidateList;
-  //     candidateAllList = allCandidates;
-  //     jobTransactionsList = jobTransactions;
-  //     subscriptionPackagesList = subscriptionPackages; 
-  //     isLoading = false;
-  //   });
-  // } catch (e) {
-  //   setState(() {
-  //     error = e.toString();
-  //     isLoading = false;
-  //   });
-  //   if (context.mounted) {
-  //     // ignore: use_build_context_synchronously
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(content: Text('Lỗi khi tải dữ liệu: $e')),
-  //     );
-  //   }
-  // }
-}
+      for (final schedule in flatList) {
+        try {
+          final account = await accountService.getUserById(id: schedule.idUser);
+          accountList.add(account);
+          final candidate = await candidateInfoService.getCandidateById(id: account.idUser);
+          candidateList.add(candidate);
+                } catch (e) {
+          debugPrint("⚠️ Lỗi khi lấy user/candidate phỏng vấn: $e");
+        }
+      }
+
+      // 🧠 6. Giao dịch và gói dịch vụ
+      final jobTransactions = await jobTransactionService.getAllTransactions();
+      final subscriptionPackages = await SubscriptionPackageService().fetchSubscriptionPackages();
+
+      if (!mounted) return;
+
+      setState(() {
+        recruiterInfo = rec;
+        user = acc;
+        companyInfo = comp!;
+        jobPostingsList = jobPostings;
+        jobApplicationsList = jobApplications;
+        flatJobApplicationList = flatJobAppList;
+        interviewSchedulesList = interviewSchedulesTemp;
+        flatInterviewSchedulesList = flatList;
+        upcomingInterviewSchedulesList = getUpcomingInterviews(flatList);
+        accountInterviewList = accountList;
+        accountJobApplicationList = userOfJobApp;
+        candidateJobApplicationList = candidateInforOfJobAppList;
+        candidateInterviewList = candidateList;
+        candidateAllList = allCandidates;
+        jobTransactionsList = jobTransactions;
+        subscriptionPackagesList = subscriptionPackages;
+        isLoading = false;
+      });
+    } catch (e, s) {
+      debugPrint("❌ Lỗi tổng khi load dữ liệu: $e");
+      debugPrintStack(stackTrace: s);
+
+      if (!mounted) return;
+      setState(() {
+        error = e.toString();
+        isLoading = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Lỗi khi tải dữ liệu: ${e.toString()}')),
+      );
+    }
+  }
+
   //Lấy số vị trí đã tuyển từ jobpostting
   int getPosisionPost(){
     List<String> posisionPost = [];
     for(int i = 0; i < jobPostingsList.length; i++){
-      posisionPost.add(jobPostingsList[i].title ?? '');
+      posisionPost.add(jobPostingsList[i].title);
     }
     List<String> posisionPostUnique = posisionPost.toSet().toList();
     return posisionPostUnique.length;
@@ -350,161 +377,6 @@ Future<void> _loadAllData() async {
     );
   }
 
-  //Modal logout
-  Future<void> _logout(BuildContext context) async {
-    bool? confirmLogout = await showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24),
-          ),
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          child: _buildLogoutDialog(context),
-        );
-      },
-    );
-
-    if (confirmLogout == true) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.clear();
-
-      // ignore: use_build_context_synchronously
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) =>  LoginScreen(role: UserRole.candidate.name)),
-        (route) => false,
-      );
-    }
-  }
-  // Logout dialog
-  Widget _buildLogoutDialog(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            // ignore: deprecated_member_use
-            color: Colors.black.withValues(alpha:0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 24),
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [Color(0xFF3366FF), Color(0xFF5E91F2)],
-              ),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(24),
-                topRight: Radius.circular(24),
-              ),
-            ),
-            child: Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        // ignore: deprecated_member_use
-                        color: Colors.black.withValues(alpha:0.2),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: const Icon(
-                    Icons.logout_rounded,
-                    color: Color(0xFF3366FF),
-                    size: 36,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'Xác nhận đăng xuất',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              children: [
-                const Text(
-                  'Bạn có chắc chắn muốn đăng xuất khỏi tài khoản hiện tại?',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Color(0xFF666666),
-                    height: 1.5,
-                  ),
-                ),
-                const SizedBox(height: 24),
-                Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () => Navigator.pop(context, false),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: const Color(0xFF666666),
-                          side: const BorderSide(color: Color(0xFFDDDDDD)),
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: const Text(
-                          'HỦY',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () => Navigator.pop(context, true),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF3366FF),
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: const Text(
-                          'ĐĂNG XUẤT',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     
@@ -523,55 +395,6 @@ Future<void> _loadAllData() async {
       ),
       child: Scaffold(
         backgroundColor: backgroundColor,
-        //Thanh appbart
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black87,
-          centerTitle: false,
-          title: Text(
-            'HR Dashboard',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 22,
-              color: Colors.black87,
-            ),
-          ),
-          actions: [
-            IconButton(
-              icon: Badge(
-                //label: Text(notificationCount.toString()),
-                child: const Icon(
-                  Icons.notifications_outlined,
-                  color: Colors.black54,
-                ),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => NotificationScreen(idUser: '',)),
-                );
-              },
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => NavigationRecruiterScreen
-                      (currentIndex: 4, isLoggedIn: true, userAccount: widget.userAccount,), 
-                    ),
-                  );
-                },
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage(widget.userAccount.avatarUrl ?? 'https://example.com/fallback.png'),
-                ),
-              ),
-            ),
-          ],
-        ),
         drawer: _buildDrawer(context, primaryColor),
         body: SafeArea(
           child: RefreshIndicator(
@@ -723,7 +546,7 @@ Future<void> _loadAllData() async {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AllInterviewSchedulesScreen(),
+                  builder: (context) => HrInterviewSchedule(),
                 ),
               );
             },
@@ -858,7 +681,7 @@ Future<void> _loadAllData() async {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => PendingApplicationsScreen(
+                              builder: (context) => HrPendingAplicationScreen(
                                 pendingApplications: getApplicationsWithStatus('pending'),
                               ),
                             ),
@@ -977,16 +800,16 @@ Future<void> _loadAllData() async {
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min, // Keep this to ensure minimum height
+          mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  padding: EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: iconBackgroundColor,
                     borderRadius: BorderRadius.circular(12),
@@ -995,9 +818,9 @@ Future<void> _loadAllData() async {
                 ),
                 if (trendUp != null)
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: trendUp ? Color(0xFFE9F9E7) : Color(0xFFFFE8E8),
+                      color: trendUp ? const Color(0xFFE9F9E7) : const Color(0xFFFFE8E8),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(
@@ -1006,17 +829,15 @@ Future<void> _loadAllData() async {
                         Icon(
                           trendUp ? Icons.arrow_upward : Icons.arrow_downward,
                           size: 12,
-                          color:
-                              trendUp ? Color(0xFF4CAF50) : Color(0xFFE53935),
+                          color: trendUp ? const Color(0xFF4CAF50) : const Color(0xFFE53935),
                         ),
-                        SizedBox(width: 2),
+                        const SizedBox(width: 2),
                         Text(
                           trendValue,
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
-                            color:
-                                trendUp ? Color(0xFF4CAF50) : Color(0xFFE53935),
+                            color: trendUp ? const Color(0xFF4CAF50) : const Color(0xFFE53935),
                           ),
                         ),
                       ],
@@ -1024,29 +845,27 @@ Future<void> _loadAllData() async {
                   ),
               ],
             ),
-            Flexible(
-              // ignore: sized_box_for_whitespace
-              child: Container(
-                alignment: Alignment.center,
-                height: 70, 
+            Expanded(
+              child: Center(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       count,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
                       ),
                       maxLines: 1,
+                      textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    SizedBox(height: 2),
+                    const SizedBox(height: 4),
                     Text(
                       title,
-                      style: TextStyle(fontSize: 14, color: Colors.black54),
+                      style: const TextStyle(fontSize: 14, color: Colors.black54),
                       maxLines: 1,
+                      textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
@@ -1080,7 +899,7 @@ Widget _buildRecentActivitiesSection(BuildContext context) {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => RecentActivitiesScreen(activities: recentActivities),
+                  builder: (context) => HrRecentActivitieScreen(activities: recentActivities),
                 ),
               );
             },
@@ -1104,12 +923,7 @@ Widget _buildRecentActivitiesSection(BuildContext context) {
           separatorBuilder: (context, index) => const Divider(height: 1),
           itemBuilder: (context, index) {
             final activity = recentActivities[index];
-            return _buildActivityItem(
-              activity['title'] as String,
-              activity['time'] as String,
-              activity['icon'] as IconData,
-              activity['color'] as Color,
-            );
+            return _buildActivityItem(context: context, activity: activity);
           },
         ),
       ),
@@ -1117,73 +931,59 @@ Widget _buildRecentActivitiesSection(BuildContext context) {
   );
 }
 
-// Lấy hoat động gần đây
-List<Map<String, dynamic>> _getRecentActivities() {
-  List<Map<String, dynamic>> activities = [];
+  List<Map<String, dynamic>> _getRecentActivities() {
+    List<Map<String, dynamic>> activities = [];
 
-  // Hoạt động từ JobApplication
-  for (var application in flatJobApplicationList) {
-    final jobPosting = jobPostingsList.firstWhere(
-      (job) => job.idJobPost == application.idJobPost,
-    );
-
-    // Hoạt động từ JobTransaction
-    for (var transaction in jobTransactionsList) {
-      final package = subscriptionPackagesList.firstWhere(
-        (pkg) => pkg.idPackage == transaction.idPackage,
+    // Hoạt động từ JobApplication
+    for (var application in flatJobApplicationList) {
+      final jobPosting = jobPostingsList.firstWhere(
+        (job) => job.idJobPost == application.idJobPost,
       );
 
+      // Hoạt động từ JobTransaction
+      for (var transaction in jobTransactionsList) {
+        final package = subscriptionPackagesList.firstWhere(
+          (pkg) => pkg.idPackage == transaction.idPackage,
+        );
+
+        activities.add({
+          'title': 'Thanh toán gói ${package.packageName} đã được thực hiện',
+          'time': DateUtilsHelper.timeAgo(transaction.transactionDate),
+          'date': transaction.transactionDate, // thêm trường gốc
+          'icon': Icons.attach_money,
+          'color': const Color(0xFFFFC107),
+        });
+      }
+
       activities.add({
-        'title': 'Thanh toán gói ${package.packageName} đã được thực hiện',
-        'time': _getRelativeTime(transaction.transactionDate),
-        'icon': Icons.attach_money,
-        'color': const Color(0xFFFFC107),
+        'title':
+            '${_getUserNameById(application.idUser)} đã ứng tuyển vào công việc ${jobPosting.title}',
+        'time': DateUtilsHelper.timeAgo(application.updatedAt),
+        'date': application.updatedAt,
+        'icon': Icons.person_add_alt_1,
+        'color': const Color(0xFF4CAF50),
+      });
+    }
+    // Hoạt động từ JobPosting
+    for (var job in jobPostingsList) {
+      activities.add({
+        'title': 'Công việc mới: ${job.title} đã được đăng tuyển',
+        'time': DateUtilsHelper.timeAgo(job.createdAt),
+        'date': job.createdAt,
+        'icon': Icons.work_outline,
+        'color': const Color(0xFF3366FF),
       });
     }
 
-    activities.add({
-      'title': '${_getUserNameById(application.idUser)} đã ứng tuyển vào công việc ${jobPosting.title}',
-      'time': _getRelativeTime(jobPosting.createdAt ?? DateTime.now()),
-      'icon': Icons.person_add_alt_1,
-      'color': const Color(0xFF4CAF50),
+    // Sắp xếp theo thời gian thật
+    activities.sort((a, b) {
+      final dateA = a['date'] as DateTime;
+      final dateB = b['date'] as DateTime;
+      return dateB.compareTo(dateA); // mới nhất lên đầu
     });
+
+    return activities;
   }
-
-  // Hoạt động từ JobPosting
-  for (var job in jobPostingsList) {
-    activities.add({
-      'title': 'Công việc mới: ${job.title} đã được đăng tuyển',
-      'time': _getRelativeTime(job.createdAt ?? DateTime.now()),
-      'icon': Icons.work_outline,
-      'color': const Color(0xFF3366FF),
-    });
-  }
-
-  // Sắp xếp hoạt động theo thời gian gần nhất
-  activities.sort((a, b) {
-    final timeA = DateTime.now().subtract(Duration(days: int.tryParse(a['time'].split(' ')[0]) ?? 0));
-    final timeB = DateTime.now().subtract(Duration(days: int.tryParse(b['time'].split(' ')[0]) ?? 0));
-    return timeB.compareTo(timeA);
-  });
-
-  return activities;
-}
-
-// Hàm tính thời gian tương đối
-String _getRelativeTime(DateTime dateTime) {
-  final now = DateTime.now();
-  final difference = now.difference(dateTime);
-
-  if (difference.inMinutes < 60) {
-    return '${difference.inMinutes} phút trước';
-  } else if (difference.inHours < 24) {
-    return '${difference.inHours} giờ trước';
-  } else if (difference.inDays > 0) {
-    return '${difference.inDays} ngày trước';
-  } else {
-    return 'Không xác định';
-  }
-}
 
 // Lấy tên user theo jobapplication
 String _getUserNameById(String idUser) {
@@ -1193,32 +993,54 @@ String _getUserNameById(String idUser) {
 }
   
   // Item hoạt động gần đây
-  Widget _buildActivityItem(
-    String title,
-    String time,
-    IconData icon,
-    Color color,
-  ) {
-    return ListTile(
-      leading: Container(
-        padding: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          // ignore: deprecated_member_use
-          color: color.withValues(alpha:0.1),
-          borderRadius: BorderRadius.circular(12),
+  Widget _buildActivityItem({required BuildContext context, required Map<String, dynamic> activity }) {
+    final String title = activity['title'] ?? 'Không có tiêu đề';
+    final String time = activity['time'] ?? '';
+    final String description = activity['description'] ?? 'Không có mô tả chi tiết.';
+    final IconData icon = activity['icon'] ?? Icons.info_outline;
+    final Color color = activity['color'] ?? Colors.blue;
+    final List<String>? details = activity['details'] != null
+        ? List<String>.from(activity['details'])
+        : null;
+    final dynamic attachments = activity['attachments'];
+
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => HrDetailRecentActivitieScreen(
+              title: title,
+              time: time,
+              description: description,
+              icon: icon,
+              color: color,
+              details: details,
+              attachments: attachments,
+            ),
+          ),
+        );
+      },
+      child: ListTile(
+        leading: Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: color.withValues(alpha:0.1),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(icon, size: 24, color: color),
         ),
-        child: Icon(icon, size: 24, color: color),
+        title: Text(
+          title,
+          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+        ),
+        subtitle: Text(
+          time,
+          style: const TextStyle(fontSize: 13, color: Colors.black54),
+        ),
+        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       ),
-      title: Text(
-        title,
-        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
-      ),
-      subtitle: Text(
-        time,
-        style: TextStyle(fontSize: 13, color: Colors.black54),
-      ),
-      trailing: Icon(Icons.arrow_forward_ios, size: 16),
-      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     );
   }
 
@@ -1269,7 +1091,7 @@ String _getUserNameById(String idUser) {
               SizedBox(height: 40),
               OutlinedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (contex)=> AllInterviewSchedulesScreen()));
+                  Navigator.push(context, MaterialPageRoute(builder: (contex)=> HrInterviewSchedule()));
                 },
                 style: OutlinedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 12),

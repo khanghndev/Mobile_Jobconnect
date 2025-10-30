@@ -88,7 +88,7 @@ class _PodcastScreenState extends State<PodcastScreen> with TickerProviderStateM
 
             if (vm.errorMessage != null && vm.errorMessage!.isNotEmpty) {
               return BackgroundErrorState(
-                title: "podcast",
+                title: "Hệ thống đang gặp sự cố\nVui lòng thử lại sau.",
                 onRetry: _onRefresh,
               );
             }

@@ -31,7 +31,7 @@ class NavItem extends StatelessWidget {
 
     if (isSpecial) {
       final specialColor = theme.colorScheme.onPrimary;
-      final specialInactive = theme.colorScheme.onSecondaryContainer;
+      final specialInactive = theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7);
 
       return Expanded(
         child: InkWell(

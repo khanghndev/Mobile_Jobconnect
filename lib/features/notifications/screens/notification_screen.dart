@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:job_connect/config/utils/date_utils_helper.dart';
 import 'package:job_connect/config/widgets/background_empty_state.dart';
 import 'package:job_connect/features/notifications/viewmodel/notification_view_model.dart';
 import 'package:job_connect/features/notifications/widgets/notification/notification_app_bar.dart';
 import 'package:job_connect/features/notifications/widgets/notification/notification_item.dart';
 import 'package:job_connect/features/notifications/widgets/notification/notification_shimmer.dart';
 import 'package:provider/provider.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class NotificationScreen extends StatefulWidget {
   final String idUser;
@@ -57,11 +57,6 @@ class _NotificationScreenState extends State<NotificationScreen>
     _listAnimationController.dispose();
     _fabAnimationController.dispose();
     super.dispose();
-  }
-
-  String _getTimeAgo(DateTime dateTime) {
-    timeago.setLocaleMessages('vi', timeago.ViMessages());
-    return timeago.format(dateTime, locale: 'vi');
   }
 
   IconData _getIconForType(String type) {
@@ -166,8 +161,7 @@ class _NotificationScreenState extends State<NotificationScreen>
                                   child: NotificationItem(
                                     notification: notification,
                                     selectMode: selectMode,
-                                    isSelected: vm.selectedNotifications
-                                        .contains(notification.idNotification),
+                                    isSelected: vm.selectedNotifications.contains(notification.idNotification),
                                     theme: theme,
                                     onTap: () async {
                                       if (selectMode) {
@@ -180,16 +174,18 @@ class _NotificationScreenState extends State<NotificationScreen>
                                               notification.idNotification);
                                           await vm.markAsRead();
                                         }
-                                        context.push(
-                                          '/notification/detail',
-                                          extra: {
-                                            'notification': notification,
-                                            'iconData':
-                                                _getIconForType(notification.type),
-                                            'iconColor': _getColorForType(
-                                                notification.type, theme),
-                                          },
-                                        );
+                                        if(context.mounted){
+                                          context.push(
+                                            '/notification/detail',
+                                            extra: {
+                                              'notification': notification,
+                                              'iconData':
+                                                  _getIconForType(notification.type),
+                                              'iconColor': _getColorForType(
+                                                  notification.type, theme),
+                                            },
+                                          );
+                                        }
                                       }
                                     },
                                     onLongPress: () {
@@ -199,11 +195,9 @@ class _NotificationScreenState extends State<NotificationScreen>
                                             notification.idNotification);
                                       }
                                     },
-                                    iconData:
-                                        _getIconForType(notification.type),
-                                    iconColor: _getColorForType(
-                                        notification.type, theme),
-                                    timeAgo: _getTimeAgo(notification.createdAt),
+                                    iconData: _getIconForType(notification.type),
+                                    iconColor: _getColorForType(notification.type, theme),
+                                    timeAgo: DateUtilsHelper.getTimeAgo(notification.createdAt),
                                   ),
                                 ),
                               ),

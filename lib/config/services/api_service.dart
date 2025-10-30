@@ -33,8 +33,8 @@ class ApiService {
     return _request(method: ApiMethod.patch, endpoint: endpoint, body: body);
   }
 
-  Future<dynamic> delete({required String endpoint}) async {
-    return _request(method: ApiMethod.delete, endpoint: endpoint);
+  Future<dynamic> delete({required String endpoint, dynamic body}) async {
+    return _request(method: ApiMethod.delete, endpoint: endpoint, body: body);
   }
 
   Future<dynamic> _request({

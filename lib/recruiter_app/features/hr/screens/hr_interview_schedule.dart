@@ -3,16 +3,16 @@ import 'package:job_connect/data/models/interview_schedule_model.dart';
 import 'package:job_connect/recruiter_app/services/interviewschedule_service.dart';
 import 'edit_interview_schedule_screen.dart';
 
-class AllInterviewSchedulesScreen extends StatefulWidget {
-  const AllInterviewSchedulesScreen({super.key});
+class HrInterviewSchedule extends StatefulWidget {
+  const HrInterviewSchedule({super.key});
 
   @override
-  State<AllInterviewSchedulesScreen> createState() =>
-      _AllInterviewSchedulesScreenState();
+  State<HrInterviewSchedule> createState() =>
+      _HrInterviewScheduleState();
 }
 
-class _AllInterviewSchedulesScreenState
-    extends State<AllInterviewSchedulesScreen> {
+class _HrInterviewScheduleState
+    extends State<HrInterviewSchedule> {
   final InterviewScheduleService _scheduleService = InterviewScheduleService();
   List<InterviewScheduleModel> _schedules = [];
   bool _isLoading = false;

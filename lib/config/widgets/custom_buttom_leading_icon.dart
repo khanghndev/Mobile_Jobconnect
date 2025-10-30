@@ -4,7 +4,7 @@ import 'package:job_connect/config/constant/app_colors.dart';
 
 class CustomButtomLeadingIcon extends StatelessWidget {
   final VoidCallback onPressed;
-  final String text;
+  final String? text;
   final Color backgroundColor;
   final Color textColor;
   final IconData icon;
@@ -15,7 +15,7 @@ class CustomButtomLeadingIcon extends StatelessWidget {
   const CustomButtomLeadingIcon({
     super.key,
     required this.onPressed,
-    required this.text,
+    this.text,
     required this.backgroundColor,
     required this.textColor,
     required this.icon,
@@ -33,7 +33,7 @@ class CustomButtomLeadingIcon extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: backgroundColor.withValues(alpha: 0.3),
-            blurRadius: 8.h,       
+            blurRadius: 8.h,
             offset: Offset(0, 4.h), 
           ),
         ],
@@ -45,14 +45,16 @@ class CustomButtomLeadingIcon extends StatelessWidget {
           color: iconColor,
           size: 20.sp,
         ),
-        label: Text(
-          text,
-          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-            color: textColor,
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
+        label: text == null 
+          ? SizedBox.shrink()
+          : Text(
+              text!,
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                color: textColor,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
         style: ElevatedButton.styleFrom(
           backgroundColor: backgroundColor,
           foregroundColor: textColor,

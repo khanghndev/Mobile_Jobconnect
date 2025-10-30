@@ -61,55 +61,68 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     final notifVM = context.read<NotificationViewModel>();
 
     try {
-      // Thêm timeout để tránh bị treo nếu BE không phản hồi
       await authVM.checkLoginStatus().timeout(const Duration(seconds: 5));
 
-      if (authVM.isLoggedIn && authVM.idUser != null) {
-        await userVM.getUserDetail(authVM.idUser!).timeout(const Duration(seconds: 5));
-        await notifVM.getUnreadCount(authVM.idUser!).timeout(const Duration(seconds: 5));
+      // Nếu chưa đăng nhập, đi thẳng ra chọn role
+      if (!authVM.isLoggedIn || authVM.idUser == null) {
+        if (mounted) context.go('/auth/role');
+        return;
+      }
 
-        if (!mounted) return;
-
-        // Kiểm tra role
-        if (userVM.roleName == StringUtils.capitalize(UserRole.candidate.name)) {
-          context.go(
-            '/home',
-            extra: {
-              'isLoggedIn': authVM.isLoggedIn,
-              'idUser': authVM.idUser,
-            },
-          );
-        } else if (userVM.roleName == StringUtils.capitalize(UserRole.recruiter.name)) {
-          context.go(
-            '/recruiter',
-            extra: {
-              'userAccount': userVM.userDetail,
-              'isLoggedIn': authVM.isLoggedIn,
-              'currentIndex': 0,
-            },
+      try {
+        await userVM.getCurrentUser(authVM.idUser!).timeout(const Duration(seconds: 5));
+      } catch (e) {
+        if (mounted) {
+          SnackbarApp.show(
+            context,
+            message: 'Không thể tải thông tin người dùng.',
+            backgroundColor: BackgroundColors.backgroundErrorPrimary,
           );
         }
+        if (mounted) context.go('/auth/role');
+        return;
+      }
+
+      try {
+        await notifVM.getUnreadCount(authVM.idUser!).timeout(const Duration(seconds: 5));
+      } catch (_) {
+
+      }
+
+      if (!mounted) return;
+      final role = userVM.roleName;
+      if (role == StringUtils.capitalize(UserRole.candidate.name)) {
+        context.go('/home', extra: {
+          'isLoggedIn': authVM.isLoggedIn,
+          'idUser': authVM.idUser,
+        });
+      } else if (role == StringUtils.capitalize(UserRole.recruiter.name)) {
+        context.go('/recruiter', extra: {
+          'userAccount': userVM.currentUser,
+          'isLoggedIn': authVM.isLoggedIn,
+          'currentIndex': 0,
+        });
       } else {
-        if (!mounted) return;
         context.go('/auth/role');
       }
     } on TimeoutException {
-      if (!mounted) return;
-      SnackbarApp.show(
-        context,
-        message: 'Không thể kết nối đến máy chủ, vui lòng thử lại sau.',
-        backgroundColor: BackgroundColors.backgroundErrorPrimary,
-      );
-      context.go('/auth/role');
+      if (mounted) {
+        SnackbarApp.show(
+          context,
+          message: 'Không thể kết nối đến máy chủ, vui lòng thử lại sau.',
+          backgroundColor: BackgroundColors.backgroundErrorPrimary,
+        );
+        context.go('/auth/role');
+      }
     } catch (e) {
-      if (!mounted) return;
-      SnackbarApp.show(
-        context,
-        message: 'Đã xảy ra lỗi, vui lòng thử lại.',
-        backgroundColor: BackgroundColors.backgroundErrorPrimary,
-      );
-      ('Đã xảy ra lỗi, vui lòng thử lại.');
-      context.go('/auth/role');
+      if (mounted) {
+        SnackbarApp.show(
+          context,
+          message: 'Đã xảy ra lỗi, vui lòng thử lại.',
+          backgroundColor: BackgroundColors.backgroundErrorPrimary,
+        );
+        context.go('/auth/role');
+      }
     }
   }
 

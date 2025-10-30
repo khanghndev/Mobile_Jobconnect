@@ -146,7 +146,7 @@
 
           if (vm.errorMessage != null && vm.errorMessage!.isNotEmpty) {
             return BackgroundErrorState(
-              title: "Chi tiết công ty",
+              title: "Hệ thống đang gặp sự cố\nVui lòng thử lại sau.",
               onRetry: _onRefresh,
             );
           }

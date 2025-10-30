@@ -14,7 +14,7 @@ class ProfileAvatar extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Selector<UserViewModel, String?>(
-      selector: (_, vm) => vm.userDetail?.avatarUrl,
+      selector: (_, vm) => vm.currentUser?.avatarUrl,
       builder: (context, avatarUrl, _) {
         return ProfileAvatarBreathing(
           radius: radius ?? 16.r,

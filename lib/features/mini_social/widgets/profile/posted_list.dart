@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:job_connect/features/mini_social/screens/home/social_profile_screen.dart';
+import 'package:job_connect/features/mini_social/model/social_post_model.dart';
 import 'package:job_connect/features/mini_social/widgets/profile/posted_card.dart';
 
 class DiscoverList extends StatefulWidget {
-  final List<DiscoverCardModel> cards;
+  final List<SocialPostModel> socialPostModels;
   final bool isExpanded;
   final VoidCallback onToggle;
 
   const DiscoverList({
     super.key,
-    required this.cards,
+    required this.socialPostModels,
     required this.isExpanded,
     required this.onToggle,
   });
@@ -60,12 +60,13 @@ class _DiscoverListState extends State<DiscoverList> with SingleTickerProviderSt
           children: [
             Expanded(
               child: ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: widget.isExpanded 
-                  ? widget.cards.length 
-                  : (widget.cards.length > 8 ? 8 : widget.cards.length),
+                  ? widget.socialPostModels.length 
+                  : (widget.socialPostModels.length > 8 ? 8 : widget.socialPostModels.length),
                 itemBuilder: (context, index){
-                  return DiscoverCard(card: widget.cards[index]);
+                  return DiscoverCard(socialPostModel: widget.socialPostModels[index]);
                 }
               ),
             ),

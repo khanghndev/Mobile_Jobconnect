@@ -4,20 +4,21 @@ import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/constant/app_strings.dart';
 import 'package:job_connect/config/enum/user_role.dart';
 import 'package:job_connect/config/utils/dialog_utils.dart';
+import 'package:job_connect/config/utils/label_title_small.dart';
 import 'package:job_connect/config/widgets/login_required_dialog.dart';
-import 'package:job_connect/features/navigation/widgets/custom_appbar_with_drawer/profile_avatar.dart';
-import 'package:job_connect/features/profile/view_model/user_view_model.dart';
+import 'package:job_connect/features/navigation/widgets/custom_appbar_with_drawer/drawer_infor_header.dart';
 import 'package:job_connect/features/navigation/widgets/custom_appbar_with_drawer/drawer_item_widget.dart';
-import 'package:provider/provider.dart';
 
 class DrawerCandidateSection extends StatelessWidget {
   final bool isLoggedIn;
   final String idUser;
+  final String? selectedRoute;
 
   const DrawerCandidateSection({
     super.key,
     required this.isLoggedIn,
-    required this.idUser,
+    required this.idUser, 
+    this.selectedRoute,
   });
 
   @override
@@ -30,16 +31,17 @@ class DrawerCandidateSection extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          _buildHeader(context, theme),
+          DrawerInforHeader(isLoggedIn: isLoggedIn),
           DrawerItem(
             icon: Icons.home_filled,
             title: 'Trang chủ',
-            isSelected: true,
+            isSelected: selectedRoute == '/home',
           ),
           DrawerItem(
             icon: Icons.document_scanner_outlined,
             title: 'Phân tích CV',
             onTap: () => _checkLoginOrRouter(context: context, route: '/resume/analysis'),
+            isSelected: selectedRoute == '/resume/analysis',
           ),
           DrawerItem(
             icon: Icons.bookmark_added_outlined,
@@ -53,16 +55,19 @@ class DrawerCandidateSection extends StatelessWidget {
                 'initialTabIndex' : 2,
               }
             ),
+            isSelected: selectedRoute == '/home/search',
           ),
           DrawerItem(
             icon: Icons.history_edu_outlined,
             title: 'Lịch sử ứng tuyển',
             onTap: () => _checkLoginOrRouter(context: context, route: '/job/history'),
+            isSelected: selectedRoute == '/job/history',
           ),
           DrawerItem(
             icon: Icons.recommend_outlined,
             title: 'Gợi ý công việc',
             onTap: () => _checkLoginOrRouter(context: context, route: '/job/matching'),
+            isSelected: selectedRoute == '/job/matching',
           ),
 
           DecoratedBox(
@@ -70,27 +75,31 @@ class DrawerCandidateSection extends StatelessWidget {
               color: Colors.grey.withValues(alpha: 0.01),
             ),
           ),
-          _buildSectionTitle(context, 'UniJobs'),
+          LabelTitleSmall(title: AppStrings.appName,),
 
           DrawerItem(
             icon: Icons.home_outlined,
             title: 'Bảng tin',
             onTap: () => _checkLoginOrRouter(context: context, route: '/social/job-board'),
+            isSelected: selectedRoute == '/social/job-board',
           ),
           DrawerItem(
             icon: Icons.person_outlined,
             title: 'Trang cá nhân',
             onTap: () => _checkLoginOrRouter(context: context, route: '/social/profile'),
+            isSelected: selectedRoute == '/social/profile',
           ),
           DrawerItem(
             icon: Icons.edit_note_outlined,
             title: 'Tạo bài viết',
             onTap: () => _checkLoginOrRouter(context: context, route: '/social/create-post'),
+            isSelected: selectedRoute == '/social/create-post',
           ),
           DrawerItem(
             icon: Icons.people_outline,
             title: 'Kết nối',
             onTap: () => _checkLoginOrRouter(context: context, route: '/social/connections'),
+            isSelected: selectedRoute == '/social/connections',
           ),
 
           DecoratedBox(
@@ -98,12 +107,13 @@ class DrawerCandidateSection extends StatelessWidget {
               color: Colors.grey.withValues(alpha: 0.01),
             ),
           ),
-          _buildSectionTitle(context, 'Hệ thống'),
+          LabelTitleSmall(title: 'Hệ thống'),
 
           DrawerItem(
             icon: Icons.feedback_outlined,
             title: 'Kiểm tra hành vi',
             onTap: () => _checkLoginOrRouter(context: context, route: '/social/check'),
+            isSelected: selectedRoute == '/social/check',
           ),
           DrawerItem(
             icon: Icons.settings_outlined,
@@ -116,17 +126,20 @@ class DrawerCandidateSection extends StatelessWidget {
                 'idUser': idUser,
               }
             ),
+            isSelected: selectedRoute == '/setting',
           ),
           DrawerItem(
             icon: Icons.support_agent_outlined,
             title: 'Trợ giúp & Hỗ trợ',
             onTap: () => _checkLoginOrRouter(context: context, route: '/setting/help'),
+            isSelected: selectedRoute == '/setting/help',
           ),
 
           DrawerItem(
             icon: Icons.policy_outlined,
             title: 'Chính sách',
             onTap: () => _checkLoginOrRouter(context: context, route: '/setting/policy'),
+            isSelected: selectedRoute == '/setting/policy',
           ),
 
           Container(
@@ -152,48 +165,9 @@ class DrawerCandidateSection extends StatelessWidget {
                 );
               }
             },
+            isSelected: selectedRoute == '/auth/login',
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildHeader(BuildContext context, ThemeData theme) {
-    final userVM = context.watch<UserViewModel>();
-    final user = userVM.userDetail;
-    return UserAccountsDrawerHeader(
-      accountName: Text(
-        isLoggedIn ? user!.userName : "Người dùng ${AppStrings.appName}",
-        style: theme.textTheme.titleLarge?.copyWith(color: Colors.white),
-      ),
-      accountEmail: Text(
-        isLoggedIn ? "Chào mừng bạn quay lại!" : "Vui lòng đăng nhập",
-        style: theme.textTheme.bodyMedium?.copyWith(color: Colors.white70),
-      ),
-      currentAccountPicture: ProfileAvatar(),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            theme.colorScheme.primary,
-            theme.colorScheme.secondary,
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSectionTitle(BuildContext context, String title) {
-    final theme = Theme.of(context);
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-      child: Text(
-        title,
-        style: theme.textTheme.titleSmall?.copyWith(
-          fontWeight: FontWeight.bold,
-          color: theme.colorScheme.primary,
-        ),
       ),
     );
   }
@@ -207,7 +181,6 @@ class DrawerCandidateSection extends StatelessWidget {
       LoginRequiredDialog.show(context, isLoggedIn: false);
       return;
     }
-
     context.push(route, extra: extra ?? {'idUser': idUser});
   }
 }

@@ -10,19 +10,19 @@ import '../../../services/job_application_service.dart';
 import '../../../services/job_posting_service.dart';
 import '../../candidate/screens/detail_candidate_of_hr.dart';
 
-class PendingApplicationsScreen extends StatefulWidget {
+class HrPendingAplicationScreen extends StatefulWidget {
   final List<JobApplicationModel> pendingApplications;
 
-  const PendingApplicationsScreen({
+  const HrPendingAplicationScreen({
     super.key,
     required this.pendingApplications,
   });
 
   @override
-  State<PendingApplicationsScreen> createState() => _PendingApplicationsScreenState();
+  State<HrPendingAplicationScreen> createState() => _HrPendingAplicationScreenState();
 }
 
-class _PendingApplicationsScreenState extends State<PendingApplicationsScreen> {
+class _HrPendingAplicationScreenState extends State<HrPendingAplicationScreen> {
   final UserService _accountService = UserService();
   final CandidateInfoService _candidateInfoService = CandidateInfoService();
   final JobApplicationService _jobApplicationService = JobApplicationService();

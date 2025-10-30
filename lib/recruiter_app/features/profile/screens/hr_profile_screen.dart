@@ -8,11 +8,10 @@ import 'package:job_connect/features/company/model/company_model.dart';
 import 'package:job_connect/features/company/service/company_service.dart';
 import 'package:job_connect/features/profile/model/user_model.dart';
 import 'package:job_connect/features/profile/service/user_service.dart';
-import 'package:job_connect/features/settings/screens/settings_screen.dart';
 import '../../../services/job_application_service.dart';
 import '../../../services/job_posting_service.dart';
 import '../../../services/recruiter_service.dart';
-import '../../candidate/screens/candidate_management_screen.dart';
+import '../../candidate/screens/hr_candidate_management_screen.dart';
 import 'hr_edit_profile_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:ui';
@@ -34,9 +33,10 @@ class _RecruiterProfilePageState extends State<RecruiterProfilePage> {
   final JobPostingService jobPostingService = JobPostingService();
   final JobApplicationService jobApplicationService = JobApplicationService();
 
-  late UserModel user;
-  late RecruiterInfoModel recruiterInfo;
-  late CompanyModel companyInfo;
+ UserModel? user;
+  RecruiterInfoModel? recruiterInfo;
+  CompanyModel? companyInfo;
+
   List<JobPostingModel>? jobPostingsList;
   List<List<JobApplicationModel>> jobApplicationsList = [];
   bool isLoading = true;
@@ -307,6 +307,21 @@ class _RecruiterProfilePageState extends State<RecruiterProfilePage> {
     if (error != null) {
       return Scaffold(body: Center(child: Text('Lỗi: $error')));
     }
+    if (isLoading) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (error != null) {
+      return Scaffold(body: Center(child: Text('Lỗi: $error')));
+    }
+
+    if (user == null || recruiterInfo == null) {
+      return const Scaffold(
+        body: Center(child: Text('Không có dữ liệu')),
+      );
+    }
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
       body: RefreshIndicator(
@@ -321,38 +336,6 @@ class _RecruiterProfilePageState extends State<RecruiterProfilePage> {
               floating: false,
               pinned: true,
               backgroundColor: const Color(0xFF1565C0),
-              actions: [
-                // Trang cài đặt
-                IconButton(
-                  icon: const Icon(Icons.settings_outlined),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SettingScreen(
-                        idUser: '',
-                        isLoggedIn: true,
-                      )),
-                    );
-                  },
-                ),
-                
-                //Trang chỉnh sửa thông tin cá nhân
-                IconButton(
-                  icon: const Icon(Icons.edit_outlined),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: 
-                      (context) => HrEditProfileScreen(
-                        account: user,
-                        company: companyInfo,
-                        recruiterInfo: recruiterInfo,
-                      )),
-                    );
-                  },
-                ),
-              
-              ],
               flexibleSpace: FlexibleSpaceBar(
                 background: Container(
                   decoration: const BoxDecoration(
@@ -374,8 +357,8 @@ class _RecruiterProfilePageState extends State<RecruiterProfilePage> {
                             CircleAvatar(
                               radius: 45,
                               backgroundColor: Colors.white,
-                              backgroundImage: user.avatarUrl != null && user.avatarUrl!.isNotEmpty
-                                  ? NetworkImage(user.avatarUrl!)
+                              backgroundImage: user?.avatarUrl != null && user!.avatarUrl!.isNotEmpty
+                                  ? NetworkImage(user!.avatarUrl!)
                                   : NetworkImage(AppImages.defaultAvatar),
                             ),
                             
@@ -385,12 +368,25 @@ class _RecruiterProfilePageState extends State<RecruiterProfilePage> {
                                 shape: BoxShape.circle,
                                 border: Border.all(color: Colors.white, width: 2),
                               ),
-                              child: const Padding(
+                              child: Padding(
                                 padding: EdgeInsets.all(4.0),
-                                child: Icon(
-                                  Icons.business_center,
-                                  color: Colors.white,
-                                  size: 14,
+                                child: InkWell(
+                                  onTap:() {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: 
+                                      (context) => HrEditProfileScreen(
+                                        account: user!,
+                                        company: companyInfo!,
+                                        recruiterInfo: recruiterInfo!,
+                                      )),
+                                    );
+                                  },
+                                  child: Icon(
+                                    Icons.business_center,
+                                    color: Colors.white,
+                                    size: 14,
+                                  ),
                                 ),
                               ),
                             ),
@@ -399,7 +395,7 @@ class _RecruiterProfilePageState extends State<RecruiterProfilePage> {
                         const SizedBox(height: 12),
                         // Tên nhà tuyển dụng
                         Text(
-                          user.userName, 
+                          user!.userName, 
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -433,7 +429,7 @@ class _RecruiterProfilePageState extends State<RecruiterProfilePage> {
                         
                         // Tên công ty tiêu đề
                         Text(
-                          "Công ty ${companyInfo.companyName}" ,
+                          "Công ty ${companyInfo!.companyName}" ,
                           style: TextStyle(color: Colors.white70, fontSize: 14),
                         ),
                         
@@ -545,7 +541,7 @@ class _RecruiterProfilePageState extends State<RecruiterProfilePage> {
                           _buildContactItem(
                             icon: Icons.email_rounded,
                             title: "Email",
-                            subtitle: user.email,
+                            subtitle: user!.email,
                             hasCopy: true,
                           ),
                           
@@ -553,7 +549,7 @@ class _RecruiterProfilePageState extends State<RecruiterProfilePage> {
                           _buildContactItem(
                             icon: Icons.phone_rounded,
                             title: "Số điện thoại",
-                            subtitle: user.phoneNumber ?? "Chưa có số điện thoại",
+                            subtitle: user!.phoneNumber ?? "Chưa có số điện thoại",
                             hasCopy: true,
                           ),
 
@@ -561,7 +557,7 @@ class _RecruiterProfilePageState extends State<RecruiterProfilePage> {
                           _buildContactItem(
                             icon: Icons.location_on_rounded,
                             title: "Địa điểm",
-                            subtitle: companyInfo.address,
+                            subtitle: companyInfo!.address,
                             isLast: true,
                           ),
                         ],
@@ -625,21 +621,21 @@ class _RecruiterProfilePageState extends State<RecruiterProfilePage> {
                           _buildContactItem(
                             icon: Icons.business_rounded,
                             title: "Công ty",
-                            subtitle: companyInfo.companyName,
+                            subtitle: companyInfo!.companyName,
                           ),
                           
                           // Quy mô
                           _buildContactItem(
                             icon: Icons.people_rounded,
                             title: "Quy mô",
-                            subtitle:companyInfo.scale,
+                            subtitle:companyInfo!.scale,
                           ),
 
                           // Link website
                           _buildContactItem(
                             icon: Icons.public_rounded,
                             title: "Website",
-                            subtitle: companyInfo.websiteUrl ?? "Chưa có website",
+                            subtitle: companyInfo!.websiteUrl ?? "Chưa có website",
                             hasLink: true,
                             isLast: true,
                           ),
@@ -774,9 +770,9 @@ class _RecruiterProfilePageState extends State<RecruiterProfilePage> {
                             context,
                             MaterialPageRoute(builder: 
                             (context) => HrEditProfileScreen(
-                              account: user,
-                              company: companyInfo,
-                              recruiterInfo: recruiterInfo,
+                              account: user!,
+                              company: companyInfo!,
+                              recruiterInfo: recruiterInfo!,
                             )),
                           );
                         },
@@ -792,7 +788,7 @@ class _RecruiterProfilePageState extends State<RecruiterProfilePage> {
                             context,
                             MaterialPageRoute(
                               builder:(context) => 
-                              CandidateManagementScreen(recruiterId: widget.recruiterId),
+                              HrCandidateManagementScreen(recruiterId: widget.recruiterId),
                             ),
                           );
                         },

@@ -305,7 +305,7 @@ class JobDetailState extends State<JobDetailScreen>with TickerProviderStateMixin
       backgroundColor: theme.scaffoldBackgroundColor,
       body: Center(
         child: BackgroundErrorState(
-          title: "Chi tiết công việc", 
+          title: "Hệ thống đang gặp sự cố\nVui lòng thử lại sau.",
           onRetry: _onRefresh
         )
       ),

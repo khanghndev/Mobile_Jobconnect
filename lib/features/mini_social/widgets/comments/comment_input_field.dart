@@ -5,12 +5,14 @@ class CommentInputField extends StatelessWidget {
   final TextEditingController controller;
   final bool hasText;
   final VoidCallback? onSend;
+  final ValueChanged<String>? onChanged;
 
   const CommentInputField({
     super.key,
     required this.controller,
     required this.hasText,
     required this.onSend,
+    this.onChanged,
   });
 
   @override
@@ -24,9 +26,9 @@ class CommentInputField extends StatelessWidget {
             controller: controller,
             minLines: 1,
             maxLines: 3,
-            onChanged: (val) {},
+            onChanged: onChanged, 
             decoration: InputDecoration(
-              hintText: "Viết bình luận công khai...",
+              hintText: "Viết bình luận của bạn ...",
               suffixIcon: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -49,7 +51,11 @@ class CommentInputField extends StatelessWidget {
         SizedBox(width: 8.w),
         IconButton(
           onPressed: hasText ? onSend : null,
-          icon: Icon(Icons.send, color: hasText ? Colors.blue : Colors.grey, size: 20.sp),
+          icon: Icon(
+            Icons.send,
+            color: hasText ? Colors.blue : Colors.grey,
+            size: 20.sp,
+          ),
         ),
       ],
     );

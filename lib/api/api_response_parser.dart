@@ -29,4 +29,18 @@ class ApiResponseParser {
     }
     return res.map((e) => fromJson(e as Map<String, dynamic>)).toList();
   }
+
+  static Map<String, dynamic> parseMap({
+    required dynamic res,
+    required String errorMsg,
+  }) {
+    if (res is! Map<String, dynamic>) {
+      throw ServerException(
+        err: errorMsg,
+        type: ServerExceptionType.api,
+      );
+    }
+    return res;
+  }
+
 }

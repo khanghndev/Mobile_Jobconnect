@@ -10,4 +10,5 @@ enum ServerExceptionType {
   timeout,
   appwrite,
   config,
+  invalidData
 }

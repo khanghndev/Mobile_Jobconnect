@@ -103,12 +103,12 @@ class _EditProfilePageState extends State<EditProfilePage>with SingleTickerProvi
     try {
       // Chạy đồng thời cả 2 API trong ViewModel
       await Future.wait([
-        userVM.getUserDetail(widget.idUser),
+        userVM.getCurrentUser(widget.idUser),
         candidateVM.getCandidateDetail(widget.idUser),
       ]);
 
       // Lấy dữ liệu từ ViewModel
-      _account = userVM.userDetail;
+      _account = userVM.currentUser;
       _candidateInfo = candidateVM.candidateDetail;
 
       // Điền dữ liệu vào form
@@ -193,7 +193,7 @@ class _EditProfilePageState extends State<EditProfilePage>with SingleTickerProvi
 
   Future<void> _onSaveProfile(UserViewModel userVM, CandidateInfoViewModel candidateVM) async {
     if (!_formKey.currentState!.validate()) return;
-    final user = userVM.userDetail;
+    final user = userVM.currentUser;
     final candidate = candidateVM.candidateDetail;
     if (user == null) {
       SnackbarApp.show(

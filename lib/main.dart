@@ -7,6 +7,9 @@ import 'package:job_connect/config/services/shared_prefs_service.dart';
 import 'package:job_connect/features/auth/viewmodel/auth_view_model.dart';
 import 'package:job_connect/features/company/viewmodel/company_view_model.dart';
 import 'package:job_connect/features/home/view_model/podcast_view_model.dart';
+import 'package:job_connect/features/mini_social/view_model/social_comment_view_model.dart';
+import 'package:job_connect/features/mini_social/view_model/social_post_view_model.dart';
+import 'package:job_connect/features/mini_social/view_model/social_save_post_view_model.dart';
 import 'package:job_connect/features/notifications/viewmodel/notification_view_model.dart';
 import 'package:job_connect/features/profile/view_model/candidate_info_view_model.dart';
 import 'package:job_connect/features/profile/view_model/user_view_model.dart';
@@ -39,6 +42,12 @@ void main() async {
         ChangeNotifierProvider(create: (_) => UserViewModel()),
         ChangeNotifierProvider(create: (_) => CandidateInfoViewModel()),
         ChangeNotifierProvider(create: (_) => ResumeViewModel()),
+        
+        // TODO: SOCIAL
+        ChangeNotifierProvider(create: (_) => SocialPostViewModel(prefs: SharedPrefsService(prefs: prefs))),
+        ChangeNotifierProvider(create: (_) => SocialCommentViewModel()),
+        ChangeNotifierProvider(create: (_) => SocialSavePostViewModel(prefs: SharedPrefsService(prefs: prefs))),
+
       ],
       child: MyApp(),
     ),

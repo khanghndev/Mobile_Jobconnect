@@ -27,7 +27,7 @@ class BackgroundErrorState extends StatelessWidget {
             ),
             SizedBox(height: 20.h),
             Text(
-              "Không thể tải danh sách $title",
+              title,
               style: theme.textTheme.titleMedium?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
               ),

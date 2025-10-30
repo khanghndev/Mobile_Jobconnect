@@ -8,6 +8,8 @@ class SectionTitle extends StatelessWidget {
   final Color? textColor;
   final bool? isToUpperCase;
   final double? fontSize;
+  final bool? isCenter;
+  final FontWeight? fontWeight;
 
   const SectionTitle({
     super.key,
@@ -16,7 +18,9 @@ class SectionTitle extends StatelessWidget {
     this.iconColor, 
     this.textColor, 
     this.isToUpperCase = false, 
-    this.fontSize,
+    this.fontSize, 
+    this.isCenter = false,
+    this.fontWeight,
   });
 
   @override
@@ -24,20 +28,24 @@ class SectionTitle extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Row(
+      mainAxisAlignment: isCenter == true ? MainAxisAlignment.center : MainAxisAlignment.start,
       children: [
-        Icon(
-          icon ?? Icons.numbers,
-          color:iconColor ?? theme.primaryColor,
-          size: 22.sp,
-        ),
+        if(icon == null)...[
+          Icon(
+            icon,
+            color:iconColor ?? theme.primaryColor,
+            size: 22.sp,
+          ),
+        ],
         SizedBox(width: 10.w),
         Text(
           isToUpperCase == true ? title.toUpperCase() : title,
           style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
+            fontWeight: fontWeight ?? FontWeight.bold,
             color: textColor ?? theme.textTheme.titleLarge?.color,
             fontSize: fontSize ?? 18.sp,
           ),
+          textAlign: TextAlign.center,
         ),
       ],
     );

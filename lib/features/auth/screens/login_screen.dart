@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/constant/app_colors.dart';
-import 'package:job_connect/config/enum/dialog_type.dart';
 import 'package:job_connect/config/enum/user_role.dart';
-import 'package:job_connect/config/utils/dialog_utils.dart';
 import 'package:job_connect/config/utils/snackbar_app.dart';
 import 'package:job_connect/config/utils/string_utils.dart';
+import 'package:job_connect/config/widgets/custom_dialog.dart';
 import 'package:job_connect/config/widgets/unfocus_widget.dart';
 import 'package:job_connect/features/auth/viewmodel/auth_view_model.dart';
 import 'package:job_connect/features/auth/widgets/login/login_form.dart';
@@ -66,12 +65,16 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     if (!mounted) return;
 
     if (authVM.errorMessage != null) {
-      DialogUtils.showDialogMessage(
+      CustomDialog.show(
         context,
-        message: authVM.errorMessage!,
         title: "Thất bại",
-        type: DialogType.error,
-        buttonText: "Đóng",
+        message: "Đăng nhập thất bại.",
+        icon: Icons.error_outline,
+        iconColor: BackgroundColors.backgroundErrorPrimary,
+        confirmButtonColor: BackgroundColors.backgroundErrorPrimary,
+        backgroundColor: BackgroundColors.backgroundErrorPrimary,
+        confirmText: "Đồng ý",
+        cancelText: "Hủy",
       );
       return;
     } 
@@ -80,34 +83,61 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
       final userVM = context.read<UserViewModel>();
       final notificationVM = context.read<NotificationViewModel>();
 
-      await userVM.getUserDetail(idUser);
+      await userVM.getCurrentUser(idUser);
       await notificationVM.getUnreadCount(idUser);
-      if(mounted){
-        if(userVM.roleName == StringUtils.capitalize(UserRole.candidate.name)){
-          context.go(
-            '/home', 
-            extra: {
-              'isLoggedIn': authVM.isLoggedIn,
-              'idUser': idUser,
-            }
-          );
-        } else if(userVM.roleName == StringUtils.capitalize(UserRole.recruiter.name)){
-          context.go(
-            '/recruiter',
-            extra: {
-              'userAccount': userVM.userDetail,
-              'isLoggedIn' : authVM.isLoggedIn,
-              'currentIndex': 0,
-            }
-          );
-        }
-        SnackbarApp.show(
+
+      if (!mounted) return;
+
+      final actualRole = userVM.roleName?.trim().toLowerCase();
+      final expectedRole = (widget.role ?? UserRole.candidate.name).toLowerCase();
+
+      // Kiểm tra role trùng khớp với form login
+      if (actualRole != expectedRole) {
+        CustomDialog.show(
           context,
-          title: 'Thông báo',
-          message: 'Đăng nhập thành công',
-          backgroundColor: BackgroundColors.backgroundSuccessPrimary,
-        );}
+          title: "Sai vai trò",
+          message: "Vui lòng đăng nhập bằng cổng dành cho ${StringUtils.capitalize(expectedRole)}.",
+          icon: Icons.warning_amber_outlined,
+          iconColor: BackgroundColors.backgroundWarningPrimary,
+          confirmButtonColor: BackgroundColors.backgroundWarningPrimary,
+          backgroundColor: BackgroundColors.backgroundWarningPrimary,
+          confirmText: "Đồng ý",
+          cancelText: "Hủy",
+          onConfirm: () {
+            context.push('/auth/role');
+          },
+        );
+        return;
       }
+
+      // Đúng role điều hướng luôn
+      if (actualRole == UserRole.candidate.name.toLowerCase()) {
+        context.go(
+          '/home',
+          extra: {
+            'isLoggedIn': authVM.isLoggedIn,
+            'idUser': idUser,
+          },
+        );
+      } else if (actualRole == UserRole.recruiter.name.toLowerCase()) {
+        context.go(
+          '/recruiter',
+          extra: {
+            'userAccount': userVM.currentUser,
+            'isLoggedIn': authVM.isLoggedIn,
+            'currentIndex': 0,
+          },
+        );
+      }
+
+      SnackbarApp.show(
+        context,
+        title: 'Thông báo',
+        message: 'Đăng nhập thành công',
+        backgroundColor: BackgroundColors.backgroundSuccessPrimary,
+      );
+    }
+
   }
 
   void _onLoginGoogle(AuthViewModel authVM) async {
@@ -161,14 +191,11 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                             padding: EdgeInsets.all(24.w),
                             child: Container(
                               decoration: BoxDecoration(
-                                color: BackgroundColors.backgroundDefaultPrimary
-                                    .withValues(alpha: 0.9),
+                                color: BackgroundColors.backgroundDefaultPrimary .withValues(alpha: 0.9),
                                 borderRadius: BorderRadius.circular(20.r),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: BackgroundColors
-                                        .backgroundDefaultPrimarySub
-                                        .withValues(alpha: 0.2),
+                                    color: BackgroundColors.backgroundDefaultPrimarySub.withValues(alpha: 0.2),
                                     blurRadius: 20.r,
                                     offset: Offset(0, 10.h),
                                   ),
@@ -176,8 +203,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                               ),
                               child: AnimatedSwitcher(
                                 duration: const Duration(milliseconds: 500),
-                                transitionBuilder:
-                                    (Widget child, Animation<double> animation) {
+                                transitionBuilder: (Widget child, Animation<double> animation) {
                                   return FadeTransition(
                                     opacity: animation,
                                     child: child,
@@ -191,6 +217,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                       isLoading: authVM.isLoading,
                                       onLogin: () => _onLogin(authVM),
                                       onBack: () => setState(() => _showLoginForm = false),
+                                      isRemmeber: false,
                                     )
                                   : SocialLoginView(
                                       role: widget.role ?? StringUtils.capitalize(UserRole.candidate.name),
@@ -220,7 +247,11 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                 size: 22.sp,
                               ),
                               onPressed: () {
-                                context.go('/auth/role');
+                                if (_showLoginForm) {
+                                  setState(() => _showLoginForm = false);
+                                } else {
+                                  context.go('/auth/role');
+                                }
                               },
                             ),
                           ),

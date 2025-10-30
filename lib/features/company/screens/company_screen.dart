@@ -85,7 +85,7 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
 
             if (vm.errorMessage != null && vm.errorMessage!.isNotEmpty) {
               return BackgroundErrorState(
-                title: "công ty",
+                title: "Hệ thống đang gặp sự cố\nVui lòng thử lại sau.",
                 onRetry: _onRefresh,
               );
             }

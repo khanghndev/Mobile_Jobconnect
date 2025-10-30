@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class CustomDialog extends StatelessWidget {
   final String title;
@@ -146,7 +147,7 @@ class CustomDialog extends StatelessWidget {
                     Expanded(
                       child: OutlinedButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          context.pop();
                           onCancel?.call();
                         },
                         style: OutlinedButton.styleFrom(
@@ -173,7 +174,7 @@ class CustomDialog extends StatelessWidget {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          context.pop();
                           onConfirm?.call();
                         },
                         style: ElevatedButton.styleFrom(
