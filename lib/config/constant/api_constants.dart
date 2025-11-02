@@ -50,8 +50,10 @@ class ApiConstants {
 
   // SAVED JOBS - Việc làm đã lưu
   static const String jobSavedEndpoint = "/api/JobSaved";
-  static const String jobSavedByUserEndpoint = "/api/JobSaved/user/{idUser}";
-  static const String jobSavedByJobPostEndpoint = "/api/JobSaved/{jobPost}/{user}";
+  static const String jobSavedByJobPost = "/api/JobSaved/jobposting/{jobPost}";
+  static const String jobSavedByUser = "/api/JobSaved/user/{idUser}";
+  static const String jobSavedCheck = "/api/JobSaved/{jobPost}/{user}";
+  static const String jobSavedDelete = "/api/JobSaved/{jobPost}/{user}";
 
   // RESUME - Hồ sơ & Kỹ năng
   static const String resumeEndpoint = "/api/Resume";

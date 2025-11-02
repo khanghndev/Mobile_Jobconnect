@@ -31,7 +31,7 @@ class NotificationModel {
       status: json['status'],
       actionUrl: json['actionUrl'],
       createdAt: DateTime.parse(json['createdAt']),
-      isRead: json['isRead'] ?? false,
+      isRead: json['isRead'] is int ? json['isRead'] : (json['isRead'] == true ? 1 : 0),
     );
   }
 

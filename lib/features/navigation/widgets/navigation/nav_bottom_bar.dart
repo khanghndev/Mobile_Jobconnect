@@ -62,8 +62,8 @@ class NavBottomBar extends StatelessWidget {
                 NavItem(
                   index: 1,
                   currentIndex: currentIndex,
-                  iconOutlined: Icons.search_outlined,
-                  iconFilled: Icons.search,
+                  iconOutlined: Icons.search,
+                  iconFilled: Icons.content_paste_search_outlined,
                   label: 'Tìm việc',
                   theme: theme,
                   onTap: () => onTap(1),

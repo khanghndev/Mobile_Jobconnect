@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:job_connect/config/constant/app_images.dart';
 import 'package:job_connect/config/constant/app_strings.dart';
 import 'package:job_connect/config/utils/image_url.dart';
 import 'package:job_connect/features/job/screens/job_history_screen.dart';
-import 'package:job_connect/features/navigation/screens/navigation_page.dart';
 import 'package:job_connect/features/profile/widgets/profile/profile_avatar_breathing.dart';
 import 'package:job_connect/features/profile/widgets/profile/profile_state_item.dart';
 
@@ -135,7 +133,7 @@ class ProfileHeaderCard extends StatelessWidget {
                 count: savedJobsCount.toDouble(),
                 label: "Đã lưu",
                 icon: Icons.bookmark_rounded,
-                color: theme.colorScheme.tertiary,
+                color: theme.colorScheme.secondary,
                 onTap: () {
                   context.push(
                     '/home/search', 

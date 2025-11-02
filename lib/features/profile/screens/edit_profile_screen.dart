@@ -130,8 +130,7 @@ class _EditProfilePageState extends State<EditProfilePage>with SingleTickerProvi
         _workPositionController.text = _candidateInfo!.workPosition ?? '';
         _universityNameController.text = _candidateInfo!.universityName ?? '';
         _educationLevelController.text = _candidateInfo!.educationLevel ?? '';
-        _experienceYearsController.text =
-            _candidateInfo!.experienceYears?.toString() ?? '';
+        _experienceYearsController.text = _candidateInfo!.experienceYears?.toString() ?? '';
         _skillsController.text = _candidateInfo!.skills ?? '';
       }
 
@@ -192,9 +191,9 @@ class _EditProfilePageState extends State<EditProfilePage>with SingleTickerProvi
   }
 
   Future<void> _onSaveProfile(UserViewModel userVM, CandidateInfoViewModel candidateVM) async {
-    if (!_formKey.currentState!.validate()) return;
     final user = userVM.currentUser;
     final candidate = candidateVM.candidateDetail;
+
     if (user == null) {
       SnackbarApp.show(
         context,
@@ -204,22 +203,26 @@ class _EditProfilePageState extends State<EditProfilePage>with SingleTickerProvi
       );
       return;
     }
+
     setState(() => _isSaving = true);
+
     try {
       String? newAvatarUrl = user.avatarUrl;
       if (_profileImage != null) {
-        newAvatarUrl = _profileImage?.path;
+        newAvatarUrl = _profileImage!.path; // tạm thời chỉ local path
       }
-      UserModel userModel = UserModel(
+
+      // Tạo UserModel mới
+      UserModel updatedUser = UserModel(
         idUser: user.idUser,
         userName: _nameController.text,
         email: _emailController.text,
-        phoneNumber: _phoneController.text,
+        phoneNumber: _phoneController.text.isNotEmpty ? _phoneController.text : null,
         password: user.password,
         idRole: user.idRole,
         accountStatus: user.accountStatus,
         gender: _selectedApiGenderValue ?? user.gender,
-        address: _locationController.text,
+        address: _locationController.text.isNotEmpty ? _locationController.text : null,
         dateOfBirth: _selectedDateOfBirth,
         avatarUrl: newAvatarUrl,
         socialLogin: user.socialLogin,
@@ -227,21 +230,25 @@ class _EditProfilePageState extends State<EditProfilePage>with SingleTickerProvi
         updatedAt: DateTime.now(),
         role: user.role,
       );
-      await userVM.updateUser(user.idUser, userModel);
-      CandidateInfoModel candidateModel = CandidateInfoModel(
+
+      await userVM.updateUser(user.idUser, updatedUser, newAvatar: _profileImage);
+
+      CandidateInfoModel updatedCandidate = CandidateInfoModel(
         idUser: user.idUser,
-        workPosition: _workPositionController.text,
+        workPosition: _workPositionController.text.isNotEmpty ? _workPositionController.text : null,
         ratingScore: candidate?.ratingScore ?? 0,
-        universityName: _universityNameController.text,
-        educationLevel: _educationLevelController.text,
-        experienceYears:int.tryParse(_experienceYearsController.text) ?? candidate?.experienceYears ?? 0,
-        skills: _skillsController.text,
+        universityName: _universityNameController.text.isNotEmpty ? _universityNameController.text : null,
+        educationLevel: _educationLevelController.text.isNotEmpty ? _educationLevelController.text : null,
+        experienceYears: int.tryParse(_experienceYearsController.text) ?? candidate?.experienceYears ?? 0,
+        skills: _skillsController.text.isNotEmpty ? _skillsController.text : null,
       );
+
       if (candidate?.idUser == null) {
-        await candidateVM.createCandidate(candidateModel);
+        await candidateVM.createCandidate(updatedCandidate);
       } else {
-        await candidateVM.updateCandidate(user.idUser, candidateModel);
+        await candidateVM.updateCandidate(user.idUser, updatedCandidate);
       }
+
       if (mounted) {
         SnackbarApp.show(
           context,
@@ -311,7 +318,8 @@ class _EditProfilePageState extends State<EditProfilePage>with SingleTickerProvi
                           label: 'Họ và tên',
                           hintText: 'Nhập họ và tên đày đủ',
                           icon: Icons.person_outline_rounded,
-                          prefixIconColor: theme.primaryColor.withValues(alpha:0.7),
+                          labelTextColor: theme.hintColor.withValues(alpha: 0.5), 
+                          prefixIconColor: theme.hintColor.withValues(alpha:0.7),
                           fillColor: Theme.of(context).dividerColor.withValues(alpha:0.1),
                           validator: (value) => InputValidators.validate(
                             value: value,
@@ -326,7 +334,8 @@ class _EditProfilePageState extends State<EditProfilePage>with SingleTickerProvi
                           label: 'Email',
                           hintText: 'Nhập email',
                           icon: Icons.email_outlined,
-                          prefixIconColor: theme.primaryColor.withValues(alpha:0.7),
+                          labelTextColor: theme.hintColor.withValues(alpha: 0.5), 
+                          prefixIconColor: theme.hintColor.withValues(alpha:0.7),
                           fillColor: Theme.of(context).dividerColor.withValues(alpha:0.1),
                           validator: (value) => InputValidators.validate(
                             value: value,
@@ -341,7 +350,8 @@ class _EditProfilePageState extends State<EditProfilePage>with SingleTickerProvi
                           label: 'Số điện thoại',
                           icon: Icons.phone_iphone_rounded,
                           hintText: 'Nhập số điện thoại',
-                          prefixIconColor: theme.primaryColor.withValues(alpha:0.7),
+                          labelTextColor: theme.hintColor.withValues(alpha: 0.5), 
+                          prefixIconColor: theme.hintColor.withValues(alpha:0.7),
                           fillColor: Theme.of(context).dividerColor.withValues(alpha:0.1),
                           validator: (value) => InputValidators.validate(
                             value: value,
@@ -358,8 +368,9 @@ class _EditProfilePageState extends State<EditProfilePage>with SingleTickerProvi
                           icon: Icons.calendar_today,
                           hintText: 'Nhập ngày sinh',
                           suffixIcon: Icons.arrow_drop_down_circle_outlined,
-                          prefixIconColor: theme.primaryColor.withValues(alpha:0.7),
-                          suffixIconColor: theme.primaryColor.withValues(alpha:0.7),
+                          labelTextColor: theme.hintColor.withValues(alpha: 0.5), 
+                          prefixIconColor: theme.hintColor.withValues(alpha:0.7),
+                          suffixIconColor: theme.hintColor.withValues(alpha:0.7),
                           fillColor: Theme.of(context).dividerColor.withValues(alpha:0.1),
                           validator: (value) => InputValidators.validate(
                             value: value,
@@ -373,17 +384,20 @@ class _EditProfilePageState extends State<EditProfilePage>with SingleTickerProvi
                           value: _selectedApiGenderValue,
                           decoration: InputDecoration(
                             labelText: 'Giới tính',
+                            labelStyle: TextStyle(
+                              color: theme.hintColor.withValues(alpha: 0.5), 
+                            ),
                             prefixIcon: Icon(
                               Icons.generating_tokens,
-                              color: theme.primaryColor.withValues(alpha: 0.7),
+                              color: theme.hintColor.withValues(alpha: 0.7),
                             ),
                             filled: true,
                             fillColor: Theme.of(context).dividerColor.withValues(alpha: 0.1),
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(12.r),
                               borderSide: BorderSide(
                                 color: theme.primaryColor.withValues(alpha: 0.7),
-                                width: 9.w,
+                                width: 2.w,
                               ),
                             ),
                           ),
@@ -411,7 +425,8 @@ class _EditProfilePageState extends State<EditProfilePage>with SingleTickerProvi
                           label: 'Địa chỉ hiện tại',
                           icon: Icons.location_city_rounded,
                           hintText: 'Nhập địa chỉ hiện tại',
-                          prefixIconColor: theme.primaryColor.withValues(alpha:0.7),
+                          labelTextColor: theme.hintColor.withValues(alpha: 0.5), 
+                          prefixIconColor: theme.hintColor.withValues(alpha:0.7),
                           fillColor: Theme.of(context).dividerColor.withValues(alpha:0.1),
                           validator: (value) => InputValidators.validate(
                             value: value,
@@ -432,7 +447,8 @@ class _EditProfilePageState extends State<EditProfilePage>with SingleTickerProvi
                           label: 'Vị trí mong muốn',
                           icon: Icons.business_center_outlined,
                           hintText: 'Nhập vị trí mong muốn',
-                          prefixIconColor: theme.primaryColor.withValues(alpha:0.7),
+                          labelTextColor: theme.hintColor.withValues(alpha: 0.5), 
+                          prefixIconColor: theme.hintColor.withValues(alpha:0.7),
                           fillColor: Theme.of(context).dividerColor.withValues(alpha:0.1),
                           validator: (value) => InputValidators.validate(
                             value: value,
@@ -447,7 +463,8 @@ class _EditProfilePageState extends State<EditProfilePage>with SingleTickerProvi
                           label: 'Trường/Cơ sở đào tạo',
                           icon: Icons.school_outlined,
                           hintText: 'Nhập trường/cơ sở đào tạo',
-                          prefixIconColor: theme.primaryColor.withValues(alpha:0.7),
+                          labelTextColor: theme.hintColor.withValues(alpha: 0.5), 
+                          prefixIconColor: theme.hintColor.withValues(alpha:0.7),
                           fillColor: Theme.of(context).dividerColor.withValues(alpha:0.1),
                           validator: (value) => InputValidators.validate(
                             value: value,
@@ -462,7 +479,8 @@ class _EditProfilePageState extends State<EditProfilePage>with SingleTickerProvi
                           label: 'Trình độ học vấn',
                           icon: Icons.grade_outlined,
                           hintText: 'Nhập trình độ học vấn',
-                          prefixIconColor: theme.primaryColor.withValues(alpha:0.7),
+                          labelTextColor: theme.hintColor.withValues(alpha: 0.5), 
+                          prefixIconColor: theme.hintColor.withValues(alpha:0.7),
                           fillColor: Theme.of(context).dividerColor.withValues(alpha:0.1),
                           validator: (value) => InputValidators.validate(
                             value: value,
@@ -478,7 +496,8 @@ class _EditProfilePageState extends State<EditProfilePage>with SingleTickerProvi
                           icon: Icons.hourglass_top_rounded,
                           hintText: 'Nhập số năm kinh nghiệm',
                           keyboardType: TextInputType.number,
-                          prefixIconColor: theme.primaryColor.withValues(alpha:0.7),
+                          labelTextColor: theme.hintColor.withValues(alpha: 0.5), 
+                          prefixIconColor: theme.hintColor.withValues(alpha:0.7),
                           fillColor: Theme.of(context).dividerColor.withValues(alpha:0.1),
                           validator: (value) => InputValidators.validate(
                             value: value,
@@ -493,7 +512,8 @@ class _EditProfilePageState extends State<EditProfilePage>with SingleTickerProvi
                           label: 'Các kỹ năng chính',
                           icon: Icons.psychology_outlined,
                           hintText: 'Nhập các kỹ năng chính ',
-                          prefixIconColor: theme.primaryColor.withValues(alpha:0.7),
+                          labelTextColor: theme.hintColor.withValues(alpha: 0.5), 
+                          prefixIconColor: theme.hintColor.withValues(alpha:0.7),
                           fillColor: Theme.of(context).dividerColor.withValues(alpha:0.1),
                           validator: (value) => InputValidators.validate(
                             value: value,

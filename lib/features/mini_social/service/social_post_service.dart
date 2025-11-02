@@ -39,12 +39,30 @@ class SocialPostService {
   }
 
   //TODO: POST /api/SocialPosts - Tạo bài viết mới
-  Future<SocialPostModel> createPost({required SocialPostModel post}) async {
+  Future<SocialPostModel> createPost({
+    required String idUser,
+    required String idGroup,
+    required String content,
+    String imageUrl = '',
+    String videoUrl = '',
+    String visibility = 'public',
+    String postType = 'text',
+    List<String> hashtags = const [],
+  }) async {
     return _handleApi(
       () async {
         final res = await _apiService.post(
           endpoint: ApiConstants.socialPostsEndpoint,
-          body: post.toJson(),
+          body: {
+            "idUser": idUser,
+            "idGroup": idGroup,
+            "content": content,
+            "imageUrl": imageUrl,
+            "videoUrl": videoUrl,
+            "visibility": visibility,
+            "postType": postType,
+            "hashtags": hashtags,
+          },
         );
         return ApiResponseParser.parseObject(
           res: res,

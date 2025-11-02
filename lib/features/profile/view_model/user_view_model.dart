@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:job_connect/appwrite/storage_appwrite_service.dart';
 import 'package:job_connect/config/enum/shared_prefs_key.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:job_connect/config/error/server_exception.dart';
@@ -7,6 +11,9 @@ import 'package:job_connect/features/profile/service/user_service.dart';
 
 class UserViewModel extends ChangeNotifier {
   final UserService _userService = UserService();
+  final StorageAppwriteService _storageService = StorageAppwriteService();
+
+  final String _bucketId = dotenv.env['APPWRITE_BUCKET_ID_IMAGE'] ?? '';
 
   bool _isLoading = false;
   bool _isDetailLoading = false;
@@ -66,6 +73,15 @@ class UserViewModel extends ChangeNotifier {
     await prefs.setString(SharedPrefsKey.roleName.getVal, newRole);
   }
 
+  Future<UserModel?> fetchUserViewerById(String id) async {
+    try {
+      final detail = await _userService.getUserById(id: id);
+      return detail;
+    } catch (e) {
+      return null;
+    }
+  }
+
   // TODO: Lấy user hiện tại
   Future<void> getCurrentUser(String id) async {
     _setState(isDetailLoading: true, errorMessage: null);
@@ -109,16 +125,44 @@ class UserViewModel extends ChangeNotifier {
   }
 
   // TODO: Cập nhật user
-  Future<void> updateUser(String id, UserModel data) async {
-    await _handleApiCall(
-      apiCall: () async => [await _userService.updateUser(user: data)],
-      onSuccess: (data) {
-        final updated = data.first;
-        final index = _users.indexWhere((u) => u.idUser == id);
-        if (index >= 0) _users[index] = updated;
-        _setState(users: _users, isSuccess: true);
-      },
-    );
+  Future<void> updateUser(String id, UserModel data, {File? newAvatar}) async {
+    _setState(isLoading: true, errorMessage: null, isSuccess: false);
+
+    try {
+      UserModel updatedUser = data;
+
+      // Nếu có avatar mới → upload lên Appwrite
+      if (newAvatar != null) {
+        if (_bucketId.isEmpty) throw Exception('BucketId chưa cấu hình');
+
+        final uploadedFile = await _storageService.uploadFile(
+          newAvatar,
+          bucketId: _bucketId,
+        );
+
+        final avatarUrl = _storageService.getFileViewUrl(
+          uploadedFile.$id,
+          bucketId: _bucketId,
+        );
+
+        updatedUser = data.copyWith(avatarUrl: avatarUrl);
+      }
+
+      // Gọi API cập nhật user
+      await _userService.updateUser(user: updatedUser);
+
+      // Cập nhật state local
+      final index = _users.indexWhere((u) => u.idUser == id);
+      if (index >= 0) _users[index] = updatedUser;
+      _setState(users: _users, currentUser: updatedUser, isSuccess: true);
+
+    } on ServerException catch (e) {
+      _setState(errorMessage: e.err, isSuccess: false);
+    } catch (e) {
+      _setState(errorMessage: e.toString(), isSuccess: false);
+    } finally {
+      _setState(isLoading: false);
+    }
   }
 
   // TODO: Xóa user

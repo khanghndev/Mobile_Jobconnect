@@ -7,7 +7,7 @@ import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/config/utils/dialog_utils.dart';
 import 'package:job_connect/config/widgets/custom_button_border.dart';
 import 'package:job_connect/data/models/job_application_model.dart';
-import 'package:job_connect/data/models/job_saved_model.dart';
+import 'package:job_connect/features/home/model/job_saved_model.dart';
 import 'package:job_connect/features/profile/view_model/candidate_info_view_model.dart';
 import 'package:job_connect/features/profile/view_model/user_view_model.dart';
 import 'package:job_connect/features/profile/widgets/profile/profile_un_loggin.dart';
@@ -40,9 +40,8 @@ class ProfilePageState extends State<ProfilePageScreen> with TickerProviderState
   final List<JobSavedModel> _savedJobs = [];
   late AnimationController _fabPulseController;
   final ScrollController _scrollController = ScrollController();
-
-  @override
-  bool get wantKeepAlive => true;
+  late UserViewModel userViewModel;
+  late CandidateInfoViewModel candidateViewModel;
 
   bool get isLoggedIn => widget.isLoggedIn;
 
@@ -50,12 +49,15 @@ class ProfilePageState extends State<ProfilePageScreen> with TickerProviderState
   void initState() {
     super.initState();
 
+    userViewModel = context.read<UserViewModel>();
+    candidateViewModel = context.read<CandidateInfoViewModel>();
+
     _fabPulseController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1000),
     )..repeat(reverse: true);
 
-    _initializeData();
+    _onRefresh();
   }
 
   @override
@@ -65,20 +67,13 @@ class ProfilePageState extends State<ProfilePageScreen> with TickerProviderState
     super.dispose();
   }
 
-  Future<void> _initializeData() async {
-    final userViewModel = context.read<UserViewModel>();
-    final candidateViewModel = context.read<CandidateInfoViewModel>();
-
+  Future<void> _onRefresh() async {
     await Future.wait([
       userViewModel.getCurrentUser(widget.idUser),
       candidateViewModel.getCandidateDetail(widget.idUser),
       _fetchApplicationJobs(),
       _fetchSavedJobs(),
     ]);
-  }
-
-  Future<void> _onRefresh() async {
-    await _initializeData();
   }
 
   Future<void> _fetchApplicationJobs() async {
@@ -154,7 +149,6 @@ class ProfilePageState extends State<ProfilePageScreen> with TickerProviderState
     final candidateVM = context.watch<CandidateInfoViewModel>();
     final account = userViewModel.currentUser;
     final candidateInfo = candidateVM.candidateDetail;
-    debugPrint("✅✅userName: ${account?.userName}✅✅");
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: !isLoggedIn
@@ -278,4 +272,7 @@ class ProfilePageState extends State<ProfilePageScreen> with TickerProviderState
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

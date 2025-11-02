@@ -47,19 +47,19 @@ class SocialRouter {
           final extraData = state.extra as Map<String, dynamic>? ?? {};
 
           final socialPostModel = extraData['socialPostModel'];
-          final onFollow = extraData['onFollow'] as VoidCallback;
-          final onHide = extraData['onHide'] as VoidCallback;
-          final onCopyLink = extraData['onCopyLink'] as VoidCallback;
-          final onReport = extraData['onReport'] as VoidCallback;
-          final onOpenProfile = extraData['onOpenProfile'] as VoidCallback;
-          final isLiked = extraData['isLiked'] as bool? ?? false;
-          final isSaved = extraData['isSaved'] as bool? ?? false;
-          final onLike = extraData['onLike'] as VoidCallback? ?? () {};
-          final onSave = extraData['onSave'] as VoidCallback? ?? () {};
-          final onShare = extraData['onShare'] as VoidCallback? ?? () {};
-          final onComment = extraData['onComment'] as VoidCallback? ?? () {};
-          final onShowReactions = extraData['onShowReactions'] as VoidCallback? ?? () {};
-          final roleName = extraData['roleName'] as String? ?? '';
+          final onFollow = extraData['onFollow'];
+          final onHide = extraData['onHide'];
+          final onCopyLink = extraData['onCopyLink'];
+          final onReport = extraData['onReport'];
+          final onOpenProfile = extraData['onOpenProfile'];
+          final isLiked = extraData['isLiked'];
+          final isSaved = extraData['isSaved'];
+          final onLike = extraData['onLike'];
+          final onSave = extraData['onSave'];
+          final onShare = extraData['onShare'];
+          final onComment = extraData['onComment'];
+          final onShowReactions = extraData['onShowReactions'];
+          final roleName = extraData['roleName'];
 
           return buildPageWithSlideTransition(
             SocialPostDetailScreen(
@@ -105,7 +105,7 @@ class SocialRouter {
       GoRoute(
         path: 'create-post',
         pageBuilder: (context, state) => buildPageWithSlideTransition(
-          CreatePostScreen(),
+          SocialCreatePostScreen(),
           state,
         ),
       ),

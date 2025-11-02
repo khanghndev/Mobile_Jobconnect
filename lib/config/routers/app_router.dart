@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/navigation/app_navigation.dart';
+import 'package:job_connect/config/routers/chat_router.dart';
 import 'package:job_connect/config/routers/recruiter_router.dart';
 import 'package:job_connect/config/routers/auth_router.dart';
 import 'package:job_connect/config/routers/company_router.dart';
@@ -54,7 +55,10 @@ class RouterModule {
       SocialRouter.routers,
 
       // Recruiter
-      RecruiterRouter.routers
+      RecruiterRouter.routers,
+
+      // Chat
+      ChatRouter.routers,
     ],
   );
 }

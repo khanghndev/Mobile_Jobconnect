@@ -3,140 +3,123 @@ import 'package:job_connect/config/enum/server_exception_type.dart';
 import 'package:job_connect/config/error/server_exception.dart';
 import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/features/notifications/model/notification_model.dart';
+import 'package:job_connect/api/api_response_parser.dart';
 
 class NotificationService {
   final ApiService _apiService;
 
   NotificationService() : _apiService = ApiService();
 
-  // TODO: Hàm nội bộ xử lý gọi API và parse danh sách
-  Future<List<NotificationModel>> _fetchNotificationList({
-    required String endpoint,
-    required String dataType,
-  }) async {
+  /// Hàm helper xử lý API và bắt lỗi
+  Future<T> _handleApi<T>(Future<T> Function() action, String errorMsg) async {
     try {
-      final res = await _apiService.get(endpoint: endpoint);
-      if (res is! List) {
-        throw ServerException(
-          err: 'Phản hồi không hợp lệ từ API ($dataType): không phải là danh sách JSON',
-          type: ServerExceptionType.api,
-        );
-      }
-
-      return res
-          .map((item) => NotificationModel.fromJson(item as Map<String, dynamic>))
-          .toList();
+      return await action();
     } on ServerException {
       rethrow;
     } catch (e) {
       throw ServerException(
-        err: 'Lỗi không xác định khi tải $dataType: ${e.toString()}',
+        err: '$errorMsg: ${e.toString()}',
         type: ServerExceptionType.unknown,
       );
     }
   }
 
-  // TODO: Lấy danh sách thông báo
+  /// Lấy danh sách thông báo
   Future<List<NotificationModel>> getNotifications() async {
-    return _fetchNotificationList(
-      endpoint: ApiConstants.notificationEndpoint,
-      dataType: 'thông báo',
+    return _handleApi(
+      () async {
+        final res = await _apiService.get(endpoint: ApiConstants.notificationEndpoint);
+        return ApiResponseParser.parseList(
+          res: res,
+          fromJson: (json) => NotificationModel.fromJson(json),
+          errorMsg: 'Phản hồi không hợp lệ khi lấy danh sách thông báo',
+        );
+      },
+      'Lỗi khi tải danh sách thông báo',
     );
   }
 
-  // TODO: Lấy chi tiết thông báo theo ID
+  Future<List<NotificationModel>> getNotificationsByIdUser() async {
+    return _handleApi(
+      () async {
+        final res = await _apiService.get(endpoint: ApiConstants.notificationEndpoint);
+        return ApiResponseParser.parseList(
+          res: res,
+          fromJson: (json) => NotificationModel.fromJson(json),
+          errorMsg: 'Phản hồi không hợp lệ khi lấy danh sách thông báo',
+        );
+      },
+      'Lỗi khi tải danh sách thông báo',
+    );
+  }
+
+  /// Lấy chi tiết thông báo theo ID
   Future<NotificationModel> getNotificationById({required String id}) async {
-    try {
-      final res = await _apiService.get(
-        endpoint: '${ApiConstants.notificationEndpoint}/$id',
-      );
-
-      if (res is! Map<String, dynamic>) {
-        throw ServerException(
-          err: 'Phản hồi không hợp lệ từ API (chi tiết thông báo)',
-          type: ServerExceptionType.api,
-        );
-      }
-
-      return NotificationModel.fromJson(res);
-    } on ServerException {
-      rethrow;
-    } catch (e) {
-      throw ServerException(
-        err: 'Lỗi khi tải chi tiết thông báo: ${e.toString()}',
-        type: ServerExceptionType.unknown,
-      );
-    }
+    return _handleApi(
+      () async {
+        final res = await _apiService.get(endpoint: '${ApiConstants.notificationEndpoint}/$id');
+        if (res is! Map<String, dynamic>) {
+          throw ServerException(
+            err: 'Phản hồi không hợp lệ khi lấy chi tiết thông báo',
+            type: ServerExceptionType.api,
+          );
+        }
+        return NotificationModel.fromJson(res);
+      },
+      'Lỗi khi tải chi tiết thông báo',
+    );
   }
 
-  // TODO: Thêm thông báo mới
+  /// Thêm thông báo mới
   Future<NotificationModel> createNotification(NotificationModel notification) async {
-    try {
-      final res = await _apiService.post(
-        endpoint: ApiConstants.notificationEndpoint,
-        body: notification.toJson(),
-      );
-
-      if (res is! Map<String, dynamic>) {
-        throw ServerException(
-          err: 'Phản hồi không hợp lệ từ API (tạo thông báo)',
-          type: ServerExceptionType.api,
+    return _handleApi(
+      () async {
+        final res = await _apiService.post(
+          endpoint: ApiConstants.notificationEndpoint,
+          body: notification.toJson(),
         );
-      }
-
-      return NotificationModel.fromJson(res);
-    } on ServerException {
-      rethrow;
-    } catch (e) {
-      throw ServerException(
-        err: 'Lỗi khi tạo thông báo mới: ${e.toString()}',
-        type: ServerExceptionType.unknown,
-      );
-    }
+        if (res is! Map<String, dynamic>) {
+          throw ServerException(
+            err: 'Phản hồi không hợp lệ khi tạo thông báo mới',
+            type: ServerExceptionType.api,
+          );
+        }
+        return NotificationModel.fromJson(res);
+      },
+      'Lỗi khi tạo thông báo mới',
+    );
   }
 
-  // TODO: Cập nhật thông báo theo ID
+  /// Cập nhật thông báo theo ID
   Future<NotificationModel> updateNotification({
     required String id,
     required Map<String, dynamic> data,
   }) async {
-    try {
-      final res = await _apiService.put(
-        endpoint: '${ApiConstants.notificationEndpoint}/$id',
-        body: data,
-      );
-
-      if (res is! Map<String, dynamic>) {
-        throw ServerException(
-          err: 'Phản hồi không hợp lệ từ API (cập nhật thông báo)',
-          type: ServerExceptionType.api,
+    return _handleApi(
+      () async {
+        final res = await _apiService.put(
+          endpoint: '${ApiConstants.notificationEndpoint}/$id',
+          body: data,
         );
-      }
-
-      return NotificationModel.fromJson(res);
-    } on ServerException {
-      rethrow;
-    } catch (e) {
-      throw ServerException(
-        err: 'Lỗi khi cập nhật thông báo: ${e.toString()}',
-        type: ServerExceptionType.unknown,
-      );
-    }
+        if (res is! Map<String, dynamic>) {
+          throw ServerException(
+            err: 'Phản hồi không hợp lệ khi cập nhật thông báo',
+            type: ServerExceptionType.api,
+          );
+        }
+        return NotificationModel.fromJson(res);
+      },
+      'Lỗi khi cập nhật thông báo',
+    );
   }
 
-  // TODO: Xóa thông báo theo ID
+  /// Xóa thông báo theo ID
   Future<void> deleteNotification({required String id}) async {
-    try {
-      await _apiService.delete(
-        endpoint: '${ApiConstants.notificationEndpoint}/$id',
-      );
-    } on ServerException {
-      rethrow;
-    } catch (e) {
-      throw ServerException(
-        err: 'Lỗi khi xóa thông báo: ${e.toString()}',
-        type: ServerExceptionType.unknown,
-      );
-    }
+    return _handleApi(
+      () async {
+        await _apiService.delete(endpoint: '${ApiConstants.notificationEndpoint}/$id');
+      },
+      'Lỗi khi xóa thông báo',
+    );
   }
 }

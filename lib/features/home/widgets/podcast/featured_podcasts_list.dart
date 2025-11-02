@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:job_connect/features/home/model/podcast_model.dart';
-import 'package:job_connect/features/home/widgets/home/featured_podcast_card.dart';
+import 'package:job_connect/features/home/widgets/podcast/featured_podcast_card.dart';
 
 class FeaturedPodcastsList extends StatelessWidget {
   final List<PodcastModel> podcasts;

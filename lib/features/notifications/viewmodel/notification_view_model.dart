@@ -43,7 +43,7 @@ class NotificationViewModel extends ChangeNotifier {
   }
 
   // TODO: Lấy danh sách thông báo theo FIFO (cũ nhất trước)
-  Future<void> getNotifications(String userId) async {
+  Future<void> getNotificationsByIdUser(String userId) async {
     _setState(isLoading: true, errorMessage: null, isSuccess: false);
     try {
       final data = await _notificationService.getNotifications();

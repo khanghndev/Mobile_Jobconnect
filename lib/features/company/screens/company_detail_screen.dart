@@ -29,8 +29,7 @@
     CompanyDetailState createState() => CompanyDetailState();
   }
 
-  class CompanyDetailState extends State<CompanyDetailsScreen>
-      with TickerProviderStateMixin {
+  class CompanyDetailState extends State<CompanyDetailsScreen> with TickerProviderStateMixin {
     final _apiService = ApiService();
     List<JobPostingModel> _companyJobsList = [];
     bool _isLoadingCompanyJobs = true;
@@ -38,6 +37,7 @@
 
     late AnimationController _animationController;
     late Animation<double> _fadeAnimation;
+    late CompanyViewModel companyViewModel;
 
     @override
     void initState() {
@@ -50,7 +50,7 @@
         parent: _animationController,
         curve: Curves.easeInOut,
       );
-
+      companyViewModel = context.read<CompanyViewModel>();
       // TODO: LẤY CHI TIẾT CÔNG TY
       getDetailJob();
       _fetchAndFilterCompanyJobs();
@@ -129,202 +129,187 @@
     @override
     Widget build(BuildContext context) {
       final theme = Theme.of(context);
-      return Consumer<CompanyViewModel>(
-        builder: (context, vm, child) {
-          if (vm.isLoading) {
-            return Scaffold(
-              backgroundColor: theme.scaffoldBackgroundColor,
-              body: CustomScrollView(
-                slivers: [
-                  const SliverToBoxAdapter(
-                    child: CompanyDetailShimmer(),
-                  ),
-                ],
+      if(companyViewModel.isDetailLoading){
+        return const CompanyDetailShimmer();
+      }
+      if(companyViewModel.errorMessage != null){
+        return BackgroundErrorState(
+          title: "Hệ thống đang gặp sự cố\nVui lòng thử lại sau.",
+          onRetry: _onRefresh,
+        );
+      }
+      return Scaffold(
+        backgroundColor: theme.scaffoldBackgroundColor,
+        body: RefreshIndicator(
+          onRefresh: _onRefresh,
+          color: theme.primaryColor,
+          backgroundColor: theme.cardColor,
+          child: CustomScrollView(
+            physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
+            slivers: [
+              // TODO: APPBAR
+              CompanyDetailAppbar(
+                companyName: widget.company.companyName,
+                industry: widget.company.industry,
+                logoCompany: widget.company.logoCompany,
+                jobName: widget.company.companyName,
+                onShare: () {},
+                isCompany: true,
               ),
-            );
-          }
 
-          if (vm.errorMessage != null && vm.errorMessage!.isNotEmpty) {
-            return BackgroundErrorState(
-              title: "Hệ thống đang gặp sự cố\nVui lòng thử lại sau.",
-              onRetry: _onRefresh,
-            );
-          }
+              // TODO: CONTENT
+              SliverToBoxAdapter(
+                child: FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(16.w, 24.h, 16.w, 24.h),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: AnimationConfiguration.toStaggeredList(
+                        duration: const Duration(milliseconds: 400),
+                        childAnimationBuilder: (widget) => SlideAnimation(
+                          verticalOffset: 50.0,
+                          child: FadeInAnimation(child: widget),
+                        ),
+                        children: [
+                          //TODO: TODO: SECTION - Giới thiệu
+                          SectionTitle(
+                            title: "Giới thiệu công ty",
+                            icon: Icons.info_outline_rounded,
+                          ),
+                          SizedBox(height: 8.h),
 
-          return Scaffold(
-            backgroundColor: theme.scaffoldBackgroundColor,
-            body: RefreshIndicator(
-              onRefresh: _onRefresh,
-              color: theme.primaryColor,
-              backgroundColor: theme.cardColor,
-              child: CustomScrollView(
-                physics: const BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics(),
-                ),
-                slivers: [
-                  // TODO: APPBAR
-                  CompanyDetailAppbar(
-                    companyName: widget.company.companyName,
-                    industry: widget.company.industry,
-                    logoCompany: widget.company.logoCompany,
-                    jobName: widget.company.companyName,
-                    onShare: () {},
-                    isCompany: true,
-                  ),
-
-                  // TODO: CONTENT
-                  SliverToBoxAdapter(
-                    child: FadeTransition(
-                      opacity: _fadeAnimation,
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(16.w, 24.h, 16.w, 24.h),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: AnimationConfiguration.toStaggeredList(
-                            duration: const Duration(milliseconds: 400),
-                            childAnimationBuilder: (widget) => SlideAnimation(
-                              verticalOffset: 50.0,
-                              child: FadeInAnimation(child: widget),
+                          Card(
+                            elevation: 1.5,
+                            color: theme.cardColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.r),
                             ),
-                            children: [
-                              //TODO: TODO: SECTION - Giới thiệu
-                              SectionTitle(
-                                title: "Giới thiệu công ty",
-                                icon: Icons.info_outline_rounded,
-                              ),
-                              SizedBox(height: 8.h),
-
-                              Card(
-                                elevation: 1.5,
-                                color: theme.cardColor,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.r),
+                            child: Padding(
+                              padding: EdgeInsets.all(16.w),
+                              child: Text(
+                                widget.company.description ?? "Chưa có thông tin",
+                                style: theme.textTheme.bodyLarge?.copyWith(
+                                  height: 1.6,
+                                  color: theme.colorScheme.onSurface
+                                      .withValues(alpha: 0.85),
                                 ),
-                                child: Padding(
-                                  padding: EdgeInsets.all(16.w),
-                                  child: Text(
-                                    widget.company.description ?? "Chưa có thông tin",
-                                    style: theme.textTheme.bodyLarge?.copyWith(
-                                      height: 1.6,
-                                      color: theme.colorScheme.onSurface
-                                          .withValues(alpha: 0.85),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 24.h),
+
+                          // TODO: SECTION - Thông tin liên hệ
+                          SectionTitle(
+                            title: "Thông tin liên hệ",
+                            icon: Icons.contact_page_outlined,
+                          ),
+                          SizedBox(height: 8.h),
+
+                          Card(
+                            elevation: 1.5,
+                            color: theme.cardColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(16.w),
+                              child: Column(
+                                children: [
+                                  CompanyInfoRow(
+                                    icon: Icons.location_city_rounded,
+                                    title: 'Địa chỉ',
+                                    content: widget.company.address,
+                                  ),
+                                  Divider(
+                                    color: theme.dividerColor
+                                        .withValues(alpha: 0.3),
+                                    height: 1.h,
+                                  ),
+                                  if (widget.company.websiteUrl != null &&
+                                      widget.company.websiteUrl!.isNotEmpty)
+                                    GestureDetector(
+                                      onTap: () =>
+                                          _launchURL(widget.company.websiteUrl!),
+                                      child: CompanyInfoRow(
+                                        icon: Icons.language_rounded,
+                                        title: 'Website',
+                                        content: widget.company.websiteUrl!,
+                                        isLink: true,
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(height: 24.h),
+
+                          // TODO: SECTION - Việc làm đang tuyển
+                          SectionTitle(
+                            title:
+                                "Việc Làm Đang Tuyển (${_companyJobsList.length})",
+                            icon: Icons.work_history_outlined,
+                          ),
+                          SizedBox(height: 12.h),
+
+                          _isLoadingCompanyJobs
+                              ? Center(
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 32.h),
+                                    child: CircularProgressIndicator(
+                                      color: theme.primaryColor,
                                     ),
                                   ),
-                                ),
-                              ),
-                              SizedBox(height: 24.h),
-
-                              // TODO: SECTION - Thông tin liên hệ
-                              SectionTitle(
-                                title: "Thông tin liên hệ",
-                                icon: Icons.contact_page_outlined,
-                              ),
-                              SizedBox(height: 8.h),
-
-                              Card(
-                                elevation: 1.5,
-                                color: theme.cardColor,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.r),
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.all(16.w),
-                                  child: Column(
-                                    children: [
-                                      CompanyInfoRow(
-                                        icon: Icons.location_city_rounded,
-                                        title: 'Địa chỉ',
-                                        content: widget.company.address,
+                                )
+                              : _companyJobsList.isEmpty
+                                  ? Container(
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 32.h,
+                                        horizontal: 16.w,
                                       ),
-                                      Divider(
-                                        color: theme.dividerColor
-                                            .withValues(alpha: 0.3),
-                                        height: 1.h,
+                                      decoration: BoxDecoration(
+                                        color: theme.cardColor
+                                            .withValues(alpha: 0.7),
+                                        borderRadius:
+                                            BorderRadius.circular(12.r),
                                       ),
-                                      if (widget.company.websiteUrl != null &&
-                                          widget.company.websiteUrl!.isNotEmpty)
-                                        GestureDetector(
-                                          onTap: () =>
-                                              _launchURL(widget.company.websiteUrl!),
-                                          child: CompanyInfoRow(
-                                            icon: Icons.language_rounded,
-                                            title: 'Website',
-                                            content: widget.company.websiteUrl!,
-                                            isLink: true,
+                                      child: Center(
+                                        child: Text(
+                                          _companyJobsError.isNotEmpty
+                                              ? _companyJobsError
+                                              : 'Hiện chưa có vị trí nào đang tuyển tại công ty này.',
+                                          style: theme.textTheme.bodyLarge
+                                              ?.copyWith(
+                                            color: theme.colorScheme
+                                                .onSurfaceVariant,
                                           ),
-                                        ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-
-                              SizedBox(height: 24.h),
-
-                              // TODO: SECTION - Việc làm đang tuyển
-                              SectionTitle(
-                                title:
-                                    "Việc Làm Đang Tuyển (${_companyJobsList.length})",
-                                icon: Icons.work_history_outlined,
-                              ),
-                              SizedBox(height: 12.h),
-
-                              _isLoadingCompanyJobs
-                                  ? Center(
-                                      child: Padding(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 32.h),
-                                        child: CircularProgressIndicator(
-                                          color: theme.primaryColor,
+                                          textAlign: TextAlign.center,
                                         ),
                                       ),
                                     )
-                                  : _companyJobsList.isEmpty
-                                      ? Container(
-                                          padding: EdgeInsets.symmetric(
-                                            vertical: 32.h,
-                                            horizontal: 16.w,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: theme.cardColor
-                                                .withValues(alpha: 0.7),
-                                            borderRadius:
-                                                BorderRadius.circular(12.r),
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              _companyJobsError.isNotEmpty
-                                                  ? _companyJobsError
-                                                  : 'Hiện chưa có vị trí nào đang tuyển tại công ty này.',
-                                              style: theme.textTheme.bodyLarge
-                                                  ?.copyWith(
-                                                color: theme.colorScheme
-                                                    .onSurfaceVariant,
-                                              ),
-                                              textAlign: TextAlign.center,
+                                  : Column(
+                                      children: _companyJobsList
+                                          .map(
+                                            (job) => CompanyJobCard(
+                                              job: job,
+                                              idUser: widget.idUser,
                                             ),
-                                          ),
-                                        )
-                                      : Column(
-                                          children: _companyJobsList
-                                              .map(
-                                                (job) => CompanyJobCard(
-                                                  job: job,
-                                                  idUser: widget.idUser,
-                                                ),
-                                              )
-                                              .toList(),
-                                        ),
-                            ],
-                          ),
-                        ),
+                                          )
+                                          .toList(),
+                                    ),
+                        ],
                       ),
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-          );
-        },
+            ],
+          ),
+        ),
       );
     }
   }

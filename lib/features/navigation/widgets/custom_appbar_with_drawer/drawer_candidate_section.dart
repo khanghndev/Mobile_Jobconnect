@@ -6,6 +6,7 @@ import 'package:job_connect/config/enum/user_role.dart';
 import 'package:job_connect/config/utils/dialog_utils.dart';
 import 'package:job_connect/config/utils/label_title_small.dart';
 import 'package:job_connect/config/widgets/login_required_dialog.dart';
+import 'package:job_connect/features/navigation/screens/navigation_page.dart';
 import 'package:job_connect/features/navigation/widgets/custom_appbar_with_drawer/drawer_infor_header.dart';
 import 'package:job_connect/features/navigation/widgets/custom_appbar_with_drawer/drawer_item_widget.dart';
 
@@ -56,20 +57,12 @@ class DrawerCandidateSection extends StatelessWidget {
             onTap: () => _checkLoginOrRouter(context: context, route: '/resume/analysis'),
             isSelected: selectedRoute == '/resume/analysis',
           ),
-          // DrawerItem(
-          //   icon: Icons.bookmark_added_outlined,
-          //   title: 'Công việc đã lưu',
-          //   onTap: () => _checkLoginOrRouter(
-          //     context: context, 
-          //     route: '/home/search',
-          //     extra: {
-          //       'isLoggedIn': isLoggedIn,
-          //       'idUser': idUser,
-          //       'initialTabIndex' : 2,
-          //     }
-          //   ),
-          //   isSelected: selectedRoute == '/home/search',
-          // ),
+          DrawerItem(
+            icon: Icons.bookmark_added_outlined,
+            title: 'Công việc đã lưu',
+            onTap: () => NavigationPage.goToSavedJobsTab(context),
+            isSelected: selectedRoute == '/home/search',
+          ),
           DrawerItem(
             icon: Icons.history_edu_outlined,
             title: 'Lịch sử ứng tuyển',

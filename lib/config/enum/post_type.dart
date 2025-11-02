@@ -1,0 +1,1 @@
+enum PostType { post, qa, job, microjob}

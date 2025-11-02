@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/widgets/login_required_dialog.dart';
+import 'package:job_connect/features/chat/screens/ai_chat_screen.dart';
 import 'package:job_connect/features/navigation/screens/navigation_page.dart';
 
 class BannerSlideshow extends StatefulWidget {
@@ -81,7 +82,7 @@ class _BannerSlideshowState extends State<BannerSlideshow> {
                   borderRadius: BorderRadius.circular(24.r),
                   child: InkWell(
                     borderRadius: BorderRadius.circular(24.r),
-                    onTap: () => _handleBannerTap(banner),
+                    onTap: () => _onHandleBannerTap(banner),
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 20.h),
                       child: Row(
@@ -115,7 +116,7 @@ class _BannerSlideshowState extends State<BannerSlideshow> {
                                 ),
                                 const Spacer(),
                                 ElevatedButton.icon(
-                                  onPressed: () => _handleBannerTap(banner),
+                                  onPressed: () => _onHandleBannerTap(banner),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.white.withValues(alpha:0.25),
                                     foregroundColor: Colors.white,
@@ -183,7 +184,7 @@ class _BannerSlideshowState extends State<BannerSlideshow> {
     );
   }
 
-  void _handleBannerTap(Map<String, dynamic> banner) {
+  void _onHandleBannerTap(Map<String, dynamic> banner) {
     if (!widget.isLoggedIn) {
       LoginRequiredDialog.show(context, isLoggedIn: false);
       return;
@@ -194,17 +195,21 @@ class _BannerSlideshowState extends State<BannerSlideshow> {
         NavigationPage.goToUniJobsTab(context);
         break;
       case 2:
-        NavigationPage.goToChatMessageTab(context);
+        context.push('/chat/ai');
         break;
       case 3:
-        NavigationPage.goToCVTab(context);
+        context.push(
+          '/home/cv',
+          extra: {
+            'isLoggedIn': widget.isLoggedIn,
+            'idUser': widget.idUser,
+          }
+        );
         break;
       case 4:
         context.push(
           '/home/company', 
-          extra: {
-            "idUser" : ""
-          }
+          extra: { "idUser" : widget.idUser,}
         );
         break;
     }

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/utils/format.dart';
 import 'package:job_connect/config/utils/image_url.dart';
 import 'package:job_connect/config/widgets/custom_adaptive_button.dart';
 import 'package:job_connect/config/widgets/custom_adaptive_tap_effect.dart';
 import 'package:job_connect/config/widgets/info_chip.dart';
 import 'package:job_connect/data/models/job_posting_model.dart';
-import 'package:job_connect/features/job/screens/job_detail_screen.dart';
 
 class SearchJobItemCard extends StatelessWidget {
   final JobPostingModel job;
@@ -38,16 +38,13 @@ class SearchJobItemCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(18.r),
         onTap: () async {
-          await Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => JobDetailScreen(
-                idUser: idUser,
-                jobPosting: job,
-              ),
-            ),
+          context.push(
+            '/job/detail',
+            extra: {
+              "idUser": idUser,
+              "jobPosting": job,
+            },
           );
-          await onRefresh();
         },
         child: Padding(
           padding: EdgeInsets.all(18.w),
@@ -104,7 +101,7 @@ class SearchJobItemCard extends StatelessWidget {
                             ),
                           ),
                         Text(
-                          job.title ?? '',
+                          job.title,
                           style: theme.textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.bold,
                             height: 1.25,
@@ -144,7 +141,7 @@ class SearchJobItemCard extends StatelessWidget {
                 children: [
                   InfoChip(
                     icon: Icons.location_on_rounded,
-                    label: FormatUtils.extractDistrictAndCity(job.location ?? ''),
+                    label: FormatUtils.extractDistrictAndCity(job.location),
                     color: theme.colorScheme.secondary,
                     isHighlighted: true,
                   ),
@@ -155,17 +152,17 @@ class SearchJobItemCard extends StatelessWidget {
                   ),
                   InfoChip(
                     icon: Icons.event_available_rounded,
-                    label: FormatUtils.formattedDateTime(job.createdAt ?? DateTime.now()).toString(),
+                    label: FormatUtils.formattedDateTime(job.createdAt).toString(),
                     color: theme.colorScheme.tertiary.withValues(alpha:0.8),
                   ),
                   InfoChip(
                     icon: Icons.work_outline_rounded,
-                    label: job.workType ?? '',
+                    label: job.workType,
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
                   InfoChip(
                     icon: Icons.layers_rounded,
-                    label: job.experienceLevel ?? '',
+                    label: job.experienceLevel,
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
                 ],
@@ -215,23 +212,5 @@ class SearchJobItemCard extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  // TODO: chọn icon phù hợp với loại job
-  IconData _getIconForJob(String title) {
-    title = title.toLowerCase();
-    if (title.contains('flutter') ||
-        title.contains('mobile') ||
-        title.contains('android') ||
-        title.contains('ios')) {
-      return Icons.smartphone_rounded;
-    }
-    if (title.contains('backend') || title.contains('server') || title.contains('api')) return Icons.dns_rounded;
-    if (title.contains('frontend') || title.contains('ui') || title.contains('ux') || title.contains('web')) return Icons.web_rounded;
-    if (title.contains('data') || title.contains('ai') || title.contains('machine learning')) return Icons.analytics_rounded;
-    if (title.contains('design') || title.contains('graphic')) return Icons.palette_rounded;
-    if (title.contains('marketing') || title.contains('sale')) return Icons.campaign_rounded;
-    if (title.contains('manager') || title.contains('lead')) return Icons.supervisor_account_rounded;
-    return Icons.work_outline_rounded;
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:job_connect/config/constant/app_strings.dart';
 import 'package:job_connect/config/enum/user_role.dart';
 import 'package:job_connect/config/utils/snackbar_app.dart';
 import 'package:job_connect/config/widgets/background_error_state.dart';
@@ -10,7 +11,7 @@ import 'package:job_connect/config/widgets/reaction_picker.dart';
 import 'package:job_connect/config/widgets/section_title.dart';
 import 'package:job_connect/features/mini_social/model/social_comment_model.dart';
 import 'package:job_connect/features/mini_social/model/social_post_model.dart';
-import 'package:job_connect/features/mini_social/screens/home/social_feed_shimmer_screen.dart';
+import 'package:job_connect/features/mini_social/widgets/shimmer/social_feed_shimmer.dart';
 import 'package:job_connect/features/mini_social/view_model/social_comment_view_model.dart';
 import 'package:job_connect/features/mini_social/view_model/social_post_view_model.dart';
 import 'package:job_connect/features/mini_social/view_model/social_save_post_view_model.dart';
@@ -131,8 +132,9 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
   }
 
   void _onReport({required String userName, required String authorName}) {
-    context.push('/social/report',
-        extra: {'userName': userName, 'authorName': authorName});
+    context.push(
+      '/social/report',
+      extra: {'userName': userName, 'authorName': authorName});
   }
 
   void _onOpenDetail(SocialPostModel post, VoidCallback onFollow, VoidCallback onHide) {
@@ -144,7 +146,7 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
         'onHide': onHide,
         'onCopyLink': () => _onCopyPostLink(post.idPost),
         'onReport': () => _onReport(
-          authorName: post.userName,
+          authorName: post.userName ?? 'Người dùng ${AppStrings.appName}',
           userName: context.read<UserViewModel>().currentUser!.userName
         ),
         'onOpenProfile': () => _onOpenProfile(post.idUser),
@@ -273,10 +275,8 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
                             }
                         },
                         onRefresh: () => vm.refreshComments(postId: postId),
-                        onReply: (c) => debugPrint("Reply to ${c.idUser}"),
-                        onReact: (c) => debugPrint("React to ${c.idComment}"),
                         resolveUsername: (id) => userCache[id]?.userName ?? "Người dùng $id",
-                        resolveUserAvatar: (id) => userCache[id]?.avatarUrl ?? 'https://i.pravatar.cc/150?img=1',
+                        resolveUserAvatar: (id) => userCache[id]?.avatarUrl ?? AppImages.defaultAvatar,
                       );
                     },
                   ),
@@ -438,7 +438,7 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
     return Consumer<SocialPostViewModel>(
       builder: (context, socialPostVm, _) {
         if(socialPostVm.isLoading){
-          return SocialFeedShimmerScreen();
+          return SocialFeedShimmer();
         }
         if(socialPostVm.errorMessage != null){
           return BackgroundErrorState(
@@ -496,10 +496,10 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
                                 roleName: userVm.roleName!,
                                 isFollowedOrTaken: userVm.roleName!.toLowerCase() == UserRole.candidate.name ? true : false,
                                 onFollow: () {
-                                  if (userVm.roleName! == UserRole.recruiter.name) {
+                                  if (userVm.roleName!.toLowerCase() == UserRole.recruiter.name) {
                                     //TODO: Theo dõi người dùng
                                     socialPostVm.onToggleFollow(post.idUser, false);
-                                  } else {
+                                  } else if (userVm.roleName!.toLowerCase() == UserRole.candidate.name){
                                     //TODO: Nhận việc
                                     
                                   }
@@ -547,7 +547,7 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
                                 ),
                                 onOpenProfile: () => _onOpenProfile(post.idUser),
                                 onReport: () => _onReport(
-                                  authorName: post.userName,
+                                  authorName: post.userName ?? 'Người dùng ${AppStrings.appName}',
                                   userName: userVm.currentUser!.userName,
                                 ),
                                 onComment: () => _onShowBottomSheet(
@@ -572,10 +572,19 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
                             Padding(
                               padding: EdgeInsets.symmetric(vertical: 20.h),
                               child: SectionTitle(
-                                title: "Bạn đã lướt đến tin cuối",
+                                title: "Bạn đã xem hết rồi",
                                 textColor: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.5),
                                 isCenter: true,
                                 fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 20.h),
+                              child: SectionTitle(
+                                title: "Hãy quay lại sau để xem những thông tin mới.",
+                                textColor: theme.textTheme.bodyMedium?.color?.withValues(alpha: 0.25),
+                                isCenter: true,
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
                             CustomButtonIconSimple(

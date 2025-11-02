@@ -2,8 +2,8 @@ import 'package:shimmer/shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class SocialFeedShimmerScreen extends StatelessWidget {
-  const SocialFeedShimmerScreen({super.key});
+class SocialFeedShimmer extends StatelessWidget {
+  const SocialFeedShimmer({super.key});
 
   Widget _shimmerPost() {
     return Padding(

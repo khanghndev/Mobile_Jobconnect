@@ -16,7 +16,9 @@ class CommentBottomSheet extends StatefulWidget {
   final Function(SocialCommentModel)? onReact;
   final String Function(String userId)? resolveUsername;
   final String Function(String userId)? resolveUserAvatar;
-
+  final bool? isDrag;
+  final bool? isScrollComment;
+  
   const CommentBottomSheet({
     super.key,
     required this.commentController,
@@ -27,6 +29,8 @@ class CommentBottomSheet extends StatefulWidget {
     this.onReact,
     this.resolveUsername,
     this.resolveUserAvatar,
+    this.isDrag = true,
+    this.isScrollComment = true,
   });
 
   @override
@@ -102,7 +106,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
     });
   }
 
-  /// --- Nhóm comment cha/con ---
+  // TODO: Nhóm comment cha/con 
   Map<String?, List<SocialCommentModel>> _groupComments(List<SocialCommentModel> comments) {
     final map = <String?, List<SocialCommentModel>>{};
     for (final c in comments) {
@@ -112,7 +116,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
     return map;
   }
 
-  /// --- Render 1 comment và replies ---
+  // TODO: Render 1 comment và replies 
   Widget _buildCommentWithReplies(
     SocialCommentModel comment,
     Map<String?, List<SocialCommentModel>> grouped,
@@ -137,7 +141,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
             onReplyTap: () => _onReply(comment),
             onReactTap: () => _onShowReactions(comment),
           ),
-          // --- Replies ---
+          //  Replies 
           if (replies.isNotEmpty)
             Padding(
               padding: EdgeInsets.only(left: 40.w, top: 4.h),
@@ -161,20 +165,24 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
       child: Padding(
         padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(height: 8.h),
-            // --- Drag handle ---
-            Container(
-              height: 4.h,
-              width: 40.w,
-              decoration: BoxDecoration(
-                color: Colors.grey[400],
-                borderRadius: BorderRadius.circular(2.r),
+            //  Drag handle 
+            if(widget.isDrag == true)...[
+              Container(
+                height: 4.h,
+                width: 40.w,
+                decoration: BoxDecoration(
+                  color: Colors.grey[400],
+                  borderRadius: BorderRadius.circular(2.r),
+                ),
               ),
-            ),
+            ],
+
             SizedBox(height: 8.h),
 
-            // --- Filter ---
+            //  Filter 
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 12.w),
               child: Align(
@@ -190,23 +198,27 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
             ),
             SizedBox(height: 4.h),
 
-            // --- Comment list ---
-            Expanded(
-              child: RefreshIndicator(
-                onRefresh: widget.onRefresh ?? () async {},
-                child: rootComments.isEmpty
-                    ? const Center(child: Text("Chưa có bình luận nào"))
-                    : ListView.builder(
-                        itemCount: rootComments.length,
-                        itemBuilder: (_, i) =>
-                            _buildCommentWithReplies(rootComments[i], grouped),
-                      ),
+            //  Comment list 
+            Flexible(
+              fit: FlexFit.loose,
+              child: Padding(
+                padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: RefreshIndicator(
+                  onRefresh: widget.onRefresh ?? () async {},
+                  child: rootComments.isEmpty
+                      ? const Center(child: Text("Chưa có bình luận nào"))
+                      : ListView.builder(
+                          physics: widget.isScrollComment == true ? const BouncingScrollPhysics() : const NeverScrollableScrollPhysics(),
+                          itemCount: rootComments.length,
+                          itemBuilder: (_, i) => _buildCommentWithReplies(rootComments[i], grouped),
+                        ),
+                ),
               ),
             ),
 
             Divider(height: 1.h),
 
-            // --- Replying bar ---
+            //  Replying bar 
             if (_replyingComment != null)
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
@@ -230,14 +242,13 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 ),
               ),
 
-            // --- Input field ---
+            //  Input field 
             Padding(
               padding: EdgeInsets.all(8.w),
               child: CommentInputField(
                 controller: widget.commentController,
                 hasText: _hasText,
-                onChanged: (value) =>
-                    setState(() => _hasText = value.trim().isNotEmpty),
+                onChanged: (value) => setState(() => _hasText = value.trim().isNotEmpty),
                 onSend: _hasText ? _onSend : null,
               ),
             ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:job_connect/config/utils/get_adaptive_back_icon.dart';
+import 'package:job_connect/config/widgets/custom_app_bar_title_large.dart';
 import 'package:job_connect/features/mini_social/widgets/report_post/glass_card.dart';
 import 'package:job_connect/features/mini_social/widgets/report_post/glow_circle.dart';
 import 'package:job_connect/features/mini_social/widgets/report_post/social_section_title.dart';
@@ -61,19 +63,10 @@ class _ScamCheckPostScreenState extends State<ScamCheckPostScreen> {
 
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        title: Text(
-          'Kiểm tra bài viết',
-          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18.sp),
-        ),
-        leading: IconButton(
-          onPressed: context.pop,
-          icon: const Icon(Icons.arrow_back_ios_new),
-        ),
-        centerTitle: true,
-        elevation: 0,
+      appBar: CustomAppbarTitleLarge(
+        title: 'Kiểm tra bài viết',
+        leadingIcon: getAdaptiveBackIcon(context),
         backgroundColor: Colors.transparent,
-        foregroundColor: Colors.white,
       ),
       body: Stack(
         children: [

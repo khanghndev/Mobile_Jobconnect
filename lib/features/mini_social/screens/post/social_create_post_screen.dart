@@ -1,22 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:job_connect/config/constant/app_colors.dart';
 import 'package:job_connect/config/constant/app_strings.dart';
+import 'package:job_connect/config/enum/post_type.dart';
 import 'package:job_connect/config/enum/user_role.dart';
 import 'package:job_connect/config/utils/image_url.dart';
+import 'package:job_connect/config/utils/snackbar_app.dart';
 import 'package:job_connect/config/widgets/custom_app_bar.dart';
+import 'package:job_connect/features/mini_social/view_model/social_post_view_model.dart';
 import 'package:job_connect/features/profile/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
 
-class CreatePostScreen extends StatefulWidget {
-  const CreatePostScreen({super.key});
+class SocialCreatePostScreen extends StatefulWidget {
+  const SocialCreatePostScreen({super.key});
 
   @override
-  State<CreatePostScreen> createState() => _CreatePostScreenState();
+  State<SocialCreatePostScreen> createState() => _SocialCreatePostScreenState();
 }
 
-class _CreatePostScreenState extends State<CreatePostScreen> {
+class _SocialCreatePostScreenState extends State<SocialCreatePostScreen> {
   final TextEditingController _controller = TextEditingController();
   bool _showFullOptions = false;
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -37,86 +43,149 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 12.w),
-            child: TextButton(
-              style: TextButton.styleFrom(
-                minimumSize: Size(40.w, 30.h),
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                backgroundColor: theme.primaryColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-              ),
-              onPressed: () {},
-              child: Text("Đăng", style: TextStyle(color: Colors.white, fontSize: 14.sp)),
+            child: Consumer2<SocialPostViewModel, UserViewModel>(
+              builder: (context, postVm, userVm, child) {
+                final isEmpty = _controller.text.trim().isEmpty;
+
+                return TextButton(
+                  style: TextButton.styleFrom(
+                    minimumSize: Size(40.w, 30.h),
+                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                    backgroundColor: isEmpty || _isLoading ? Colors.grey : theme.primaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                  ),
+                  onPressed: isEmpty || _isLoading
+                      ? null
+                      : () async {
+                          setState(() => _isLoading = true);
+                          final idUser = userVm.currentUser?.idUser ?? '';
+                          final content = _controller.text.trim();
+
+                          // Gọi API createPost với các biến
+                          await postVm.createPost(
+                            idUser: idUser,
+                            idGroup: '',
+                            content: content,
+                            imageUrl: '',
+                            videoUrl: '',
+                            visibility: 'public',
+                            postType: PostType.post.name,
+                            hashtags: [],
+                          );
+
+                          setState(() => _isLoading = false);
+
+                          if (postVm.isSuccess && context.mounted) {
+                            context.pop();
+                            SnackbarApp.show(
+                              context,
+                              title: 'Thành công',
+                              message: 'Bài viết đã đăng thành công',
+                              backgroundColor: BackgroundColors.backgroundSuccessPrimary,
+                            );
+                          } else if (postVm.errorMessage == null && context.mounted){
+                            context.pop();
+                            SnackbarApp.show(
+                              context,
+                              title: 'Thất bại',
+                              message: 'Bài viết đăng thất bại: ${postVm.errorMessage}',
+                              backgroundColor: BackgroundColors.backgroundErrorPrimary,
+                            );
+                          }
+                        },
+                  child: _isLoading
+                      ? const SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                        )
+                      : Text("Đăng", style: TextStyle(color: Colors.white, fontSize: 14.sp)),
+                );
+              },
             ),
           )
         ],
       ),
-      body: Column(
+      body: Stack(
         children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-            child: Consumer<UserViewModel>(
-              builder: (context, userVm, child) {
-                return Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 20.r,
-                      backgroundImage: ImageUtils.getImageProvider(userVm.currentUser?.avatarUrl ?? ''),
-                    ),
-                    SizedBox(width: 10.w),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+          Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                child: Consumer<UserViewModel>(
+                  builder: (context, userVm, child) {
+                    return Row(
                       children: [
-                        Text(
-                          userVm.currentUser?.userName ?? "Người dùng ${AppStrings.appName}",
-                          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16.sp),
+                        CircleAvatar(
+                          radius: 20.r,
+                          backgroundImage: ImageUtils.getImageProvider(userVm.currentUser?.avatarUrl ?? ''),
                         ),
-                        Row(
+                        SizedBox(width: 10.w),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(
-                              userVm.roleName == UserRole.candidate.name ? Icons.person : Icons.verified, 
-                              color: Colors.blue, 
-                              size: 16.sp
-                            ),
-                            SizedBox(width: 4.w),
                             Text(
-                              userVm.roleName == UserRole.candidate.name ? "Ứng viên" : "Nhà tuyển dụng", 
-                              style: TextStyle(fontSize: 12.sp, color: Colors.grey[600])),
+                              userVm.currentUser?.userName ?? "Người dùng ${AppStrings.appName}",
+                              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16.sp),
+                            ),
+                            Row(
+                              children: [
+                                Icon(
+                                  userVm.roleName!.toLowerCase() == UserRole.candidate.name ? Icons.verified_user : Icons.verified, 
+                                  color: Colors.blue, 
+                                  size: 16.sp
+                                ),
+                                SizedBox(width: 4.w),
+                                Text(
+                                  userVm.roleName!.toLowerCase() == UserRole.candidate.name ? "Ứng viên" : "Nhà tuyển dụng", 
+                                  style: TextStyle(fontSize: 12.sp, color: Colors.grey[600])
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ],
-                    ),
-                  ],
-                );
-              },
-            )
-          ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-              child: TextField(
-                controller: _controller,
-                maxLines: null,
-                cursorColor: Colors.blue[200],
-                style: TextStyle(fontSize: 16.sp),
-                decoration: const InputDecoration(
-                  hintText: "Bạn muốn nói về điều gì?",
-                  hintStyle: TextStyle(color: Colors.grey),
-                  border: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  disabledBorder: InputBorder.none,
-                  filled: false,
-                  isCollapsed: true,
-                  contentPadding: EdgeInsets.zero,
-                ),
-                onTap: () => setState(() => _showFullOptions = false),
+                    );
+                  },
+                )
               ),
-            ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                  child: TextField(
+                    controller: _controller,
+                    maxLines: null,
+                    cursorColor: Colors.blue[200],
+                    style: TextStyle(fontSize: 16.sp),
+                    decoration: const InputDecoration(
+                      hintText: "Bạn muốn nói về điều gì?",
+                      hintStyle: TextStyle(color: Colors.grey),
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      filled: false,
+                      isCollapsed: true,
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                    onTap: () => setState(() => _showFullOptions = false),
+                  ),
+                ),
+              ),
+              _buildBottomSection(),
+            ],
           ),
 
-          _buildBottomSection(),
+          // Overlay loading toàn màn hình
+          if (_isLoading)
+            Container(
+              color: Colors.black.withOpacity(0.5),
+              child: const Center(
+                child: CircularProgressIndicator(color: Colors.white),
+              ),
+            ),
         ],
       ),
     );
@@ -147,7 +216,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
     return Row(
       children: [
-        // Phần cuộn được
         Expanded(
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -165,8 +233,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             ),
           ),
         ),
-
-        // Icon cố định cuối cùng
         Padding(
           padding: EdgeInsets.only(left: 8.w),
           child: _buildCircleIcon(
@@ -208,9 +274,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           children: [
             Text("Add to your post", style: TextStyle(fontWeight: FontWeight.w600)),
             IconButton(
-            icon: const Icon(Icons.arrow_drop_down),
-            onPressed: () => setState(() => _showFullOptions = false),
-          ),
+              icon: const Icon(Icons.arrow_drop_down),
+              onPressed: () => setState(() => _showFullOptions = false),
+            ),
           ],
         ),
         const SizedBox(height: 12),

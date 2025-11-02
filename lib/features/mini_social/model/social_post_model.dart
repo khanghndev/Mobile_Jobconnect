@@ -1,7 +1,7 @@
 class SocialPostModel {
   final String idPost;
   final String idUser;
-  final String userName;
+  final String? userName;
   final String? avatarUrl;
   final String? idGroup;
   final String? groupName;
@@ -23,7 +23,7 @@ class SocialPostModel {
   SocialPostModel({
     required this.idPost,
     required this.idUser,
-    required this.userName,
+    this.userName,
     this.avatarUrl,
     this.idGroup,
     this.groupName,

@@ -5,7 +5,7 @@ import 'package:job_connect/config/widgets/custom_action_bar.dart';
 import 'package:job_connect/config/widgets/login_required_dialog.dart';
 import 'package:job_connect/data/models/job_application_model.dart';
 import 'package:job_connect/data/models/job_posting_model.dart';
-import 'package:job_connect/data/models/job_saved_model.dart';
+import 'package:job_connect/features/home/model/job_saved_model.dart';
 import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/features/company/widgets/company_detail/company_detail_appbar.dart';
 import 'package:job_connect/features/job/screens/apply_job_screen.dart';

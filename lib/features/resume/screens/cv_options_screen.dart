@@ -86,6 +86,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
   // TODO: Upload CV
   Future<void> _pickAndUploadCV() async {
     if (_isUploadingCv) {
+      if (!mounted) return;
       SnackbarApp.show(
         context,
         title: 'Thông báo',
@@ -112,6 +113,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
       final pickedFile = _pickedCvPlatformFile!;
       final vm = context.read<ResumeViewModel>();
 
+      if (!mounted) return;
       SnackbarApp.show(
         context,
         title: 'Thông báo',
@@ -138,9 +140,9 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
         updatedAt: DateTime.now(),
       );
 
-      await vm.createResume(resume: resumeModel,file: File(pickedFile.path!));
+      await vm.createResume(resume: resumeModel, file: File(pickedFile.path!));
 
-      if (!context.mounted) return;
+      if (!mounted) return;
 
       if (vm.isSuccess) {
         SnackbarApp.show(
@@ -159,18 +161,20 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
         );
       }
 
+      if (!mounted) return;
       setState(() {
         _isUploadingCv = false;
         _uploadProgress = 1.0;
       });
     } catch (e) {
+      if (!mounted) return;
       SnackbarApp.show(
         context,
         title: 'Lỗi',
         message: 'Không thể tải lên file: $e',
         backgroundColor: BackgroundColors.backgroundErrorPrimary,
       );
-      setState(() => _isUploadingCv = false);
+      if (mounted) setState(() => _isUploadingCv = false);
     }
   }
 

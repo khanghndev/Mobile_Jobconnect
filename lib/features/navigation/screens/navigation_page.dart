@@ -9,7 +9,6 @@ import 'package:job_connect/features/navigation/widgets/custom_appbar_with_drawe
 import 'package:job_connect/features/navigation/widgets/custom_appbar_with_drawer/drawer_candidate_section.dart';
 import 'package:job_connect/features/navigation/widgets/navigation/nav_bottom_bar.dart';
 import 'package:job_connect/features/profile/screens/profile_screen.dart';
-import 'package:job_connect/features/resume/screens/cv_options_screen.dart';
 import 'package:job_connect/features/search/screens/search_screen.dart';
 
 class NavigationPage extends StatefulWidget {
@@ -38,9 +37,10 @@ class NavigationPage extends StatefulWidget {
 
   static void goToUniJobsTab(BuildContext context, {int? initialTabIndex}) => _navigate(context, 2, searchTab: initialTabIndex, savedInSearch: initialTabIndex == 2);
   static void goToChatMessageTab(BuildContext context) => _navigate(context, 3);
-  static void goToCVTab(BuildContext context) => _navigate(context, 1);
+  static void goToSearchTab(BuildContext context) => _navigate(context, 1);
+  // static void goToCVTab(BuildContext context) => _navigate(context, 1);
   static void goToProfileTab(BuildContext context) => _navigate(context, 4);
-  static void goToSavedJobsTab(BuildContext context) => _navigate(context, 2, searchTab: 2, savedInSearch: true);
+  static void goToSavedJobsTab(BuildContext context) => _navigate(context, 1, searchTab: 2, savedInSearch: true);
 
   @override
   NavigationPageState createState() => NavigationPageState();

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart' as aw;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -10,29 +9,26 @@ import 'appwrite_client.dart';
 class StorageAppwriteService {
   final AppwriteClient _appwrite = AppwriteClient();
   late final Storage _storage;
-  late final String _bucketId;
 
   StorageAppwriteService() {
     _storage = Storage(_appwrite.client);
-    _bucketId = dotenv.env['APPWRITE_BUCKET_ID_RESUME'] ?? '';
+  }
 
-    if (_bucketId.isEmpty) {
+  // Upload file (CV, ảnh, tài liệu, ...)
+  Future<aw.File> uploadFile(File file, {required String bucketId}) async {
+    if (bucketId.isEmpty) {
       throw ServerException(
-        err: 'Thiếu APPWRITE_BUCKET_ID trong file .env',
+        err: 'BucketId không được rỗng',
         type: ServerExceptionType.config,
       );
     }
-  }
 
-  //TODO: Upload file (CV, hình ảnh, tài liệu,...)
-  Future<aw.File> uploadFile(File file) async {
     try {
       final uploadedFile = await _storage.createFile(
-        bucketId: _bucketId,
+        bucketId: bucketId,
         fileId: ID.unique(),
         file: InputFile.fromPath(path: file.path),
       );
-
       return uploadedFile;
     } on AppwriteException catch (e) {
       throw ServerException(
@@ -47,32 +43,39 @@ class StorageAppwriteService {
     }
   }
 
-  //TODO: Lấy URL để xem file (public view)
-  String getFileViewUrl(String fileId) {
-    try {
-      final endpoint = dotenv.env['APPWRITE_ENDPOINT'] ?? '';
-      final projectId = dotenv.env['APPWRITE_PROJECT_ID'] ?? '';
+  // Lấy URL public để xem file
+  String getFileViewUrl(String fileId, {required String bucketId}) {
+    final endpoint = dotenv.env['APPWRITE_ENDPOINT'] ?? '';
+    final projectId = dotenv.env['APPWRITE_PROJECT_ID'] ?? '';
 
-      if (endpoint.isEmpty || projectId.isEmpty) {
-        throw ServerException(
-          err: 'Thiếu cấu hình endpoint hoặc projectId trong .env',
-          type: ServerExceptionType.config,
-        );
-      }
-
-      return '$endpoint/storage/buckets/$_bucketId/files/$fileId/view?project=$projectId';
-    } catch (e) {
+    if (endpoint.isEmpty || projectId.isEmpty) {
       throw ServerException(
-        err: e.toString(),
-        type: ServerExceptionType.unknown,
+        err: 'Thiếu cấu hình endpoint hoặc projectId trong .env',
+        type: ServerExceptionType.config,
       );
     }
+
+    if (bucketId.isEmpty) {
+      throw ServerException(
+        err: 'BucketId không được rỗng',
+        type: ServerExceptionType.config,
+      );
+    }
+
+    return '$endpoint/storage/buckets/$bucketId/files/$fileId/view?project=$projectId';
   }
 
-  //TODO: Xóa file
-  Future<void> deleteFile(String fileId) async {
+  // Xóa file
+  Future<void> deleteFile(String fileId, {required String bucketId}) async {
+    if (bucketId.isEmpty) {
+      throw ServerException(
+        err: 'BucketId không được rỗng',
+        type: ServerExceptionType.config,
+      );
+    }
+
     try {
-      await _storage.deleteFile(bucketId: _bucketId, fileId: fileId);
+      await _storage.deleteFile(bucketId: bucketId, fileId: fileId);
     } on AppwriteException catch (e) {
       throw ServerException(
         err: e.message ?? 'Lỗi khi xóa file khỏi Appwrite',
@@ -86,10 +89,17 @@ class StorageAppwriteService {
     }
   }
 
-  //TODO: Lấy danh sách file trong bucket
-  Future<List<aw.File>> listFiles() async {
+  // Lấy danh sách file trong bucket
+  Future<List<aw.File>> listFiles({required String bucketId}) async {
+    if (bucketId.isEmpty) {
+      throw ServerException(
+        err: 'BucketId không được rỗng',
+        type: ServerExceptionType.config,
+      );
+    }
+
     try {
-      final response = await _storage.listFiles(bucketId: _bucketId);
+      final response = await _storage.listFiles(bucketId: bucketId);
       return response.files;
     } on AppwriteException catch (e) {
       throw ServerException(

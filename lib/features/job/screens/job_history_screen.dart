@@ -910,7 +910,6 @@ class JobHistoryScreenState extends State<JobHistoryScreen>
                   ),
                 ),
                 onPressed: () {
-                  // HomePage.goToSearchTab(context, initialTabIndex: 1);
                   NavigationPage.goToUniJobsTab(context, initialTabIndex: 1);
                 },
                 style: OutlinedButton.styleFrom(

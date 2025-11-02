@@ -185,11 +185,30 @@ class SocialPostViewModel extends ChangeNotifier {
   }
 
   //TODO: CREATE, UPDATE, DELETE POST
-  Future<void> createPost(SocialPostModel post) async {
+  Future<void> createPost({
+    required String idUser,
+    required String idGroup,
+    required String content,
+    String imageUrl = '',
+    String videoUrl = '',
+    String visibility = 'public',
+    String postType = 'text',
+    List<String> hashtags = const [],
+  }) async {
     await _handleApiCall<SocialPostModel>(
-      apiCall: () => _socialPostService.createPost(post: post),
+      apiCall: () => _socialPostService.createPost(
+        idUser: idUser,
+        idGroup: idGroup,
+        content: content,
+        imageUrl: imageUrl,
+        videoUrl: videoUrl,
+        visibility: visibility,
+        postType: postType,
+        hashtags: hashtags,
+      ),
       onSuccess: (newPost) {
         _posts.insert(0, newPost);
+        notifyListeners();
       },
     );
   }

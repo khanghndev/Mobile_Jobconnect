@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppStrings {
   static const String appName = 'UniJobs';
   static const String appCV = 'Hồ sơ tìm việc';
-  static const String search = 'Khám phá việc làm';
+  static const String search = 'Việc làm';
   static const String appSocial = 'UniSocial';
   static const String appMessage = 'Hộp thư';
   static const String appProfile = 'Trang cá nhân';
@@ -33,9 +33,9 @@ class AppStrings {
       'image': 'assets/images/placeholder_banner_1.jpg',
       'color': Color(0xFF6A11CB), 
       'endColor': Color(0xFF2575FC),
-      'title': 'Khám phá sự nghiệp',
+      'title': 'Mạng xã hội UniJobs',
       'value': 1,
-      'description': 'Hàng ngàn cơ hội đang chờ đón bạn mỗi ngày.',
+      'description': 'Hàng ngàn cơ hội việc làm đang chờ đón bạn mỗi ngày.',
       'icon': Icons.explore_outlined,
     },
     {
@@ -169,4 +169,8 @@ class AppStrings {
       'content': '- Bằng cách sử dụng hệ thống của chúng tôi, bạn đồng ý với các điều khoản trong chính sách bảo mật này. Nếu bạn không đồng ý, vui lòng ngừng sử dụng hệ thống.',
     },
   ];
+
+  // TODO: AI CHAT
+  static  const String systemPrompt = 'Bạn là một trợ lý AI chuyên nghiệp của ${AppStrings.appName}, tập trung vào tư vấn việc làm trong các lĩnh vực IT (bao gồm Frontend, Backend, Mobile, Data Science, AI/ML, DevOps, QA/QC, Game Developer), thiết kế (UI/UX, Graphic Design, Illustration, Video Editing, 3D Modeling), và marketing (Digital Marketing, Content Marketing, SEO, Social Media Marketing, Branding, Market Research). Hãy trả lời ngắn gọn, thân thiện, chuyên nghiệp và đi thẳng vào vấn đề. Luôn đặt câu hỏi để khai thác thêm thông tin nếu cần thiết để đưa ra lời khuyên tốt nhất. Nếu người dùng hỏi về chủ đề không liên quan đến việc làm hoặc các lĩnh vực đã nêu, hãy lịch sự từ chối và khéo léo lái cuộc trò chuyện về chủ đề chính. Mục tiêu của bạn là giúp người dùng định hướng nghề nghiệp, tìm kiếm cơ hội việc làm, chuẩn bị CV và phỏng vấn. Hãy cung cấp thông tin cập nhật và hữu ích. Bạn có thể gợi ý các kỹ năng cần thiết, lộ trình học tập, hoặc các công ty tiềm năng. Khi được hỏi về một vị trí cụ thể, hãy mô tả ngắn gọn về công việc đó và các yêu cầu phổ biến.';
+
 }

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:appwrite/models.dart' as aw;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:job_connect/appwrite/storage_appwrite_service.dart';
 import 'package:job_connect/config/error/server_exception.dart';
 import 'package:job_connect/features/resume/model/resume_model.dart';
@@ -9,6 +10,8 @@ import 'package:job_connect/features/resume/service/resum_service.dart';
 class ResumeViewModel extends ChangeNotifier {
   final ResumeService _resumeService = ResumeService();
   final StorageAppwriteService _storageService = StorageAppwriteService();
+
+  final String _bucketId = dotenv.env['APPWRITE_BUCKET_ID_RESUME'] ?? '';
 
   bool _isLoading = false;
   bool _isSuccess = false;
@@ -97,8 +100,14 @@ class ResumeViewModel extends ChangeNotifier {
   }) async {
     _setState(isLoading: true);
     try {
-      final aw.File uploaded = await _storageService.uploadFile(file);
-      final fileUrl = _storageService.getFileViewUrl(uploaded.$id);
+      final aw.File uploaded = await _storageService.uploadFile(
+        file,  
+        bucketId: _bucketId,
+      );
+      final fileUrl = _storageService.getFileViewUrl(
+        uploaded.$id,
+        bucketId: _bucketId,
+      );
 
       final resumeWithFile = resume.copyWith(
         fileId: uploaded.$id,
@@ -134,11 +143,21 @@ class ResumeViewModel extends ChangeNotifier {
 
       if (newFile != null) {
         if (updated.fileId.isNotEmpty) {
-          await _storageService.deleteFile(updated.fileId);
+          await _storageService.deleteFile(
+            updated.fileId,
+            bucketId: _bucketId,
+          );
         }
 
-        final aw.File uploaded = await _storageService.uploadFile(newFile);
-        final fileUrl = _storageService.getFileViewUrl(uploaded.$id);
+        final aw.File uploaded = await _storageService.uploadFile(
+          newFile,
+          bucketId: _bucketId,
+        );
+
+        final fileUrl = _storageService.getFileViewUrl(
+          uploaded.$id,
+          bucketId: _bucketId,
+        );
 
         finalResume = updated.copyWith(
           fileId: uploaded.$id,
@@ -161,11 +180,13 @@ class ResumeViewModel extends ChangeNotifier {
     required String fileId,
     required String userId,
   }) async {
-    print('🧩 Delete Resume → fileId: $fileId');
     _setState(isLoading: true);
     try {
       if (fileId.isNotEmpty) {
-        await _storageService.deleteFile(fileId);
+        await _storageService.deleteFile(
+          fileId,
+          bucketId: _bucketId,
+        );
       }
 
       await _resumeService.deleteResume(idResume: idResume);

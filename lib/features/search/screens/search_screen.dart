@@ -6,7 +6,7 @@ import 'package:job_connect/config/widgets/background_empty_state.dart';
 import 'package:job_connect/features/profile/model/user_model.dart';
 import 'package:job_connect/data/models/job_application_model.dart';
 import 'package:job_connect/data/models/job_posting_model.dart';
-import 'package:job_connect/data/models/job_saved_model.dart';
+import 'package:job_connect/features/home/model/job_saved_model.dart';
 import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/config/utils/format.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -94,6 +94,11 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  void setTab(int index) {
+    if (index >= 0 && index < _tabController.length) {
+      _tabController.animateTo(index);
+    }
+  }
   Future<void> _initializeData() async {
     await _loadAllData();
   }
@@ -166,7 +171,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   Future<void> _fetchAccount() async {
     try {
       final data = await _apiService.get(endpoint: '${ApiConstants.userEndpoint}/${widget.idUser}');
-      if (mounted && data.isNotEmpty) setState(() => _account = UserModel.fromJson(data.first));
+      if (mounted && data.isNotEmpty) setState(() => _account = UserModel.fromJson(data));
     } catch (e) {
       print('Error fetching account: $e');
     }
@@ -180,10 +185,10 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
 
       _jobList.clear();
       final List<dynamic> jobData = response as List<dynamic>;
-      _jobList.addAll(jobData.map((job) => JobPostingModel.fromJson(job as Map<String, dynamic>)).toList());
+      _jobList.addAll(jobData.map((job) => JobPostingModel.fromJson(job)).toList());
 
       _jobList.removeWhere((job) => _appliedJobs.any((applied) => applied.idJobPost == job.idJobPost));
-      _jobList.sort((a, b) => b.createdAt!.compareTo(a.createdAt ?? DateTime.now()));
+      _jobList.sort((a, b) => b.createdAt.compareTo(a.createdAt));
     } catch (e) {
       print('Error fetching jobs: $e');
     }

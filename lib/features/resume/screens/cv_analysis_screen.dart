@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:job_connect/config/widgets/custom_app_bar_title_large.dart';
 
 class CvAnalysisScreen extends StatefulWidget {
   const CvAnalysisScreen({super.key});
@@ -159,11 +160,7 @@ class _CvAnalysisScreenState extends State<CvAnalysisScreen> {
     final theme = Theme.of(context); // Lấy theme từ context
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Phân tích CV'),
-        backgroundColor: theme.appBarTheme.backgroundColor,
-        elevation: 0, // Bỏ shadow cho AppBar
-      ),
+      appBar: const CustomAppbarTitleLarge(title: 'Phân tích CV'),
       body:
           _isProcessing
               ? _buildLoadingView(theme) // Truyền theme vào

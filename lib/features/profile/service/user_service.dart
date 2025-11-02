@@ -61,9 +61,9 @@ class UserService {
   }
 
   // TODO: Cập nhật người dùng theo ID
-  Future<UserModel> updateUser({required UserModel user,}) async {
+  Future<void> updateUser({required UserModel user}) async {
     try {
-      final res = await _apiService.put(
+      await _apiService.put(
         endpoint: '${ApiConstants.userEndpoint}/${user.idUser}',
         body: {
           "idUser": user.idUser,
@@ -78,21 +78,10 @@ class UserService {
           "dateOfBirth": user.dateOfBirth?.toIso8601String(),
           "avatarUrl": user.avatarUrl,
           "socialLogin": user.socialLogin,
-          "createdAt": user.createdAt,
-          "updatedAt": user.updatedAt,
-        }
+          "createdAt": user.createdAt.toIso8601String(),
+          "updatedAt": DateTime.now().toIso8601String(),
+        },
       );
-
-      if (res is! Map<String, dynamic>) {
-        throw ServerException(
-          err: 'Phản hồi không hợp lệ từ API (cập nhật người dùng)',
-          type: ServerExceptionType.api,
-        );
-      }
-
-      return UserModel.fromJson(res);
-    } on ServerException {
-      rethrow;
     } catch (e) {
       throw ServerException(
         err: 'Lỗi khi cập nhật người dùng: ${e.toString()}',

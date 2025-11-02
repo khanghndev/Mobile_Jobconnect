@@ -54,30 +54,67 @@ class UserModel {
           json['dateOfBirth'] != null
               ? DateTime.parse(json['dateOfBirth'])
               : null,
-      role: RoleModel.fromJson(json['role'] as Map<String, dynamic>),
+      role: json['role'] != null ? RoleModel.fromJson(json['role'] as Map<String, dynamic>) : null,
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    final data = <String, dynamic>{
       'idUser': idUser,
       'userName': userName,
       'email': email,
-      'phoneNumber': phoneNumber,
-      'password': password,
       'idRole': idRole,
       'accountStatus': accountStatus,
-      'avatarUrl': avatarUrl,
-      'socialLogin': socialLogin,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
       'gender': gender,
-      'address': address,
-      'dateOfBirth': dateOfBirth?.toIso8601String(),
-      'role': role?.toJson(),
     };
+    if (phoneNumber != null) data['phoneNumber'] = phoneNumber;
+    if (password != null) data['password'] = password;
+    if (avatarUrl != null) data['avatarUrl'] = avatarUrl;
+    if (socialLogin != null) data['socialLogin'] = socialLogin;
+    if (address != null) data['address'] = address;
+    if (dateOfBirth != null) data['dateOfBirth'] = dateOfBirth!.toIso8601String();
+    if (role != null) data['role'] = role!.toJson();
+    return data;
   }
 
+  UserModel copyWith({
+    String? idUser,
+    String? userName,
+    String? email,
+    String? phoneNumber,
+    String? password,
+    String? idRole,
+    String? accountStatus,
+    String? avatarUrl,
+    String? socialLogin,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? gender,
+    String? address,
+    DateTime? dateOfBirth,
+    RoleModel? role,
+  }) {
+    return UserModel(
+      idUser: idUser ?? this.idUser,
+      userName: userName ?? this.userName,
+      email: email ?? this.email,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      password: password ?? this.password,
+      idRole: idRole ?? this.idRole,
+      accountStatus: accountStatus ?? this.accountStatus,
+      avatarUrl: avatarUrl ?? this.avatarUrl,
+      socialLogin: socialLogin ?? this.socialLogin,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      gender: gender ?? this.gender,
+      address: address ?? this.address,
+      dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+      role: role ?? this.role,
+    );
+  }
+  
   @override
   String toString() {
     return 'UserModel(idUser: $idUser, userName: $userName, email: $email, idRole: $idRole, gender: $gender, accountStatus: $accountStatus, role: ${role?.roleName})';

@@ -44,7 +44,7 @@ class _NotificationScreenState extends State<NotificationScreen>
     // Gọi ViewModel để load dữ liệu
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final vm = context.read<NotificationViewModel>();
-      await vm.getNotifications(widget.idUser);
+      await vm.getNotificationsByIdUser(widget.idUser);
       await vm.getUnreadCount(widget.idUser);
 
       _listAnimationController.forward();
@@ -126,7 +126,7 @@ class _NotificationScreenState extends State<NotificationScreen>
                   ? BackgroundEmptyState(
                       isSearching: false,
                       onRefresh: () async {
-                        await vm.getNotifications(widget.idUser);
+                        await vm.getNotificationsByIdUser(widget.idUser);
                         await vm.getUnreadCount(widget.idUser);
                       },
                       title: "Hộp thư trống",
@@ -136,7 +136,7 @@ class _NotificationScreenState extends State<NotificationScreen>
                     )
                   : RefreshIndicator(
                       onRefresh: () async {
-                        await vm.getNotifications(widget.idUser);
+                        await vm.getNotificationsByIdUser(widget.idUser);
                         await vm.getUnreadCount(widget.idUser);
                       },
                       color: theme.primaryColor,
@@ -170,8 +170,7 @@ class _NotificationScreenState extends State<NotificationScreen>
                                       } else {
                                         // Đánh dấu đã đọc khi mở chi tiết
                                         if (notification.isRead == 0) {
-                                          vm.onToggleSelect(
-                                              notification.idNotification);
+                                          vm.onToggleSelect(notification.idNotification);
                                           await vm.markAsRead();
                                         }
                                         if(context.mounted){
@@ -179,10 +178,8 @@ class _NotificationScreenState extends State<NotificationScreen>
                                             '/notification/detail',
                                             extra: {
                                               'notification': notification,
-                                              'iconData':
-                                                  _getIconForType(notification.type),
-                                              'iconColor': _getColorForType(
-                                                  notification.type, theme),
+                                              'iconData':_getIconForType(notification.type),
+                                              'iconColor': _getColorForType(notification.type, theme),
                                             },
                                           );
                                         }
@@ -191,8 +188,7 @@ class _NotificationScreenState extends State<NotificationScreen>
                                     onLongPress: () {
                                       if (!selectMode) {
                                         vm.onToggleSelectMode();
-                                        vm.onToggleSelect(
-                                            notification.idNotification);
+                                        vm.onToggleSelect(notification.idNotification);
                                       }
                                     },
                                     iconData: _getIconForType(notification.type),
