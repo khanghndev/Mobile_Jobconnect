@@ -108,6 +108,16 @@ namespace HuitWorks.WebAPI.DTOs
         public string ToUserId { get; set; } = null!;
     }
 
+    public class AcceptAllRequestsDto
+    {
+        public string UserId { get; set; } = null!;
+    }
+
+    public class CancelAllSentDto
+    {
+        public string UserId { get; set; } = null!;
+    }
+
     public class SocialMessageDto
     {
         public string IdMessage { get; set; } = null!;

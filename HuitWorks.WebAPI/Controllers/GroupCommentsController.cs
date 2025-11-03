@@ -32,7 +32,14 @@ namespace HuitWorks.WebAPI.Controllers
             if (string.IsNullOrEmpty(postId))
                 return BadRequest("postId là bắt buộc");
 
-            return await GetPostComments(postId, userId, page, pageSize);
+            try
+            {
+                return await GetPostComments(postId, userId, page, pageSize);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Lỗi khi lấy bình luận: {ex.Message}");
+            }
         }
 
         // GET: api/GroupComments/post/{postId} - Lấy danh sách comments của post
@@ -43,59 +50,100 @@ namespace HuitWorks.WebAPI.Controllers
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 20)
         {
-            // Kiểm tra post có tồn tại không
-            var post = await _context.GroupPosts
-                .Include(p => p.SocialGroup)
-                .FirstOrDefaultAsync(p => p.IdPost == postId);
-
-            if (post == null)
-                return NotFound("Không tìm thấy bài đăng");
-
-            // Kiểm tra quyền xem comments
-            if (userId != null)
+            try
             {
-                var userRole = await _context.GroupMembers
-                    .Where(m => m.IdGroup == post.IdGroup && m.IdUser == userId && m.Status == "active")
-                    .Select(m => m.RoleInGroup)
-                    .FirstOrDefaultAsync();
+                // Kiểm tra post có tồn tại không
+                var post = await _context.GroupPosts
+                    .Include(p => p.SocialGroup)
+                    .FirstOrDefaultAsync(p => p.IdPost == postId);
 
-                if (userRole == null && post.SocialGroup!.Privacy != "public")
-                    return Forbid("Bạn không có quyền xem bình luận trong nhóm này");
-            }
-            else if (post.SocialGroup!.Privacy != "public")
-            {
-                return Forbid("Bạn cần đăng nhập để xem bình luận");
-            }
+                if (post == null)
+                    return NotFound("Không tìm thấy bài đăng");
 
-            var comments = await _context.GroupComments
-                .Include(c => c.User)
-                .Include(c => c.Replies)
-                .Include(c => c.GroupReactions)
-                .Where(c => c.IdPost == postId && c.ParentId == null) // Chỉ lấy comments gốc
-                .OrderBy(c => c.CreatedAt)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .Select(c => new GroupCommentDto
+                // Kiểm tra quyền xem comments - nếu không có userId và group không public, chỉ cho phép xem count
+                bool canViewComments = true;
+                if (userId != null && !string.IsNullOrEmpty(userId))
                 {
-                    IdComment = c.IdComment,
-                    IdPost = c.IdPost,
-                    IdUser = c.IdUser,
-                    UserName = c.User!.UserName,
-                    UserAvatar = c.User.AvatarUrl,
-                    Content = c.Content,
-                    ParentId = c.ParentId,
-                    CreatedAt = c.CreatedAt,
-                    ReplyCount = c.Replies.Count(),
-                    ReactionCount = c.GroupReactions.Count(),
-                    IsLikedByUser = userId != null && c.GroupReactions.Any(r => r.IdUser == userId),
-                    UserReaction = userId != null ? c.GroupReactions
-                        .Where(r => r.IdUser == userId)
-                        .Select(r => r.Reaction)
-                        .FirstOrDefault() : null
-                })
-                .ToListAsync();
+                    var userRole = await _context.GroupMembers
+                        .Where(m => m.IdGroup == post.IdGroup && m.IdUser == userId && m.Status == "active")
+                        .Select(m => m.RoleInGroup)
+                        .FirstOrDefaultAsync();
 
-            return Ok(comments);
+                    if (userRole == null && post.SocialGroup!.Privacy != "public")
+                        canViewComments = false;
+                }
+                else if (post.SocialGroup!.Privacy != "public")
+                {
+                    canViewComments = false;
+                }
+
+                if (!canViewComments)
+                {
+                    // Return empty list instead of Forbid for comment count purposes
+                    return Ok(new List<GroupCommentDto>());
+                }
+
+                var comments = await _context.GroupComments
+                    .Include(c => c.User)
+                    .Where(c => c.IdPost == postId && c.ParentId == null) // Chỉ lấy comments gốc
+                    .OrderBy(c => c.CreatedAt)
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+
+                // Load replies count separately để tránh lỗi
+                var commentIds = comments.Select(c => c.IdComment).ToList();
+                var replyCountsDict = new Dictionary<string, int>();
+                if (commentIds.Any())
+                {
+                    var replyCounts = await _context.GroupComments
+                        .Where(r => r.ParentId != null && commentIds.Contains(r.ParentId))
+                        .GroupBy(r => r.ParentId!)
+                        .Select(g => new { ParentId = g.Key, Count = g.Count() })
+                        .ToListAsync();
+                    
+                    foreach (var rc in replyCounts)
+                    {
+                        replyCountsDict[rc.ParentId] = rc.Count;
+                    }
+                }
+
+                // Load reactions separately để tránh lỗi relationship
+                var reactions = await _context.GroupReactions
+                    .Where(r => r.EntityType == "comment" && commentIds.Contains(r.EntityId))
+                    .ToListAsync();
+
+                var commentDtos = comments.Select(c =>
+                {
+                    var commentReactions = reactions.Where(r => r.EntityId == c.IdComment).ToList();
+                    var replyCount = replyCountsDict.ContainsKey(c.IdComment) ? replyCountsDict[c.IdComment] : 0;
+                    
+                    return new GroupCommentDto
+                    {
+                        IdComment = c.IdComment,
+                        IdPost = c.IdPost,
+                        IdUser = c.IdUser,
+                        UserName = c.User?.UserName ?? "Unknown",
+                        UserAvatar = c.User?.AvatarUrl,
+                        Content = c.Content,
+                        ParentId = c.ParentId,
+                        CreatedAt = c.CreatedAt,
+                        ReplyCount = replyCount,
+                        ReactionCount = commentReactions.Count,
+                        IsLikedByUser = userId != null && !string.IsNullOrEmpty(userId) && commentReactions.Any(r => r.IdUser == userId),
+                        UserReaction = userId != null && !string.IsNullOrEmpty(userId) ? commentReactions
+                            .Where(r => r.IdUser == userId)
+                            .Select(r => r.Reaction)
+                            .FirstOrDefault() : null
+                    };
+                }).ToList();
+
+                return Ok(commentDtos);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Lỗi khi lấy bình luận: {ex.Message}");
+            }
         }
 
         // GET: api/GroupComments/{id}/replies - Lấy replies của comment
@@ -130,10 +178,20 @@ namespace HuitWorks.WebAPI.Controllers
 
             var replies = await _context.GroupComments
                 .Include(c => c.User)
-                .Include(c => c.GroupReactions)
                 .Where(c => c.ParentId == id)
                 .OrderBy(c => c.CreatedAt)
-                .Select(c => new GroupCommentDto
+                .ToListAsync();
+
+            // Load reactions separately
+            var replyIds = replies.Select(r => r.IdComment).ToList();
+            var replyReactions = await _context.GroupReactions
+                .Where(r => r.EntityType == "comment" && replyIds.Contains(r.EntityId))
+                .ToListAsync();
+
+            var replyDtos = replies.Select(c =>
+            {
+                var commentReactions = replyReactions.Where(r => r.EntityId == c.IdComment).ToList();
+                return new GroupCommentDto
                 {
                     IdComment = c.IdComment,
                     IdPost = c.IdPost,
@@ -144,16 +202,16 @@ namespace HuitWorks.WebAPI.Controllers
                     ParentId = c.ParentId,
                     CreatedAt = c.CreatedAt,
                     ReplyCount = 0, // Replies không có sub-replies
-                    ReactionCount = c.GroupReactions.Count(),
-                    IsLikedByUser = userId != null && c.GroupReactions.Any(r => r.IdUser == userId),
-                    UserReaction = userId != null ? c.GroupReactions
+                    ReactionCount = commentReactions.Count,
+                    IsLikedByUser = userId != null && commentReactions.Any(r => r.IdUser == userId),
+                    UserReaction = userId != null ? commentReactions
                         .Where(r => r.IdUser == userId)
                         .Select(r => r.Reaction)
                         .FirstOrDefault() : null
-                })
-                .ToListAsync();
+                };
+            }).ToList();
 
-            return Ok(replies);
+            return Ok(replyDtos);
         }
 
         // GET: api/GroupComments/{id} - Lấy chi tiết comment
@@ -165,7 +223,6 @@ namespace HuitWorks.WebAPI.Controllers
                 .Include(c => c.GroupPost)
                     .ThenInclude(p => p.SocialGroup)
                 .Include(c => c.Replies)
-                .Include(c => c.GroupReactions)
                 .FirstOrDefaultAsync(c => c.IdComment == id);
 
             if (comment == null)
@@ -187,6 +244,15 @@ namespace HuitWorks.WebAPI.Controllers
                 return Forbid("Bạn cần đăng nhập để xem bình luận này");
             }
 
+            // Load reactions separately
+            var commentReactionIds = new List<string> { comment.IdComment };
+            commentReactionIds.AddRange(comment.Replies.Select(r => r.IdComment));
+            var allReactions = await _context.GroupReactions
+                .Where(r => r.EntityType == "comment" && commentReactionIds.Contains(r.EntityId))
+                .ToListAsync();
+
+            var mainCommentReactions = allReactions.Where(r => r.EntityId == comment.IdComment).ToList();
+
             var commentDto = new GroupCommentDto
             {
                 IdComment = comment.IdComment,
@@ -198,29 +264,33 @@ namespace HuitWorks.WebAPI.Controllers
                 ParentId = comment.ParentId,
                 CreatedAt = comment.CreatedAt,
                 ReplyCount = comment.Replies.Count(),
-                ReactionCount = comment.GroupReactions.Count(),
+                ReactionCount = mainCommentReactions.Count,
                 Replies = comment.Replies
                     .OrderBy(r => r.CreatedAt)
-                    .Select(r => new GroupCommentDto
+                    .Select(r =>
                     {
-                        IdComment = r.IdComment,
-                        IdPost = r.IdPost,
-                        IdUser = r.IdUser,
-                        UserName = r.User!.UserName,
-                        UserAvatar = r.User.AvatarUrl,
-                        Content = r.Content,
-                        ParentId = r.ParentId,
-                        CreatedAt = r.CreatedAt,
-                        ReplyCount = 0,
-                        ReactionCount = r.GroupReactions.Count(),
-                        IsLikedByUser = userId != null && r.GroupReactions.Any(reaction => reaction.IdUser == userId),
-                        UserReaction = userId != null ? r.GroupReactions
-                            .Where(reaction => reaction.IdUser == userId)
-                            .Select(reaction => reaction.Reaction)
-                            .FirstOrDefault() : null
+                        var replyReactions = allReactions.Where(reaction => reaction.EntityId == r.IdComment).ToList();
+                        return new GroupCommentDto
+                        {
+                            IdComment = r.IdComment,
+                            IdPost = r.IdPost,
+                            IdUser = r.IdUser,
+                            UserName = r.User!.UserName,
+                            UserAvatar = r.User.AvatarUrl,
+                            Content = r.Content,
+                            ParentId = r.ParentId,
+                            CreatedAt = r.CreatedAt,
+                            ReplyCount = 0,
+                            ReactionCount = replyReactions.Count,
+                            IsLikedByUser = userId != null && replyReactions.Any(reaction => reaction.IdUser == userId),
+                            UserReaction = userId != null ? replyReactions
+                                .Where(reaction => reaction.IdUser == userId)
+                                .Select(reaction => reaction.Reaction)
+                                .FirstOrDefault() : null
+                        };
                     }).ToList(),
-                IsLikedByUser = userId != null && comment.GroupReactions.Any(r => r.IdUser == userId),
-                UserReaction = userId != null ? comment.GroupReactions
+                IsLikedByUser = userId != null && mainCommentReactions.Any(r => r.IdUser == userId),
+                UserReaction = userId != null ? mainCommentReactions
                     .Where(r => r.IdUser == userId)
                     .Select(r => r.Reaction)
                     .FirstOrDefault() : null

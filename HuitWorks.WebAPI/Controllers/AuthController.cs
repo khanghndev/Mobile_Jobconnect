@@ -8,11 +8,10 @@ using HuitWorks.WebAPI.Data;
 using HuitWorks.WebAPI.Models;
 using HuitWorks.WebAPI.DTOs;
 using Microsoft.AspNetCore.Builder.Extensions;
-using FirebaseAdmin;
-using Google.Apis.Auth.OAuth2;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
+using HuitWorks.WebAPI.Services;
 
 namespace HuitWorks.WebAPI.Controllers
 {
@@ -22,24 +21,17 @@ namespace HuitWorks.WebAPI.Controllers
     {
         private readonly JobConnectDbContext _context;
         private readonly IConfiguration _configuration;
+        private readonly ISupabaseAuthService _supabaseAuthService;
 
-        public AuthController(JobConnectDbContext context, IConfiguration configuration)
+        public AuthController(JobConnectDbContext context, IConfiguration configuration, ISupabaseAuthService supabaseAuthService)
         {
             _context = context;
             _configuration = configuration;
-
-            if (FirebaseApp.DefaultInstance == null)
-            {
-                FirebaseApp.Create(new AppOptions
-                {
-                    Credential = GoogleCredential
-                        .FromFile("serviceAccountKey.json")
-                });
-            }
+            _supabaseAuthService = supabaseAuthService;
         }
 
         /// <summary>
-        /// Đăng ký tài khoản mới
+        /// Đăng ký tài khoản mới với Supabase
         /// </summary>
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto model)
@@ -49,6 +41,16 @@ namespace HuitWorks.WebAPI.Controllers
 
             if (await _context.Users.AnyAsync(u => u.Email == model.Email))
                 return BadRequest(new { message = "Email đã tồn tại" });
+
+            // Chuẩn hóa phone (đề phòng client chưa chuẩn hóa)
+            string phone = NormalizeToE164(model.PhoneNumber);
+
+            // Kiểm tra phone number đã tồn tại (chỉ khi phone không rỗng)
+            if (!string.IsNullOrWhiteSpace(phone))
+            {
+                if (await _context.Users.AnyAsync(u => u.PhoneNumber == phone))
+                    return BadRequest(new { message = "Số điện thoại đã tồn tại" });
+            }
 
             // Lấy/khởi tạo role
             var role = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == model.RoleName);
@@ -64,13 +66,32 @@ namespace HuitWorks.WebAPI.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            // Chọn IdUser: ưu tiên AppwriteUserId để mapping 1-1 với Appwrite
-            var idUser = string.IsNullOrWhiteSpace(model.AppwriteUserId)
-                ? $"user{Guid.NewGuid():N}"
-                : model.AppwriteUserId!.Trim();
+            string? supabaseUserId = null;
 
-            // Chuẩn hóa phone (đề phòng client chưa chuẩn hóa)
-            string phone = NormalizeToE164(model.PhoneNumber);
+            // Phase 1: Tạo user trên Supabase
+            if (string.IsNullOrWhiteSpace(model.AppwriteUserId))
+            {
+                var supabaseResult = await _supabaseAuthService.CreateUserAsync(
+                    email: model.Email,
+                    password: model.Password,
+                    name: model.UserName,
+                    phone: phone
+                );
+
+                if (!supabaseResult.success || string.IsNullOrWhiteSpace(supabaseResult.userId))
+                {
+                    return BadRequest(new { message = $"Không tạo được tài khoản Supabase: {supabaseResult.error}" });
+                }
+
+                supabaseUserId = supabaseResult.userId;
+            }
+            else
+            {
+                supabaseUserId = model.AppwriteUserId.Trim();
+            }
+
+            // Chọn IdUser: sử dụng SupabaseUserId để mapping 1-1 với Supabase
+            var idUser = supabaseUserId;
 
             using var tx = await _context.Database.BeginTransactionAsync();
 
@@ -119,6 +140,14 @@ namespace HuitWorks.WebAPI.Controllers
 
                 await tx.CommitAsync();
 
+                // Gửi email verification từ Supabase (không chặn flow nếu fail)
+                try
+                {
+                    var verifyRedirect = Request.Scheme + "://" + Request.Host + "/Auth/Login";
+                    await _supabaseAuthService.SendEmailVerificationAsync(supabaseUserId, verifyRedirect);
+                }
+                catch { /* ignore email verification errors */ }
+
                 var result = new
                 {
                     IdUser = user.IdUser,
@@ -128,9 +157,39 @@ namespace HuitWorks.WebAPI.Controllers
 
                 return CreatedAtAction(nameof(GetById), new { id = user.IdUser }, result);
             }
+            catch (DbUpdateException dbEx)
+            {
+                await tx.RollbackAsync();
+                // Nếu tạo DB fail, xóa user trên Supabase
+                if (!string.IsNullOrWhiteSpace(supabaseUserId))
+                {
+                    await _supabaseAuthService.DeleteUserAsync(supabaseUserId);
+                }
+
+                // Kiểm tra lỗi duplicate key
+                if (dbEx.InnerException?.Message?.Contains("Duplicate entry") == true)
+                {
+                    if (dbEx.InnerException.Message.Contains("phoneNumber"))
+                    {
+                        return BadRequest(new { message = "Số điện thoại đã tồn tại trong hệ thống" });
+                    }
+                    if (dbEx.InnerException.Message.Contains("email"))
+                    {
+                        return BadRequest(new { message = "Email đã tồn tại trong hệ thống" });
+                    }
+                    return BadRequest(new { message = "Thông tin đăng ký đã tồn tại trong hệ thống" });
+                }
+
+                return StatusCode(500, new { message = "Đăng ký thất bại", detail = dbEx.Message });
+            }
             catch (Exception ex)
             {
                 await tx.RollbackAsync();
+                // Nếu tạo DB fail, xóa user trên Supabase
+                if (!string.IsNullOrWhiteSpace(supabaseUserId))
+                {
+                    await _supabaseAuthService.DeleteUserAsync(supabaseUserId);
+                }
                 return StatusCode(500, new { message = "Đăng ký thất bại", detail = ex.Message });
             }
         }
@@ -261,14 +320,14 @@ namespace HuitWorks.WebAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            // Verify Appwrite JWT by calling /account with the JWT as Bearer
-            var verify = await VerifyAppwriteJwtAsync(model.IdToken);
+            // Verify Supabase JWT
+            var verify = await _supabaseAuthService.VerifySupabaseJwtAsync(model.IdToken);
             if (!verify.success)
             {
-                return BadRequest($"Invalid Appwrite token: {verify.error}");
+                return BadRequest($"Invalid Supabase token: {verify.error}");
             }
 
-            var email = string.IsNullOrWhiteSpace(model.Email) ? (string.IsNullOrWhiteSpace(verify.email) ? $"{verify.userId}@appwrite.local" : verify.email!.Trim()) : model.Email.Trim();
+            var email = string.IsNullOrWhiteSpace(model.Email) ? (string.IsNullOrWhiteSpace(verify.email) ? $"{verify.userId}@supabase.local" : verify.email!.Trim()) : model.Email.Trim();
             var name = string.IsNullOrWhiteSpace(model.Name) ? (string.IsNullOrWhiteSpace(verify.name) ? "Google User" : verify.name!.Trim()) : model.Name.Trim();
 
             var requestedRoleName = string.IsNullOrWhiteSpace(model.RoleName) ? "Candidate" : model.RoleName.Trim();
@@ -297,7 +356,7 @@ namespace HuitWorks.WebAPI.Controllers
                     {
                         IdUser = verify.userId!,
                         UserName = string.IsNullOrWhiteSpace(name) ? "Google User" : name,
-                        Email = string.IsNullOrWhiteSpace(email) ? $"{verify.userId}@appwrite.local" : email,
+                        Email = string.IsNullOrWhiteSpace(email) ? $"{verify.userId}@supabase.local" : email,
                         PhoneNumber = null,
                         Password = null,
                         IdRole = role.IdRole,
@@ -441,48 +500,150 @@ namespace HuitWorks.WebAPI.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        // Verify Appwrite JWT by calling /account endpoint
-        private async Task<(bool success, string? userId, string? email, string? name, string? avatar, string? error)> VerifyAppwriteJwtAsync(string jwt)
+
+        [HttpPost("enter-otp")]
+        public async Task<IActionResult> EnterOtp([FromBody] OtpCode model)
         {
+            await _context.Database.ExecuteSqlRawAsync("DELETE FROM OtpCodes WHERE ExpireAt < UTC_TIMESTAMP()");
+            if (string.IsNullOrWhiteSpace(model.Email))
+                return BadRequest(new { message = "Email không được để trống" });
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
+            if (user == null)
+                return NotFound(new { message = "Không tìm thấy người dùng với email này" });
+
+            // Xóa OTP cũ
+            var old = await _context.OtpCodes.Where(o => o.Email == model.Email).ToListAsync();
+            _context.OtpCodes.RemoveRange(old);
+
+            // Sinh OTP ngẫu nhiên 6 số
+            var otp = new Random().Next(100000, 999999).ToString();
+
+            var otpEntity = new OtpCode
+            {
+                Email = model.Email,
+                CodeInt = otp,
+                CreatedAt = DateTime.UtcNow,
+                ExpireAt = DateTime.UtcNow.AddSeconds(60)
+            };
+            _context.OtpCodes.Add(otpEntity);
+            await _context.SaveChangesAsync();
+
+            // Gửi OTP qua Supabase (hoặc SMTP)
             try
             {
-                var endpoint = _configuration["Appwrite:ApiEndpoint"] ?? "https://syd.cloud.appwrite.io/v1";
-                var projectId = _configuration["Appwrite:ProjectId"];
-                if (string.IsNullOrWhiteSpace(projectId))
-                {
-                    return (false, null, null, null, null, "Missing Appwrite:ProjectId in configuration");
-                }
-
-                using var http = new HttpClient();
-                http.DefaultRequestHeaders.Add("X-Appwrite-Project", projectId);
-                http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
-                var res = await http.GetAsync($"{endpoint.TrimEnd('/')}/account");
-                var body = await res.Content.ReadAsStringAsync();
-                if (!res.IsSuccessStatusCode)
-                {
-                    return (false, null, null, null, null, $"Appwrite /account failed: {(int)res.StatusCode} {body}");
-                }
-
-                using var doc = JsonDocument.Parse(body);
-                var root = doc.RootElement;
-                var id = root.TryGetProperty("$id", out var pId) ? pId.GetString() : null;
-                var email = root.TryGetProperty("email", out var pEmail) ? pEmail.GetString() : null;
-                var name = root.TryGetProperty("name", out var pName) ? pName.GetString() : null;
-                string? avatar = null;
-                if (root.TryGetProperty("prefs", out var pPrefs) && pPrefs.ValueKind == JsonValueKind.Object)
-                {
-                    if (pPrefs.TryGetProperty("avatar", out var pAv)) avatar = pAv.GetString();
-                }
-                if (string.IsNullOrWhiteSpace(id))
-                {
-                    return (false, null, null, null, null, "Missing $id in Appwrite account response");
-                }
-                return (true, id, email, name, avatar, null);
+                await _supabaseAuthService.SendEmailAsync(model.Email,
+                    "Mã xác thực OTP",
+                    $"<p>Mã OTP của bạn là: <b>{otp}</b><br/>Hiệu lực trong 60 giây.</p>");
             }
             catch (Exception ex)
             {
-                return (false, null, null, null, null, ex.Message);
+                return StatusCode(500, new { message = $"Gửi email thất bại: {ex.Message}" });
             }
+
+            return Ok(new { message = "Mã OTP đã được gửi đến email của bạn" });
         }
+
+        [HttpPost("verify-otp")]
+        public async Task<IActionResult> VerifyOtp([FromBody] VerifyOtpDto model)
+        {
+            if (string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Code))
+                return BadRequest(new { message = "Email và mã OTP là bắt buộc" });
+
+            var otp = await _context.OtpCodes.FirstOrDefaultAsync(o => o.Email == model.Email && o.CodeInt == model.Code);
+            if (otp == null)
+                return BadRequest(new { message = "Mã OTP không hợp lệ" });
+
+            if (otp.ExpireAt < DateTime.UtcNow)
+            {
+                _context.OtpCodes.Remove(otp);
+                await _context.SaveChangesAsync();
+                return BadRequest(new { message = "Mã OTP đã hết hạn" });
+            }
+
+            // Hợp lệ → cho phép reset password
+            return Ok(new { message = "Xác thực OTP thành công, bạn có thể đặt lại mật khẩu" });
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto model)
+        {
+            if (string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.NewPassword))
+                return BadRequest(new { message = "Thiếu thông tin bắt buộc" });
+
+            var otp = await _context.OtpCodes
+                .Where(o => o.Email == model.Email && o.CodeInt == model.OtpCode)
+                .FirstOrDefaultAsync();
+
+            if (otp == null)
+                return BadRequest(new { message = "Mã OTP không hợp lệ hoặc chưa xác thực" });
+
+            if (otp.ExpireAt < DateTime.UtcNow)
+            {
+                _context.OtpCodes.Remove(otp);
+                await _context.SaveChangesAsync();
+                return BadRequest(new { message = "Mã OTP đã hết hạn" });
+            }
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
+            if (user == null)
+                return NotFound(new { message = "Không tìm thấy người dùng" });
+
+            user.Password = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
+            user.UpdatedAt = DateTime.UtcNow;
+
+            _context.OtpCodes.Remove(otp); // Xóa OTP sau khi reset thành công
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Đặt lại mật khẩu thành công" });
+        }
+
+        [HttpPost("resend-otp")]
+        public async Task<IActionResult> ResendOtp([FromBody] OtpRequestDto model)
+        {
+            if (string.IsNullOrWhiteSpace(model.Email))
+                return BadRequest(new { message = "Email không được để trống" });
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
+            if (user == null)
+                return NotFound(new { message = "Không tìm thấy người dùng với email này" });
+
+            // Xóa OTP cũ nếu có
+            var oldOtps = await _context.OtpCodes.Where(o => o.Email == model.Email).ToListAsync();
+            if (oldOtps.Any())
+            {
+                _context.OtpCodes.RemoveRange(oldOtps);
+                await _context.SaveChangesAsync();
+            }
+
+            // Sinh OTP mới
+            var otp = new Random().Next(100000, 999999).ToString();
+
+            var otpEntity = new OtpCode
+            {
+                Email = model.Email,
+                CodeInt = otp,
+                CreatedAt = DateTime.UtcNow,
+                ExpireAt = DateTime.UtcNow.AddSeconds(60)
+            };
+            _context.OtpCodes.Add(otpEntity);
+            await _context.SaveChangesAsync();
+
+            try
+            {
+                await _supabaseAuthService.SendEmailAsync(model.Email,
+                    "Mã xác thực OTP (Gửi lại)",
+                    $"<p>Mã OTP mới của bạn là: <b>{otp}</b><br/>Hiệu lực trong 60 giây.</p>");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Gửi lại email thất bại: {ex.Message}" });
+            }
+
+            return Ok(new { message = "Đã gửi lại mã OTP mới đến email của bạn" });
+        }
+
+
     }
+    
 }

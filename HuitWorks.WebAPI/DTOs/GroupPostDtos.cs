@@ -15,7 +15,6 @@ namespace HuitWorks.WebAPI.DTOs
         [StringLength(5000, ErrorMessage = "Nội dung không được vượt quá 5000 ký tự")]
         public string Content { get; set; } = null!;
 
-        [StringLength(255, ErrorMessage = "URL media không được vượt quá 255 ký tự")]
         public string? MediaUrl { get; set; }
 
         [Required(ErrorMessage = "Loại bài đăng là bắt buộc")]
@@ -29,7 +28,6 @@ namespace HuitWorks.WebAPI.DTOs
         [StringLength(5000, ErrorMessage = "Nội dung không được vượt quá 5000 ký tự")]
         public string? Content { get; set; }
 
-        [StringLength(255, ErrorMessage = "URL media không được vượt quá 255 ký tự")]
         public string? MediaUrl { get; set; }
 
         [RegularExpression("^(text|image|video|link)$", ErrorMessage = "Loại bài đăng phải là text, image, video hoặc link")]

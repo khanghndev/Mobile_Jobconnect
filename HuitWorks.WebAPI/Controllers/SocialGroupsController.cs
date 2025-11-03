@@ -312,6 +312,8 @@ namespace HuitWorks.WebAPI.Controllers
                 group.Privacy = input.Privacy;
             if (input.CoverImageUrl != null)
                 group.CoverImageUrl = input.CoverImageUrl;
+            if (input.RequirePostApproval.HasValue)
+                group.RequirePostApproval = input.RequirePostApproval.Value;
 
             group.UpdatedAt = DateTime.UtcNow;
 

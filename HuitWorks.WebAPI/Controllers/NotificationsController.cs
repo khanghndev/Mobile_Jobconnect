@@ -146,5 +146,77 @@ namespace HuitWorks.WebAPI.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
+
+        // GET: api/notification/user/{idUser}
+        [HttpGet("user/{idUser}")]
+        public async Task<ActionResult<IEnumerable<NotificationDto>>> GetByUserId(string idUser)
+        {
+            var notifications = await _context.Notifications
+                .Where(n => n.IdUser == idUser)
+                .OrderByDescending(n => n.DateTime)
+                .Select(n => new NotificationDto
+                {
+                    IdNotification = n.IdNotification,
+                    IdUser = n.IdUser,
+                    Title = n.Title,
+                    Type = n.Type,
+                    DateTime = n.DateTime,
+                    Status = n.Status,
+                    ActionUrl = n.ActionUrl,
+                    CreatedAt = n.CreatedAt,
+                    IsRead = n.IsRead
+                })
+                .ToListAsync();
+
+            if (notifications == null || notifications.Count == 0)
+                return NotFound(new { message = "Người dùng này không có thông báo nào." });
+
+            return Ok(notifications);
+        }
+
+        // PUT: api/notification/update-device
+        [HttpPut("update-device")]
+        public async Task<IActionResult> UpdateDevice([FromBody] UpdateDeviceDto dto)
+        {
+            if (string.IsNullOrEmpty(dto.IdUser) || string.IsNullOrEmpty(dto.NewToken))
+                return BadRequest(new { message = "Thiếu thông tin người dùng hoặc token mới." });
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.IdUser == dto.IdUser);
+            if (user == null)
+                return NotFound(new { message = "Không tìm thấy người dùng." });
+
+            // Tìm token cũ nếu có
+            DeviceToken deviceToken = null;
+
+            if (!string.IsNullOrEmpty(dto.OldToken))
+            {
+                deviceToken = await _context.DeviceTokens
+                    .FirstOrDefaultAsync(t => t.IdUser == dto.IdUser && t.Token == dto.OldToken);
+            }
+
+            // Nếu không tìm thấy token cũ thì tạo mới
+            if (deviceToken == null)
+            {
+                deviceToken = new DeviceToken
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    IdUser = dto.IdUser,
+                    Token = dto.NewToken,
+                    CreatedAt = DateTime.UtcNow
+                };
+                _context.DeviceTokens.Add(deviceToken);
+            }
+            else
+            {
+                // Cập nhật token cũ thành token mới
+                deviceToken.Token = dto.NewToken;
+                deviceToken.CreatedAt = DateTime.UtcNow;
+            }
+
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "Cập nhật thiết bị thành công." });
+        }
+
+
     }
 }

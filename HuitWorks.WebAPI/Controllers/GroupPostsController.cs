@@ -164,8 +164,6 @@ namespace HuitWorks.WebAPI.Controllers
                 .Include(p => p.SocialGroup)
                 .Include(p => p.GroupComments)
                     .ThenInclude(c => c.User)
-                .Include(p => p.GroupReactions)
-                    .ThenInclude(r => r.User)
                 .FirstOrDefaultAsync(p => p.IdPost == id);
 
             if (post == null)
@@ -187,6 +185,18 @@ namespace HuitWorks.WebAPI.Controllers
                 return Forbid("Bạn cần đăng nhập để xem bài đăng này");
             }
 
+            // Load reactions separately
+            var postReactions = await _context.GroupReactions
+                .Include(r => r.User)
+                .Where(r => r.EntityType == "post" && r.EntityId == post.IdPost)
+                .ToListAsync();
+
+            // Load comment reactions separately
+            var commentIds = post.GroupComments.Select(c => c.IdComment).ToList();
+            var commentReactions = await _context.GroupReactions
+                .Where(r => r.EntityType == "comment" && commentIds.Contains(r.EntityId))
+                .ToListAsync();
+
             var postDto = new GroupPostDto
             {
                 IdPost = post.IdPost,
@@ -200,41 +210,45 @@ namespace HuitWorks.WebAPI.Controllers
                 CreatedAt = post.CreatedAt,
                 UpdatedAt = post.UpdatedAt,
                 CommentCount = post.GroupComments.Count(),
-                ReactionCount = post.GroupReactions.Count(),
-                Reactions = post.GroupReactions.Select(r => new GroupReactionDto
+                ReactionCount = postReactions.Count,
+                Reactions = postReactions.Select(r => new GroupReactionDto
                 {
                     IdReaction = r.IdReaction,
                     EntityType = r.EntityType,
                     EntityId = r.EntityId,
                     IdUser = r.IdUser,
-                    UserName = r.User!.UserName,
-                    UserAvatar = r.User.AvatarUrl,
+                    UserName = r.User?.UserName ?? "Unknown",
+                    UserAvatar = r.User?.AvatarUrl,
                     Reaction = r.Reaction,
                     CreatedAt = r.CreatedAt
                 }).ToList(),
                 Comments = post.GroupComments
                     .Where(c => c.ParentId == null) // Chỉ lấy comments gốc
                     .OrderBy(c => c.CreatedAt)
-                    .Select(c => new GroupCommentDto
+                    .Select(c =>
                     {
-                        IdComment = c.IdComment,
-                        IdPost = c.IdPost,
-                        IdUser = c.IdUser,
-                        UserName = c.User!.UserName,
-                        UserAvatar = c.User.AvatarUrl,
-                        Content = c.Content,
-                        ParentId = c.ParentId,
-                        CreatedAt = c.CreatedAt,
-                        ReplyCount = c.Replies.Count(),
-                        ReactionCount = c.GroupReactions.Count(),
-                        IsLikedByUser = userId != null && c.GroupReactions.Any(r => r.IdUser == userId),
-                        UserReaction = userId != null ? c.GroupReactions
-                            .Where(r => r.IdUser == userId)
-                            .Select(r => r.Reaction)
-                            .FirstOrDefault() : null
+                        var reactionsForComment = commentReactions.Where(r => r.EntityId == c.IdComment).ToList();
+                        return new GroupCommentDto
+                        {
+                            IdComment = c.IdComment,
+                            IdPost = c.IdPost,
+                            IdUser = c.IdUser,
+                            UserName = c.User!.UserName,
+                            UserAvatar = c.User.AvatarUrl,
+                            Content = c.Content,
+                            ParentId = c.ParentId,
+                            CreatedAt = c.CreatedAt,
+                            ReplyCount = c.Replies.Count(),
+                            ReactionCount = reactionsForComment.Count,
+                            IsLikedByUser = userId != null && reactionsForComment.Any(r => r.IdUser == userId),
+                            UserReaction = userId != null ? reactionsForComment
+                                .Where(r => r.IdUser == userId)
+                                .Select(r => r.Reaction)
+                                .FirstOrDefault() : null
+                        };
                     }).ToList(),
-                IsLikedByUser = userId != null && post.GroupReactions.Any(r => r.IdUser == userId),
-                UserReaction = userId != null ? post.GroupReactions
+                IsLikedByUser = userId != null && postReactions.Any(r => r.IdUser == userId),
+                UserReaction = userId != null ? postReactions
                     .Where(r => r.IdUser == userId)
                     .Select(r => r.Reaction)
                     .FirstOrDefault() : null

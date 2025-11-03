@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HuitWorks.WebAPI.Models
 {
-    [Table("socialComment")]
+    [Table("socialcomment")]
     public class SocialComment
     {
         [Key]
@@ -73,7 +73,7 @@ namespace HuitWorks.WebAPI.Models
         public virtual ICollection<SocialComment> Replies { get; set; } = new List<SocialComment>();
     }
 
-    [Table("socialCommentLikes")]
+    [Table("socialcommentlikes")]
     public class SocialCommentLike
     {
         [Key]
@@ -101,7 +101,7 @@ namespace HuitWorks.WebAPI.Models
         public User? User { get; set; }
     }
 
-    [Table("socialCommentReports")]
+    [Table("socialcommentreports")]
     public class SocialCommentReport
     {
         [Key]

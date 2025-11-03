@@ -47,6 +47,8 @@ namespace HuitWorks.WebAPI.Models
         public GroupComment? ParentComment { get; set; }
 
         public virtual ICollection<GroupComment> Replies { get; set; } = new List<GroupComment>();
-        public virtual ICollection<GroupReaction> GroupReactions { get; set; } = new List<GroupReaction>();
+        
+        // Không dùng navigation property GroupReactions vì không có foreign key trực tiếp
+        // GroupReactions được query thủ công qua EntityType và EntityId
     }
 }

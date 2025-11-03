@@ -35,7 +35,6 @@ namespace HuitWorks.WebAPI.Data
         public DbSet<SocialComment> SocialComments { get; set; }
         public DbSet<SocialCommentLike> SocialCommentLikes { get; set; }
         public DbSet<SocialCommentReport> SocialCommentReports { get; set; }
-        public DbSet<SocialLike> SocialLikes { get; set; }
         public DbSet<SocialReaction> SocialReactions { get; set; }
         public DbSet<SocialShare> SocialShares { get; set; }
         public DbSet<SavedPost> SavedPosts { get; set; }
@@ -67,6 +66,11 @@ namespace HuitWorks.WebAPI.Data
         public DbSet<GroupReaction> GroupReactions { get; set; }
         public DbSet<GroupTag> GroupTags { get; set; }
 
+        public DbSet<OtpCode> OtpCodes { get; set; }
+
+        public DbSet<DeviceToken> DeviceTokens { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Primary keys
@@ -93,7 +97,6 @@ namespace HuitWorks.WebAPI.Data
             // Social entities
             modelBuilder.Entity<SocialPost>().HasKey(p => p.IdPost);
             modelBuilder.Entity<SocialComment>().HasKey(c => c.IdComment);
-            modelBuilder.Entity<SocialLike>().HasKey(l => new { l.IdPost, l.IdUser });
             modelBuilder.Entity<SocialReaction>().HasKey(r => r.IdReaction);
             modelBuilder.Entity<SocialShare>().HasKey(s => s.IdShare);
             modelBuilder.Entity<SavedPost>().HasKey(sp => new { sp.IdPost, sp.IdUser });
@@ -162,11 +165,6 @@ namespace HuitWorks.WebAPI.Data
                 .HasForeignKey(cr => cr.ReviewedBy)
                 .OnDelete(DeleteBehavior.SetNull);
 
-            modelBuilder.Entity<SocialLike>()
-                .HasOne(l => l.Post)
-                .WithMany()
-                .HasForeignKey(l => l.IdPost)
-                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<SocialConnection>()
                 .HasOne(sc => sc.User1)

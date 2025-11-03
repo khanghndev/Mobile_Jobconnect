@@ -5,8 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using HuitWorks.WebAPI.Data;
-using FirebaseAdmin; // Đảm bảo namespace này đúng
-using Google.Apis.Auth.OAuth2; // Đảm bảo namespace này đúng
 using HuitWorks.WebAPI.Services; // THÊM DÒNG NÀY: để sử dụng IGeocodingService và NominatimGeocodingService
 using HuitWorks.WebAPI.Hubs;
 
@@ -28,21 +26,7 @@ builder.Services.AddDbContext<JobConnectDbContext>(options =>
    )
 );
 
-// Khởi tạo Firebase Admin SDK
-// Đảm bảo file "serviceAccountKey.json" nằm đúng đường dẫn và được copy vào output directory
-string firebaseKeyPath = Path.Combine(builder.Environment.ContentRootPath, "serviceAccountKey.json");
-if (File.Exists(firebaseKeyPath))
-{
-    FirebaseApp.Create(new AppOptions
-    {
-        Credential = GoogleCredential.FromFile(firebaseKeyPath)
-    });
-}
-else
-{
-    // Log hoặc xử lý lỗi nếu không tìm thấy file key
-    Console.WriteLine("Firebase serviceAccountKey.json not found. Firebase Admin SDK will not be initialized.");
-}
+// Firebase đã được loại bỏ - ứng dụng sử dụng JWT authentication
 
 
 // Cấu hình JWT Authentication
@@ -117,6 +101,9 @@ builder.Services.AddScoped<ICvRenderService, CvRenderService>();
 
 // Đăng ký CV Template Seed Service
 builder.Services.AddScoped<ICvTemplateSeedService, CvTemplateSeedService>();
+
+// Đăng ký Supabase Auth Service
+builder.Services.AddScoped<ISupabaseAuthService, SupabaseAuthService>();
 
 
 // Cấu hình Swagger/OpenAPI

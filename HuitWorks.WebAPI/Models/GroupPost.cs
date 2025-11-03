@@ -27,7 +27,6 @@ namespace HuitWorks.WebAPI.Models
         public string Content { get; set; } = null!;
 
         [Column("mediaUrl")]
-        [StringLength(255)]
         public string? MediaUrl { get; set; }
 
         [Required]
@@ -64,6 +63,8 @@ namespace HuitWorks.WebAPI.Models
         public User? Approver { get; set; }
 
         public virtual ICollection<GroupComment> GroupComments { get; set; } = new List<GroupComment>();
-        public virtual ICollection<GroupReaction> GroupReactions { get; set; } = new List<GroupReaction>();
+        
+        // Không dùng navigation property GroupReactions vì không có foreign key trực tiếp
+        // GroupReactions được query thủ công qua EntityType="post" và EntityId=IdPost
     }
 }

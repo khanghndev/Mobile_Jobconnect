@@ -66,24 +66,31 @@ namespace HuitWorks.WebAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            // Kiểm tra reaction đã tồn tại chưa
+            // Kiểm tra reaction đã tồn tại chưa - dùng AsNoTracking để tránh load navigation properties
             var existingReaction = await _context.GroupReactions
+                .AsNoTracking()
                 .FirstOrDefaultAsync(r => r.EntityType == dto.EntityType && 
                                         r.EntityId == dto.EntityId && 
                                         r.IdUser == dto.IdUser);
 
             if (existingReaction != null)
             {
-                // Cập nhật reaction hiện tại
-                existingReaction.Reaction = dto.Reaction;
-                existingReaction.CreatedAt = DateTime.UtcNow;
+                // Cập nhật reaction hiện tại - cần load lại với tracking
+                var trackedReaction = await _context.GroupReactions
+                    .FirstOrDefaultAsync(r => r.IdReaction == existingReaction.IdReaction);
+                
+                if (trackedReaction != null)
+                {
+                    trackedReaction.Reaction = dto.Reaction;
+                    trackedReaction.CreatedAt = DateTime.UtcNow;
+                }
             }
             else
             {
                 // Tạo reaction mới
                 var reaction = new GroupReaction
                 {
-                    IdReaction = Guid.NewGuid().ToString(),
+                    IdReaction = Guid.NewGuid().ToString("N"),
                     EntityType = dto.EntityType,
                     EntityId = dto.EntityId,
                     IdUser = dto.IdUser,
@@ -95,17 +102,24 @@ namespace HuitWorks.WebAPI.Controllers
             }
 
             await _context.SaveChangesAsync();
+            
+            // Lấy lại reaction sau khi save để có đúng IdReaction
+            var savedReaction = await _context.GroupReactions
+                .AsNoTracking()
+                .FirstOrDefaultAsync(r => r.EntityType == dto.EntityType && 
+                                        r.EntityId == dto.EntityId && 
+                                        r.IdUser == dto.IdUser);
 
             var user = await _context.Users.FindAsync(dto.IdUser);
             var reactionDto = new GroupReactionDto
             {
-                IdReaction = existingReaction?.IdReaction ?? Guid.NewGuid().ToString(),
+                IdReaction = savedReaction?.IdReaction ?? Guid.NewGuid().ToString("N"),
                 EntityType = dto.EntityType,
                 EntityId = dto.EntityId,
                 IdUser = dto.IdUser,
                 UserName = user?.UserName ?? "Unknown",
                 Reaction = dto.Reaction,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = savedReaction?.CreatedAt ?? DateTime.UtcNow
             };
 
             return Ok(reactionDto);
@@ -116,14 +130,27 @@ namespace HuitWorks.WebAPI.Controllers
         public async Task<IActionResult> DeleteReaction(string entityType, string entityId, string userId)
         {
             var reaction = await _context.GroupReactions
+                .AsNoTracking()
                 .FirstOrDefaultAsync(r => r.EntityType == entityType && 
                                         r.EntityId == entityId && 
                                         r.IdUser == userId);
-
-            if (reaction == null)
+            
+            if (reaction != null)
+            {
+                // Load lại với tracking để có thể xóa
+                var trackedReaction = await _context.GroupReactions
+                    .FirstOrDefaultAsync(r => r.IdReaction == reaction.IdReaction);
+                    
+                if (trackedReaction != null)
+                {
+                    _context.GroupReactions.Remove(trackedReaction);
+                }
+            }
+            else
+            {
                 return NotFound("Không tìm thấy reaction");
+            }
 
-            _context.GroupReactions.Remove(reaction);
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Đã xóa reaction thành công" });

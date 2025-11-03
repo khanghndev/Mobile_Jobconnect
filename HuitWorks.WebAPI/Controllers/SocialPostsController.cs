@@ -105,12 +105,36 @@ namespace HuitWorks.WebAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<SocialPostDto>> GetById(string id)
+        public async Task<ActionResult<SocialPostDto>> GetById(string id, [FromQuery] string? currentUserId = null)
         {
             var p = await _context.SocialPosts
                 .Include(p => p.User)
                 .FirstOrDefaultAsync(p => p.IdPost == id);
             if (p == null) return NotFound();
+
+            // Get reactions summary
+            var reactionsSummary = await _context.SocialReactions
+                .Where(r => r.IdPost == p.IdPost)
+                .GroupBy(r => r.ReactionType)
+                .Select(g => new { Type = g.Key, Count = g.Count() })
+                .ToDictionaryAsync(x => x.Type, x => x.Count);
+
+            // Get current user reaction if exists
+            string? currentUserReaction = null;
+            if (!string.IsNullOrEmpty(currentUserId))
+            {
+                var userReaction = await _context.SocialReactions
+                    .FirstOrDefaultAsync(r => r.IdPost == p.IdPost && r.IdUser == currentUserId);
+                currentUserReaction = userReaction?.ReactionType;
+            }
+
+            // Check if current user saved this post
+            bool isSaved = false;
+            if (!string.IsNullOrEmpty(currentUserId))
+            {
+                isSaved = await _context.SavedPosts
+                    .AnyAsync(sp => sp.IdPost == p.IdPost && sp.IdUser == currentUserId);
+            }
 
             var dto = new SocialPostDto
             {
@@ -126,8 +150,13 @@ namespace HuitWorks.WebAPI.Controllers
                 CreatedAt = p.CreatedAt,
                 UpdatedAt = p.UpdatedAt,
                 LikesCount = await _context.SocialReactions.CountAsync(l => l.IdPost == p.IdPost),
-                CommentsCount = await _context.SocialComments.CountAsync(c => c.IdPost == p.IdPost)
+                CommentsCount = await _context.SocialComments.CountAsync(c => c.IdPost == p.IdPost),
+                SharesCount = await _context.SocialShares.CountAsync(s => s.IdPost == p.IdPost),
+                IsSaved = isSaved,
+                ReactionsSummary = reactionsSummary,
+                CurrentUserReaction = currentUserReaction
             };
+            
             dto.Hashtags = await (from ph in _context.SocialPostHashtags
                                   join h in _context.Hashtags on ph.IdHashtag equals h.IdHashtag
                                   where ph.IdPost == p.IdPost
@@ -148,8 +177,8 @@ namespace HuitWorks.WebAPI.Controllers
                 VideoUrl = input.VideoUrl,
                 Visibility = input.Visibility,
                 PostType = input.PostType,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
             };
             _context.SocialPosts.Add(entity);
             await _context.SaveChangesAsync();
@@ -169,7 +198,7 @@ namespace HuitWorks.WebAPI.Controllers
                     var ht = await _context.Hashtags.FirstOrDefaultAsync(h => h.Slug == slug);
                     if (ht == null)
                     {
-                        ht = new Hashtag { TagOriginal = tagOriginal, Slug = slug, CreatedAt = DateTime.UtcNow };
+                        ht = new Hashtag { TagOriginal = tagOriginal, Slug = slug, CreatedAt = DateTime.Now };
                         _context.Hashtags.Add(ht);
                         await _context.SaveChangesAsync();
                     }
@@ -222,7 +251,7 @@ namespace HuitWorks.WebAPI.Controllers
             entity.VideoUrl = input.VideoUrl;
             entity.Visibility = input.Visibility;
             entity.PostType = input.PostType;
-            entity.UpdatedAt = DateTime.UtcNow;
+            entity.UpdatedAt = DateTime.Now;
             await _context.SaveChangesAsync();
 
             // Update hashtags: simple replace strategy
@@ -244,7 +273,7 @@ namespace HuitWorks.WebAPI.Controllers
                     var ht = await _context.Hashtags.FirstOrDefaultAsync(h => h.Slug == slug);
                     if (ht == null)
                     {
-                        ht = new Hashtag { TagOriginal = tagOriginal, Slug = slug, CreatedAt = DateTime.UtcNow };
+                        ht = new Hashtag { TagOriginal = tagOriginal, Slug = slug, CreatedAt = DateTime.Now };
                         _context.Hashtags.Add(ht);
                         await _context.SaveChangesAsync();
                     }
@@ -285,7 +314,7 @@ namespace HuitWorks.WebAPI.Controllers
                 IdPost = id,
                 IdUser = userId,
                 ReactionType = "like",
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.Now
             });
             await _context.SaveChangesAsync();
             return Ok();
@@ -380,7 +409,7 @@ namespace HuitWorks.WebAPI.Controllers
                         IdPost = input.PostId,
                         IdUser = input.UserId,
                         ReactionType = input.ReactionType,
-                        CreatedAt = DateTime.UtcNow
+                        CreatedAt = DateTime.Now
                     };
                     _context.SocialReactions.Add(reaction);
                     await _context.SaveChangesAsync();
@@ -455,30 +484,55 @@ namespace HuitWorks.WebAPI.Controllers
                 .OrderByDescending(p => p.CreatedAt)
                 .ToListAsync();
 
-            var feed = feedPosts.Select(p => new SocialPostDto
-            {
-                IdPost = p.IdPost,
-                IdUser = p.IdUser,
-                UserName = p.User?.UserName ?? "Unknown",
-                AvatarUrl = p.User?.AvatarUrl,
-                Content = p.Content,
-                ImageUrl = p.ImageUrl,
-                VideoUrl = p.VideoUrl,
-                Visibility = p.Visibility,
-                PostType = p.PostType,
-                CreatedAt = p.CreatedAt,
-                UpdatedAt = p.UpdatedAt,
-                LikesCount = _context.SocialReactions.Count(l => l.IdPost == p.IdPost),
-                CommentsCount = _context.SocialComments.Count(c => c.IdPost == p.IdPost)
-            }).ToList();
+            var feed = new List<SocialPostDto>();
 
-            // load hashtags for feed items
-            foreach (var item in feed)
+            foreach (var p in feedPosts)
             {
-                item.Hashtags = (from ph in _context.SocialPostHashtags
-                                 join h in _context.Hashtags on ph.IdHashtag equals h.IdHashtag
-                                 where ph.IdPost == item.IdPost
-                                 select h.TagOriginal).ToList();
+                // Get reactions summary
+                var reactionsSummary = await _context.SocialReactions
+                    .Where(r => r.IdPost == p.IdPost)
+                    .GroupBy(r => r.ReactionType)
+                    .Select(g => new { Type = g.Key, Count = g.Count() })
+                    .ToDictionaryAsync(x => x.Type, x => x.Count);
+
+                // Get current user reaction if exists
+                string? currentUserReaction = null;
+                var userReaction = await _context.SocialReactions
+                    .FirstOrDefaultAsync(r => r.IdPost == p.IdPost && r.IdUser == userId);
+                currentUserReaction = userReaction?.ReactionType;
+
+                // Check if current user saved this post
+                bool isSaved = await _context.SavedPosts
+                    .AnyAsync(sp => sp.IdPost == p.IdPost && sp.IdUser == userId);
+
+                var dto = new SocialPostDto
+                {
+                    IdPost = p.IdPost,
+                    IdUser = p.IdUser,
+                    UserName = p.User?.UserName ?? "Unknown",
+                    AvatarUrl = p.User?.AvatarUrl,
+                    Content = p.Content,
+                    ImageUrl = p.ImageUrl,
+                    VideoUrl = p.VideoUrl,
+                    Visibility = p.Visibility,
+                    PostType = p.PostType,
+                    CreatedAt = p.CreatedAt,
+                    UpdatedAt = p.UpdatedAt,
+                    LikesCount = await _context.SocialReactions.CountAsync(l => l.IdPost == p.IdPost),
+                    CommentsCount = await _context.SocialComments.CountAsync(c => c.IdPost == p.IdPost),
+                    SharesCount = await _context.SocialShares.CountAsync(s => s.IdPost == p.IdPost),
+                    IsSaved = isSaved,
+                    ReactionsSummary = reactionsSummary,
+                    CurrentUserReaction = currentUserReaction
+                };
+
+                // Load hashtags
+                dto.Hashtags = await (from ph in _context.SocialPostHashtags
+                                      join h in _context.Hashtags on ph.IdHashtag equals h.IdHashtag
+                                      where ph.IdPost == p.IdPost
+                                      select h.TagOriginal).ToListAsync();
+
+                feed.Add(dto);
             }
 
             return Ok(feed);
