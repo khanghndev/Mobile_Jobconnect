@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HuitWorks.WebAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+666db7e0fb257b8768852f321bf7c95bf31b18c0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+49d528b20ee9fbad1cf7fc499ef3c6958204d3e6")]
 [assembly: System.Reflection.AssemblyProductAttribute("HuitWorks.WebAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HuitWorks.WebAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

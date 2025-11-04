@@ -17,6 +17,22 @@
   },
   {
     "ContainingType": "HuitWorks.WebAPI.Controllers.AuthController",
+    "Method": "EnterOtp",
+    "RelativePath": "api/Auth/enter-otp",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "HuitWorks.WebAPI.DTOs.OtpRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.AuthController",
     "Method": "Login",
     "RelativePath": "api/Auth/login",
     "HttpMethod": "POST",
@@ -49,6 +65,38 @@
   },
   {
     "ContainingType": "HuitWorks.WebAPI.Controllers.AuthController",
+    "Method": "ResendOtp",
+    "RelativePath": "api/Auth/resend-otp",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "HuitWorks.WebAPI.DTOs.OtpRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.AuthController",
+    "Method": "ResetPassword",
+    "RelativePath": "api/Auth/reset-password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "HuitWorks.WebAPI.DTOs.ResetPasswordDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.AuthController",
     "Method": "SocialLogin",
     "RelativePath": "api/Auth/social-login",
     "HttpMethod": "POST",
@@ -58,6 +106,38 @@
       {
         "Name": "model",
         "Type": "HuitWorks.WebAPI.DTOs.SocialLoginDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.AuthController",
+    "Method": "VerifyOtp",
+    "RelativePath": "api/Auth/verify-otp",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "HuitWorks.WebAPI.DTOs.VerifyOtpRegisterDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.AuthController",
+    "Method": "VerifyOtpReset",
+    "RelativePath": "api/Auth/verify-otp-reset",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "HuitWorks.WebAPI.DTOs.VerifyOtpDto",
         "IsRequired": true
       }
     ],
@@ -3776,6 +3856,111 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.NotificationController",
+    "Method": "CreateAndSend",
+    "RelativePath": "api/Notification/create-and-send",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "HuitWorks.WebAPI.DTOs.CreateNotificationDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "HuitWorks.WebAPI.DTOs.NotificationDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.NotificationController",
+    "Method": "SendPushNotificationToMultiple",
+    "RelativePath": "api/Notification/send-push-multiple",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "HuitWorks.WebAPI.DTOs.SendPushNotificationMultipleDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.NotificationController",
+    "Method": "SendPushNotification",
+    "RelativePath": "api/Notification/send-push/{userId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "HuitWorks.WebAPI.DTOs.SendPushNotificationDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.NotificationController",
+    "Method": "UpdateDevice",
+    "RelativePath": "api/Notification/update-device",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "HuitWorks.WebAPI.DTOs.UpdateDeviceDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.NotificationController",
+    "Method": "GetByUserId",
+    "RelativePath": "api/Notification/user/{idUser}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idUser",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[HuitWorks.WebAPI.DTOs.NotificationDto, HuitWorks.WebAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "HuitWorks.WebAPI.Controllers.RecruiterInfoController",
     "Method": "GetAll",
     "RelativePath": "api/RecruiterInfo",
@@ -4649,6 +4834,136 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SavedPostsController",
+    "Method": "SavePost",
+    "RelativePath": "api/SavedPosts",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "input",
+        "Type": "HuitWorks.WebAPI.DTOs.CreateSavedPostDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "HuitWorks.WebAPI.DTOs.SavedPostDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SavedPostsController",
+    "Method": "UpdateSavedPost",
+    "RelativePath": "api/SavedPosts",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "input",
+        "Type": "HuitWorks.WebAPI.DTOs.UpdateSavedPostDto",
+        "IsRequired": true
+      },
+      {
+        "Name": "idPost",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "idUser",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SavedPostsController",
+    "Method": "DeleteSavedPost",
+    "RelativePath": "api/SavedPosts",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idPost",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "idUser",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SavedPostsController",
+    "Method": "GetFolders",
+    "RelativePath": "api/SavedPosts/folders/{idUser}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idUser",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SavedPostsController",
+    "Method": "GetSavedPosts",
+    "RelativePath": "api/SavedPosts/user/{idUser}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idUser",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "folderName",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[HuitWorks.WebAPI.DTOs.SavedPostDto, HuitWorks.WebAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "HuitWorks.WebAPI.Controllers.SavedResumeController",
     "Method": "GetAll",
     "RelativePath": "api/SavedResume",
@@ -4727,6 +5042,131 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SearchController",
+    "Method": "SearchPosts",
+    "RelativePath": "api/Search/posts",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "q",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SearchController",
+    "Method": "GetSearchSuggestions",
+    "RelativePath": "api/Search/suggestions",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "q",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SearchController",
+    "Method": "GetUsers",
+    "RelativePath": "api/Search/users",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SearchController",
+    "Method": "GetUserProfile",
+    "RelativePath": "api/Search/users/{userId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SearchController",
+    "Method": "SearchUsers",
+    "RelativePath": "api/Search/users/search",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "q",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "location",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "jobTitle",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "skills",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "experience",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "education",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "status",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "sort",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SearchController",
+    "Method": "GetUserSuggestions",
+    "RelativePath": "api/Search/users/suggestions",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "q",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "HuitWorks.WebAPI.Controllers.SeedController",
     "Method": "SeedCvTemplates",
     "RelativePath": "api/Seed/cv-templates",
@@ -4764,6 +5204,53 @@
   },
   {
     "ContainingType": "HuitWorks.WebAPI.Controllers.SocialCommentsController",
+    "Method": "GetById",
+    "RelativePath": "api/SocialComments/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "HuitWorks.WebAPI.DTOs.SocialCommentDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SocialCommentsController",
+    "Method": "Update",
+    "RelativePath": "api/SocialComments/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "input",
+        "Type": "HuitWorks.WebAPI.DTOs.UpdateSocialCommentDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SocialCommentsController",
     "Method": "Delete",
     "RelativePath": "api/SocialComments/{id}",
     "HttpMethod": "DELETE",
@@ -4773,6 +5260,53 @@
       {
         "Name": "id",
         "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SocialCommentsController",
+    "Method": "LikeComment",
+    "RelativePath": "api/SocialComments/{id}/like",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "input",
+        "Type": "HuitWorks.WebAPI.DTOs.LikeCommentDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SocialCommentsController",
+    "Method": "ReportComment",
+    "RelativePath": "api/SocialComments/{id}/report",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "input",
+        "Type": "HuitWorks.WebAPI.DTOs.ReportCommentDto",
         "IsRequired": true
       }
     ],
@@ -4831,6 +5365,42 @@
     ]
   },
   {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SocialCommentsController",
+    "Method": "GetByUser",
+    "RelativePath": "api/SocialComments/user/{userId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[HuitWorks.WebAPI.DTOs.SocialCommentDto, HuitWorks.WebAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "HuitWorks.WebAPI.Controllers.SocialConnectionsController",
     "Method": "Accept",
     "RelativePath": "api/SocialConnections/accept",
@@ -4841,6 +5411,22 @@
       {
         "Name": "input",
         "Type": "HuitWorks.WebAPI.DTOs.CreateConnectionRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SocialConnectionsController",
+    "Method": "AcceptAllRequests",
+    "RelativePath": "api/SocialConnections/accept-all",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "input",
+        "Type": "HuitWorks.WebAPI.DTOs.AcceptAllRequestsDto",
         "IsRequired": true
       }
     ],
@@ -4864,6 +5450,38 @@
   },
   {
     "ContainingType": "HuitWorks.WebAPI.Controllers.SocialConnectionsController",
+    "Method": "Cancel",
+    "RelativePath": "api/SocialConnections/cancel",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "input",
+        "Type": "HuitWorks.WebAPI.DTOs.CreateConnectionRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SocialConnectionsController",
+    "Method": "CancelAllSent",
+    "RelativePath": "api/SocialConnections/cancel-all",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "input",
+        "Type": "HuitWorks.WebAPI.DTOs.CancelAllSentDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SocialConnectionsController",
     "Method": "GetFriends",
     "RelativePath": "api/SocialConnections/friends/{userId}",
     "HttpMethod": "GET",
@@ -4878,7 +5496,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -4887,6 +5505,22 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SocialConnectionsController",
+    "Method": "Reject",
+    "RelativePath": "api/SocialConnections/reject",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "input",
+        "Type": "HuitWorks.WebAPI.DTOs.CreateConnectionRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "HuitWorks.WebAPI.Controllers.SocialConnectionsController",
@@ -4920,7 +5554,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[HuitWorks.WebAPI.DTOs.SocialConnectionDto, HuitWorks.WebAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -4929,6 +5563,53 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SocialConnectionsController",
+    "Method": "GetSentRequests",
+    "RelativePath": "api/SocialConnections/sent/{userId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SocialConnectionsController",
+    "Method": "GetFriendStatus",
+    "RelativePath": "api/SocialConnections/status",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "currentUserId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "targetUserId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "HuitWorks.WebAPI.Controllers.SocialConnectionsController",
@@ -4950,6 +5631,136 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SocialFollowsController",
+    "Method": "CreateFollow",
+    "RelativePath": "api/SocialFollows",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "input",
+        "Type": "HuitWorks.WebAPI.DTOs.CreateFollowDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "HuitWorks.WebAPI.DTOs.SocialFollowDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SocialFollowsController",
+    "Method": "Unfollow",
+    "RelativePath": "api/SocialFollows",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "followerId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "followingId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SocialFollowsController",
+    "Method": "GetFollowers",
+    "RelativePath": "api/SocialFollows/followers/{userId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[HuitWorks.WebAPI.DTOs.SocialFollowDto, HuitWorks.WebAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SocialFollowsController",
+    "Method": "GetFollowing",
+    "RelativePath": "api/SocialFollows/following/{userId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[HuitWorks.WebAPI.DTOs.SocialFollowDto, HuitWorks.WebAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SocialFollowsController",
+    "Method": "GetStats",
+    "RelativePath": "api/SocialFollows/stats/{userId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "currentUserId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "HuitWorks.WebAPI.DTOs.FollowStatsDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "HuitWorks.WebAPI.Controllers.SocialGroupsController",
@@ -5435,6 +6246,16 @@
         "Name": "userId",
         "Type": "System.String",
         "IsRequired": false
+      },
+      {
+        "Name": "currentUserId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "postType",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": [
@@ -5487,6 +6308,11 @@
         "Name": "id",
         "Type": "System.String",
         "IsRequired": true
+      },
+      {
+        "Name": "currentUserId",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": [
@@ -5608,6 +6434,37 @@
   },
   {
     "ContainingType": "HuitWorks.WebAPI.Controllers.SocialPostsController",
+    "Method": "GetPostReactions",
+    "RelativePath": "api/SocialPosts/{id}/reactions",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "HuitWorks.WebAPI.DTOs.PostReactionsDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SocialPostsController",
     "Method": "GetFeed",
     "RelativePath": "api/SocialPosts/feed/{userId}",
     "HttpMethod": "GET",
@@ -5623,6 +6480,241 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[HuitWorks.WebAPI.DTOs.SocialPostDto, HuitWorks.WebAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SocialPostsController",
+    "Method": "ReactToPost",
+    "RelativePath": "api/SocialPosts/react",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "input",
+        "Type": "HuitWorks.WebAPI.DTOs.ReactToPostDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SocialReactionsController",
+    "Method": "CreateReaction",
+    "RelativePath": "api/SocialReactions",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "input",
+        "Type": "HuitWorks.WebAPI.DTOs.CreateReactionDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "HuitWorks.WebAPI.DTOs.SocialReactionDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SocialReactionsController",
+    "Method": "DeleteReaction",
+    "RelativePath": "api/SocialReactions",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idPost",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "idUser",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SocialReactionsController",
+    "Method": "GetByPost",
+    "RelativePath": "api/SocialReactions/post/{idPost}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idPost",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[HuitWorks.WebAPI.DTOs.SocialReactionDto, HuitWorks.WebAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SocialReactionsController",
+    "Method": "GetReactionSummary",
+    "RelativePath": "api/SocialReactions/post/{idPost}/summary",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idPost",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.Dictionary\u00602[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SocialReactionsController",
+    "Method": "GetUserReactions",
+    "RelativePath": "api/SocialReactions/post/{idPost}/users",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idPost",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SocialSharesController",
+    "Method": "CreateShare",
+    "RelativePath": "api/SocialShares",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "input",
+        "Type": "HuitWorks.WebAPI.DTOs.CreateShareDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "HuitWorks.WebAPI.DTOs.SocialShareDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SocialSharesController",
+    "Method": "DeleteShare",
+    "RelativePath": "api/SocialShares/{idShare}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idShare",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SocialSharesController",
+    "Method": "GetShareCount",
+    "RelativePath": "api/SocialShares/count/{idPost}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idPost",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Int32",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "HuitWorks.WebAPI.Controllers.SocialSharesController",
+    "Method": "GetByPost",
+    "RelativePath": "api/SocialShares/post/{idPost}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idPost",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[HuitWorks.WebAPI.DTOs.SocialShareDto, HuitWorks.WebAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",

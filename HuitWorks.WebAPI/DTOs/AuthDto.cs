@@ -17,12 +17,16 @@ namespace HuitWorks.WebAPI.DTOs
         [RegularExpression(@"^(?=.*[#@$%&]).{8,}$", ErrorMessage = "Password must be at least 8 characters and contain at least one special character (#@$%&).")]
         public string Password { get; set; } = null!;
 
+        [Required(ErrorMessage = "ConfirmPassword is required.")]
+        [Compare("Password", ErrorMessage = "Password and ConfirmPassword do not match.")]
+        public string ConfirmPassword { get; set; } = null!;
+
         [Phone(ErrorMessage = "Invalid phone number format.")]
         public string? PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "RoleName is required.")]
         public string RoleName { get; set; } = "Candidate"; // mặc định Candidate
-        public string? AppwriteUserId { get; set; }
+        public string? SupabaseIdUser { get; set; }
     }
     // DTO dùng khi đăng nhập
     public class LoginDto

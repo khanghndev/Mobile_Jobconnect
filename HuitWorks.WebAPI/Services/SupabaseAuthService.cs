@@ -11,7 +11,7 @@ namespace HuitWorks.WebAPI.Services
         Task SendEmailVerificationAsync(string userId, string redirectUrl);
         Task<bool> DeleteUserAsync(string userId);
         Task SendEmailAsync(string to, string subject, string htmlBody);
-
+        Task<bool> UpdatePasswordAsync(string userId, string newPassword);
     }
 
     public class SupabaseAuthService : ISupabaseAuthService
@@ -287,6 +287,39 @@ namespace HuitWorks.WebAPI.Services
             {
                 Console.WriteLine($"[SendEmailAsync] Failed to send email: {ex.Message}");
                 throw new Exception("Gửi email thất bại: " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Cập nhật mật khẩu của user trên Supabase
+        /// </summary>
+        public async Task<bool> UpdatePasswordAsync(string userId, string newPassword)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(newPassword))
+                    return false;
+
+                using var httpClient = CreateHttpClient();
+
+                var payload = new Dictionary<string, object?>
+                {
+                    ["password"] = newPassword
+                };
+
+                var json = JsonSerializer.Serialize(payload);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await httpClient.PutAsync(
+                    $"{_supabaseUrl}/auth/v1/admin/users/{Uri.EscapeDataString(userId)}",
+                    content);
+
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[UpdatePasswordAsync] Failed to update password: {ex.Message}");
+                return false;
             }
         }
 

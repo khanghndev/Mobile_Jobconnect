@@ -105,6 +105,12 @@ builder.Services.AddScoped<ICvTemplateSeedService, CvTemplateSeedService>();
 // Đăng ký Supabase Auth Service
 builder.Services.AddScoped<ISupabaseAuthService, SupabaseAuthService>();
 
+// Đăng ký Push Notification Service
+builder.Services.AddScoped<IPushNotificationService, PushNotificationService>();
+
+// Đăng ký Background Service để cleanup OTP hết hạn
+builder.Services.AddHostedService<OtpCleanupService>();
+
 
 // Cấu hình Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();

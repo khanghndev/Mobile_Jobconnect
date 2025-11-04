@@ -68,4 +68,32 @@ namespace HuitWorks.WebAPI.DTOs
         [Range(0, 1, ErrorMessage = "IsRead chỉ nhận giá trị 0 hoặc 1.")]
         public int? IsRead { get; set; }
     }
+
+    public class SendPushNotificationDto
+    {
+        [Required(ErrorMessage = "Title là bắt buộc.")]
+        public string Title { get; set; } = null!;
+
+        [Required(ErrorMessage = "Body là bắt buộc.")]
+        public string Body { get; set; } = null!;
+
+        public string? Type { get; set; }
+        public string? ActionUrl { get; set; }
+        public string? NotificationId { get; set; }
+    }
+
+    public class SendPushNotificationMultipleDto
+    {
+        [Required(ErrorMessage = "UserIds là bắt buộc.")]
+        public List<string> UserIds { get; set; } = null!;
+
+        [Required(ErrorMessage = "Title là bắt buộc.")]
+        public string Title { get; set; } = null!;
+
+        [Required(ErrorMessage = "Body là bắt buộc.")]
+        public string Body { get; set; } = null!;
+
+        public string? Type { get; set; }
+        public string? ActionUrl { get; set; }
+    }
 }

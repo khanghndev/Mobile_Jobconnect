@@ -1,272 +1,276 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\",
+  "WorkspaceRootPath": "F:\\0411\\Mobile_Jobconnect_api_final\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\socialpostscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\socialpostscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\dtos\\socialdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\dtos\\socialdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\jobpostingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\jobpostingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\models\\hashtag.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\models\\hashtag.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\websitecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\websitecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\resumeskillscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\resumeskillscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\resumescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\resumescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\data\\jobconnectdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\data\\jobconnectdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\dtos\\authdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\dtos\\authdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\jobpostingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\jobpostingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\dtos\\jobapplicationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\dtos\\jobapplicationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\dtos\\resumedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\dtos\\resumedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\dtos\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\dtos\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\models\\recruiterinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\models\\recruiterinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\models\\candidateinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\models\\candidateinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\models\\company.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\models\\company.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\models\\resume.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\models\\resume.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\models\\jobapplication.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\models\\jobapplication.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\jobapplicationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\jobapplicationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\groupreactionscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\groupreactionscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\grouppostscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\grouppostscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\groupcommentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\groupcommentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\socialgroupscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\socialgroupscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\candidateinfocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\candidateinfocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\dtos\\candidateinfodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\dtos\\candidateinfodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\services\\cvrenderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\services\\cvrenderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\services\\cvtemplateseedservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\services\\cvtemplateseedservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\services\\iappwritespatialservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\services\\iappwritespatialservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\dtos\\cvdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\dtos\\cvdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\models\\cvtemplate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\models\\cvtemplate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\cvtemplatecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\cvtemplatecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\seedcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\seedcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\cvdocumentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\cvdocumentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\dtos\\grouppostdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\dtos\\grouppostdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\dtos\\socialgroupdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\dtos\\socialgroupdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\models\\grouppost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\models\\grouppost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\models\\socialgroup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\models\\socialgroup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\models\\notification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\models\\notification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\services\\ispatialqueryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\services\\ispatialqueryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\servicehelper\\quotaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\searchcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\searchcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\socialpostscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\socialpostscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\dtos\\socialdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\dtos\\socialdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\models\\hashtag.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\models\\hashtag.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\websitecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\websitecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\resumeskillscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\resumeskillscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\resumescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\resumescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\data\\jobconnectdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\data\\jobconnectdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\dtos\\authdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\dtos\\authdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\dtos\\jobapplicationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\dtos\\jobapplicationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\dtos\\resumedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\dtos\\resumedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\dtos\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\dtos\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\models\\recruiterinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\models\\recruiterinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\models\\candidateinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\models\\candidateinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\models\\company.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\models\\company.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\models\\resume.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\models\\resume.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\models\\jobapplication.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\models\\jobapplication.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\jobapplicationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\jobapplicationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\groupreactionscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\groupreactionscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\grouppostscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\grouppostscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\groupcommentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\groupcommentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\socialgroupscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\socialgroupscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\candidateinfocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\candidateinfocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\dtos\\candidateinfodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\dtos\\candidateinfodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\services\\cvrenderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\services\\cvrenderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\services\\cvtemplateseedservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\services\\cvtemplateseedservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\services\\iappwritespatialservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\services\\iappwritespatialservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\dtos\\cvdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\dtos\\cvdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\models\\cvtemplate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\models\\cvtemplate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\cvtemplatecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\cvtemplatecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\seedcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\seedcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\cvdocumentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\cvdocumentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\dtos\\grouppostdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\dtos\\grouppostdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\dtos\\socialgroupdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\dtos\\socialgroupdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\models\\grouppost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\models\\grouppost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\models\\socialgroup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\models\\socialgroup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\models\\notification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\models\\notification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\services\\ispatialqueryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\services\\ispatialqueryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\servicehelper\\quotaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\servicehelper\\quotaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\servicehelper\\nominatimgeocodingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\servicehelper\\nominatimgeocodingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\servicehelper\\nominatimgeocodingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\servicehelper\\igeocodingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\servicehelper\\igeocodingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\servicehelper\\igeocodingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\services\\spatialqueryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\services\\spatialqueryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\services\\spatialqueryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\models\\jobposting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\models\\jobposting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\models\\jobposting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\serverversion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\serverversion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\serverversion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\services\\ijobrecommendationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\services\\ijobrecommendationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\services\\ijobrecommendationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\services\\jobrecommendationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\services\\jobrecommendationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\services\\jobrecommendationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\services\\appwritespatialservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\services\\appwritespatialservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\services\\appwritespatialservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\dtos\\jobrecommendationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\dtos\\jobrecommendationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\dtos\\jobrecommendationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\dtos\\companydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\dtos\\companydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\dtos\\companydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\conversationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\conversationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\conversationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\messagescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\messagescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\messagescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\socialconnectionscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\socialconnectionscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\socialconnectionscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\jobsavedcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\jobsavedcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\jobsavedcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\socialmessagescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\socialmessagescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\socialmessagescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\socialcommentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\socialcommentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\socialcommentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\companiescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\companiescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\companiescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\huitworks.webapi.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\huitworks.webapi.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
       "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\huitworks.webapi.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\huitworks.webapi.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\huitworks.webapi.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
       "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\huitworks.webapi.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|H:\\Mobile\\Project\\Mobile_Jobconnect_api_new_v5\\Mobile_Jobconnect_api_new_v5\\HuitWorks.WebAPI\\Controllers\\CandidateInfoController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\models\\jobsaved.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\models\\jobsaved.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\models\\jobsaved.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|d:\\khoa_luan_tn\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\notificationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|f:\\0411\\mobile_jobconnect_api_final\\huitworks.webapi\\controllers\\notificationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A32F9193-52DC-4402-9DE7-9BBA3558F8D5}|HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj|solutionrelative:huitworks.webapi\\controllers\\notificationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -277,7 +281,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -290,35 +294,36 @@
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "Hashtag.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\Hashtag.cs",
-              "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Models\\Hashtag.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\Hashtag.cs",
-              "RelativeToolTip": "HuitWorks.WebAPI\\Models\\Hashtag.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAiwBkAAAAFAAAAAAAAAA==",
+              "Title": "SearchController.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\SearchController.cs",
+              "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Controllers\\SearchController.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\SearchController.cs",
+              "RelativeToolTip": "HuitWorks.WebAPI\\Controllers\\SearchController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAOwBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T07:20:51.103Z",
+              "WhenOpened": "2025-10-29T07:49:10.351Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 0,
               "Title": "AuthController.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\AuthController.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Controllers\\AuthController.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\AuthController.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\AuthController.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAXAAAAAAAAAA==",
+              "ViewState": "AgIAAN0AAAAAAAAAAAAgwCcAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-08T11:50:38.325Z"
+              "WhenOpened": "2025-09-08T11:50:38.325Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 21,
               "Title": "JobApplication.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\JobApplication.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\JobApplication.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Models\\JobApplication.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\JobApplication.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\JobApplication.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Models\\JobApplication.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -326,11 +331,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "JobPostingController.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\JobPostingController.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\JobPostingController.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Controllers\\JobPostingController.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\JobPostingController.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\JobPostingController.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Controllers\\JobPostingController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -339,11 +344,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 29,
               "Title": "CvRenderService.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\CvRenderService.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\CvRenderService.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Services\\CvRenderService.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\CvRenderService.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\CvRenderService.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Services\\CvRenderService.cs",
               "ViewState": "AgIAAB0BAAAAAAAAAAAswC8BAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -351,11 +356,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 11,
               "Title": "AuthDto.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\AuthDto.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\AuthDto.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\DTOs\\AuthDto.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\AuthDto.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\AuthDto.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\DTOs\\AuthDto.cs",
               "ViewState": "AgIAAAgAAAAAAAAAAAAAwBcAAABRAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -363,37 +368,60 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "SocialPostsController.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\SocialPostsController.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\SocialPostsController.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Controllers\\SocialPostsController.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\SocialPostsController.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\SocialPostsController.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Controllers\\SocialPostsController.cs",
               "ViewState": "AgIAALYAAAAAAAAAAAD4v9oAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-07T12:14:18.28Z",
+              "WhenOpened": "2025-09-07T12:14:18.28Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\appsettings.json",
+              "RelativeDocumentMoniker": "HuitWorks.WebAPI\\appsettings.json",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\appsettings.json",
+              "RelativeToolTip": "HuitWorks.WebAPI\\appsettings.json",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAACIAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-09-27T03:46:36.502Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 6,
+              "Title": "Hashtag.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\Hashtag.cs",
+              "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Models\\Hashtag.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\Hashtag.cs",
+              "RelativeToolTip": "HuitWorks.WebAPI\\Models\\Hashtag.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAiwBkAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-28T07:20:51.103Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "SocialDtos.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\SocialDtos.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\SocialDtos.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\DTOs\\SocialDtos.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\SocialDtos.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\SocialDtos.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\DTOs\\SocialDtos.cs",
               "ViewState": "AgIAAK8AAAAAAAAAAAA2wMwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-11T18:12:28.357Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-11T18:12:28.357Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 10,
               "Title": "JobConnectDbContext.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Data\\JobConnectDbContext.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Data\\JobConnectDbContext.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Data\\JobConnectDbContext.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Data\\JobConnectDbContext.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Data\\JobConnectDbContext.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Data\\JobConnectDbContext.cs",
               "ViewState": "AgIAAEcAAAAAAAAAAAAcwFYAAABKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -401,11 +429,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 8,
               "Title": "ResumeSkillsController.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\ResumeSkillsController.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\ResumeSkillsController.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Controllers\\ResumeSkillsController.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\ResumeSkillsController.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\ResumeSkillsController.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Controllers\\ResumeSkillsController.cs",
               "ViewState": "AgIAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -413,11 +441,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 7,
               "Title": "WebsiteController.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\WebsiteController.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\WebsiteController.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Controllers\\WebsiteController.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\WebsiteController.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\WebsiteController.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Controllers\\WebsiteController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -425,11 +453,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 12,
               "Title": "JobApplicationDto.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\JobApplicationDto.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\JobApplicationDto.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\DTOs\\JobApplicationDto.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\JobApplicationDto.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\JobApplicationDto.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\DTOs\\JobApplicationDto.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAAA4AAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -437,11 +465,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 9,
               "Title": "ResumesController.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\ResumesController.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\ResumesController.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Controllers\\ResumesController.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\ResumesController.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\ResumesController.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Controllers\\ResumesController.cs",
               "ViewState": "AgIAAPcAAAAAAAAAAAAqwAgBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -449,11 +477,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 17,
               "Title": "RecruiterInfo.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\RecruiterInfo.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\RecruiterInfo.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Models\\RecruiterInfo.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\RecruiterInfo.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\RecruiterInfo.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Models\\RecruiterInfo.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -461,11 +489,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 16,
               "Title": "User.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\User.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\User.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Models\\User.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\User.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\User.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Models\\User.cs",
               "ViewState": "AgIAACwAAAAAAAAAAAAUwDYAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -473,11 +501,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 20,
               "Title": "Resume.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\Resume.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\Resume.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Models\\Resume.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\Resume.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\Resume.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Models\\Resume.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -485,11 +513,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 19,
               "Title": "Company.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\Company.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\Company.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Models\\Company.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\Company.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\Company.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Models\\Company.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -497,11 +525,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 15,
               "Title": "UserDto.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\UserDto.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\UserDto.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\DTOs\\UserDto.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\UserDto.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\UserDto.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\DTOs\\UserDto.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAuwA0AAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -509,11 +537,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 13,
               "Title": "ResumeDto.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\ResumeDto.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\ResumeDto.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\DTOs\\ResumeDto.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\ResumeDto.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\ResumeDto.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\DTOs\\ResumeDto.cs",
               "ViewState": "AgIAACsAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -521,11 +549,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 14,
               "Title": "UsersController.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\UsersController.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\UsersController.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Controllers\\UsersController.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\UsersController.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\UsersController.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Controllers\\UsersController.cs",
               "ViewState": "AgIAAD4AAAAAAAAAAAAgwE4AAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -533,11 +561,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 25,
               "Title": "GroupCommentsController.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\GroupCommentsController.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\GroupCommentsController.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Controllers\\GroupCommentsController.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\GroupCommentsController.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\GroupCommentsController.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Controllers\\GroupCommentsController.cs",
               "ViewState": "AgIAAJoBAAAAAAAAAAAcwLkBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -545,11 +573,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 23,
               "Title": "GroupReactionsController.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\GroupReactionsController.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\GroupReactionsController.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Controllers\\GroupReactionsController.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\GroupReactionsController.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\GroupReactionsController.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Controllers\\GroupReactionsController.cs",
               "ViewState": "AgIAAGUAAAAAAAAAAAAcwG4AAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -557,11 +585,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 18,
               "Title": "CandidateInfo.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\CandidateInfo.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\CandidateInfo.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Models\\CandidateInfo.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\CandidateInfo.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\CandidateInfo.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Models\\CandidateInfo.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -569,11 +597,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 26,
               "Title": "SocialGroupsController.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\SocialGroupsController.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\SocialGroupsController.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Controllers\\SocialGroupsController.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\SocialGroupsController.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\SocialGroupsController.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Controllers\\SocialGroupsController.cs",
               "ViewState": "AgIAAA8CAAAAAAAAAAAcwC4CAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -581,11 +609,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 22,
               "Title": "JobApplicationController.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\JobApplicationController.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\JobApplicationController.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Controllers\\JobApplicationController.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\JobApplicationController.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\JobApplicationController.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Controllers\\JobApplicationController.cs",
               "ViewState": "AgIAAJIBAAAAAAAAAAAiwJ4BAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -593,11 +621,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 30,
               "Title": "CvTemplateSeedService.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\CvTemplateSeedService.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\CvTemplateSeedService.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Services\\CvTemplateSeedService.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\CvTemplateSeedService.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\CvTemplateSeedService.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Services\\CvTemplateSeedService.cs",
               "ViewState": "AgIAACYAAAAAAAAAAADwv1AAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -605,11 +633,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 34,
               "Title": "CvTemplateController.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\CvTemplateController.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\CvTemplateController.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Controllers\\CvTemplateController.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\CvTemplateController.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\CvTemplateController.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Controllers\\CvTemplateController.cs",
               "ViewState": "AgIAAKgAAAAAAAAAAADwv7QAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -617,11 +645,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 35,
               "Title": "SeedController.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\SeedController.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\SeedController.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Controllers\\SeedController.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\SeedController.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\SeedController.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Controllers\\SeedController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -629,11 +657,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 24,
               "Title": "GroupPostsController.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\GroupPostsController.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\GroupPostsController.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Controllers\\GroupPostsController.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\GroupPostsController.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\GroupPostsController.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Controllers\\GroupPostsController.cs",
               "ViewState": "AgIAAG8CAAAAAAAAAAAiwI8CAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -641,11 +669,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 28,
               "Title": "CandidateInfoDto.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\CandidateInfoDto.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\CandidateInfoDto.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\DTOs\\CandidateInfoDto.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\CandidateInfoDto.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\CandidateInfoDto.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\DTOs\\CandidateInfoDto.cs",
               "ViewState": "AgIAADMAAAAAAAAAAAAAwD8AAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -653,11 +681,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 27,
               "Title": "CandidateInfoController.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\CandidateInfoController.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\CandidateInfoController.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Controllers\\CandidateInfoController.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\CandidateInfoController.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\CandidateInfoController.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Controllers\\CandidateInfoController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -665,11 +693,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 33,
               "Title": "CvTemplate.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\CvTemplate.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\CvTemplate.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Models\\CvTemplate.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\CvTemplate.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\CvTemplate.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Models\\CvTemplate.cs",
               "ViewState": "AgIAABgAAAAAAAAAAADwvzMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -677,11 +705,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 32,
               "Title": "CvDtos.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\CvDtos.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\CvDtos.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\DTOs\\CvDtos.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\CvDtos.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\CvDtos.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\DTOs\\CvDtos.cs",
               "ViewState": "AgIAAKAAAAAAAAAAAAAwwK4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -689,11 +717,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 31,
               "Title": "IAppwriteSpatialService.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\IAppwriteSpatialService.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\IAppwriteSpatialService.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Services\\IAppwriteSpatialService.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\IAppwriteSpatialService.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\IAppwriteSpatialService.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Services\\IAppwriteSpatialService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -701,11 +729,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 36,
               "Title": "CvDocumentController.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\CvDocumentController.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\CvDocumentController.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Controllers\\CvDocumentController.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\CvDocumentController.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\CvDocumentController.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Controllers\\CvDocumentController.cs",
               "ViewState": "AgIAAIYBAAAAAAAAAAAiwKYBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -713,11 +741,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 46,
+              "DocumentIndex": 47,
               "Title": "JobPosting.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\JobPosting.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\JobPosting.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Models\\JobPosting.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\JobPosting.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\JobPosting.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Models\\JobPosting.cs",
               "ViewState": "AgIAACoAAAAAAAAAAAAhwDYAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -725,11 +753,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 44,
+              "DocumentIndex": 45,
               "Title": "IGeocodingService.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\ServiceHelper\\IGeocodingService.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\ServiceHelper\\IGeocodingService.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\ServiceHelper\\IGeocodingService.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\ServiceHelper\\IGeocodingService.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\ServiceHelper\\IGeocodingService.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\ServiceHelper\\IGeocodingService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -737,11 +765,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 45,
+              "DocumentIndex": 46,
               "Title": "SpatialQueryService.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\SpatialQueryService.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\SpatialQueryService.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Services\\SpatialQueryService.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\SpatialQueryService.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\SpatialQueryService.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Services\\SpatialQueryService.cs",
               "ViewState": "AgIAAAgAAAAAAAAAAAAAwBAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -749,11 +777,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 38,
+              "DocumentIndex": 40,
               "Title": "SocialGroup.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\SocialGroup.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\SocialGroup.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Models\\SocialGroup.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\SocialGroup.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\SocialGroup.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Models\\SocialGroup.cs",
               "ViewState": "AgIAACMAAAAAAAAAAAAYwDAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -761,11 +789,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 37,
+              "DocumentIndex": 39,
               "Title": "GroupPost.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\GroupPost.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\GroupPost.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Models\\GroupPost.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\GroupPost.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\GroupPost.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Models\\GroupPost.cs",
               "ViewState": "AgIAACkAAAAAAAAAAAAxwDsAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -773,11 +801,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 36,
+              "DocumentIndex": 38,
               "Title": "SocialGroupDtos.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\SocialGroupDtos.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\SocialGroupDtos.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\DTOs\\SocialGroupDtos.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\SocialGroupDtos.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\SocialGroupDtos.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\DTOs\\SocialGroupDtos.cs",
               "ViewState": "AgIAAH8AAAAAAAAAAAA5wIoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -785,11 +813,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 37,
               "Title": "GroupPostDtos.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\GroupPostDtos.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\GroupPostDtos.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\DTOs\\GroupPostDtos.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\GroupPostDtos.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\GroupPostDtos.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\DTOs\\GroupPostDtos.cs",
               "ViewState": "AgIAALUAAAAAAAAAAAAQwMAAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -797,11 +825,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 40,
+              "DocumentIndex": 42,
               "Title": "ISpatialQueryService.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\ISpatialQueryService.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\ISpatialQueryService.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Services\\ISpatialQueryService.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\ISpatialQueryService.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\ISpatialQueryService.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Services\\ISpatialQueryService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -809,11 +837,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 47,
+              "DocumentIndex": 48,
               "Title": "ServerVersion.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\ServerVersion.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\ServerVersion.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\ServerVersion.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\ServerVersion.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\ServerVersion.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\ServerVersion.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -821,11 +849,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 39,
+              "DocumentIndex": 41,
               "Title": "Notification.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\Notification.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\Notification.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Models\\Notification.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\Notification.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\Notification.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Models\\Notification.cs",
               "ViewState": "AgIAABIAAAAAAAAAAAA1wB8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -833,11 +861,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 42,
+              "DocumentIndex": 43,
               "Title": "QuotaService.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\ServiceHelper\\QuotaService.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\ServiceHelper\\QuotaService.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\ServiceHelper\\QuotaService.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\ServiceHelper\\QuotaService.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\ServiceHelper\\QuotaService.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\ServiceHelper\\QuotaService.cs",
               "ViewState": "AgIAAAsAAAAAAAAAAAAAwBUAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -845,23 +873,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 41,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\appsettings.json",
-              "RelativeDocumentMoniker": "HuitWorks.WebAPI\\appsettings.json",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\appsettings.json",
-              "RelativeToolTip": "HuitWorks.WebAPI\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAA0AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-09-27T03:46:36.502Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 43,
+              "DocumentIndex": 44,
               "Title": "NominatimGeocodingService.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\ServiceHelper\\NominatimGeocodingService.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\ServiceHelper\\NominatimGeocodingService.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\ServiceHelper\\NominatimGeocodingService.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\ServiceHelper\\NominatimGeocodingService.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\ServiceHelper\\NominatimGeocodingService.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\ServiceHelper\\NominatimGeocodingService.cs",
               "ViewState": "AgIAAAUAAAAAAAAAAAAAAGsAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -869,11 +885,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 48,
+              "DocumentIndex": 49,
               "Title": "IJobRecommendationService.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\IJobRecommendationService.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\IJobRecommendationService.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Services\\IJobRecommendationService.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\IJobRecommendationService.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\IJobRecommendationService.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Services\\IJobRecommendationService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -881,11 +897,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 49,
+              "DocumentIndex": 50,
               "Title": "JobRecommendationService.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\JobRecommendationService.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\JobRecommendationService.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Services\\JobRecommendationService.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\JobRecommendationService.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\JobRecommendationService.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Services\\JobRecommendationService.cs",
               "ViewState": "AgIAANYAAAAAAAAAAAAhwAABAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -893,11 +909,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 50,
+              "DocumentIndex": 51,
               "Title": "AppwriteSpatialService.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\AppwriteSpatialService.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\AppwriteSpatialService.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Services\\AppwriteSpatialService.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\AppwriteSpatialService.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Services\\AppwriteSpatialService.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Services\\AppwriteSpatialService.cs",
               "ViewState": "AgIAAHIAAAAAAAAAAAAowJEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -905,11 +921,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 51,
+              "DocumentIndex": 52,
               "Title": "JobRecommendationDto.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\JobRecommendationDto.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\JobRecommendationDto.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\DTOs\\JobRecommendationDto.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\JobRecommendationDto.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\JobRecommendationDto.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\DTOs\\JobRecommendationDto.cs",
               "ViewState": "AgIAAA0AAAAAAAAAAAAwwBcAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -917,11 +933,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 52,
+              "DocumentIndex": 53,
               "Title": "CompanyDto.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\CompanyDto.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\CompanyDto.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\DTOs\\CompanyDto.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\CompanyDto.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\DTOs\\CompanyDto.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\DTOs\\CompanyDto.cs",
               "ViewState": "AgIAAFcAAAAAAAAAAAD4v1sAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -929,11 +945,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 53,
+              "DocumentIndex": 54,
               "Title": "ChatHub.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Hubs\\ChatHub.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Hubs\\ChatHub.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Hubs\\ChatHub.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Hubs\\ChatHub.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Hubs\\ChatHub.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Hubs\\ChatHub.cs",
               "ViewState": "AgIAABkAAAAAAAAAAAAqwB4AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -941,11 +957,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 55,
+              "DocumentIndex": 56,
               "Title": "MessagesController.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\MessagesController.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\MessagesController.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Controllers\\MessagesController.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\MessagesController.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\MessagesController.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Controllers\\MessagesController.cs",
               "ViewState": "AgIAAHcAAAAAAAAAAAAuwJMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -953,11 +969,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 54,
+              "DocumentIndex": 55,
               "Title": "ConversationsController.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\ConversationsController.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\ConversationsController.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Controllers\\ConversationsController.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\ConversationsController.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\ConversationsController.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Controllers\\ConversationsController.cs",
               "ViewState": "AgIAAGcAAAAAAAAAAAAuwIMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -965,11 +981,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 56,
+              "DocumentIndex": 57,
               "Title": "SocialConnectionsController.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\SocialConnectionsController.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\SocialConnectionsController.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Controllers\\SocialConnectionsController.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\SocialConnectionsController.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\SocialConnectionsController.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Controllers\\SocialConnectionsController.cs",
               "ViewState": "AgIAAF4AAAAAAAAAAAAuwHoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -977,11 +993,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 58,
+              "DocumentIndex": 59,
               "Title": "SocialMessagesController.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\SocialMessagesController.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\SocialMessagesController.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Controllers\\SocialMessagesController.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\SocialMessagesController.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\SocialMessagesController.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Controllers\\SocialMessagesController.cs",
               "ViewState": "AgIAAD8AAAAAAAAAAAAqwFoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -989,11 +1005,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 57,
+              "DocumentIndex": 58,
               "Title": "JobSavedController.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\JobSavedController.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\JobSavedController.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Controllers\\JobSavedController.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\JobSavedController.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\JobSavedController.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Controllers\\JobSavedController.cs",
               "ViewState": "AgIAAGsAAAAAAAAAAAAuwH4AAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -1001,11 +1017,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 59,
+              "DocumentIndex": 60,
               "Title": "SocialCommentsController.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\SocialCommentsController.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\SocialCommentsController.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Controllers\\SocialCommentsController.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\SocialCommentsController.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\SocialCommentsController.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Controllers\\SocialCommentsController.cs",
               "ViewState": "AgIAAEgAAAAAAAAAAAAuwGQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -1013,11 +1029,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 60,
+              "DocumentIndex": 61,
               "Title": "CompaniesController.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\CompaniesController.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\CompaniesController.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Controllers\\CompaniesController.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\CompaniesController.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\CompaniesController.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Controllers\\CompaniesController.cs",
               "ViewState": "AgIAALIAAAAAAAAAAAAuwMIAAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -1025,7 +1041,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 64,
+              "DocumentIndex": 65,
               "Title": "CandidateInfoController.cs",
               "DocumentMoniker": "H:\\Mobile\\Project\\Mobile_Jobconnect_api_new_v5\\Mobile_Jobconnect_api_new_v5\\HuitWorks.WebAPI\\Controllers\\CandidateInfoController.cs",
               "ToolTip": "H:\\Mobile\\Project\\Mobile_Jobconnect_api_new_v5\\Mobile_Jobconnect_api_new_v5\\HuitWorks.WebAPI\\Controllers\\CandidateInfoController.cs",
@@ -1035,11 +1051,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 63,
+              "DocumentIndex": 64,
               "Title": "HuitWorks.WebAPI.http",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\HuitWorks.WebAPI.http",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\HuitWorks.WebAPI.http",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\HuitWorks.WebAPI.http",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\HuitWorks.WebAPI.http",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\HuitWorks.WebAPI.http",
               "RelativeToolTip": "HuitWorks.WebAPI\\HuitWorks.WebAPI.http",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
@@ -1047,22 +1063,22 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 62,
+              "DocumentIndex": 63,
               "Title": "HuitWorks.WebAPI",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj",
               "RelativeToolTip": "HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
               "WhenOpened": "2025-06-06T14:20:49.717Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 61,
+              "DocumentIndex": 62,
               "Title": "launchSettings.json",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Properties\\launchSettings.json",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Properties\\launchSettings.json",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Properties\\launchSettings.json",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Properties\\launchSettings.json",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Properties\\launchSettings.json",
               "RelativeToolTip": "HuitWorks.WebAPI\\Properties\\launchSettings.json",
               "ViewState": "AgIAAA0AAAAAAAAAAAAqwDIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
@@ -1070,11 +1086,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 65,
+              "DocumentIndex": 66,
               "Title": "JobSaved.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\JobSaved.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\JobSaved.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Models\\JobSaved.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\JobSaved.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Models\\JobSaved.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Models\\JobSaved.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -1082,11 +1098,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 66,
+              "DocumentIndex": 67,
               "Title": "NotificationsController.cs",
-              "DocumentMoniker": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\NotificationsController.cs",
+              "DocumentMoniker": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\NotificationsController.cs",
               "RelativeDocumentMoniker": "HuitWorks.WebAPI\\Controllers\\NotificationsController.cs",
-              "ToolTip": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\NotificationsController.cs",
+              "ToolTip": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\Controllers\\NotificationsController.cs",
               "RelativeToolTip": "HuitWorks.WebAPI\\Controllers\\NotificationsController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",

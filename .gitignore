@@ -1,0 +1,17 @@
+# Visual Studio
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Build
+bin/
+obj/
+Debug/
+Release/
+
+# Others
+*.cache
+*.db
+*.log
+*.DS_Store

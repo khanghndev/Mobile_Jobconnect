@@ -70,6 +70,8 @@ namespace HuitWorks.WebAPI.Data
 
         public DbSet<DeviceToken> DeviceTokens { get; set; }
 
+        public DbSet<PendingRegistration> PendingRegistrations { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

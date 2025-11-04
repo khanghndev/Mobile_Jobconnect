@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj": {}
+    "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebApi\\HuitWorks.WebAPI.csproj": {}
   },
   "projects": {
-    "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj": {
+    "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebApi\\HuitWorks.WebAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj",
+        "projectUniqueName": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebApi\\HuitWorks.WebAPI.csproj",
         "projectName": "HuitWorks.WebAPI",
-        "projectPath": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\HuitWorks.WebAPI.csproj",
+        "projectPath": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebApi\\HuitWorks.WebAPI.csproj",
         "packagesPath": "C:\\Users\\khang\\.nuget\\packages\\",
-        "outputPath": "D:\\KHOA_LUAN_TN\\Mobile_Jobconnect_api_final\\HuitWorks.WebAPI\\obj\\",
+        "outputPath": "F:\\0411\\Mobile_Jobconnect_api_final\\HuitWorks.WebApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -54,10 +54,6 @@
               "target": "Package",
               "version": "[4.0.3, )"
             },
-            "FirebaseAdmin": {
-              "target": "Package",
-              "version": "[3.2.0, )"
-            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[8.0.0, )"
@@ -77,6 +73,10 @@
             "QuestPDF": {
               "target": "Package",
               "version": "[2024.12.4, )"
+            },
+            "Supabase": {
+              "target": "Package",
+              "version": "[0.18.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

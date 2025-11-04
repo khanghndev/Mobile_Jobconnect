@@ -16,7 +16,13 @@ namespace HuitWorks.WebAPI.DTOs
     public class ResetPasswordDto
     {
         public string Email { get; set; } = null!;
-        public string OtpCode { get; set; } = null!;
         public string NewPassword { get; set; } = null!;
+        public string ConfirmPassword { get; set; } = null!;
+    }
+
+    public class VerifyOtpRegisterDto
+    {
+        public string Email { get; set; } = null!;
+        public string Code { get; set; } = null!;
     }
 }

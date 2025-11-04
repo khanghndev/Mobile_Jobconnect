@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using HuitWorks.WebAPI.Data;
 using HuitWorks.WebAPI.DTOs;
 using HuitWorks.WebAPI.Models;
+using HuitWorks.WebAPI.Services;
 
 namespace HuitWorks.WebAPI.Controllers
 {
@@ -15,10 +16,12 @@ namespace HuitWorks.WebAPI.Controllers
     public class NotificationController : ControllerBase
     {
         private readonly JobConnectDbContext _context;
+        private readonly IPushNotificationService _pushNotificationService;
 
-        public NotificationController(JobConnectDbContext context)
+        public NotificationController(JobConnectDbContext context, IPushNotificationService pushNotificationService)
         {
             _context = context;
+            _pushNotificationService = pushNotificationService;
         }
 
         // GET: api/notification
@@ -215,6 +218,113 @@ namespace HuitWorks.WebAPI.Controllers
 
             await _context.SaveChangesAsync();
             return Ok(new { message = "Cập nhật thiết bị thành công." });
+        }
+
+        /// <summary>
+        /// Gửi push notification đến một user cụ thể
+        /// </summary>
+        [HttpPost("send-push/{userId}")]
+        public async Task<IActionResult> SendPushNotification(string userId, [FromBody] SendPushNotificationDto dto)
+        {
+            if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(dto.Title) || string.IsNullOrWhiteSpace(dto.Body))
+                return BadRequest(new { message = "Thiếu thông tin bắt buộc" });
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.IdUser == userId);
+            if (user == null)
+                return NotFound(new { message = "Không tìm thấy người dùng" });
+
+            var data = new Dictionary<string, string>();
+            if (!string.IsNullOrWhiteSpace(dto.Type))
+                data["type"] = dto.Type;
+            if (!string.IsNullOrWhiteSpace(dto.ActionUrl))
+                data["actionUrl"] = dto.ActionUrl;
+            if (!string.IsNullOrWhiteSpace(dto.NotificationId))
+                data["notificationId"] = dto.NotificationId;
+
+            var result = await _pushNotificationService.SendPushNotificationToUserAsync(userId, dto.Title, dto.Body, data);
+
+            if (result)
+                return Ok(new { message = "Đã gửi push notification thành công" });
+            else
+                return StatusCode(500, new { message = "Gửi push notification thất bại" });
+        }
+
+        /// <summary>
+        /// Gửi push notification đến nhiều users
+        /// </summary>
+        [HttpPost("send-push-multiple")]
+        public async Task<IActionResult> SendPushNotificationToMultiple([FromBody] SendPushNotificationMultipleDto dto)
+        {
+            if (dto.UserIds == null || !dto.UserIds.Any() || string.IsNullOrWhiteSpace(dto.Title) || string.IsNullOrWhiteSpace(dto.Body))
+                return BadRequest(new { message = "Thiếu thông tin bắt buộc" });
+
+            var data = new Dictionary<string, string>();
+            if (!string.IsNullOrWhiteSpace(dto.Type))
+                data["type"] = dto.Type;
+            if (!string.IsNullOrWhiteSpace(dto.ActionUrl))
+                data["actionUrl"] = dto.ActionUrl;
+
+            var result = await _pushNotificationService.SendPushNotificationToMultipleUsersAsync(dto.UserIds, dto.Title, dto.Body, data);
+
+            if (result)
+                return Ok(new { message = "Đã gửi push notification thành công" });
+            else
+                return StatusCode(500, new { message = "Gửi push notification thất bại" });
+        }
+
+        /// <summary>
+        /// Tạo notification và gửi push notification
+        /// </summary>
+        [HttpPost("create-and-send")]
+        public async Task<ActionResult<NotificationDto>> CreateAndSend([FromBody] CreateNotificationDto dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!await _context.Users.AnyAsync(u => u.IdUser == dto.IdUser))
+                return BadRequest(new { message = "Người dùng không tồn tại." });
+
+            var entity = new Notification
+            {
+                IdNotification = System.Guid.NewGuid().ToString(),
+                IdUser = dto.IdUser,
+                Title = dto.Title,
+                Type = dto.Type,
+                DateTime = dto.DateTime,
+                Status = "Đã gửi",
+                ActionUrl = dto.ActionUrl,
+                CreatedAt = System.DateTime.UtcNow,
+                IsRead = dto.IsRead
+            };
+
+            _context.Notifications.Add(entity);
+            await _context.SaveChangesAsync();
+
+            // Gửi push notification
+            var pushData = new Dictionary<string, string>
+            {
+                ["type"] = dto.Type,
+                ["notificationId"] = entity.IdNotification
+            };
+            if (!string.IsNullOrWhiteSpace(dto.ActionUrl))
+                pushData["actionUrl"] = dto.ActionUrl;
+
+            await _pushNotificationService.SendPushNotificationToUserAsync(dto.IdUser, dto.Title, dto.Title, pushData);
+
+            var result = new NotificationDto
+            {
+                IdNotification = entity.IdNotification,
+                IdUser = entity.IdUser,
+                Title = entity.Title,
+                Type = entity.Type,
+                DateTime = entity.DateTime,
+                Status = entity.Status,
+                ActionUrl = entity.ActionUrl,
+                CreatedAt = entity.CreatedAt,
+                IsRead = entity.IsRead
+            };
+
+            return CreatedAtAction(nameof(GetById), new { id = result.IdNotification }, result);
         }
 
 
