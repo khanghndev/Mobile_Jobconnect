@@ -72,6 +72,12 @@ class StringUtils {
     };
     return input.split('').map((char) => diacriticsMap[char] ?? char).join();
   }
+
+  // Cắt chuỗi /../.../
+  static String extractFileName(String path) {
+    return path.split('/').last;
+  }
+
 }
 
 // Cách sử dụng

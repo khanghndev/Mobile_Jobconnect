@@ -42,9 +42,7 @@ class JobSavedViewModel extends ChangeNotifier {
       _setState(errorMessage: e.err, isSuccess: false);
     } catch (e) {
       _setState(errorMessage: e.toString(), isSuccess: false);
-    } finally {
-      _setState(isLoading: false);
-    }
+    }  
   }
 
   // TODO: Kiểm tra job đã lưu
@@ -66,9 +64,7 @@ class JobSavedViewModel extends ChangeNotifier {
       _setState(errorMessage: e.err, isSuccess: false);
     } catch (e) {
       _setState(errorMessage: e.toString(), isSuccess: false);
-    } finally {
-      _setState(isLoading: false);
-    }
+    }  
   }
 
   // TODO: Xóa job đã lưu
@@ -83,9 +79,7 @@ class JobSavedViewModel extends ChangeNotifier {
       _setState(errorMessage: e.err, isSuccess: false);
     } catch (e) {
       _setState(errorMessage: e.toString(), isSuccess: false);
-    } finally {
-      _setState(isLoading: false);
-    }
+    }  
   }
 
   // TODO: Reset state

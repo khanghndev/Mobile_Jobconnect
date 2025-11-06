@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:job_connect/data/models/interview_schedule_model.dart';
+import 'package:job_connect/model/interview_schedule_model.dart';
 import 'package:job_connect/recruiter_app/services/interviewschedule_service.dart';
 import 'edit_interview_schedule_screen.dart';
 

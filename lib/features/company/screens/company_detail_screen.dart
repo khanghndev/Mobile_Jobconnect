@@ -4,7 +4,7 @@
   import 'package:job_connect/config/widgets/background_error_state.dart';
   import 'package:job_connect/config/widgets/section_title.dart';
   import 'package:job_connect/features/company/model/company_model.dart';
-  import 'package:job_connect/data/models/job_posting_model.dart';
+  import 'package:job_connect/features/job/model/job_posting_model.dart';
   import 'package:job_connect/config/services/api_service.dart';
   import 'package:job_connect/features/company/viewmodel/company_view_model.dart';
   import 'package:job_connect/features/company/widgets/company_detail/company_detail_appbar.dart';

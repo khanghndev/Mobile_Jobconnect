@@ -6,7 +6,7 @@ import 'package:job_connect/config/utils/image_url.dart';
 import 'package:job_connect/config/widgets/custom_adaptive_button.dart';
 import 'package:job_connect/config/widgets/custom_adaptive_tap_effect.dart';
 import 'package:job_connect/config/widgets/info_chip.dart';
-import 'package:job_connect/data/models/job_posting_model.dart';
+import 'package:job_connect/features/job/model/job_posting_model.dart';
 
 class SearchJobItemCard extends StatelessWidget {
   final JobPostingModel job;
@@ -24,6 +24,28 @@ class SearchJobItemCard extends StatelessWidget {
     required this.onRefresh,
   });
 
+  void _onGoToDetailJob(BuildContext context){
+    context.push(
+      '/job/detail',
+      extra: {
+        "idUser": idUser,
+        "jobPosting": job,
+      },
+    );
+  }
+
+  void _onGoToApplicationJob(BuildContext context){
+    context.push(
+      '/job/apply',
+      extra: {
+        'jobId': job.idJobPost,
+        'jobTitle':  job.title,
+        'companyName': job.company!.companyName,
+        'idUser' : idUser,
+      }
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -37,15 +59,7 @@ class SearchJobItemCard extends StatelessWidget {
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(18.r),
-        onTap: () async {
-          context.push(
-            '/job/detail',
-            extra: {
-              "idUser": idUser,
-              "jobPosting": job,
-            },
-          );
-        },
+        onTap: () => _onGoToDetailJob(context),
         child: Padding(
           padding: EdgeInsets.all(18.w),
           child: Column(
@@ -173,7 +187,7 @@ class SearchJobItemCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: CustomAdaptiveButton(
-                      onPressed: (){}, 
+                      onPressed: ()=>_onGoToDetailJob(context), 
                       text: "Chi Tiết",
                       backgroundColor: Colors.white,
                       textColor: theme.colorScheme.primary,
@@ -191,7 +205,7 @@ class SearchJobItemCard extends StatelessWidget {
                   SizedBox(width: 12.w),
                   Expanded(
                     child: CustomAdaptiveButton(
-                      onPressed: (){}, 
+                      onPressed: () => _onGoToApplicationJob(context), 
                       text: "Ứng tuyển",
                       backgroundColor: theme.colorScheme.primary,
                       textColor: Colors.white,

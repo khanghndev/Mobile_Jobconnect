@@ -612,7 +612,14 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
                 scale: _scaleAnimation,
                 child: GestureDetector(
                   onLongPress: onFirstPage,
-                  onTap: widget.onSearch,
+                  onTap: !widget.isLoggedIn 
+                    ? () => context.push(
+                        '/auth/login', 
+                        extra: {
+                          'role': UserRole.candidate.name
+                        }
+                      )
+                    : widget.onSearch,
                   child: Container(
                     padding: EdgeInsets.all(14.r),
                     decoration: BoxDecoration(

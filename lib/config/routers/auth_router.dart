@@ -24,7 +24,9 @@ class AuthRouter {
       GoRoute(
         path: 'login',
         pageBuilder: (context, state) {
-          final extraData = state.extra as Map<String, dynamic>;
+          final extraData = state.extra is Map<String, dynamic>
+            ? state.extra as Map<String, dynamic>
+            : {};
           final role = extraData['role'] ?? '';
           return buildPageWithSlideTransition(
             LoginScreen(
@@ -39,23 +41,36 @@ class AuthRouter {
         path: 'signup',
         pageBuilder: (context, state) =>buildPageWithSlideTransition(RegisterScreen(), state),
       ),
-      GoRoute(
-        path: 'enter-otp',
-        pageBuilder: (context, state) {
-          final extraData = state.extra is Map<String, dynamic>
-              ? state.extra as Map<String, dynamic>
-              : {};
-          final title = extraData['title'] ?? '';
-          final email = extraData['email'] ?? '';
-          return buildPageWithSlideTransition(
-            EnterOtpPage(
-              title: title,
-              email: email,
-            ),
-            state,
-          );
-        },
-      ),
+
+     GoRoute(
+      path: 'enter-otp',
+      pageBuilder: (context, state) {
+        final extraData = state.extra is Map<String, dynamic>
+            ? state.extra as Map<String, dynamic>
+            : {};
+
+        final title = extraData['title'] ?? '';
+        final email = extraData['email'] ?? '';
+        final fullName = extraData['fullName'] ?? '';
+        final phoneNumber = extraData['phoneNumber'] ?? '';
+        final password = extraData['password'] ?? '';
+        final confirmPassword = extraData['confirmPassword'] ?? '';
+        final actionType = extraData['actionType'] ?? '';
+        return buildPageWithSlideTransition(
+          EnterOtpPage(
+            title: title,
+            email: email,
+            fullName: fullName,
+            phoneNumber: phoneNumber,
+            password: password,
+            confirmPassword: confirmPassword,
+            actionType: actionType
+          ),
+          state,
+        );
+      },
+    ),
+
       GoRoute(
         path: 'forgot-pass',
         pageBuilder: (context, state) {
@@ -66,10 +81,18 @@ class AuthRouter {
         },
       ),
       GoRoute(
-        path: 'reset-pass',
+        path: 'reset-password',
         pageBuilder: (context, state) {
+          final extraData = state.extra is Map<String, dynamic>
+            ? state.extra as Map<String, dynamic>
+            : {};
+          final email = extraData['email'] ?? '';
           return buildPageWithSlideTransition(
-              ResetPasswordScreen(), state);
+            ResetPasswordScreen(
+              email: email
+            ), 
+            state
+          );
         },
       ),
     ],

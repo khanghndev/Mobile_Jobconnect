@@ -1,4 +1,4 @@
-import 'package:job_connect/data/models/role_model.dart';
+import 'package:job_connect/model/role_model.dart';
 
 class UserModel {
   final String idUser;
@@ -16,6 +16,7 @@ class UserModel {
   final String? address;
   final DateTime? dateOfBirth;
   final RoleModel? role;
+  final int? canPostJobs;
 
   UserModel({
     required this.idUser,
@@ -32,7 +33,8 @@ class UserModel {
     required this.gender,
     this.address,
     this.dateOfBirth,
-    required this.role,
+    this.role,
+    this.canPostJobs,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -55,6 +57,7 @@ class UserModel {
               ? DateTime.parse(json['dateOfBirth'])
               : null,
       role: json['role'] != null ? RoleModel.fromJson(json['role'] as Map<String, dynamic>) : null,
+      canPostJobs: json['canPostJobs'] as int?,
     );
   }
 
@@ -76,6 +79,7 @@ class UserModel {
     if (address != null) data['address'] = address;
     if (dateOfBirth != null) data['dateOfBirth'] = dateOfBirth!.toIso8601String();
     if (role != null) data['role'] = role!.toJson();
+    if (canPostJobs != null) data['canPostJobs'] = canPostJobs;
     return data;
   }
 
@@ -95,6 +99,7 @@ class UserModel {
     String? address,
     DateTime? dateOfBirth,
     RoleModel? role,
+    int? canPostJobs,
   }) {
     return UserModel(
       idUser: idUser ?? this.idUser,
@@ -112,6 +117,7 @@ class UserModel {
       address: address ?? this.address,
       dateOfBirth: dateOfBirth ?? this.dateOfBirth,
       role: role ?? this.role,
+      canPostJobs: canPostJobs ?? this.canPostJobs,
     );
   }
   

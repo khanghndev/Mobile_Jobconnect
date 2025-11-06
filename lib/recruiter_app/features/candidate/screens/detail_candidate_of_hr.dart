@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:job_connect/data/models/save_candidate_model.dart';
+import 'package:job_connect/model/save_candidate_model.dart';
 import 'package:job_connect/features/profile/model/candidate_info_model.dart';
 import 'package:job_connect/features/profile/model/user_model.dart';
 import 'package:job_connect/recruiter_app/services/save_candidate_service.dart';

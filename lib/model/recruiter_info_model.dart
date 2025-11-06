@@ -1,14 +1,14 @@
 class RecruiterInfoModel {
   final String idUser;
   final String title;
-  final String idCompany;
+  final String? idCompany;
   final String? department;
   final String? description;
 
   RecruiterInfoModel({
     required this.idUser,
     required this.title,
-    required this.idCompany,
+    this.idCompany,
     this.department,
     this.description,
   });

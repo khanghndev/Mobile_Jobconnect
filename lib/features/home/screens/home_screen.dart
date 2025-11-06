@@ -10,7 +10,7 @@ import 'package:job_connect/features/home/widgets/home/home_shimmer.dart';
 import 'package:job_connect/features/navigation/screens/navigation_page.dart';
 import 'package:job_connect/features/profile/model/user_model.dart';
 import 'package:job_connect/features/company/model/company_model.dart';
-import 'package:job_connect/data/models/job_posting_model.dart';
+import 'package:job_connect/features/job/model/job_posting_model.dart';
 import 'package:job_connect/features/notifications/model/notification_model.dart';
 import 'package:job_connect/features/home/model/podcast_model.dart';
 import 'package:job_connect/config/services/api_service.dart';

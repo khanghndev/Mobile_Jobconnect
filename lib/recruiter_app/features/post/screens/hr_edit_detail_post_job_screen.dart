@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:job_connect/data/models/job_posting_model.dart';
+import 'package:job_connect/features/job/model/job_posting_model.dart';
 
 class HrEditDetailPostJobScreen extends StatefulWidget {
   final JobPostingModel jobPosting;

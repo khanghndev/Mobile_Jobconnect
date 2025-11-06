@@ -2,12 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:job_connect/config/enum/job_transaction_status.dart';
-import 'package:job_connect/data/models/job_transaction_model.dart';
-import 'package:job_connect/data/models/subscription_package_model.dart';
+import 'package:job_connect/features/job/model/job_transaction_model.dart';
+import 'package:job_connect/model/subscription_package_model.dart';
 import 'package:job_connect/features/profile/model/user_model.dart';
 import 'package:job_connect/features/profile/service/user_service.dart';
 import 'package:job_connect/recruiter_app/features/job/navigation_recruiter/screen/navigation_recruiter_screen.dart';
-import '../../../../data/models/job_transaction_detail_model.dart';
+import '../../../../features/job/model/job_transaction_detail_model.dart';
 import '../../../services/job_transaction_detail_service.dart';
 import '../../../services/job_transaction_service.dart';
 import '../../../services/subscriptionpackage_service.dart';

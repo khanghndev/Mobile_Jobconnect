@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:job_connect/config/constant/app_images.dart';
-import 'package:job_connect/data/models/job_application_model.dart';
-import 'package:job_connect/data/models/job_posting_model.dart';
-import 'package:job_connect/data/models/recruiter_info_model.dart';
+import 'package:job_connect/features/job/model/job_application_model.dart';
+import 'package:job_connect/features/job/model/job_posting_model.dart';
+import 'package:job_connect/model/recruiter_info_model.dart';
 import 'package:job_connect/features/company/model/company_model.dart';
 import 'package:job_connect/features/company/service/company_service.dart';
 import 'package:job_connect/features/profile/model/user_model.dart';
@@ -55,7 +55,7 @@ class _RecruiterProfilePageState extends State<RecruiterProfilePage> {
       // 2) Fetch user account
       final acc = await accountService.getUserById(id: rec!.idUser);
       // 3) Fetch company info (nếu có companyId)
-      final comp = await companyService.getCompanyById(id: rec.idCompany);
+      final comp = await companyService.getCompanyById(id: rec.idCompany!);
       // 4) Lấy toàn bộ job thuộc công ty ứng vs hr
       List<JobPostingModel>? jobPostings;
       if (rec.idCompany != null && rec.idCompany!.isNotEmpty) {

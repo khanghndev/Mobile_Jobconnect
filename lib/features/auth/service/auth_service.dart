@@ -3,6 +3,7 @@ import 'package:job_connect/config/enum/server_exception_type.dart';
 import 'package:job_connect/config/error/server_exception.dart';
 import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/features/auth/model/login_model.dart';
+import 'package:job_connect/features/profile/model/user_model.dart';
 
 class AuthService {
   final ApiService _apiService;
@@ -15,7 +16,8 @@ class AuthService {
     required String email,
     required String phone,
     required String password,
-    required String comfirmPassword,
+    required String confirmPassword,
+    required String supabaseIdUser,
   }) async {
     try {
       final res = await _apiService.post(
@@ -25,9 +27,10 @@ class AuthService {
           "email": email,
           "phoneNumber": phone,
           "password": password,
-          // "comfirmPassword": comfirmPassword,
-          "roleName": "Candidate", // Mặc định là Candidate luôn 
-        }
+          "confirmPassword": confirmPassword,
+          "roleName": "Candidate",
+          "supabaseIdUser": supabaseIdUser,
+        },
       );
 
       if (res is! Map<String, dynamic>) {
@@ -37,15 +40,11 @@ class AuthService {
         );
       }
 
-      final idUser = res["idUser"];
-      return idUser.toString();
+      return res["message"].toString();
     } on ServerException {
       rethrow;
     } catch (e) {
-      throw ServerException(
-        err: e.toString(),
-        type: ServerExceptionType.unknown,
-      );
+      throw ServerException(err: e.toString(), type: ServerExceptionType.unknown);
     }
   }
 
@@ -70,22 +69,155 @@ class AuthService {
         );
       }
 
-      // Parse dữ liệu
-      final loginData = LoginModel.fromJson(res);
-      return loginData;
+      return LoginModel.fromJson(res);
     } on ServerException {
       rethrow;
     } catch (e) {
-      throw ServerException(
-        err: e.toString(),
-        type: ServerExceptionType.unknown,
-      );
+      throw ServerException(err: e.toString(), type: ServerExceptionType.unknown);
     }
   }
 
   /// Đăng xuất
   Future<void> logout() async {
-    
+    // try {
+    //   await _apiService.get( endpoint: ApiConstants.logoutEndpoint,);
+    // } on ServerException {
+    //   rethrow;
+    // } catch (e) {
+    //   throw ServerException(err: e.toString(), type: ServerExceptionType.unknown);
+    // }
   }
 
+  /// Lấy thông tin người dùng theo id
+  Future<UserModel> getUserById(String id) async {
+    try {
+      final res = await _apiService.get(
+        endpoint: ApiConstants.getUserByIdEndpoint.replaceFirst("{id}", id),
+      );
+
+      if (res is! Map<String, dynamic>) {
+        throw ServerException(
+          err: 'Phản hồi không hợp lệ: $res',
+          type: ServerExceptionType.api,
+        );
+      }
+      return UserModel.fromJson(res);
+    } on ServerException {
+      rethrow;
+    } catch (e) {
+      throw ServerException(err: e.toString(), type: ServerExceptionType.unknown);
+    }
+  }
+
+  /// Nhập OTP
+  Future<String> enterOtp({ required String email}) async {
+    try {
+      final res = await _apiService.post(
+        endpoint: ApiConstants.enterOtp,
+        body: {
+          "email": email,
+        }
+      );
+      return res["message"].toString();
+    } on ServerException {
+      rethrow;
+    } catch (e) {
+      throw ServerException(err: e.toString(), type: ServerExceptionType.unknown);
+    }
+  }
+
+  Future<String> forgotPassword({ required String email}) async {
+    try {
+      final res = await _apiService.post(
+        endpoint: ApiConstants.forgotPassword,
+        body: {
+          "email": email,
+        }
+      );
+      return res["message"].toString();
+    } on ServerException {
+      rethrow;
+    } catch (e) {
+      throw ServerException(err: e.toString(), type: ServerExceptionType.unknown);
+    }
+  }
+
+  /// Xác thực OTP
+  Future<String> verifyOtp({
+    required String email,
+    required String code,
+  }) async {
+    try {
+      final res = await _apiService.post(
+        endpoint: ApiConstants.verifyOtp,
+        body: {
+          "email": email,
+          "code": code,
+        },
+      );
+      return res["message"].toString();
+    } on ServerException {
+      rethrow;
+    } catch (e) {
+      throw ServerException(err: e.toString(), type: ServerExceptionType.unknown);
+    }
+  }
+
+  Future<String> verifyOtpReset({
+    required String email,
+    required String code,
+  }) async {
+    try {
+      final res = await _apiService.post(
+        endpoint: ApiConstants.verifyOtpReset,
+        body: {
+          "email": email,
+          "code": code,
+        },
+      );
+      return res["message"].toString();
+    } on ServerException {
+      rethrow;
+    } catch (e) {
+      throw ServerException(err: e.toString(), type: ServerExceptionType.unknown);
+    }
+  }
+
+  /// Reset mật khẩu
+  Future<void> resetPassword({
+    required String email,
+    required String newPassword,
+    required String confirmPassword,
+  }) async {
+    try {
+      await _apiService.post(
+        endpoint: ApiConstants.resetPassword,
+        body: {
+          "email": email,
+          "newPassword": newPassword,
+          "confirmPassword" : confirmPassword
+        },
+      );
+    } on ServerException {
+      rethrow;
+    } catch (e) {
+      throw ServerException(err: e.toString(), type: ServerExceptionType.unknown);
+    }
+  }
+
+  /// Gửi lại OTP
+  Future<void> resendOtp({required String email}) async {
+    try {
+      await _apiService.post(
+        endpoint: ApiConstants.resendOtp,
+        body: {
+          "email": email,
+        },
+      );
+    } on ServerException {
+      rethrow;
+    } catch (e) {
+      throw ServerException(err: e.toString(), type: ServerExceptionType.unknown);
+    }
+  }
 }

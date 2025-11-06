@@ -91,9 +91,7 @@ class DialogUtils {
       backgroundColor: BackgroundColors.backgroundErrorPrimary,
       onConfirm: () async {
         await authViewModel.logout();
-
         if (!context.mounted) return;
-
         if (authViewModel.isSuccess) {
           context.go(
             '/auth/login', 
@@ -102,10 +100,6 @@ class DialogUtils {
             }
           );
         } else if (authViewModel.errorMessage != null) {
-          // Hiển thị SnackBar nếu logout thất bại
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(authViewModel.errorMessage!)),
-          );
           SnackbarApp.show(
             context,
             title: 'Thông báo',
@@ -128,20 +122,36 @@ class DialogUtils {
     Color? backgroundColor,
     required Future<void> Function() onConfirm,
   }) {
-    final theme = Theme.of(context);
-
     CustomDialog.show(
       context,
       title: title,
       message: message,
       icon: icon ?? Icons.info,
-      iconColor: iconColor ?? theme.colorScheme.primary,
-      confirmButtonColor: confirmButtonColor ?? theme.colorScheme.primary,
-      backgroundColor: backgroundColor ?? theme.colorScheme.primary,
+      iconColor: iconColor ?? getColor(context, icon ?? Icons.info),
+      confirmButtonColor: confirmButtonColor ?? getColor(context, icon ?? Icons.info),
+      backgroundColor: backgroundColor ?? getColor(context, icon ?? Icons.info),
       onConfirm: () async {
         await onConfirm();
       },
     );
+  }
+}
+
+Color getColor(BuildContext context, IconData icon) {
+  if (icon == Icons.error || icon == Icons.delete 
+    || icon == Icons.cancel || icon == Icons.close 
+    || icon == Icons.clear || icon == Icons.cancel_outlined 
+    || icon == Icons.clear_outlined || icon == Icons.close_outlined 
+    || icon == Icons.delete_forever_rounded) {
+    return BackgroundColors.backgroundErrorPrimary;
+  } else if (icon == Icons.warning || icon == Icons.warning_amber_rounded) {
+    return BackgroundColors.backgroundWarningPrimary;
+  } else if (icon == Icons.check_circle || icon == Icons.done) {
+    return BackgroundColors.backgroundSuccessPrimary;
+  } else if (icon == Icons.info || icon == Icons.help_outline) {
+    return BackgroundColors.backgroundInfoPrimary;
+  } else {
+    return Theme.of(context).colorScheme.primary;
   }
 }
 

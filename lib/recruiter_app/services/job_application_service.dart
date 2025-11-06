@@ -1,189 +1,153 @@
+import 'package:job_connect/api/api_response_parser.dart';
 import 'package:job_connect/config/constant/api_constants.dart';
 import 'package:job_connect/config/enum/server_exception_type.dart';
 import 'package:job_connect/config/error/server_exception.dart';
 import 'package:job_connect/config/services/api_service.dart';
-import 'package:job_connect/data/models/job_application_model.dart';
+import 'package:job_connect/features/job/model/job_application_model.dart';
 
 class JobApplicationService {
   final ApiService _apiService;
 
   JobApplicationService() : _apiService = ApiService();
 
-  //TODO: Hàm nội bộ để tải danh sách Job Application từ API
-  Future<List<JobApplicationModel>> _fetchJobApplicationList({
-    required String endpoint,
-    required String dataType,
-  }) async {
+  Future<T> _handleApi<T>(
+    Future<T> Function() action,
+    String errorMsg,
+  ) async {
     try {
-      final res = await _apiService.get(endpoint: endpoint);
-
-      if (res is! List) {
-        throw ServerException(
-          err: 'Phản hồi không hợp lệ từ API ($dataType): không phải là danh sách JSON',
-          type: ServerExceptionType.api,
-        );
-      }
-
-      return res
-          .map((item) => JobApplicationModel.fromJson(item as Map<String, dynamic>))
-          .toList();
+      return await action();
     } on ServerException {
       rethrow;
     } catch (e) {
       throw ServerException(
-        err: 'Lỗi không xác định khi tải $dataType: ${e.toString()}',
+        err: '$errorMsg: ${e.toString()}',
         type: ServerExceptionType.unknown,
       );
     }
   }
 
-  //TODO: Lấy tất cả Job Application
-  Future<List<JobApplicationModel>> getAllJobApplications() async {
-    return _fetchJobApplicationList(
-      endpoint: ApiConstants.jobApplicationEndpoint,
-      dataType: 'danh sách job application',
+  // GET /api/JobApplication - Lấy tất cả job applications
+  Future<List<JobApplicationModel>> getAllApplications() async {
+    return _handleApi(
+      () async {
+        final res = await _apiService.get(endpoint: ApiConstants.jobApplicationEndpoint);
+        return ApiResponseParser.parseList(
+          res: res,
+          fromJson: (json) => JobApplicationModel.fromJson(json),
+          errorMsg: 'Phản hồi không hợp lệ từ API (danh sách job application)',
+        );
+      },
+      'Lỗi khi tải danh sách job application',
     );
   }
 
-  //TODO: Lấy Job Application theo ID người dùng (idUser)
-  Future<List<JobApplicationModel>> getJobApplicationsByUser({required String idUser}) async {
-    return _fetchJobApplicationList(
-      endpoint: '${ApiConstants.jobApplicationEndpoint}/user/$idUser',
-      dataType: 'job application theo người dùng',
+  // GET /api/JobApplication/user/{idUser} - Lấy job applications theo người dùng
+  Future<List<JobApplicationModel>> getApplicationsByUser({required String idUser}) async {
+    return _handleApi(
+      () async {
+        final endpoint = ApiConstants.jobApplicationByUserEndpoint.replaceFirst('{idUser}', idUser);
+        final res = await _apiService.get(endpoint: endpoint);
+        return ApiResponseParser.parseList(
+          res: res,
+          fromJson: (json) => JobApplicationModel.fromJson(json),
+          errorMsg: 'Phản hồi không hợp lệ từ API (job application theo người dùng)',
+        );
+      },
+      'Lỗi khi tải job application theo người dùng',
     );
   }
 
-  //TODO: Lấy Job Application theo ID bài đăng tuyển (idJobPost)
-  Future<List<JobApplicationModel>> getJobApplicationsByJob({required String jobPostId}) async {
-    return _fetchJobApplicationList(
-      endpoint: '${ApiConstants.jobApplicationEndpoint}/jobposting/$jobPostId',
-      dataType: 'job application theo Job ID',
+  // GET /api/JobApplication/jobposting/{jobPost} - Lấy job applications theo bài đăng
+  Future<List<JobApplicationModel>> getApplicationsByJobPost({required String jobPostId}) async {
+    return _handleApi(
+      () async {
+        final endpoint =
+            ApiConstants.jobApplicationByJobPostEndpoint.replaceFirst('{jobPost}', jobPostId);
+        final res = await _apiService.get(endpoint: endpoint);
+        return ApiResponseParser.parseList(
+          res: res,
+          fromJson: (json) => JobApplicationModel.fromJson(json),
+          errorMsg: 'Phản hồi không hợp lệ từ API (job application theo jobPost)',
+        );
+      },
+      'Lỗi khi tải job application theo jobPost',
     );
   }
 
-  //TODO: Lấy chi tiết Job Application theo khóa (jobPostId, userId)
-  Future<JobApplicationModel?> getJobApplicationByKey({
+  // GET /api/JobApplication/{jobPost}/{user} - Lấy job application cụ thể
+  Future<JobApplicationModel> getApplicationById({
     required String jobPostId,
     required String userId,
   }) async {
-    try {
-      final res = await _apiService.get(
-        endpoint: '${ApiConstants.jobApplicationEndpoint}/$jobPostId/$userId',
-      );
-
-      if (res == null) return null;
-
-      if (res is! Map<String, dynamic>) {
-        throw ServerException(
-          err: 'Phản hồi không hợp lệ từ API (chi tiết job application)',
-          type: ServerExceptionType.api,
+    return _handleApi(
+      () async {
+        final endpoint = ApiConstants.jobApplicationByIdEndpoint
+            .replaceFirst('{jobPost}', jobPostId)
+            .replaceFirst('{user}', userId);
+        final res = await _apiService.get(endpoint: endpoint);
+        return ApiResponseParser.parseObject(
+          res: res,
+          fromJson: (json) => JobApplicationModel.fromJson(json),
+          errorMsg: 'Phản hồi không hợp lệ từ API (job application cụ thể)',
         );
-      }
-
-      return JobApplicationModel.fromJson(res);
-    } on ServerException {
-      rethrow;
-    } catch (e) {
-      throw ServerException(
-        err: 'Lỗi khi tải chi tiết job application: ${e.toString()}',
-        type: ServerExceptionType.unknown,
-      );
-    }
+      },
+      'Lỗi khi tải chi tiết job application',
+    );
   }
 
-  //TODO: Tạo mới Job Application
-  Future<JobApplicationModel> createJobApplication(Map<String, dynamic> data) async {
-    try {
-      final res = await _apiService.post(
-        endpoint: ApiConstants.jobApplicationEndpoint,
-        body: data,
-      );
-
-      if (res is! Map<String, dynamic>) {
-        throw ServerException(
-          err: 'Phản hồi không hợp lệ từ API (tạo job application)',
-          type: ServerExceptionType.api,
+  // POST /api/JobApplication - Tạo mới job application
+  Future<JobApplicationModel> createApplication({required JobApplicationModel model}) async {
+    return _handleApi(
+      () async {
+        final res = await _apiService.post(
+          endpoint: ApiConstants.jobApplicationEndpoint,
+          body: model.toJson(),
         );
-      }
-
-      return JobApplicationModel.fromJson(res);
-    } on ServerException {
-      rethrow;
-    } catch (e) {
-      throw ServerException(
-        err: 'Lỗi khi tạo job application: ${e.toString()}',
-        type: ServerExceptionType.unknown,
-      );
-    }
-  }
-
-  //TODO: Cập nhật Job Application theo (jobPostId, userId)
-  Future<JobApplicationModel> updateJobApplication({
-    required String jobPostId,
-    required String userId,
-    required Map<String, dynamic> data,
-  }) async {
-    try {
-      final res = await _apiService.put(
-        endpoint: '${ApiConstants.jobApplicationEndpoint}/$jobPostId/$userId',
-        body: data,
-      );
-
-      if (res is! Map<String, dynamic>) {
-        throw ServerException(
-          err: 'Phản hồi không hợp lệ từ API (cập nhật job application)',
-          type: ServerExceptionType.api,
+        return ApiResponseParser.parseObject(
+          res: res,
+          fromJson: (json) => JobApplicationModel.fromJson(json),
+          errorMsg: 'Phản hồi không hợp lệ từ API (tạo job application)',
         );
-      }
-
-      return JobApplicationModel.fromJson(res);
-    } on ServerException {
-      rethrow;
-    } catch (e) {
-      throw ServerException(
-        err: 'Lỗi khi cập nhật job application: ${e.toString()}',
-        type: ServerExceptionType.unknown,
-      );
-    }
+      },
+      'Lỗi khi tạo job application',
+    );
   }
 
-  //TODO: Xoá Job Application theo (jobPostId, userId)
-  Future<void> deleteJobApplication({
+  // PUT /api/JobApplication/{jobPost}/{user} - Cập nhật job application
+  Future<JobApplicationModel> updateApplication({
+    required String jobPostId,
+    required String userId,
+    required JobApplicationModel model,
+  }) async {
+    return _handleApi(
+      () async {
+        final endpoint = ApiConstants.jobApplicationByIdEndpoint
+            .replaceFirst('{jobPost}', jobPostId)
+            .replaceFirst('{user}', userId);
+        final res = await _apiService.put(endpoint: endpoint, body: model.toJson());
+        return ApiResponseParser.parseObject(
+          res: res,
+          fromJson: (json) => JobApplicationModel.fromJson(json),
+          errorMsg: 'Phản hồi không hợp lệ từ API (cập nhật job application)',
+        );
+      },
+      'Lỗi khi cập nhật job application',
+    );
+  }
+
+  // DELETE /api/JobApplication/{jobPost}/{user} - Xóa job application
+  Future<void> deleteApplication({
     required String jobPostId,
     required String userId,
   }) async {
-    try {
-      await _apiService.delete(
-        endpoint: '${ApiConstants.jobApplicationEndpoint}/$jobPostId/$userId',
-      );
-    } on ServerException {
-      rethrow;
-    } catch (e) {
-      throw ServerException(
-        err: 'Lỗi khi xoá job application: ${e.toString()}',
-        type: ServerExceptionType.unknown,
-      );
-    }
-  }
-
-  //TODO: Cập nhật trạng thái Job Application (applicationStatus)
-  Future<void> updateJobApplicationStatus({
-    required String jobPostId,
-    required String userId,
-    required String newStatus,
-  }) async {
-    try {
-      await _apiService.put(
-        endpoint: '${ApiConstants.jobApplicationEndpoint}/$jobPostId/$userId/status',
-        body: {'applicationStatus': newStatus},
-      );
-    } on ServerException {
-      rethrow;
-    } catch (e) {
-      throw ServerException(
-        err: 'Lỗi khi cập nhật trạng thái job application: ${e.toString()}',
-        type: ServerExceptionType.unknown,
-      );
-    }
+    return _handleApi(
+      () async {
+        final endpoint = ApiConstants.jobApplicationByIdEndpoint
+            .replaceFirst('{jobPost}', jobPostId)
+            .replaceFirst('{user}', userId);
+        await _apiService.delete(endpoint: endpoint);
+      },
+      'Lỗi khi xóa job application',
+    );
   }
 }

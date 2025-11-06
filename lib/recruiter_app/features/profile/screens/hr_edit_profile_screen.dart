@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:job_connect/config/constant/app_images.dart';
-import 'package:job_connect/data/models/recruiter_info_model.dart';
+import 'package:job_connect/model/recruiter_info_model.dart';
 import 'package:job_connect/features/company/model/company_model.dart';
 import 'package:job_connect/features/company/service/company_service.dart';
 import 'package:job_connect/features/profile/model/user_model.dart';

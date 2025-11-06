@@ -160,9 +160,7 @@ class UserViewModel extends ChangeNotifier {
       _setState(errorMessage: e.err, isSuccess: false);
     } catch (e) {
       _setState(errorMessage: e.toString(), isSuccess: false);
-    } finally {
-      _setState(isLoading: false);
-    }
+    }  
   }
 
   // TODO: Xóa user
@@ -176,9 +174,7 @@ class UserViewModel extends ChangeNotifier {
       _setState(errorMessage: e.err, isSuccess: false);
     } catch (e) {
       _setState(errorMessage: e.toString(), isSuccess: false);
-    } finally {
-      _setState(isLoading: false);
-    }
+    }  
   }
 
   // TODO: Helper gọi API chung
@@ -194,9 +190,7 @@ class UserViewModel extends ChangeNotifier {
       _setState(errorMessage: e.err, isSuccess: false);
     } catch (e) {
       _setState(errorMessage: e.toString(), isSuccess: false);
-    } finally {
-      _setState(isLoading: false);
-    }
+    }  
   }
 
   // TODO: Làm mới user hiện tại

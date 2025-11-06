@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/constant/app_colors.dart';
 import 'package:job_connect/config/constant/app_images.dart';
+import 'package:job_connect/config/widgets/button_primary_gradient.dart';
 import 'package:job_connect/config/widgets/custom_pass_field_with_label.dart';
 import 'package:job_connect/config/widgets/custom_primary_button.dart';
 import 'package:job_connect/config/widgets/custom_text_field_with_label.dart';
@@ -190,14 +191,10 @@ class LoginForm extends StatelessWidget {
             SizedBox(height: 24.h),
 
             // Login button
-            CustomPrimaryButton(
-              text: "ĐĂNG NHẬP",
-              onPressed: onLogin,
-              isLoading: isLoading,
-              backgroundColor: BackgroundColors.backgroundButtonPrimary,
-              foregroundColor: TextColors.textBrandOnbrand,
-              disabledColor: BackgroundColors.backgroundButtonPrimary.withValues(alpha: 0.5),
-            ),
+           ButtonPrimaryGradient(
+            text: 'ĐĂNG NHẬP', 
+            onPressed: onLogin
+          ),
 
             SizedBox(height: 20.h),
 

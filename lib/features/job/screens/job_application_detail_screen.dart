@@ -1,741 +1,283 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:job_connect/data/models/job_application_model.dart';
-import 'package:job_connect/config/utils/format.dart';
-import 'package:job_connect/config/utils/status_helper.dart';
-import 'package:job_connect/features/resume/screens/file_viewer_screen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:job_connect/config/constant/app_colors.dart';
+import 'package:job_connect/config/utils/dialog_utils.dart';
+import 'package:job_connect/config/utils/snackbar_app.dart';
+import 'package:job_connect/config/utils/string_utils.dart';
+import 'package:job_connect/config/widgets/background_error_state.dart';
+import 'package:job_connect/config/widgets/card_main.dart';
+import 'package:job_connect/config/widgets/custom_app_bar_title_large.dart';
+import 'package:job_connect/config/widgets/custom_button_border.dart';
+import 'package:job_connect/config/widgets/section_title.dart';
+import 'package:job_connect/features/job/view_model/job_application_view_model.dart';
+import 'package:job_connect/features/job/widgets/job_application_detail/status_card.dart';
+import 'package:job_connect/features/job/widgets/job_history/job_history_card.dart';
+import 'package:job_connect/features/profile/widgets/profile/profile_info_row.dart';
+import 'package:job_connect/features/job/widgets/job_application_detail/job_application_detail_shimmer.dart';
+import 'package:provider/provider.dart';
 
 class JobApplicationDetailScreen extends StatefulWidget {
-  // Chuyển thành StatefulWidget
-  final JobApplicationModel jobApplication;
+  final String idJobPost;
+  final String idUser;
 
-  const JobApplicationDetailScreen({super.key, required this.jobApplication});
+  const JobApplicationDetailScreen({
+    super.key,
+    required this.idJobPost,
+    required this.idUser,
+  });
 
   @override
-  State<JobApplicationDetailScreen> createState() =>
-      _JobApplicationDetailScreenState();
+  State<JobApplicationDetailScreen> createState() =>_JobApplicationDetailScreenState();
 }
 
-class _JobApplicationDetailScreenState
-    extends State<JobApplicationDetailScreen> {
-  late JobApplicationModel
-  _currentJobApplication; // Để có thể cập nhật trạng thái sau khi hủy
-  bool _isCancelling = false; // Cờ để theo dõi trạng thái hủy
+class _JobApplicationDetailScreenState extends State<JobApplicationDetailScreen> {
+  late JobApplicationViewModel _jobAppVm;
 
   @override
   void initState() {
     super.initState();
-    _currentJobApplication = widget.jobApplication;
+    _jobAppVm = context.read<JobApplicationViewModel>();
+    _fetchDetail();
   }
 
-  Future<void> _cancelApplication() async {
-    // Hiển thị dialog xác nhận
-    final bool? confirmCancel = await showDialog<bool>(
+  Future<void> _fetchDetail() async {
+    await _jobAppVm.getJobApplicationDetail(widget.idJobPost, widget.idUser);
+  }
+
+  Future<void> _onCancelApplication() async {
+    final jobApp = _jobAppVm.selectedJobApplication;
+    if (jobApp == null) return;
+
+    DialogUtils.showConfirmationDialog(
       context: context,
-      builder: (BuildContext dialogContext) {
-        final theme = Theme.of(dialogContext);
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          title: Row(
-            children: [
-              Icon(Icons.warning_amber_rounded, color: theme.colorScheme.error),
-              const SizedBox(width: 10),
-              Text(
-                'Xác Nhận Hủy',
-                style: theme.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          content: Text(
-            'Bạn có chắc chắn muốn hủy đơn ứng tuyển cho vị trí "${_currentJobApplication.jobPosting.title}" không? Hành động này có thể không thể hoàn tác.',
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-              height: 1.4,
-            ),
-          ),
-          actionsPadding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 12,
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text(
-                'KHÔNG',
-                style: TextStyle(
-                  color: theme.colorScheme.onSurfaceVariant.withValues(alpha:0.8),
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              onPressed: () => Navigator.of(dialogContext).pop(false),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: theme.colorScheme.error,
-                foregroundColor: theme.colorScheme.onError,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: const Text(
-                'HỦY ỨNG TUYỂN',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              onPressed: () => Navigator.of(dialogContext).pop(true),
-            ),
-          ],
-        );
+      title: "Hủy ứng tuyển?",
+      message: "Bạn có chắc chắn muốn hủy ứng tuyển này không?",
+      icon: Icons.delete_forever_rounded,
+      onConfirm: () async {
+        _jobAppVm.resetState();
+        _jobAppVm.deleteJobApplication(jobApp.idJobPost, jobApp.idUser).then((_) {
+          if (!mounted) return;
+
+          if (_jobAppVm.isSuccess) {
+            SnackbarApp.show(
+              context,
+              title: 'Thành công',
+              message: 'Đã hủy ứng tuyển thành công',
+              backgroundColor: BackgroundColors.backgroundSuccessPrimary,
+            );
+            context.pop();
+            context.push(
+              '/job/history/',
+              extra: {'idUser': widget.idUser},
+            );
+          } else if (_jobAppVm.errorMessage != null) {
+            SnackbarApp.show(
+              context,
+              title: 'Lỗi',
+              message: 'Hủy ứng tuyển thất bại: ${_jobAppVm.errorMessage }',
+              backgroundColor: BackgroundColors.backgroundErrorPrimary,
+            );
+          }
+        });
       },
     );
-
-    if (confirmCancel == true) {
-      if (!mounted) return;
-      setState(() => _isCancelling = true);
-
-      try {
-        // TODO: Gọi API để hủy ứng tuyển
-        // Ví dụ: await _apiService.post('${ApiConstants.jobApplicationEndpoint}/${_currentJobApplication.idJobApplication}/cancel', {});
-        // Hoặc có thể là một lệnh DELETE hoặc PUT tùy theo API của bạn
-        // Giả lập thành công sau 1 giây
-        await Future.delayed(const Duration(seconds: 1));
-        print(
-          'Đã hủy ứng tuyển cho: ${_currentJobApplication.jobPosting.title}',
-        );
-
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'Đã hủy ứng tuyển thành công cho vị trí "${_currentJobApplication.jobPosting.title}".',
-              ),
-              backgroundColor: Colors.green,
-            ),
-          );
-          // Cập nhật trạng thái của jobApplication hiện tại (ví dụ: thành 'Đã hủy')
-          // Hoặc pop về trang trước và yêu cầu refresh
-          Navigator.of(
-            context,
-          ).pop(true); // true để báo hiệu trang trước cần refresh
-        }
-      } catch (e) {
-        print('Lỗi khi hủy ứng tuyển: $e');
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Lỗi khi hủy ứng tuyển: ${e.toString()}'),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
-      } finally {
-        if (mounted) setState(() => _isCancelling = false);
-      }
-    }
-  }
-
-  // Các hàm build UI (_buildLogoPlaceholder, _buildStatusCard, ...) giữ nguyên như trước
-  // Chỉ cần đảm bảo chúng nhận ThemeData theme từ hàm build chính
-
-  Widget _buildLogoPlaceholder(
-    String text, {
-    double size = 60,
-    required ThemeData theme,
-  }) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceVariant.withValues(alpha:0.5),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      alignment: Alignment.center,
-      child: Text(
-        text,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: size * 0.45,
-          color: theme.colorScheme.onSurfaceVariant.withValues(alpha:0.7),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildStatusCard(
-    BuildContext context,
-    String apiStatus,
-    DateTime submittedAt,
-    ThemeData theme,
-  ) {
-    final Color statusBgColor = AppStatus.getBgColor(apiStatus);
-    final Color statusTextColor = AppStatus.getTextColor(apiStatus);
-    final IconData statusIcon = AppStatus.getIcon(apiStatus);
-
-    return Card(
-      elevation: 3,
-      shadowColor: statusBgColor.withValues(alpha:0.3),
-      color: statusBgColor.withValues(alpha:0.9),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
-        child: Row(
-          children: [
-            Icon(statusIcon, color: statusTextColor, size: 30),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Trạng thái: ${AppStatus.getDisplayText(apiStatus)}',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: statusTextColor,
-                      letterSpacing: 0.3,
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  Text(
-                    'Ngày ứng tuyển: ${FormatUtils.formattedDateTime(submittedAt)}',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: statusTextColor.withValues(alpha:0.85),
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSectionTitle(
-    BuildContext context,
-    String title,
-    IconData icon,
-    ThemeData theme,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 24.0, bottom: 12.0),
-      child: Row(
-        children: [
-          Icon(icon, color: theme.primaryColor, size: 22),
-          const SizedBox(width: 10),
-          Text(
-            title,
-            style: theme.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: theme.colorScheme.onBackground,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildContentCard(
-    String content,
-    ThemeData theme, {
-    bool isHtml = false,
-  }) {
-    return Card(
-      elevation: 1.5,
-      shadowColor: theme.shadowColor.withValues(alpha:0.05),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      color: theme.cardColor,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Text(
-          content.isNotEmpty ? content : "Chưa có thông tin.",
-          style: theme.textTheme.bodyLarge?.copyWith(
-            height: 1.6,
-            color: theme.colorScheme.onSurface.withValues(alpha:0.85),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildInfoRow(
-    IconData icon,
-    String? text,
-    ThemeData theme, {
-    Color? iconColor,
-    bool isBold = false,
-  }) {
-    if (text == null || text.isEmpty) return const SizedBox.shrink();
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(
-            icon,
-            size: 20,
-            color:
-                iconColor ??
-                theme.colorScheme.onSurfaceVariant.withValues(alpha:0.8),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              text,
-              style: theme.textTheme.bodyLarge?.copyWith(
-                color: theme.colorScheme.onSurface,
-                fontWeight: isBold ? FontWeight.w600 : FontWeight.normal,
-                height: 1.4,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildInfoRowWithAction(
-    IconData icon,
-    String text,
-    VoidCallback onPressed,
-    ThemeData theme,
-  ) {
-    return InkWell(
-      onTap: onPressed,
-      borderRadius: BorderRadius.circular(8),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10.0),
-        child: Row(
-          children: [
-            Icon(icon, size: 22, color: theme.colorScheme.primary),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                text,
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  color: theme.colorScheme.primary,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            Icon(
-              Icons.arrow_forward_ios_rounded,
-              size: 18,
-              color: theme.colorScheme.primary.withValues(alpha:0.7),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  String getFileNameFromFirebaseUrl(String url) {
-    try {
-      // Phân tích URL
-      Uri uri = Uri.parse(url);
-
-      // Lấy phần path (ví dụ: /v0/b/bucket-name/o/path%2Fto%2Ffile.pdf)
-      String path = uri.path;
-
-      // Loại bỏ phần đầu không cần thiết và giải mã URL
-      // Tìm vị trí của '/o/'
-      int objectPathStartIndex = path.indexOf('/o/');
-      if (objectPathStartIndex == -1) {
-        // Nếu không tìm thấy '/o/', có thể URL không đúng định dạng hoặc là một loại URL khác
-        // Trong trường hợp này, thử lấy phần tử cuối cùng của path segments
-        return uri.pathSegments.isNotEmpty
-            ? uri.pathSegments.last
-            : 'unknown_file';
-      }
-
-      // Lấy phần path của object sau '/o/' và giải mã
-      String encodedObjectPath = path.substring(
-        objectPathStartIndex + 3,
-      ); // +3 để bỏ qua '/o/'
-      String decodedObjectPath = Uri.decodeComponent(encodedObjectPath);
-
-      // Tên file là phần cuối cùng của decodedObjectPath
-      List<String> pathSegments = decodedObjectPath.split('/');
-      if (pathSegments.isNotEmpty) {
-        return pathSegments.last;
-      }
-    } catch (e) {
-      print("Error parsing Firebase URL to get file name: $e");
-    }
-    // Trả về một giá trị mặc định hoặc ném lỗi nếu không thể phân tích
-    return 'unknown_file';
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDarkMode = theme.brightness == Brightness.dark;
-    final jobPosting =
-        _currentJobApplication.jobPosting; // Sử dụng _currentJobApplication
-    final company = jobPosting.company;
+    final viewModel = context.watch<JobApplicationViewModel>();
 
-    Widget logoWidget;
-    final String? effectiveLogoCompany = company?.logoCompany;
-    final String companyNameForPlaceholder =
-        company!.companyName.isNotEmpty
-            ? company.companyName[0].toUpperCase()
-            : 'C';
+    final jobApp = viewModel.selectedJobApplication;
+    final jobPosting = jobApp?.jobPosting;
+    final company = jobPosting?.company;
 
-    if (effectiveLogoCompany != null && effectiveLogoCompany.isNotEmpty) {
-      logoWidget = Image.network(
-        effectiveLogoCompany,
-        width: 64,
-        height: 64,
-        fit: BoxFit.contain,
-        errorBuilder:
-            (context, error, stackTrace) => _buildLogoPlaceholder(
-              companyNameForPlaceholder,
-              size: 64,
-              theme: theme,
-            ),
-      );
-    } else {
-      logoWidget = _buildLogoPlaceholder(
-        companyNameForPlaceholder,
-        size: 64,
-        theme: theme,
+    if (viewModel.isLoading || jobApp == null) {
+      return const Scaffold(
+        body: JobApplicationDetailShimmer(),
       );
     }
 
-    // Điều kiện hiển thị nút hủy
-    final bool canCancelApplication =
-        _currentJobApplication.applicationStatus == AppStatus.pending;
-
     return Scaffold(
-      backgroundColor:
-          isDarkMode ? const Color(0xFF121212) : const Color(0xFFF4F6F8),
-      appBar: AppBar(
-        title: Text(
-          jobPosting.title,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.onSurface,
+      backgroundColor: theme.scaffoldBackgroundColor,
+      appBar: const CustomAppbarTitleLarge(title: 'Chi tiết ứng tuyển'),
+      body: RefreshIndicator(
+        onRefresh: _fetchDetail,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(
+            parent: BouncingScrollPhysics(),
           ),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        backgroundColor: isDarkMode ? const Color(0xFF1E1E1E) : Colors.white,
-        elevation: 0.8,
-        iconTheme: IconThemeData(color: theme.colorScheme.onSurface, size: 22),
-        systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness:
-              isDarkMode ? Brightness.light : Brightness.dark,
-        ),
-      ),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildStatusCard(
-              context,
-              _currentJobApplication.applicationStatus,
-              _currentJobApplication.submittedAt,
-              theme,
-            ),
-            const SizedBox(height: 20),
-
-            Card(
-              elevation: 2.5,
-              shadowColor: theme.shadowColor.withValues(alpha:0.1),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+          padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 24.h),
+          child: viewModel.errorMessage != null
+            ? BackgroundErrorState(
+              title: "Hệ thống đang gặp sự cố\nVui lòng thử lại sau.\n ${viewModel.errorMessage}",
+              onRetry: _fetchDetail,
+            )
+            : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Trạng thái ứng tuyển
+              StatusCard(
+                apiStatus: jobApp.applicationStatus,
+                submittedAt: jobApp.submittedAt,
               ),
-              color: theme.cardColor,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Container(
-                            width: 64,
-                            height: 64,
-                            color: theme.colorScheme.surfaceVariant.withValues(alpha:
-                              0.3,
-                            ),
-                            child: logoWidget,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                jobPosting.title,
-                                style: theme.textTheme.headlineSmall?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: theme.colorScheme.onSurface,
-                                  height: 1.3,
-                                ),
-                              ),
-                              const SizedBox(height: 6),
-                              Text(
-                                company.companyName,
-                                style: theme.textTheme.titleMedium?.copyWith(
-                                  color: theme.colorScheme.onSurfaceVariant
-                                      .withValues(alpha:0.9),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 18),
-                    Divider(
-                      color: theme.dividerColor.withValues(alpha:0.5),
-                      height: 1,
-                    ),
-                    const SizedBox(height: 18),
-                    _buildInfoRow(
-                      Icons.location_on_rounded,
-                      jobPosting.location,
-                      theme,
-                      iconColor: theme.colorScheme.secondary,
-                    ),
-                    _buildInfoRow(
-                      Icons.attach_money_rounded,
-                      FormatUtils.formatSalary(jobPosting.salary ?? 0),
-                      theme,
-                      iconColor: theme.colorScheme.tertiary,
-                      isBold: true,
-                    ),
-                    if (jobPosting.applicationDeadline != null)
-                      _buildInfoRow(
-                        Icons.event_busy_rounded,
-                        'Hạn nộp: ${FormatUtils.formattedDateTime(jobPosting.applicationDeadline!)}',
-                        theme,
-                        iconColor: theme.colorScheme.error,
-                      ),
-                  ],
-                ),
+              SizedBox(height: 16.h),
+
+              // Job Info
+              JobHistoryCard(
+                jobApp: jobApp,
+                isShowAction: false,
               ),
-            ),
-            const SizedBox(height: 24),
+              SizedBox(height: 16.h),
 
-            _buildSectionTitle(
-              context,
-              'Mô Tả Công Việc',
-              Icons.description_rounded,
-              theme,
-            ),
-            _buildContentCard(
-              jobPosting.description ?? 'Chưa có mô tả chi tiết.',
-              theme,
-            ),
-            const SizedBox(height: 24),
-
-            _buildSectionTitle(
-              context,
-              'Yêu Cầu Ứng Viên',
-              Icons.checklist_rtl_rounded,
-              theme,
-            ),
-            _buildContentCard(
-              jobPosting.requirements ?? 'Chưa có yêu cầu chi tiết.',
-              theme,
-            ),
-            const SizedBox(height: 24),
-
-            _buildSectionTitle(
-              context,
-              'Thông Tin Công Ty',
-              Icons.business_rounded,
-              theme,
-            ),
-            Card(
-              elevation: 1.5,
-              shadowColor: theme.shadowColor.withValues(alpha:0.05),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+              // Mô tả công việc
+              SectionTitle(
+                title: 'Mô Tả Công Việc',
+                icon: Icons.description_rounded,
               ),
-              color: theme.cardColor,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              CardMain(
+                child: Row(
                   children: [
                     Text(
-                      company.companyName,
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: theme.colorScheme.onSurface,
+                      (jobPosting?.description == null || jobPosting!.description.trim().isEmpty)
+                          ? 'Chưa có mô tả chi tiết.'
+                          : jobPosting.description,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    _buildInfoRow(
-                      Icons.location_city_rounded,
-                      company.address,
-                      theme,
                     ),
                   ],
                 ),
               ),
-            ),
-            const SizedBox(height: 24),
+              SizedBox(height: 16.h),
 
-            if (_currentJobApplication.cvFileUrl != null ||
-                (_currentJobApplication.coverLetter != null &&
-                    _currentJobApplication.coverLetter!.isNotEmpty)) ...[
-              _buildSectionTitle(
-                context,
-                'Hồ Sơ Đã Nộp',
-                Icons.folder_shared_rounded,
-                theme,
+              // Yêu cầu
+              SectionTitle(
+                title: 'Yêu Cầu Ứng Viên',
+                icon: Icons.checklist_rtl_rounded,
               ),
-              Card(
-                elevation: 1.5,
-                shadowColor: theme.shadowColor.withValues(alpha:0.05),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+              CardMain(
+                child: Row(
+                  children: [
+                    Text(
+                      (jobPosting?.requirements == null || jobPosting!.requirements.trim().isEmpty)
+                          ? 'Chưa có yêu cầu chi tiết.'
+                          : jobPosting.requirements,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                      ),
+                    ),
+                  ],
                 ),
-                color: theme.cardColor,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+              ),
+
+              SizedBox(height: 16.h),
+
+              // Thông tin công ty
+              SectionTitle(
+                title: 'Thông Tin Công Ty',
+                icon: Icons.business_rounded,
+              ),
+              CardMain(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ProfileInfoRow(
+                      icon: Icons.location_city_rounded,
+                      title: company?.companyName ?? 'Chưa có tên công ty',
+                      onTap: () {
+                        context.push(
+                          '/company/detail',
+                          extra: {
+                            "company": company,
+                            "idUser": jobApp.idUser,
+                          },
+                        );
+                      },
+                    ),
+                    ProfileInfoRow(
+                      icon: Icons.nature,
+                      title: company?.address ?? 'Chưa có địa chỉ',
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 24.h),
+
+              // Hồ sơ đã nộp
+              if (jobApp.cvFileUrl != null ||
+                  (jobApp.coverLetter != null &&
+                      jobApp.coverLetter!.isNotEmpty)) ...[
+                SectionTitle(
+                  title: 'Hồ Sơ Đã Nộp',
+                  icon: Icons.folder_shared_rounded,
+                ),
+                CardMain(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (_currentJobApplication.cvFileUrl != null)
-                        _buildInfoRowWithAction(
-                          Icons.picture_as_pdf_rounded,
-                          'Xem CV đã nộp (${getFileNameFromFirebaseUrl(_currentJobApplication.cvFileUrl!)})',
-                          () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder:
-                                    (context) => FileViewerScreen(
-                                      fileUrl:
-                                          _currentJobApplication.cvFileUrl!,
-                                      fileName: getFileNameFromFirebaseUrl(
-                                        _currentJobApplication.cvFileUrl!,
-                                      ),
-                                    ),
-                              ),
+                      if (jobApp.cvFileUrl != null)
+                        ProfileInfoRow(
+                          icon: Icons.picture_as_pdf_rounded,
+                          title:
+                              'Xem CV đã nộp (${(StringUtils.extractFileName(jobApp.cvFileUrl!))})',
+                          onTap: () {
+                            print(  jobApp.cvFileUrl);
+                            context.push(
+                              '/resume/file',
+                              extra: {
+                                'fileUrl': jobApp.cvFileUrl,
+                                'fileName': jobApp.cvFileUrl,
+                              },
                             );
                           },
-                          theme,
                         ),
-                      if (_currentJobApplication.cvFileUrl != null &&
-                          (_currentJobApplication.coverLetter != null &&
-                              _currentJobApplication.coverLetter!.isNotEmpty))
+                      if (jobApp.cvFileUrl != null &&
+                          (jobApp.coverLetter != null &&
+                              jobApp.coverLetter!.isNotEmpty))
                         const Padding(
                           padding: EdgeInsets.symmetric(vertical: 10.0),
                           child: Divider(height: 1),
                         ),
-                      if (_currentJobApplication.coverLetter != null &&
-                          _currentJobApplication.coverLetter!.isNotEmpty)
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.mail_lock_outlined,
-                                  color: theme.colorScheme.secondary,
-                                  size: 22,
-                                ),
-                                const SizedBox(width: 12),
-                                Text(
-                                  'Thư Xin Việc Đã Gửi:',
-                                  style: theme.textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: theme.colorScheme.onSurface,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: theme.colorScheme.surfaceVariant
-                                    .withValues(alpha:0.4),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text(
-                                _currentJobApplication.coverLetter!,
-                                style: theme.textTheme.bodyLarge?.copyWith(
-                                  height: 1.5,
-                                  color: theme.colorScheme.onSurfaceVariant,
-                                ),
-                              ),
-                            ),
-                          ],
+                      if (jobApp.coverLetter != null && jobApp.coverLetter!.isNotEmpty) ... [
+                        SectionTitle(
+                          title: 'Thư Giới Thiệu',
+                          icon: Icons.business_rounded,
                         ),
+                        CardMain(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ProfileInfoRow(
+                                icon: Icons.location_city_rounded,
+                                title: jobApp.coverLetter ?? 'Chưa có thư giới thiệu',
+                              ),
+                            ],
+                          ),
+                        ),
+                      ]
+
                     ],
                   ),
                 ),
+              ],
+
+              SizedBox(height: 24.h),
+
+              // Nút hủy ứng tuyển
+              CustomButtonBorder(
+                title: 'HỦY ỨNG TUYỂN',
+                icon: Icons.cancel_schedule_send_outlined,
+                onPressed: () async => _onCancelApplication(),
               ),
             ],
-            const SizedBox(height: 24), // Khoảng cách trước nút hủy (nếu có)
-            // Nút Hủy Ứng Tuyển
-            if (canCancelApplication)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton.icon(
-                    icon:
-                        _isCancelling
-                            ? Container(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                color: theme.colorScheme.onError,
-                                strokeWidth: 2.5,
-                              ),
-                            )
-                            : Icon(
-                              Icons.cancel_schedule_send_outlined,
-                              color: theme.colorScheme.onError,
-                            ),
-                    label: Text(
-                      _isCancelling ? 'ĐANG HỦY...' : 'HỦY ỨNG TUYỂN',
-                      style: theme.textTheme.labelLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: theme.colorScheme.onError,
-                      ),
-                    ),
-                    onPressed: _isCancelling ? null : _cancelApplication,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: theme.colorScheme.errorContainer
-                          .withValues(alpha:0.8), // Màu nền nhẹ của error
-                      foregroundColor:
-                          theme
-                              .colorScheme
-                              .onErrorContainer, // Màu chữ trên error container
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      elevation: 1, // Elevation nhẹ
-                      side: BorderSide(
-                        color: theme.colorScheme.error.withValues(alpha:0.5),
-                      ), // Viền nhẹ
-                    ),
-                  ),
-                ),
-              ),
-          ],
+          ),
         ),
       ),
     );
   }
+
 }

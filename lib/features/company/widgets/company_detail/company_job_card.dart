@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:job_connect/config/constant/app_images.dart';
 import 'package:job_connect/config/utils/format.dart';
 import 'package:job_connect/config/widgets/info_chip.dart';
-import 'package:job_connect/data/models/job_posting_model.dart';
+import 'package:job_connect/features/job/model/job_posting_model.dart';
 import 'package:job_connect/features/job/screens/job_detail_screen.dart';
 
 class CompanyJobCard extends StatelessWidget {

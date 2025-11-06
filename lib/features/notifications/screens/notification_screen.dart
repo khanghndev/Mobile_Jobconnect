@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/utils/date_utils_helper.dart';
@@ -17,8 +18,7 @@ class NotificationScreen extends StatefulWidget {
   State<NotificationScreen> createState() => _NotificationScreenState();
 }
 
-class _NotificationScreenState extends State<NotificationScreen>
-    with TickerProviderStateMixin {
+class _NotificationScreenState extends State<NotificationScreen> with TickerProviderStateMixin {
   late AnimationController _listAnimationController;
   late AnimationController _fabAnimationController;
   late Animation<double> _fabScaleAnimation;
@@ -123,99 +123,99 @@ class _NotificationScreenState extends State<NotificationScreen>
           body: isLoading
               ? const Center(child: NotificationShimmer(itemCount: 10))
               : notifications.isEmpty
-                  ? BackgroundEmptyState(
-                      isSearching: false,
-                      onRefresh: () async {
-                        await vm.getNotificationsByIdUser(widget.idUser);
-                        await vm.getUnreadCount(widget.idUser);
-                      },
-                      title: "Hộp thư trống",
-                      iconData: Icons.notifications_paused_outlined,
-                      subTitle:
-                          "Mọi thông báo quan trọng sẽ xuất hiện ở đây. Hãy kiểm tra thường xuyên nhé!",
-                    )
-                  : RefreshIndicator(
-                      onRefresh: () async {
-                        await vm.getNotificationsByIdUser(widget.idUser);
-                        await vm.getUnreadCount(widget.idUser);
-                      },
-                      color: theme.primaryColor,
-                      backgroundColor: theme.cardColor,
-                      child: AnimationLimiter(
-                        child: ListView.separated(
-                          physics: const BouncingScrollPhysics(
-                            parent: AlwaysScrollableScrollPhysics(),
-                          ),
-                          padding: const EdgeInsets.only(top: 8, bottom: 80),
-                          itemCount: notifications.length,
-                          separatorBuilder: (_, __) =>
-                              const SizedBox.shrink(),
-                          itemBuilder: (context, index) {
-                            final notification = notifications[index];
-                            return AnimationConfiguration.staggeredList(
-                              position: index,
-                              duration: const Duration(milliseconds: 425),
-                              child: SlideAnimation(
-                                verticalOffset: 50.0,
-                                child: FadeInAnimation(
-                                  child: NotificationItem(
-                                    notification: notification,
-                                    selectMode: selectMode,
-                                    isSelected: vm.selectedNotifications.contains(notification.idNotification),
-                                    theme: theme,
-                                    onTap: () async {
-                                      if (selectMode) {
-                                        vm.onToggleSelect(
-                                            notification.idNotification);
-                                      } else {
-                                        // Đánh dấu đã đọc khi mở chi tiết
-                                        if (notification.isRead == 0) {
-                                          vm.onToggleSelect(notification.idNotification);
-                                          await vm.markAsRead();
-                                        }
-                                        if(context.mounted){
-                                          context.push(
-                                            '/notification/detail',
-                                            extra: {
-                                              'notification': notification,
-                                              'iconData':_getIconForType(notification.type),
-                                              'iconColor': _getColorForType(notification.type, theme),
-                                            },
-                                          );
-                                        }
-                                      }
-                                    },
-                                    onLongPress: () {
-                                      if (!selectMode) {
-                                        vm.onToggleSelectMode();
+                ? BackgroundEmptyState(
+                    isSearching: false,
+                    onRefresh: () async {
+                      await vm.getNotificationsByIdUser(widget.idUser);
+                      await vm.getUnreadCount(widget.idUser);
+                    },
+                    title: "Hộp thư trống",
+                    iconData: Icons.notifications_paused_outlined,
+                    subTitle:
+                        "Mọi thông báo quan trọng sẽ xuất hiện ở đây. Hãy kiểm tra thường xuyên nhé!",
+                  )
+                : RefreshIndicator(
+                    onRefresh: () async {
+                      await vm.getNotificationsByIdUser(widget.idUser);
+                      await vm.getUnreadCount(widget.idUser);
+                    },
+                    color: theme.primaryColor,
+                    backgroundColor: theme.cardColor,
+                    child: AnimationLimiter(
+                      child: ListView.separated(
+                        physics: const BouncingScrollPhysics(
+                          parent: AlwaysScrollableScrollPhysics(),
+                        ),
+                        padding: const EdgeInsets.only(top: 8, bottom: 80),
+                        itemCount: notifications.length,
+                        separatorBuilder: (_, __) =>
+                            const SizedBox.shrink(),
+                        itemBuilder: (context, index) {
+                          final notification = notifications[index];
+                          return AnimationConfiguration.staggeredList(
+                            position: index,
+                            duration: const Duration(milliseconds: 425),
+                            child: SlideAnimation(
+                              verticalOffset: 50.0,
+                              child: FadeInAnimation(
+                                child: NotificationItem(
+                                  notification: notification,
+                                  selectMode: selectMode,
+                                  isSelected: vm.selectedNotifications.contains(notification.idNotification),
+                                  theme: theme,
+                                  onTap: () async {
+                                    if (selectMode) {
+                                      vm.onToggleSelect(
+                                          notification.idNotification);
+                                    } else {
+                                      // Đánh dấu đã đọc khi mở chi tiết
+                                      if (notification.isRead == 0) {
                                         vm.onToggleSelect(notification.idNotification);
+                                        await vm.markAsRead();
                                       }
-                                    },
-                                    iconData: _getIconForType(notification.type),
-                                    iconColor: _getColorForType(notification.type, theme),
-                                    timeAgo: DateUtilsHelper.getTimeAgo(notification.createdAt),
-                                  ),
+                                      if(context.mounted){
+                                        context.push(
+                                          '/notification/detail',
+                                          extra: {
+                                            'notification': notification,
+                                            'iconData':_getIconForType(notification.type),
+                                            'iconColor': _getColorForType(notification.type, theme),
+                                          },
+                                        );
+                                      }
+                                    }
+                                  },
+                                  onLongPress: () {
+                                    if (!selectMode) {
+                                      vm.onToggleSelectMode();
+                                      vm.onToggleSelect(notification.idNotification);
+                                    }
+                                  },
+                                  iconData: _getIconForType(notification.type),
+                                  iconColor: _getColorForType(notification.type, theme),
+                                  timeAgo: DateUtilsHelper.getTimeAgo(notification.createdAt),
                                 ),
                               ),
-                            );
-                          },
-                        ),
+                            ),
+                          );
+                        },
                       ),
                     ),
+                  ),
           floatingActionButton: ScaleTransition(
             scale: _fabScaleAnimation,
             child: FloatingActionButton.extended(
               backgroundColor: theme.colorScheme.primary,
               foregroundColor: theme.colorScheme.onPrimary,
               onPressed: vm.markAllAsRead,
-              icon: const Icon(Icons.done_all_rounded, size: 20),
+              icon: Icon(Icons.done_all_rounded, size: 20.sp),
               label: const Text(
                 "Đọc Tất Cả",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               elevation: 4,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(16.r),
               ),
             ),
           ),

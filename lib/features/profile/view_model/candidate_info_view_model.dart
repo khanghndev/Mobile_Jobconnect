@@ -92,9 +92,7 @@ class CandidateInfoViewModel extends ChangeNotifier {
       _setState(errorMessage: e.toString(), isSuccess: false);
     } catch (e) {
       _setState(errorMessage: e.toString(), isSuccess: false);
-    } finally {
-      _setState(isLoading: false);
-    }
+    }  
   }
 
   //TODO: Hàm xử lý API chung
@@ -111,9 +109,7 @@ class CandidateInfoViewModel extends ChangeNotifier {
       _setState(errorMessage: e.toString(), isSuccess: false);
     } catch (e) {
       _setState(errorMessage: e.toString(), isSuccess: false);
-    } finally {
-      _setState(isLoading: false);
-    }
+    }  
   }
 
   //TODO: Làm mới chi tiết ứng viên

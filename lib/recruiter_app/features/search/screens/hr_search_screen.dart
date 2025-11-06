@@ -3,7 +3,7 @@ import 'package:job_connect/features/profile/model/candidate_info_model.dart';
 import 'package:job_connect/features/profile/model/user_model.dart';
 import 'package:job_connect/features/profile/service/candidate_info_service.dart';
 import 'package:job_connect/features/profile/service/user_service.dart';
-import '../../../../data/models/save_candidate_model.dart';
+import '../../../../model/save_candidate_model.dart';
 import '../../../services/resum_skill_service.dart';
 import '../../../services/save_candidate_service.dart';
 import '../../candidate/screens/detail_candidate_of_hr.dart';

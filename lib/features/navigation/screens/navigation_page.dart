@@ -31,14 +31,13 @@ class NavigationPage extends StatefulWidget {
       return;
     }
 
-    state.navigateToTab(index,
-        navigateToSavedInSearch: savedInSearch, searchInitialTab: searchTab);
+    state.navigateToTab(index, navigateToSavedInSearch: savedInSearch, searchInitialTab: searchTab);
   }
 
   static void goToUniJobsTab(BuildContext context, {int? initialTabIndex}) => _navigate(context, 2, searchTab: initialTabIndex, savedInSearch: initialTabIndex == 2);
   static void goToChatMessageTab(BuildContext context) => _navigate(context, 3);
   static void goToSearchTab(BuildContext context) => _navigate(context, 1);
-  // static void goToCVTab(BuildContext context) => _navigate(context, 1);
+  static void goToHomeTab(BuildContext context) => _navigate(context, 0);
   static void goToProfileTab(BuildContext context) => _navigate(context, 4);
   static void goToSavedJobsTab(BuildContext context) => _navigate(context, 1, searchTab: 2, savedInSearch: true);
 
@@ -97,7 +96,6 @@ class NavigationPageState extends State<NavigationPage> with TickerProviderState
 
     final List<Widget> bodies = [
       HomeScreen(isLoggedIn: args.loggedIn, idUser: args.userId),
-      // CVOptionsScreen(isLoggedIn: args.loggedIn, idUser: args.userId),
       SearchPage(idUser: args.userId, isLoggedIn: args.loggedIn),
       SocialFeedScreen(isLoggedIn: args.loggedIn, idUser: args.userId, onSearch: _onSearch,),
       SocialMessengerScreen(isLoggedIn: args.loggedIn, idUser: args.userId),
@@ -106,7 +104,6 @@ class NavigationPageState extends State<NavigationPage> with TickerProviderState
 
     final List<String> titles = [
       AppStrings.appName,
-      // AppStrings.appCV,
       AppStrings.search,
       AppStrings.appSocial,
       AppStrings.appMessage,
@@ -143,15 +140,6 @@ class NavigationPageState extends State<NavigationPage> with TickerProviderState
     _navBarController.forward(from: 0);
   }
 
-  void _onTabTapped(int index) {
-    const publicTabs = [0, 4];
-    if (!widget.isLoggedIn && !publicTabs.contains(index)) {
-      LoginRequiredDialog();
-      return;
-    }
-    navigateToTab(index);
-  }
-
   @override
   void dispose() {
     _pageController.dispose();
@@ -179,7 +167,7 @@ class NavigationPageState extends State<NavigationPage> with TickerProviderState
           position: Tween(begin: const Offset(0, 0.2), end: Offset.zero).animate(_fadeAnimation),
           child: NavBottomBar(
             currentIndex: _currentIndex,
-            onTap: _onTabTapped,
+            onTap: (index) => navigateToTab(index),
           ),
         ),
       ),

@@ -35,11 +35,11 @@ class UserService {
   }
 
   // TODO: Thêm người dùng mới
-  Future<UserModel> createUser(UserModel notification) async {
+  Future<UserModel> createUser(UserModel user) async {
     try {
       final res = await _apiService.post(
         endpoint: ApiConstants.userEndpoint,
-        body: notification.toJson(),
+        body: user.toJson(),
       );
 
       if (res is! Map<String, dynamic>) {

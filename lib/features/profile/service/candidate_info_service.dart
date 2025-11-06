@@ -103,6 +103,8 @@ class CandidateInfoService {
           "educationLevel": candidate.educationLevel,
           "experienceYears": candidate.experienceYears,
           "skills": candidate.skills,
+          "freeTime": candidate.freeTime,
+          "portfolioUrl": candidate.portfolioUrl,
         },
       );
 

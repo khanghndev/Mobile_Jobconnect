@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:job_connect/data/models/job_application_model.dart';
-import 'package:job_connect/data/models/job_posting_model.dart';
-import 'package:job_connect/data/models/role_model.dart';
+import 'package:job_connect/features/job/model/job_application_model.dart';
+import 'package:job_connect/features/job/model/job_posting_model.dart';
+import 'package:job_connect/model/role_model.dart';
 import 'package:job_connect/features/profile/model/candidate_info_model.dart';
 import 'package:job_connect/features/profile/model/user_model.dart';
 import 'package:job_connect/features/profile/service/candidate_info_service.dart';
@@ -97,11 +97,11 @@ class _HrPendingAplicationScreenState extends State<HrPendingAplicationScreen> {
     if (confirm != true) return;
 
     try {
-      await _jobApplicationService.updateJobApplicationStatus(
-        jobPostId: application.idJobPost,
-        userId: application.idUser,
-        newStatus: "rejected",
-      );
+      // await _jobApplicationService.updateJobApplicationStatus(
+      //   jobPostId: application.idJobPost,
+      //   userId: application.idUser,
+      //   newStatus: "rejected",
+      // );
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Đã từ chối hồ sơ thành công.')),

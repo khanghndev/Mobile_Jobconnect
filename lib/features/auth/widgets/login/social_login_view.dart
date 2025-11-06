@@ -116,7 +116,7 @@ class SocialLoginView extends StatelessWidget {
                 'Đăng nhập bằng Google',
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                   fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w500,
                   color: TextColors.textDefaultPrimary,
                 ),
               ),
@@ -158,8 +158,7 @@ class SocialLoginView extends StatelessWidget {
                       context,
                       PageRouteBuilder(
                         pageBuilder: (context, animation, secondaryAnimation) => const RegisterScreen(),
-                        transitionsBuilder:
-                            (context, animation, secondaryAnimation, child) {
+                        transitionsBuilder:(context, animation, secondaryAnimation, child) {
                           var curve = Curves.easeInOut;
                           var tween = Tween(begin: 0.0, end: 1.0).chain(CurveTween(curve: curve));
                           return FadeTransition(
@@ -178,7 +177,7 @@ class SocialLoginView extends StatelessWidget {
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                   child: Text(
-                    'Đăng Ký',
+                    'Đăng ký',
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w600,

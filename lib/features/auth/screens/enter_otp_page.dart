@@ -4,23 +4,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/constant/app_colors.dart';
+import 'package:job_connect/config/enum/otp_action_type.dart';
 import 'package:job_connect/config/enum/user_role.dart';
 import 'package:job_connect/config/utils/get_adaptive_back_icon.dart';
 import 'package:job_connect/config/utils/snackbar_app.dart';
 import 'package:job_connect/config/widgets/custom_adaptive_tap_effect.dart';
 import 'package:job_connect/config/widgets/custom_app_bar.dart';
 import 'package:job_connect/config/widgets/custom_pincode_field.dart';
+import 'package:job_connect/config/widgets/overlay_loading.dart';
 import 'package:job_connect/config/widgets/unfocus_widget.dart';
-import 'package:job_connect/features/auth/screens/login_screen.dart';
+import 'package:job_connect/features/auth/viewmodel/auth_view_model.dart';
+import 'package:provider/provider.dart';
 
 class EnterOtpPage extends StatefulWidget {
-  final String email;
   final String title;
+  final String email;
+  final String? password;
+  final String? fullName;
+  final String? phoneNumber;
+  final String? confirmPassword;
+  final OtpActionType actionType;
 
   const EnterOtpPage({
     super.key,
     required this.email,
     required this.title,
+    this.password,
+    this.confirmPassword,
+    this.fullName,
+    this.phoneNumber,
+    required this.actionType,
   });
 
   @override
@@ -38,33 +51,55 @@ class _EnterOtpPageState extends State<EnterOtpPage> {
   @override
   void initState() {
     super.initState();
-    _resendRecognizer = TapGestureRecognizer()..onTap = _handleResend;
-    _startCountdown();
+    _resendRecognizer = TapGestureRecognizer()..onTap = _onResendOtp;
+    _onStartCountdown();
   }
 
-  void _handleResend() {
-    // chỉ thực hiện khi countdown = 0
+  void onGoToLogin() {
+    context.push(
+      '/auth/login',
+      extra: {'role': UserRole.candidate.name},
+    );
+  }
+
+  void _onResendOtp() async{
+    _otpCodeCon.clear();
     if (_countdown == 0) {
-      _startCountdown();
-      SnackbarApp.show(
-        context,
-        title: "Thành công",
-        message: 'Mã OTP đã được gửi lại',
-        backgroundColor: BackgroundColors.backgroundSuccessPrimary,
-      );
-      // TODO: gọi API gửi lại OTP ở đây nếu cần
+      final authVM = context.read<AuthViewModel>();
+
+      try {
+        await authVM.resendOtp(widget.email);
+        if (mounted) {
+          SnackbarApp.show(
+            context,
+            title: "Thành công",
+            message: 'Mã OTP đã được gửi lại',
+            backgroundColor: BackgroundColors.backgroundSuccessPrimary,
+          );
+        }
+        _onStartCountdown();
+      } catch (e) {
+        if (mounted) {
+          SnackbarApp.show(
+            context,
+            title: "Lỗi",
+            message: 'Không thể gửi lại mã OTP: $e',
+            backgroundColor: BackgroundColors.backgroundErrorPrimary,
+          );
+        }
+      }
     }
   }
 
-  void _startCountdown() {
+  void _onStartCountdown() {
     setState(() {
-      _countdown = 1;
+      _countdown = 60;
     });
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_countdown == 0) {
         timer.cancel();
-        setState(() {}); // để build lại và hiển thị nút Gửi lại
+        setState(() {});
       } else {
         setState(() {
           _countdown--;
@@ -73,39 +108,79 @@ class _EnterOtpPageState extends State<EnterOtpPage> {
     });
   }
 
-  Future<void> _verifyOtp(BuildContext context, String otp) async {
-    // Ví dụ xử lý tạm thời: chỉ chấp nhận "11111"
+  Future<void> _onVerifyOtp(BuildContext context, String otp) async {
+    final authVM = context.read<AuthViewModel>();
+
     setState(() {
       _isVerifying = true;
       _errorText = '';
     });
+    if(widget.actionType == OtpActionType.register){
+      await authVM.verifyOtp(email: widget.email, code: otp);
+    }
+    else if(widget.actionType == OtpActionType.resetPass){
+      await authVM.verifyOtpReset(email: widget.email, code: otp);
+    }
 
-    await Future.delayed(const Duration(milliseconds: 700));
-
-    if (otp == '11111') {
+    if (authVM.errorMessage != null) {
       setState(() {
         _isVerifying = false;
+        _errorText = authVM.errorMessage!;
       });
-      
-      if(context.mounted) {
-        SnackbarApp.show(
-          context,
-          title: "Thành công",
-          message: '${widget.title} thành công',
-          backgroundColor: BackgroundColors.backgroundSuccessPrimary,
-        );
-        Navigator.push(
-          context, 
-          MaterialPageRoute(builder: (context) => LoginScreen(role: UserRole.candidate.name)),
-        );
-      }
-    } else {
-      setState(() {
-        _isVerifying = false;
-        _errorText = 'Mã OTP không đúng. Vui lòng thử lại.';
-      });
-      // Xoá input để người dùng nhập lại
       _otpCodeCon.clear();
+      return;
+    }
+
+    // Xử lý theo loại hành động
+    switch (widget.actionType) {
+      case OtpActionType.register:
+        await authVM.register(
+          name: widget.fullName!,
+          email: widget.email,
+          phone: widget.phoneNumber!,
+          password: widget.password!,
+          confirmPassword: widget.confirmPassword!,
+        );
+        break;
+
+      case OtpActionType.resetPass:
+        if(context.mounted){
+          context.push(
+            '/auth/reset-password', 
+            extra: {
+              'email': widget.email
+            }
+          );
+        }
+        break;
+    }
+
+    setState(() {
+      _isVerifying = false;
+    });
+
+    if (!context.mounted) return;
+
+    if (authVM.errorMessage != null) {
+      SnackbarApp.show(
+        context,
+        title: 'Lỗi',
+        message: authVM.errorMessage!,
+        backgroundColor: BackgroundColors.backgroundErrorPrimary,
+      );
+    } else if (authVM.isSuccess) {
+      SnackbarApp.show(
+        context,
+        title: 'Thành công',
+        message: widget.actionType == OtpActionType.register
+            ? 'Đăng ký thành công'
+            : 'Xác thực thành công',
+        backgroundColor: BackgroundColors.backgroundSuccessPrimary,
+      );
+
+      if (widget.actionType == OtpActionType.register) {
+        onGoToLogin();
+      }
     }
   }
 
@@ -142,145 +217,147 @@ class _EnterOtpPageState extends State<EnterOtpPage> {
         ),
       ),
       body: UnfocusWidget(
-        child: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(height: 40.h),
-                20.verticalSpace,
-                // Icon
-                Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: BackgroundColors.backgroundBrandPrimary.withValues(alpha: 0.3),
-                        blurRadius: 10.r,
-                        spreadRadius: 1.r,
-                      ),
-                    ],
-                  ),
-                  child: CircleAvatar(
-                    radius: 45.r,
-                    backgroundColor: BackgroundColors.backgroundBrandPrimary,
-                    child: Icon(
-                      Icons.admin_panel_settings_outlined,
-                      size: 50.sp,
-                      color: IconColors.iconBrandOnbrand,
-                    ),
-                  ),
-                ),
-                30.verticalSpace,
-                Text(
-                  'Nhập mã OTP để ${widget.title.toLowerCase()}',
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                    fontSize: 28.sp,
-                    fontWeight: FontWeight.w600,
-                    color: TextColors.textBrandPrimary,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                16.verticalSpace,
-                RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.w600,
-                      color: TextColors.textDefaultPrimary.withValues(alpha: 0.5),
-                    ),
-                    children: [
-                      TextSpan(
-                        text: 'Vui lòng nhập mã otp để ${widget.title.toLowerCase()}\n',
-                      ),
-                      const TextSpan(text: 'Chúng tôi đã gửi mã otp đến '),
-                      TextSpan(
-                        text: widget.email,
-                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.w600,
-                          color: TextColors.textDefaultPrimary.withValues(alpha: 1),
+        child: OverlayLoading(
+          isLoading: _isVerifying,
+          child: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 40.h),
+                  20.verticalSpace,
+                  // Icon
+                  Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: BackgroundColors.backgroundBrandPrimary.withValues(alpha: 0.3),
+                          blurRadius: 10.r,
+                          spreadRadius: 1.r,
                         ),
+                      ],
+                    ),
+                    child: CircleAvatar(
+                      radius: 45.r,
+                      backgroundColor: BackgroundColors.backgroundBrandPrimary,
+                      child: Icon(
+                        Icons.admin_panel_settings_outlined,
+                        size: 50.sp,
+                        color: IconColors.iconBrandOnbrand,
                       ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 32.h),
-        
-                // Pin code field
-                CustomPincodeField(
-                  controller: _otpCodeCon,
-                  onCompleted: (otp) {
-                    _verifyOtp(context, otp);
-                  },
-                ),
-                SizedBox(height: 12.h),
-        
-                // loading nhỏ khi verify
-                if (_isVerifying)
-                  Padding(
-                    padding: EdgeInsets.only(top: 8.h),
-                    child: SizedBox(
-                      width: 18.w,
-                      height: 18.w,
-                      child: const CircularProgressIndicator(strokeWidth: 2),
                     ),
                   ),
-        
-                SizedBox(height: 12.h),
-        
-                // Resend OTP / countdown or clickable "Gửi lại" (chỉ chữ gửi lại có sự kiện)
-                if (_countdown > 0)
+                  30.verticalSpace,
                   Text(
-                    "Gửi lại sau $_countdown giây",
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 15.sp,
-                          color: TextColors.textDefaultSecondary,
-                        ),
-                  )
-                else
+                    'Nhập mã OTP để ${widget.title.toLowerCase()}',
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      fontSize: 28.sp,
+                      fontWeight: FontWeight.w600,
+                      color: TextColors.textBrandPrimary,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  16.verticalSpace,
                   RichText(
                     textAlign: TextAlign.center,
                     text: TextSpan(
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        fontWeight: FontWeight.w400,
+                      style: Theme.of(context).textTheme.titleSmall!.copyWith(
                         fontSize: 15.sp,
-                        color: TextColors.textDefaultSecondary,
+                        fontWeight: FontWeight.w600,
+                        color: TextColors.textDefaultPrimary.withValues(alpha: 0.5),
                       ),
                       children: [
-                        const TextSpan(text: "Bạn không nhận được mã? "),
                         TextSpan(
-                          text: "Gửi lại",
-                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            fontWeight: FontWeight.w500,
+                          text: 'Vui lòng nhập mã otp để ${widget.title.toLowerCase()}\n',
+                        ),
+                        const TextSpan(text: 'Chúng tôi đã gửi mã otp đến '),
+                        TextSpan(
+                          text: widget.email,
+                          style: Theme.of(context).textTheme.titleSmall!.copyWith(
                             fontSize: 15.sp,
-                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.w600,
+                            color: TextColors.textDefaultPrimary.withValues(alpha: 1),
                           ),
-                          recognizer: _resendRecognizer,
                         ),
                       ],
                     ),
                   ),
-        
-                // Error text (chỉ hiển thị khi có lỗi)
-                if (_errorText.isNotEmpty) ...[
-                  SizedBox(height: 24.h),
-                  Text(
-                    _errorText,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w400,
-                          letterSpacing: -0.08,
-                          height: 18 / 13,
-                          color: TextColors.textErrorPrimary,
-                        ),
+                  SizedBox(height: 32.h),
+          
+                  // Pin code field
+                  CustomPincodeField(
+                    controller: _otpCodeCon,
+                    onCompleted: (otp) {
+                      _onVerifyOtp(context, otp);
+                    },
                   ),
+                  SizedBox(height: 12.h),
+          
+                  // loading nhỏ khi verify
+                  if (_isVerifying)
+                    Padding(
+                      padding: EdgeInsets.only(top: 8.h),
+                      child: SizedBox(
+                        width: 18.w,
+                        height: 18.w,
+                        child: const CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                    ),
+          
+                  SizedBox(height: 12.h),
+          
+                  // Resend OTP / countdown or clickable "Gửi lại" (chỉ chữ gửi lại có sự kiện)
+                  if (_countdown > 0)
+                    Text(
+                      "Gửi lại sau $_countdown giây",
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 15.sp,
+                            color: TextColors.textDefaultSecondary,
+                          ),
+                    )
+                  else
+                    RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 15.sp,
+                          color: TextColors.textDefaultSecondary,
+                        ),
+                        children: [
+                          const TextSpan(text: "Bạn không nhận được mã? "),
+                          TextSpan(
+                            text: "Gửi lại",
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15.sp,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            recognizer: _resendRecognizer,
+                          ),
+                        ],
+                      ),
+                    ),
+          
+                  if (_errorText.isNotEmpty) ...[
+                    SizedBox(height: 24.h),
+                    Text(
+                      _errorText,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w400,
+                        letterSpacing: -0.08,
+                        height: 18 / 13,
+                        color: TextColors.textErrorPrimary,
+                      ),
+                    ),
+                  ],
                 ],
-              ],
+              ),
             ),
           ),
         ),

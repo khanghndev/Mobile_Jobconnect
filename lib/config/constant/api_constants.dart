@@ -6,8 +6,15 @@ class ApiConstants {
   // AUTHENTICATION - Đăng nhập/Đăng ký
   static const String registerEndpoint = "/api/Auth/register";
   static const String loginEndpoint = "/api/Auth/login";
+  static const String logoutEndpoint = "/api/Auth/logout";
   static const String socialLoginEndpoint = "/api/Auth/social-login";
   static const String getUserByIdEndpoint = "/api/Auth/{id}";
+  static const String enterOtp = "/api/Auth/enter-otp";
+  static const String forgotPassword = "/api/Auth/forgot-password";
+  static const String verifyOtp = "/api/Auth/verify-otp";
+  static const String verifyOtpReset = "/api/Auth/verify-otp-reset";
+  static const String resetPassword = "/api/Auth/reset-password";
+  static const String resendOtp = "/api/Auth/resend-otp";
 
   // USER & ROLE - Người dùng & Vai trò
   static const String userEndpoint = "/api/User";
@@ -79,10 +86,13 @@ class ApiConstants {
   static const String conversationsByUserEndpoint = "/api/Conversations/by-user/{userId}";
   static const String conversationMessagesEndpoint = "/api/Conversations/{conversationId}/messages";
   static const String conversationMembersEndpoint = "/api/Conversations/{conversationId}/members";
-  static const String conversationMemberByIdEndpoint = "/api/Conversations/{conversationId}/members/{userId}";
+  static const String conversationMemberByIdEndpoint = "/api/Conversations/{conversationId}/members/{userId}"
+  ;
   static const String notificationEndpoint = "/api/Notification";
   static const String notificationByIdEndpoint = "/api/Notification/{id}";
+  static const String notificationByIdUserEndpoint = "/api/Notification/user/{idUser}";
   static const String notificationMarkReadEndpoint = "/api/Notification/mark-read";
+
   static const String socialMessageEndpoint = "/api/SocialMessages";
   static const String socialMessageByIdEndpoint = "/api/SocialMessages/{id}";
   static const String socialMessageMarkReadEndpoint = "/api/SocialMessages/mark-read";

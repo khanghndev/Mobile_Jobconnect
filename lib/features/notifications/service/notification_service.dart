@@ -39,17 +39,19 @@ class NotificationService {
     );
   }
 
-  Future<List<NotificationModel>> getNotificationsByIdUser() async {
+  Future<List<NotificationModel>> getNotificationsByIdUser({required String idUser}) async {
     return _handleApi(
       () async {
-        final res = await _apiService.get(endpoint: ApiConstants.notificationEndpoint);
+        final res = await _apiService.get(
+          endpoint: ApiConstants.notificationByIdUserEndpoint.replaceFirst("{idUser}", idUser),
+        );
         return ApiResponseParser.parseList(
           res: res,
           fromJson: (json) => NotificationModel.fromJson(json),
           errorMsg: 'Phản hồi không hợp lệ khi lấy danh sách thông báo',
         );
       },
-      'Lỗi khi tải danh sách thông báo',
+      'Lỗi khi tải danh sách thông báo của người dùng',
     );
   }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:job_connect/data/models/job_posting_model.dart';
+import 'package:job_connect/features/job/model/job_posting_model.dart';
 import 'package:job_connect/features/home/model/job_saved_model.dart';
 import 'package:job_connect/features/home/view_model/job_saved_view_model.dart';
 import 'featured_job_card.dart';

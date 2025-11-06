@@ -76,7 +76,7 @@ class AppDialog extends StatelessWidget {
                   style: theme.textTheme.bodyMedium,
                 )
               : null),
-      actionsPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+      actionsPadding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 12.h),
       actions: actions,
     );
   }

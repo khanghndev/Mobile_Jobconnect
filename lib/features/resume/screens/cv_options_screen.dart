@@ -317,6 +317,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
 
   // TODO: Xem / Chia sẻ / Tải xuống CV
   void _viewCV(BuildContext context, ResumeModel resume) {
+    print(resume.fileUrl);
     if (resume.fileUrl.isEmpty) {
       SnackbarApp.show(
         context,
@@ -419,7 +420,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
                         ],
                       ),
                     ),
-                    vm.isLoading
+                    vm.isListLoading
                         ? const SliverFillRemaining(
                             child: Center(child: CircularProgressIndicator()),
                           )

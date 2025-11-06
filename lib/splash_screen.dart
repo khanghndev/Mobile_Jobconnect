@@ -56,6 +56,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   }
 
   Future<void> _checkLogin() async {
+    if (!mounted) return;
     final authVM = context.read<AuthViewModel>();
     final userVM = context.read<UserViewModel>();
     final notifVM = context.read<NotificationViewModel>();

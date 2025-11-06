@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:job_connect/data/models/job_application_model.dart';
-import 'package:job_connect/data/models/job_posting_model.dart';
+import 'package:job_connect/features/job/model/job_application_model.dart';
+import 'package:job_connect/features/job/model/job_posting_model.dart';
 import 'hr_job_detail_screen.dart';
 import '../../profile/screens/hr_profile_screen.dart';
 

@@ -102,9 +102,7 @@ class SocialSavePostViewModel extends ChangeNotifier {
       _setState(errorMessage: e.err, isSuccess: false);
     } catch (e) {
       _setState(errorMessage: e.toString(), isSuccess: false);
-    } finally {
-      _setState(isLoading: false);
-    }
+    }  
   }
 
   // LẤY DANH SÁCH BÀI VIẾT ĐÃ LƯU

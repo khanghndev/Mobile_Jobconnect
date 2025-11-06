@@ -1,3 +1,4 @@
+// resume_view_model.dart
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:appwrite/models.dart' as aw;
@@ -13,37 +14,44 @@ class ResumeViewModel extends ChangeNotifier {
 
   final String _bucketId = dotenv.env['APPWRITE_BUCKET_ID_RESUME'] ?? '';
 
-  bool _isLoading = false;
-  bool _isSuccess = false;
+  // Trạng thái
+  bool _isListLoading = false;      // Loading khi lấy danh sách
+  bool _isActionLoading = false;    // Loading khi tạo/update/delete
   bool _isDetailLoading = false;
+  bool _isSuccess = false;
   String? _errorMessage;
 
   List<ResumeModel> _resumes = [];
   List<ResumeModel> _filteredResumes = [];
   ResumeModel? _defaultResume;
+  ResumeModel? _lastCreatedResume;
 
   // Getters
-  bool get isLoading => _isLoading;
-  bool get isSuccess => _isSuccess;
+  bool get isListLoading => _isListLoading;
+  bool get isActionLoading => _isActionLoading;
   bool get isDetailLoading => _isDetailLoading;
+  bool get isSuccess => _isSuccess;
   String? get errorMessage => _errorMessage;
   List<ResumeModel> get resumes => _resumes;
   List<ResumeModel> get filteredResumes => _filteredResumes;
   ResumeModel? get defaultResume => _defaultResume;
+  ResumeModel? get lastCreatedResume => _lastCreatedResume;
 
   // Internal state setter
   void _setState({
-    bool? isLoading,
-    bool? isSuccess,
+    bool? isListLoading,
+    bool? isActionLoading,
     bool? isDetailLoading,
+    bool? isSuccess,
     String? errorMessage,
     List<ResumeModel>? resumes,
     List<ResumeModel>? filteredResumes,
     ResumeModel? defaultResume,
   }) {
-    _isLoading = isLoading ?? _isLoading;
-    _isSuccess = isSuccess ?? _isSuccess;
+    _isListLoading = isListLoading ?? _isListLoading;
+    _isActionLoading = isActionLoading ?? _isActionLoading;
     _isDetailLoading = isDetailLoading ?? _isDetailLoading;
+    _isSuccess = isSuccess ?? _isSuccess;
     _errorMessage = errorMessage;
     _resumes = resumes ?? _resumes;
     _filteredResumes = filteredResumes ?? _filteredResumes;
@@ -51,40 +59,67 @@ class ResumeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // TODO: Lấy tất cả CV
-  Future<void> getAllResumes() async {
-    _setState(isLoading: true, errorMessage: null);
+  // Helper generic function
+  Future<void> _handleApiCall<T>({
+    required Future<T> Function() apiCall,
+    bool isList = false, // dùng để set đúng loading type
+    void Function(T)? onSuccess,
+  }) async {
+    _setState(
+      isListLoading: isList ? true : null,
+      isActionLoading: isList ? null : true,
+      isSuccess: false,
+      errorMessage: null,
+    );
+
     try {
-      final data = await _resumeService.getAllResumes();
-      _setState(resumes: data, filteredResumes: data, isSuccess: true);
+      final result = await apiCall();
+      if (onSuccess != null) onSuccess(result);
+      _setState(
+        isListLoading: isList ? false : null,
+        isActionLoading: isList ? null : false,
+        isSuccess: true,
+      );
     } on ServerException catch (e) {
-      _setState(errorMessage: e.err, isSuccess: false);
+      _setState(
+        isListLoading: isList ? false : null,
+        isActionLoading: isList ? null : false,
+        errorMessage: e.err,
+        isSuccess: false,
+      );
     } catch (e) {
-      _setState(errorMessage: e.toString(), isSuccess: false);
-    } finally {
-      _setState(isLoading: false);
+      _setState(
+        isListLoading: isList ? false : null,
+        isActionLoading: isList ? null : false,
+        errorMessage: e.toString(),
+        isSuccess: false,
+      );
     }
   }
 
-  // TODO: Lấy danh sách CV theo userId
+  // GET ALL RESUMES
+  Future<void> getAllResumes() async {
+    await _handleApiCall<List<ResumeModel>>(
+      isList: true,
+      apiCall: () => _resumeService.getAllResumes(),
+      onSuccess: (data) => _setState(resumes: data, filteredResumes: data),
+    );
+  }
+
+  // GET RESUMES BY USER
   Future<void> getResumesByUser({required String idUser}) async {
-    _setState(isLoading: true, errorMessage: null);
-    try {
-      final data = await _resumeService.getResumesByUser(idUser: idUser);
-      _setState(resumes: data, filteredResumes: data, isSuccess: true);
-    } on ServerException catch (e) {
-      _setState(errorMessage: e.err, isSuccess: false);
-    } finally {
-      _setState(isLoading: false);
-    }
+    await _handleApiCall<List<ResumeModel>>(
+      isList: true,
+      apiCall: () => _resumeService.getResumesByUser(idUser: idUser),
+      onSuccess: (data) => _setState(resumes: data, filteredResumes: data),
+    );
   }
 
-  // TODO: Lấy CV mặc định (CV hiển thị)
+  // GET DEFAULT RESUME
   Future<void> getDefaultResume({required String candidateId}) async {
     _setState(isDetailLoading: true);
     try {
-      final data =
-          await _resumeService.getDefaultResume(candidateId: candidateId);
+      final data = await _resumeService.getDefaultResume(candidateId: candidateId);
       _setState(defaultResume: data);
     } on ServerException catch (e) {
       _setState(errorMessage: e.err);
@@ -93,146 +128,79 @@ class ResumeViewModel extends ChangeNotifier {
     }
   }
 
-  // TODO: Tạo mới CV (upload file lên Appwrite trước)
-  Future<void> createResume({
-    required ResumeModel resume,
-    required File file,
-  }) async {
-    _setState(isLoading: true);
-    try {
-      final aw.File uploaded = await _storageService.uploadFile(
-        file,  
-        bucketId: _bucketId,
-      );
-      final fileUrl = _storageService.getFileViewUrl(
-        uploaded.$id,
-        bucketId: _bucketId,
-      );
-
-      final resumeWithFile = resume.copyWith(
-        fileId: uploaded.$id,
-        fileUrl: fileUrl,
-      );
-
-      final newResume = await _resumeService.createResume(resumeWithFile);
-
-      final updatedList = [..._resumes, newResume];
-      _setState(
-        resumes: updatedList,
-        filteredResumes: updatedList,
-        isSuccess: true,
-      );
-    } on ServerException catch (e) {
-      _setState(errorMessage: e.err, isSuccess: false);
-    } catch (e) {
-      _setState(errorMessage: e.toString(), isSuccess: false);
-    } finally {
-      _setState(isLoading: false);
-    }
+  // CREATE RESUME
+  Future<void> createResume({required ResumeModel resume, required File file}) async {
+    await _handleApiCall<ResumeModel>(
+      apiCall: () async {
+        final aw.File uploaded = await _storageService.uploadFile(file, bucketId: _bucketId);
+        final fileUrl = _storageService.getFileViewUrl(uploaded.$id, bucketId: _bucketId);
+        final resumeWithFile = resume.copyWith(fileId: uploaded.$id, fileUrl: fileUrl);
+        final newResume = await _resumeService.createResume(resumeWithFile);
+        _lastCreatedResume = newResume;
+        final updatedList = [..._resumes, newResume];
+        _setState(resumes: updatedList, filteredResumes: updatedList);
+        return newResume;
+      },
+    );
   }
 
-  // TODO: Cập nhật CV (nếu đổi file → upload mới & xóa file cũ)
-  Future<void> updateResume({
-    required String id,
-    required ResumeModel updated,
-    File? newFile,
-  }) async {
-    _setState(isLoading: true);
-    try {
-      ResumeModel finalResume = updated;
-
-      if (newFile != null) {
-        if (updated.fileId.isNotEmpty) {
-          await _storageService.deleteFile(
-            updated.fileId,
-            bucketId: _bucketId,
-          );
+  // UPDATE RESUME
+  Future<void> updateResume({required String id, required ResumeModel updated, File? newFile}) async {
+    await _handleApiCall<void>(
+      apiCall: () async {
+        ResumeModel finalResume = updated;
+        if (newFile != null) {
+          if (updated.fileId.isNotEmpty) {
+            await _storageService.deleteFile(updated.fileId, bucketId: _bucketId);
+          }
+          final aw.File uploaded = await _storageService.uploadFile(newFile, bucketId: _bucketId);
+          final fileUrl = _storageService.getFileViewUrl(uploaded.$id, bucketId: _bucketId);
+          finalResume = updated.copyWith(fileId: uploaded.$id, fileUrl: fileUrl);
         }
-
-        final aw.File uploaded = await _storageService.uploadFile(
-          newFile,
-          bucketId: _bucketId,
-        );
-
-        final fileUrl = _storageService.getFileViewUrl(
-          uploaded.$id,
-          bucketId: _bucketId,
-        );
-
-        finalResume = updated.copyWith(
-          fileId: uploaded.$id,
-          fileUrl: fileUrl,
-        );
-      }
-
-      await _resumeService.updateResume(id: id, updated: finalResume);
-      await getResumesByUser(idUser: finalResume.idUser);
-    } on ServerException catch (e) {
-      _setState(errorMessage: e.err);
-    } finally {
-      _setState(isLoading: false);
-    }
+        await _resumeService.updateResume(id: id, updated: finalResume);
+        await getResumesByUser(idUser: finalResume.idUser);
+      },
+    );
   }
 
-  // TODO: Xóa CV (và file trên Appwrite)
-  Future<void> deleteResume({
-    required String idResume,
-    required String fileId,
-    required String userId,
-  }) async {
-    _setState(isLoading: true);
-    try {
-      if (fileId.isNotEmpty) {
-        await _storageService.deleteFile(
-          fileId,
-          bucketId: _bucketId,
-        );
-      }
-
-      await _resumeService.deleteResume(idResume: idResume);
-      await getResumesByUser(idUser: userId);
-    } on ServerException catch (e) {
-      _setState(errorMessage: e.err);
-    } finally {
-      _setState(isLoading: false);
-    }
+  // DELETE RESUME
+  Future<void> deleteResume({required String idResume, required String fileId, required String userId}) async {
+    await _handleApiCall<void>(
+      apiCall: () async {
+        if (fileId.isNotEmpty) {
+          await _storageService.deleteFile(fileId, bucketId: _bucketId);
+        }
+        await _resumeService.deleteResume(idResume: idResume);
+        await getResumesByUser(idUser: userId);
+      },
+    );
   }
 
-  // TODO: Đặt CV mặc định
-  Future<void> setDefaultResume({
-    required String userId,
-    required String fileId,
-  }) async {
-    _setState(isLoading: true);
-    try {
-      await _resumeService.setDefaultResume(userId: userId, fileId: fileId);
-      await getResumesByUser(idUser: userId);
-    } on ServerException catch (e) {
-      _setState(errorMessage: e.err);
-    } finally {
-      _setState(isLoading: false);
-    }
+  // SET DEFAULT RESUME
+  Future<void> setDefaultResume({required String userId, required String fileId}) async {
+    await _handleApiCall<void>(
+      apiCall: () async {
+        await _resumeService.setDefaultResume(userId: userId, fileId: fileId);
+        await getResumesByUser(idUser: userId);
+      },
+    );
   }
 
-  // TODO: Tìm kiếm CV
+  // SEARCH RESUME
   void searchResumes({required String keyword}) {
-    if (keyword.isEmpty) {
-      _filteredResumes = _resumes;
-    } else {
-      _filteredResumes = _resumes
-          .where((r) =>
-              r.fileName.toLowerCase().contains(keyword.toLowerCase()))
-          .toList();
-    }
+    _filteredResumes = keyword.isEmpty
+        ? _resumes
+        : _resumes.where((r) => r.fileName.toLowerCase().contains(keyword.toLowerCase())).toList();
     notifyListeners();
   }
 
-  // TODO: Reset toàn bộ
+  // RESET
   void reset() {
     _setState(
-      isLoading: false,
-      isSuccess: false,
+      isListLoading: false,
+      isActionLoading: false,
       isDetailLoading: false,
+      isSuccess: false,
       errorMessage: null,
       resumes: [],
       filteredResumes: [],

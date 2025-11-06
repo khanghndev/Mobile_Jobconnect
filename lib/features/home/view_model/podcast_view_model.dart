@@ -79,9 +79,7 @@ class PodcastViewModel extends ChangeNotifier {
       _setState(errorMessage: e.toString(), isSuccess: false);
     } catch (e) {
       _setState(errorMessage: e.toString(), isSuccess: false);
-    } finally {
-      _setState(isLoading: false);
-    }
+    }  
   }
 
   // TODO: Lọc podcast theo từ khóa (có xử lý bỏ dấu)

@@ -13,6 +13,10 @@ class CompanyModel {
   final int isFeatured;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final String? employerType;
+  final String? idUser;
+  final String? idNumber;
+  final int isVerified;
 
   CompanyModel({
     required this.idCompany,
@@ -29,6 +33,10 @@ class CompanyModel {
     required this.isFeatured,
     this.createdAt,
     this.updatedAt,
+    this.employerType = 'company',
+    this.idUser,
+    this.idNumber,
+    this.isVerified = 0,
   });
 
   factory CompanyModel.fromJson(Map<String, dynamic> json) {
@@ -58,6 +66,12 @@ class CompanyModel {
           : int.tryParse(json['isFeatured']?.toString() ?? '0') ?? 0,
       createdAt: parseDateTime(json['createdAt']?.toString()),
       updatedAt: parseDateTime(json['updatedAt']?.toString()),
+      employerType: json['employerType']?.toString() ?? 'company',
+      idUser: json['idUser']?.toString(),
+      idNumber: json['idNumber']?.toString(),
+      isVerified: (json['isVerified'] is int)
+          ? json['isVerified'] as int
+          : int.tryParse(json['isVerified']?.toString() ?? '0') ?? 0,
     );
   }
 
@@ -75,6 +89,10 @@ class CompanyModel {
       'businessLicenseUrl': businessLicenseUrl,
       'status': status,
       'isFeatured': isFeatured,
+      'employerType': employerType,
+      'idUser': idUser,
+      'idNumber': idNumber,
+      'isVerified': isVerified,
       if (createdAt != null) 'createdAt': createdAt!.toIso8601String(),
       if (updatedAt != null) 'updatedAt': updatedAt!.toIso8601String(),
     };
@@ -91,6 +109,10 @@ class CompanyModel {
       'industry: $industry, '
       'status: $status, '
       'isFeatured: $isFeatured, '
+      'employerType: $employerType, '
+      'idUser: $idUser, '
+      'idNumber: $idNumber, '
+      'isVerified: $isVerified, '
       'createdAt: $createdAt, '
       'updatedAt: $updatedAt'
     ')';

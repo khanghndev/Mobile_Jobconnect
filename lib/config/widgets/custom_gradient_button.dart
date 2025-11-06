@@ -3,16 +3,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomGradientButton extends StatelessWidget {
   final String title;
-  final IconData icon;
+  final IconData? icon;
   final List<Color> gradientColors;
   final VoidCallback onTap;
+  final double? height;
 
   const CustomGradientButton({
     super.key,
     required this.title,
-    required this.icon,
+    this.icon,
     required this.gradientColors,
     required this.onTap,
+    this.height,
   });
 
   @override
@@ -20,6 +22,7 @@ class CustomGradientButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        height: height,
         width: double.infinity,
         padding: EdgeInsets.symmetric(
           vertical: 20.h,

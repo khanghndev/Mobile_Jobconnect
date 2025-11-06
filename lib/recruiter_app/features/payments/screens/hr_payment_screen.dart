@@ -1,8 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:job_connect/config/enum/job_transaction_status.dart';
-import 'package:job_connect/data/models/job_transaction_model.dart';
-import 'package:job_connect/data/models/subscription_package_model.dart';
+import 'package:job_connect/features/job/model/job_transaction_model.dart';
+import 'package:job_connect/model/subscription_package_model.dart';
 import 'package:job_connect/features/payments/widgets/payment/payment_method.dart';
 import 'package:job_connect/features/profile/model/user_model.dart';
 import 'package:job_connect/features/profile/service/user_service.dart';

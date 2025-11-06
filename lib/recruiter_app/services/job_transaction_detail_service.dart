@@ -2,7 +2,7 @@ import 'package:job_connect/config/constant/api_constants.dart';
 import 'package:job_connect/config/enum/server_exception_type.dart';
 import 'package:job_connect/config/error/server_exception.dart';
 import 'package:job_connect/config/services/api_service.dart';
-import 'package:job_connect/data/models/job_transaction_detail_model.dart';
+import 'package:job_connect/features/job/model/job_transaction_detail_model.dart';
 
 class JobTransactionDetailService {
   final ApiService _apiService;

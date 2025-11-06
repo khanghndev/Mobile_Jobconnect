@@ -6,12 +6,12 @@ import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/enum/job_application_status.dart';
 import 'package:job_connect/config/enum/user_role.dart';
 import 'package:job_connect/config/utils/date_utils_helper.dart';
-import 'package:job_connect/data/models/interview_schedule_model.dart';
-import 'package:job_connect/data/models/job_application_model.dart';
-import 'package:job_connect/data/models/job_posting_model.dart';
-import 'package:job_connect/data/models/job_transaction_model.dart';
-import 'package:job_connect/data/models/recruiter_info_model.dart';
-import 'package:job_connect/data/models/subscription_package_model.dart';
+import 'package:job_connect/model/interview_schedule_model.dart';
+import 'package:job_connect/features/job/model/job_application_model.dart';
+import 'package:job_connect/features/job/model/job_posting_model.dart';
+import 'package:job_connect/features/job/model/job_transaction_model.dart';
+import 'package:job_connect/model/recruiter_info_model.dart';
+import 'package:job_connect/model/subscription_package_model.dart';
 import 'package:job_connect/features/company/model/company_model.dart';
 import 'package:job_connect/features/company/service/company_service.dart';
 import 'package:job_connect/features/help/screens/help_screen.dart';
@@ -144,7 +144,7 @@ class _HRHomeScreenState extends State<HRHomeScreen> {
 
       CompanyModel? comp;
       try {
-        comp = await companyService.getCompanyById(id: rec.idCompany);
+        comp = await companyService.getCompanyById(id: rec.idCompany!);
       } catch (e) {
         comp = null; // Nếu công ty bị xóa hoặc lỗi API
         debugPrint("⚠️ Không lấy được thông tin công ty: $e");
@@ -152,9 +152,9 @@ class _HRHomeScreenState extends State<HRHomeScreen> {
 
       // 🧠 2. Lấy danh sách bài đăng việc làm
       List<JobPostingModel> jobPostings = [];
-      if (rec.idCompany.isNotEmpty) {
+      if (rec.idCompany != null && rec.idCompany!.isNotEmpty) {
         try {
-          jobPostings = await jobPostingService.getJobPostingsByCompany(companyId: rec.idCompany);
+          jobPostings = await jobPostingService.getJobPostingsByCompany(companyId: rec.idCompany!);
         } catch (e) {
           debugPrint("⚠️ Không lấy được danh sách bài đăng: $e");
         }
@@ -164,7 +164,7 @@ class _HRHomeScreenState extends State<HRHomeScreen> {
       List<List<JobApplicationModel>> jobApplications = [];
       for (var job in jobPostings) {
         try {
-          final apps = await jobApplicationService.getJobApplicationsByJob(jobPostId: job.idJobPost);
+          final apps = await jobApplicationService.getApplicationsByJobPost(jobPostId: job.idJobPost);
           jobApplications.add(apps);
         } catch (e) {
           if (e.toString().contains('Không tìm thấy hồ sơ ứng tuyển')) {

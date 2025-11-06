@@ -6,6 +6,7 @@ import 'package:job_connect/config/constant/app_images.dart';
 import 'package:job_connect/config/utils/formatter_service.dart';
 import 'package:job_connect/config/utils/input_validators.dart';
 import 'package:job_connect/config/utils/snackbar_app.dart';
+import 'package:job_connect/config/widgets/button_primary_gradient.dart';
 import 'package:job_connect/config/widgets/custom_pass_field_with_label.dart';
 import 'package:job_connect/config/widgets/custom_primary_button.dart';
 import 'package:job_connect/config/widgets/custom_text_field_with_label.dart';
@@ -43,6 +44,22 @@ class _RegisterFormState extends State<RegisterForm> {
   bool _isObscureConfirmPassword = true;
   bool _isAgreeToTerms = false;
   String _selectedCountryCode = '+84';
+
+  void _onRegister() async {
+    if (widget.formKey.currentState!.validate()) {
+      if (!_isAgreeToTerms) {
+        SnackbarApp.show(
+          context,
+          title: 'Thông báo',
+          message: 'Vui lòng đồng ý với điều khoản và điều kiện',
+          backgroundColor: BackgroundColors.backgroundErrorPrimary,
+        );
+        
+        return;
+      }
+      await widget.onRegister();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -208,24 +225,9 @@ class _RegisterFormState extends State<RegisterForm> {
           SizedBox(height: 16.h),
 
           // Nút đăng ký
-          CustomPrimaryButton(
+          ButtonPrimaryGradient(
             text: "ĐĂNG KÝ",
-            onPressed: () async {
-              if (widget.formKey.currentState!.validate()) {
-                if (!_isAgreeToTerms) {
-                  SnackbarApp.show(
-                    context,
-                    title: 'Thông báo',
-                    message: 'Vui lòng đồng ý với điều khoản và điều kiện',
-                    backgroundColor: BackgroundColors.backgroundErrorPrimary,
-                  );
-                  
-                  return;
-                }
-                await widget.onRegister();
-              }
-            },
-            isLoading: widget.isLoading,
+            onPressed: _onRegister,
           ),
           SizedBox(height: 24.h),
 

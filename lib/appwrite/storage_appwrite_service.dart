@@ -28,6 +28,9 @@ class StorageAppwriteService {
         bucketId: bucketId,
         fileId: ID.unique(),
         file: InputFile.fromPath(path: file.path),
+         permissions: [
+          'read:role:all',
+        ],
       );
       return uploadedFile;
     } on AppwriteException catch (e) {

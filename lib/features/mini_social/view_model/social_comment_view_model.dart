@@ -33,6 +33,7 @@ class SocialCommentViewModel extends ChangeNotifier {
   }
 
   // API HANDLER (giữ nguyên logic của bạn)
+
   Future<void> _handleApiCall<T>({
     required Future<T> Function() apiCall,
     void Function(T)? onSuccess,
@@ -46,9 +47,7 @@ class SocialCommentViewModel extends ChangeNotifier {
       _setState(errorMessage: e.err, isSuccess: false);
     } catch (e) {
       _setState(errorMessage: e.toString(), isSuccess: false);
-    } finally {
-      _setState(isLoading: false);
-    }
+    }  
   }
 
   // GET COMMENTS BY POST

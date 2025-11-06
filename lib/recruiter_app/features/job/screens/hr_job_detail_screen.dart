@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:job_connect/data/models/job_posting_model.dart';
+import 'package:job_connect/features/job/model/job_posting_model.dart';
 import 'package:job_connect/features/company/model/company_model.dart';
 import 'package:job_connect/features/company/service/company_service.dart';
 
@@ -25,7 +25,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
 
   Future<void> _loadCompany() async {
     try {
-      final result = await CompanyService().getCompanyById(id: widget.job.idCompany);
+      final result = await CompanyService().getCompanyById(id: widget.job.idCompany!);
       setState(() {
         company = result;
         isLoading = false;

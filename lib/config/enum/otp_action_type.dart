@@ -1,0 +1,4 @@
+enum OtpActionType {
+  register,
+  resetPass,
+}

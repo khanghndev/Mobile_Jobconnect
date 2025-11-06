@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:job_connect/config/enum/job_application_status.dart';
-import 'package:job_connect/data/models/job_application_model.dart';
-import 'package:job_connect/data/models/job_posting_model.dart';
+import 'package:job_connect/features/job/model/job_application_model.dart';
+import 'package:job_connect/features/job/model/job_posting_model.dart';
 import 'package:job_connect/features/profile/model/candidate_info_model.dart';
 import 'package:job_connect/features/profile/model/user_model.dart';
 import 'package:job_connect/features/profile/service/candidate_info_service.dart';
@@ -230,11 +230,11 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
   Future<void> _acceptApplication(CandidateCombined item) async {
     try {
       final jobApplicationService = JobApplicationService();
-      await jobApplicationService.updateJobApplicationStatus(
-        jobPostId: item.jobApplication.idJobPost,
-        userId: item.jobApplication.idUser,
-        newStatus: "interview",
-      );
+      // await jobApplicationService.updateJobApplicationStatus(
+      //   jobPostId: item.jobApplication.idJobPost,
+      //   userId: item.jobApplication.idUser,
+      //   newStatus: "interview",
+      // );
       
        // ignore: use_build_context_synchronously
        ScaffoldMessenger.of(context).showSnackBar(
@@ -254,11 +254,11 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
   Future<void> _rejectApplication(CandidateCombined item) async {
     try {
       final jobApplicationService = JobApplicationService();
-      await jobApplicationService.updateJobApplicationStatus(
-        jobPostId: item.jobApplication.idJobPost,
-        userId: item.jobApplication.idUser,
-        newStatus: "rejected",
-      );
+      // await jobApplicationService.updateJobApplicationStatus(
+      //   jobPostId: item.jobApplication.idJobPost,
+      //   userId: item.jobApplication.idUser,
+      //   newStatus: "rejected",
+      // );
       
        // ignore: use_build_context_synchronously
        ScaffoldMessenger.of(context).showSnackBar(

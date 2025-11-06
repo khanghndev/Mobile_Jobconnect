@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/constant/api_constants.dart';
 import 'package:job_connect/config/widgets/background_error_state.dart';
 import 'package:job_connect/config/widgets/custom_action_bar.dart';
 import 'package:job_connect/config/widgets/login_required_dialog.dart';
-import 'package:job_connect/data/models/job_application_model.dart';
-import 'package:job_connect/data/models/job_posting_model.dart';
+import 'package:job_connect/features/job/model/job_application_model.dart';
+import 'package:job_connect/features/job/model/job_posting_model.dart';
 import 'package:job_connect/features/home/model/job_saved_model.dart';
 import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/features/company/widgets/company_detail/company_detail_appbar.dart';
@@ -412,17 +413,15 @@ class JobDetailState extends State<JobDetailScreen>with TickerProviderStateMixin
             LoginRequiredDialog();
             return;
           }
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ApplyJobScreen(
-                jobId: widget.jobPosting.idJobPost,
-                jobTitle: _jobPosting!.title,
-                companyName: _jobPosting!.company!.companyName,
-                idUser: widget.idUser,
-              ),
-            ),
-          ).then((_) => _onRefresh());
+          context.push(
+            '/job/apply',
+            extra: {
+              'jobId': widget.jobPosting.idJobPost,
+              'jobTitle':  _jobPosting!.title,
+              'companyName': _jobPosting!.company!.companyName,
+              'idUser' : widget.idUser,
+            }
+          );
         },
         buttonText: 'Ứng Tuyển Ngay',
         mainButtonIcon: Icons.send_rounded,

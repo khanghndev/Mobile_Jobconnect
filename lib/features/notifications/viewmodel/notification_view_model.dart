@@ -6,7 +6,7 @@ import 'package:job_connect/features/notifications/service/notification_service.
 class NotificationViewModel extends ChangeNotifier {
   final NotificationService _notificationService = NotificationService();
 
-  // ===== STATE =====
+  //TODO:  STATE 
   bool _isLoading = false;
   bool _isSuccess = false;
   bool _selectMode = false;
@@ -15,7 +15,7 @@ class NotificationViewModel extends ChangeNotifier {
   List<NotificationModel> _notifications = [];
   int _unreadCount = 0;
 
-  // ===== GETTERS =====
+  //TODO:  GETTERS 
   bool get isLoading => _isLoading;
   bool get isSuccess => _isSuccess;
   bool get selectMode => _selectMode;
@@ -24,7 +24,7 @@ class NotificationViewModel extends ChangeNotifier {
   Set<String> get selectedNotifications => _selectedNotifications;
   int get unreadCount => _unreadCount;
 
-  // ===== PRIVATE SET STATE =====
+  //TODO:  PRIVATE SET STATE 
   void _setState({
     bool? isLoading,
     bool? isSuccess,
@@ -42,45 +42,55 @@ class NotificationViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // TODO: Lấy danh sách thông báo theo FIFO (cũ nhất trước)
-  Future<void> getNotificationsByIdUser(String userId) async {
-    _setState(isLoading: true, errorMessage: null, isSuccess: false);
+  //TODO:  GENERIC API HANDLER 
+  Future<void> _handleApiCall<T>({
+    required Future<T> Function() apiCall,
+    void Function(T)? onSuccess,
+    bool showLoading = true,
+  }) async {
+    if (showLoading) _setState(isLoading: true, isSuccess: false, errorMessage: null);
     try {
-      final data = await _notificationService.getNotifications();
-
-      // FIFO: cũ nhất trước
-      data.sort((a, b) => a.createdAt.compareTo(b.createdAt));
-
-      _setState(notifications: data, isSuccess: true);
+      final result = await apiCall();
+      if (onSuccess != null) onSuccess(result);
+      _setState(isSuccess: true);
     } on ServerException catch (e) {
-      _setState(errorMessage: e.toString(), isSuccess: false);
+      _setState(errorMessage: e.err, isSuccess: false);
     } catch (e) {
       _setState(errorMessage: e.toString(), isSuccess: false);
     } finally {
-      _setState(isLoading: false);
+      if (showLoading) _setState(isLoading: false);
     }
   }
 
-  // TODO: Lấy số lượng thông báo chưa đọc (nếu backend có endpoint riêng)
+  //TODO:  GET: Danh sách thông báo theo user 
+  Future<void> getNotificationsByIdUser(String userId) async {
+    await _handleApiCall<List<NotificationModel>>(
+      apiCall: () => _notificationService.getNotificationsByIdUser(idUser: userId),
+      onSuccess: (data) {
+        _notifications = data;
+      },
+    );
+  }
+
+  //TODO:  GET: Số lượng thông báo chưa đọc 
   Future<void> getUnreadCount(String userId) async {
-    try {
-      final notifications = await _notificationService.getNotifications();
-      final count = notifications.where((n) => n.isRead == 0).length;
-      _setState(notifications: notifications);
-      _setState(unreadCount: count);
-    } catch (e) {
-      debugPrint('Error getching unread count: $e');
-    }
+    await _handleApiCall<List<NotificationModel>>(
+      apiCall: () => _notificationService.getNotificationsByIdUser(idUser: userId),
+      showLoading: false,
+      onSuccess: (data) {
+        _unreadCount = data.where((n) => n.isRead == 0).length;
+      },
+    );
   }
 
-  // TODO: Cập nhật state chế độ chọn nhiều
+  //TODO:  CẬP NHẬT: Chế độ chọn nhiều 
   void onToggleSelectMode() {
     _selectMode = !_selectMode;
     if (!_selectMode) _selectedNotifications.clear();
     notifyListeners();
   }
 
-  // TODO: Chọn / bỏ chọn 1 thông báo
+  //TODO:  CẬP NHẬT: Chọn / bỏ chọn một thông báo 
   void onToggleSelect(String id) {
     if (_selectedNotifications.contains(id)) {
       _selectedNotifications.remove(id);
@@ -90,7 +100,7 @@ class NotificationViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // TODO: Đánh dấu đã đọc cho các thông báo được chọn
+  //TODO:  UPDATE: Đánh dấu đã đọc các thông báo được chọn 
   Future<void> markAsRead() async {
     if (_selectedNotifications.isEmpty) return;
 
@@ -110,46 +120,41 @@ class NotificationViewModel extends ChangeNotifier {
       }
     }
 
-    _setState(notifications: updated);
+    _setState(notifications: updated, unreadCount: updated.where((n) => n.isRead == 0).length);
     _selectedNotifications.clear();
     _selectMode = false;
 
-    try {
-      await Future.wait(updateFutures);
-      _setState(unreadCount: updated.where((n) => n.isRead == 0).length);
-    } catch (e) {
-      _errorMessage = e.toString();
-      notifyListeners();
-    }
+    await _handleApiCall<void>(
+      apiCall: () async => Future.wait(updateFutures),
+      showLoading: false,
+    );
   }
 
-  // TODO: Xóa thông báo được chọn
+  //TODO:  DELETE: Xóa các thông báo được chọn 
   Future<void> deleteNotifications() async {
     if (_selectedNotifications.isEmpty) return;
 
     final idsToDelete = List<String>.from(_selectedNotifications);
-    _notifications.removeWhere(
-        (noti) => idsToDelete.contains(noti.idNotification));
-    notifyListeners();
-
     final List<Future> deleteFutures = [];
+
+    _notifications.removeWhere((n) => idsToDelete.contains(n.idNotification));
+    _selectedNotifications.clear();
+    _selectMode = false;
+
     for (String id in idsToDelete) {
       deleteFutures.add(_notificationService.deleteNotification(id: id));
     }
 
-    _selectedNotifications.clear();
-    _selectMode = false;
-
-    try {
-      await Future.wait(deleteFutures);
-      _setState(unreadCount: _notifications.where((n) => n.isRead == 0).length);
-    } catch (e) {
-      _errorMessage = e.toString();
-      notifyListeners();
-    }
+    await _handleApiCall<void>(
+      apiCall: () async => Future.wait(deleteFutures),
+      showLoading: false,
+      onSuccess: (_) {
+        _unreadCount = _notifications.where((n) => n.isRead == 0).length;
+      },
+    );
   }
 
-  // TODO: Đánh dấu toàn bộ thông báo là đã đọc
+  //TODO:  UPDATE: Đánh dấu tất cả là đã đọc 
   Future<void> markAllAsRead() async {
     final unread = _notifications.where((n) => n.isRead == 0).toList();
     if (unread.isEmpty) return;
@@ -169,17 +174,16 @@ class NotificationViewModel extends ChangeNotifier {
       }
     }
 
-    _setState(notifications: updated, unreadCount: 0);
-
-    try {
-      await Future.wait(updateFutures);
-    } catch (e) {
-      _errorMessage = e.toString();
-      notifyListeners();
-    }
+    await _handleApiCall<void>(
+      apiCall: () async => Future.wait(updateFutures),
+      showLoading: false,
+      onSuccess: (_) {
+        _setState(notifications: updated, unreadCount: 0);
+      },
+    );
   }
 
-  // TODO: Reset toàn bộ state
+  //TODO:  RESET 
   void onReset() {
     _setState(
       isLoading: false,

@@ -3,7 +3,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:job_connect/config/constant/api_constants.dart';
-import '../../data/models/message_model.dart';
+import '../../model/message_model.dart';
 
 class ChatService {
   final http.Client _client;

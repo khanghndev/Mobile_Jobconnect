@@ -6,7 +6,6 @@ class CompanyInfoRow extends StatelessWidget {
   final String title;
   final String? content;
   final bool isLink;
-  final ThemeData? themeData;
 
   const CompanyInfoRow({
     super.key,
@@ -14,12 +13,11 @@ class CompanyInfoRow extends StatelessWidget {
     required this.title,
     required this.content,
     this.isLink = false,
-    this.themeData,
   });
 
   @override
   Widget build(BuildContext context) {
-    final theme = themeData ?? Theme.of(context);
+    final theme = Theme.of(context);
     if (content == null || content!.isEmpty) {
       return const SizedBox.shrink();
     }

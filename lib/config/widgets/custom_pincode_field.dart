@@ -20,8 +20,8 @@ class CustomPincodeField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Pinput.builder(
-      length: 5,
-      separatorBuilder: (_) => SizedBox(width: 12.w), // khoảng cách giữa các ô
+      length: 6,
+      separatorBuilder: (_) => SizedBox(width: 12.w),
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       hapticFeedbackType: HapticFeedbackType.vibrate,

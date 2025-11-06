@@ -2,7 +2,7 @@ import 'package:job_connect/config/constant/api_constants.dart';
 import 'package:job_connect/config/enum/server_exception_type.dart';
 import 'package:job_connect/config/error/server_exception.dart';
 import 'package:job_connect/config/services/api_service.dart';
-import 'package:job_connect/data/models/save_candidate_model.dart';
+import 'package:job_connect/model/save_candidate_model.dart';
 
 class SaveCandidateService {
   final ApiService _apiService;
