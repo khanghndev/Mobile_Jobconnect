@@ -9,6 +9,8 @@ import 'package:job_connect/features/home/view_model/job_saved_view_model.dart';
 import 'package:job_connect/features/home/view_model/podcast_view_model.dart';
 import 'package:job_connect/features/job/view_model/job_application_view_model.dart';
 import 'package:job_connect/features/mini_social/view_model/social_comment_view_model.dart';
+import 'package:job_connect/features/mini_social/view_model/social_connection_view_model.dart';
+import 'package:job_connect/features/mini_social/view_model/social_groups_view_model.dart';
 import 'package:job_connect/features/mini_social/view_model/social_post_view_model.dart';
 import 'package:job_connect/features/mini_social/view_model/social_save_post_view_model.dart';
 import 'package:job_connect/features/notifications/viewmodel/notification_view_model.dart';
@@ -48,6 +50,9 @@ void main() async {
         ChangeNotifierProvider(create: (_) => SocialPostViewModel(prefs: SharedPrefsService(prefs: prefs))),
         ChangeNotifierProvider(create: (_) => SocialCommentViewModel()),
         ChangeNotifierProvider(create: (_) => SocialSavePostViewModel(prefs: SharedPrefsService(prefs: prefs))),
+        ChangeNotifierProvider(create: (_) => SocialConnectionViewModel()),
+        ChangeNotifierProvider(create: (_) => SocialGroupsViewModel()),
+
 
       ],
       child: MyApp(),

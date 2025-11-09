@@ -124,6 +124,7 @@ class ApiConstants {
   static const String socialPostLikeEndpoint = "/api/SocialPosts/{id}/like";
   static const String socialPostLikesEndpoint = "/api/SocialPosts/{id}/likes";
   static const String socialPostsFeedByUserEndpoint = "/api/SocialPosts/feed/{userId}";
+  static const String socialPostsInGroupByUserEndpoint = "/api/Social/group/{groupId}";
 
   static const String socialMessagesSendEndpoint = "/api/SocialMessages/send";
   static const String socialMessagesThreadEndpoint = "/api/SocialMessages/thread";
@@ -137,14 +138,21 @@ class ApiConstants {
 
   static const String socialConnectionsRequestEndpoint = "/api/SocialConnections/request";
   static const String socialConnectionsAcceptEndpoint = "/api/SocialConnections/accept";
+  static const String socialConnectionsRejectEndpoint = "/api/SocialConnections/reject";
+  static const String socialConnectionsCancelEndpoint = "/api/SocialConnections/cancel";
   static const String socialConnectionsBlockEndpoint = "/api/SocialConnections/block";
   static const String socialConnectionsUnfriendEndpoint = "/api/SocialConnections/unfriend";
-  static const String socialConnectionsFriendsByUserEndpoint = "/api/SocialConnections/friends/{userId}";
   static const String socialConnectionsRequestsByUserEndpoint = "/api/SocialConnections/requests/{userId}";
+  static const String socialConnectionsSentByUserEndpoint = "/api/SocialConnections/sent/{userId}";
+  static const String socialConnectionsFriendsByUserEndpoint = "/api/SocialConnections/friends/{userId}";
+  static const String socialConnectionsAcceptAllEndpoint = "/api/SocialConnections/accept-all";
+  static const String socialConnectionsCancelAllEndpoint = "/api/SocialConnections/cancel-all";
+  static const String socialConnectionsStatusEndpoint = "/api/SocialConnections/status";
 
   static const String socialGroupsEndpoint = "/api/SocialGroups";
   static const String socialGroupByIdEndpoint = "/api/SocialGroups/{id}";
   static const String socialGroupsJoinedEndpoint = "/api/SocialGroups/joined";
+  static const String socialGroupsPendingEndpoint = "/api/SocialGroups/pending";
   static const String socialGroupsSearchEndpoint = "/api/SocialGroups/search";
   static const String socialGroupJoinEndpoint = "/api/SocialGroups/{id}/join";
   static const String socialGroupLeaveEndpoint = "/api/SocialGroups/{id}/leave";

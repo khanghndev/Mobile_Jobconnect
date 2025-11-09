@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:job_connect/config/constant/app_images.dart';
+import 'package:job_connect/config/utils/image_url.dart';
 import 'package:job_connect/model/recruiter_info_model.dart';
 import 'package:job_connect/features/company/model/company_model.dart';
 import 'package:job_connect/features/company/service/company_service.dart';
@@ -212,7 +213,7 @@ class _HrEditProfileScreenState extends State<HrEditProfileScreen> {
                                 width: 2,
                               ),
                               image: DecorationImage(
-                                image: NetworkImage(
+                                image: ImageUtils.getImageProvider(
                                   widget.account.avatarUrl != null && widget.account.avatarUrl!.isNotEmpty
                                       ? widget.account.avatarUrl!
                                       : AppImages.defaultAvatar,

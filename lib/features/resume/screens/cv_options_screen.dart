@@ -374,7 +374,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
 
         return Scaffold(
           backgroundColor: theme.scaffoldBackgroundColor,
-          appBar: const CustomAppbarTitleLarge(title: "Quản lý hồ sơ"),
+          appBar: const CustomAppbarTitleLarge(title: "Quản lý CV"),
           body: UnfocusWidget(
             child: SafeArea(
               child: RefreshIndicator(

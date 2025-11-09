@@ -11,7 +11,7 @@ class PostActionBar extends StatelessWidget {
   final VoidCallback onLike;
   final VoidCallback onSave;
   final VoidCallback onShare;
-  final VoidCallback onComment;
+  final VoidCallback? onComment;
   final VoidCallback onShowReactions;
 
   const PostActionBar({
@@ -24,7 +24,7 @@ class PostActionBar extends StatelessWidget {
     required this.onLike,
     required this.onSave,
     required this.onShare,
-    required this.onComment,
+    this.onComment,
     required this.onShowReactions,
   });
 
@@ -38,14 +38,16 @@ class PostActionBar extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      Positioned(left: 30, child: Text('😢', style: TextStyle(fontSize: 18.sp))),
-                      Positioned(left: 14, child: Text('😍', style: TextStyle(fontSize: 18.sp))),
-                      Text('😂', style: TextStyle(fontSize: 18)),
-                    ],
-                  ),
+                  if(likesCount > 0)...[
+                    Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Positioned(left: 30, child: Text('😢', style: TextStyle(fontSize: 18.sp))),
+                        Positioned(left: 14, child: Text('😍', style: TextStyle(fontSize: 18.sp))),
+                        Positioned(child: Text('😂', style: TextStyle(fontSize: 18.sp))),
+                      ],
+                    ),
+                  ],
                   SizedBox(width: 40.w),
                   Text(
                     '$likesCount',
@@ -80,7 +82,7 @@ class PostActionBar extends StatelessWidget {
               ActionButton(
                 icon: Icons.chat_bubble_outline,
                 label: "Bình luận",
-                onTap: onComment,
+                onTap: onComment ?? (){},
               ),
               ActionButton(
                 icon: isSaved ? Icons.bookmark : Icons.bookmark_outline,

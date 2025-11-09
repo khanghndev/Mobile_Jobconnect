@@ -17,7 +17,7 @@ class DateUtilsHelper {
     return DateFormat(format).parse(dateStr);
   }
 
-  /// Trả về chuỗi như: "5 phút trước", "2 giờ trước"
+  /// Trả về chuỗi như: "5 phút", "2 giờ"
   static String timeAgo(DateTime dateTime) {
     final now = DateTime.now();
     Duration diff = now.difference(dateTime);
@@ -25,23 +25,24 @@ class DateUtilsHelper {
     // Trường hợp trong tương lai
     if (diff.isNegative) {
       diff = diff.abs();
-      if (diff.inSeconds < 60) return 'Trong ${diff.inSeconds} giây tới';
-      if (diff.inMinutes < 60) return 'Trong ${diff.inMinutes} phút tới';
-      if (diff.inHours < 24) return 'Trong ${diff.inHours} giờ tới';
-      if (diff.inDays < 7) return 'Trong ${diff.inDays} ngày tới';
-      if (diff.inDays < 30) return 'Trong ${(diff.inDays / 7).floor()} tuần tới';
-      if (diff.inDays < 365) return 'Trong ${(diff.inDays / 30).floor()} tháng tới';
-      return 'Trong ${(diff.inDays / 365).floor()} năm tới';
+      if (diff.inSeconds < 60) return 'Trong ${diff.inSeconds} giây';
+      if (diff.inMinutes < 60) return 'Trong ${diff.inMinutes} phút';
+      if (diff.inHours < 24) return 'Trong ${diff.inHours} giờ';
+      if (diff.inDays < 7) return 'Trong ${diff.inDays} ngày';
+      if (diff.inDays < 30) return 'Trong ${(diff.inDays / 7).floor()} tuần';
+      if (diff.inDays < 365) return 'Trong ${(diff.inDays / 30).floor()} tháng';
+      return 'Trong ${(diff.inDays / 365).floor()} năm';
     }
 
     // Trường hợp trong quá khứ
-    if (diff.inSeconds < 60) return '${diff.inSeconds} giây trước';
-    if (diff.inMinutes < 60) return '${diff.inMinutes} phút trước';
-    if (diff.inHours < 24) return '${diff.inHours} giờ trước';
-    if (diff.inDays < 7) return '${diff.inDays} ngày trước';
-    if (diff.inDays < 30) return '${(diff.inDays / 7).floor()} tuần trước';
-    if (diff.inDays < 365) return '${(diff.inDays / 30).floor()} tháng trước';
-    return '${(diff.inDays / 365).floor()} năm trước';
+    if (diff.inSeconds < 60) return '${diff.inSeconds} giây';
+    if (diff.inMinutes < 60) return '${diff.inMinutes} phút';
+    if (diff.inHours < 24) return '${diff.inHours} giờ';
+    if (diff.inDays < 7) return '${diff.inDays} ngày';
+
+    // Nếu hơn 7 ngày → hiển thị dạng ngày tháng giờ
+    final dateFormat = DateFormat('d MMMM \'lúc\' HH:mm', 'vi_VN');
+    return dateFormat.format(dateTime);
   }
 
   /// Kiểm tra hôm nay
@@ -69,7 +70,7 @@ class DateUtilsHelper {
 // final now = DateTime.now();
 // print(DateUtilsHelper.formatDate(now));         // 20/07/2025
 // print(DateUtilsHelper.formatDateTime(now));     // 20/07/2025 14:12
-// print(DateUtilsHelper.timeAgo(now.subtract(Duration(hours: 2))));  // 2 giờ trước
+// print(DateUtilsHelper.timeAgo(now.subtract(Duration(hours: 2))));  // 2 giờ
 
 // print(DateUtilsHelper.isToday(DateTime.now()));  // true
 // print(DateUtilsHelper.isYesterday(DateTime.now().subtract(Duration(days: 1))));  // true

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:job_connect/config/constant/app_images.dart';
+import 'package:job_connect/config/utils/string_utils.dart';
 import 'package:job_connect/features/mini_social/model/social_post_model.dart';
 
 class DiscoverCard extends StatelessWidget {
@@ -57,7 +58,7 @@ class DiscoverCard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          socialPostModel.content,
+                          StringUtils.removeHtmlTags(socialPostModel.content),
                           style: TextStyle(
                             fontSize: 14.sp, 
                             fontWeight: FontWeight.bold
@@ -66,6 +67,7 @@ class DiscoverCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis
                         ),
                       ),
+                      
                       Icon(Icons.more_vert, color: Colors.grey, size: 20.sp),
                     ],
                   ),

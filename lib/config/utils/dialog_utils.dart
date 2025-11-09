@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/constant/app_colors.dart';
 import 'package:job_connect/config/enum/dialog_type.dart';
 import 'package:job_connect/config/enum/user_role.dart';
+import 'package:job_connect/config/utils/image_url.dart';
 import 'package:job_connect/config/utils/snackbar_app.dart';
 import 'package:job_connect/config/widgets/custom_dialog.dart';
 import 'package:job_connect/features/auth/viewmodel/auth_view_model.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 import 'package:provider/provider.dart';
 
 
@@ -133,6 +137,40 @@ class DialogUtils {
       onConfirm: () async {
         await onConfirm();
       },
+    );
+  }
+
+  static void showImageViewer(BuildContext context, List<String> images, int initialIndex) {
+    showDialog(
+      context: context,
+      builder: (_) => Dialog(
+        backgroundColor: Colors.black,
+        insetPadding: EdgeInsets.zero,
+        child: Stack(
+          children: [
+            PhotoViewGallery.builder(
+              itemCount: images.length,
+              pageController: PageController(initialPage: initialIndex),
+              builder: (context, index) => PhotoViewGalleryPageOptions(
+                imageProvider: ImageUtils.getImageProvider(images[index]),
+                minScale: PhotoViewComputedScale.contained,
+                maxScale: PhotoViewComputedScale.covered * 3,
+              ),
+              loadingBuilder: (context, event) => const Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
+            Positioned(
+              top: 40.h,
+              right: 20.w,
+              child: IconButton(
+                icon: Icon(Icons.close, color: Colors.white, size: 28.sp),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

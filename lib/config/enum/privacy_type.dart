@@ -1,0 +1,1 @@
+enum PrivacyType {private, public}

@@ -23,8 +23,7 @@ class ReusableBottomSheet extends StatefulWidget {
   final ValueChanged<String> onSelected;
   final String? headerTitle;
   final IconData? headerIcon;
-  final bool showRadio; // có hiển thị radio không
-
+  final bool showRadio;
   const ReusableBottomSheet({
     super.key,
     required this.options,

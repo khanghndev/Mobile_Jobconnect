@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:job_connect/config/constant/app_images.dart';
+import 'package:job_connect/config/utils/image_url.dart';
 import 'package:job_connect/features/job/model/job_application_model.dart';
 import 'package:job_connect/features/job/model/job_posting_model.dart';
 import 'package:job_connect/model/recruiter_info_model.dart';
@@ -358,8 +359,8 @@ class _RecruiterProfilePageState extends State<RecruiterProfilePage> {
                               radius: 45,
                               backgroundColor: Colors.white,
                               backgroundImage: user?.avatarUrl != null && user!.avatarUrl!.isNotEmpty
-                                  ? NetworkImage(user!.avatarUrl!)
-                                  : NetworkImage(AppImages.defaultAvatar),
+                                  ? ImageUtils.getImageProvider(user!.avatarUrl!)
+                                  : ImageUtils.getImageProvider(AppImages.defaultAvatar),
                             ),
                             
                             Container(

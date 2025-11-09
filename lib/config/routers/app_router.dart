@@ -59,6 +59,7 @@ class RouterModule {
 
       // Chat
       ChatRouter.routers,
+
     ],
   );
 }

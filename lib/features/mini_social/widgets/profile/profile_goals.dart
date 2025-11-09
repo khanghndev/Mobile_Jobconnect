@@ -2,16 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProfileGoals extends StatelessWidget {
-  const ProfileGoals({super.key});
+  final int posts;
+  final int views;
+  final int saves;
+
+  const ProfileGoals({
+    super.key,
+    required this.posts,
+    required this.views,
+    required this.saves,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        _buildGoal(Icons.post_add_outlined, "25", "Số bài viết", Colors.purple),
-        _buildGoal(Icons.remove_red_eye, "210", "Số người xem", Colors.orange),
-        _buildGoal(Icons.save_alt, "135", "Lượt lưu", Colors.amber),
+        _buildGoal(Icons.post_add_outlined, posts.toString(), "Số bài viết", Colors.purple),
+        _buildGoal(Icons.remove_red_eye, views.toString(), "Số người xem", Colors.orange),
+        _buildGoal(Icons.save_alt, saves.toString(), "Lượt lưu", Colors.amber),
       ],
     );
   }
@@ -29,9 +38,14 @@ class ProfileGoals extends StatelessWidget {
           child: Icon(icon, color: color, size: 28.sp),
         ),
         SizedBox(height: 8.h),
-        Text(value,
-            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
-        Text(label, style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
+        Text(
+          value,
+          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+        ),
+        Text(
+          label,
+          style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+        ),
       ],
     );
   }

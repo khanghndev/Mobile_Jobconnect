@@ -40,7 +40,7 @@ class DrawerCandidateSection extends StatelessWidget {
           ),
           DrawerItem(
             icon: Icons.file_copy,
-            title: 'Quản lý hồ sơ',
+            title: 'Quản lý CV',
             onTap: () => _checkLoginOrRouter(
               context: context, 
               route: '/home/cv',
@@ -104,7 +104,14 @@ class DrawerCandidateSection extends StatelessWidget {
           DrawerItem(
             icon: Icons.people_outline,
             title: 'Kết nối',
-            onTap: () => _checkLoginOrRouter(context: context, route: '/social/connections'),
+            onTap: () => _checkLoginOrRouter(
+              context: context, 
+              route: '/social/connections',
+              extra: {
+                'isLoggedIn': isLoggedIn,
+                'idUser': idUser,
+              }
+            ),
             isSelected: selectedRoute == '/social/connections',
           ),
 

@@ -79,7 +79,11 @@ class CustomTextFieldWithLabel extends StatelessWidget {
         suffixIcon: suffixIcon != null
           ? GestureDetector(
               onTap: onSuffixIconTap,
-              child: Icon(suffixIcon),
+              child: Icon(
+                suffixIcon, 
+                size: 20.sp,
+                color: suffixIconColor ?? theme.iconTheme.color
+              ),
             )
           : null,
         suffixIconColor: suffixIconColor ?? theme.iconTheme.color,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:job_connect/config/enum/job_application_status.dart';
+import 'package:job_connect/config/utils/image_url.dart';
 import 'package:job_connect/features/job/model/job_application_model.dart';
 import 'package:job_connect/features/job/model/job_posting_model.dart';
 import 'package:job_connect/features/profile/model/candidate_info_model.dart';
@@ -371,7 +372,7 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
                   CircleAvatar(
                     radius: 40,
                     backgroundImage: account.avatarUrl != null
-                        ? NetworkImage(account.avatarUrl!)
+                        ? ImageUtils.getImageProvider(account.avatarUrl!)
                         : null,
                     backgroundColor: Colors.grey[200],
                   ),
@@ -851,7 +852,7 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
                                         radius: 28,
                                         backgroundImage:
                                             account.avatarUrl != null
-                                                ? NetworkImage(account.avatarUrl!)
+                                                ? ImageUtils.getImageProvider(account.avatarUrl!)
                                                 : null,
                                         backgroundColor: Colors.grey[200],
                                       ),

@@ -43,7 +43,7 @@ class StatsSummary extends StatelessWidget {
             : Colors.white,
         boxShadow: [
           BoxShadow(
-            color: theme.shadowColor.withOpacity(0.08),
+            color: theme.shadowColor.withValues(alpha: 0.08),
             blurRadius: 15.r,
             offset: const Offset(0, 5),
           ),

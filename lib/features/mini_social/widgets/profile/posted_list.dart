@@ -32,7 +32,7 @@ class _DiscoverListState extends State<DiscoverList> with SingleTickerProviderSt
     );
 
     _offsetAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.2), // trượt từ dưới lên
+      begin: const Offset(0, 0.2), 
       end: Offset.zero,
     ).animate(
       CurvedAnimation(
@@ -46,7 +46,6 @@ class _DiscoverListState extends State<DiscoverList> with SingleTickerProviderSt
       curve: Curves.easeIn,
     );
 
-    // chạy animation ngay khi mở màn
     _controller.forward();
   }
 

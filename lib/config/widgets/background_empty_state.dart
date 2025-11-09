@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BackgroundEmptyState extends StatelessWidget {
-  final bool isSearching;
+  final bool? isSearching;
   final VoidCallback onRefresh;
   final String title;
   final IconData iconData;
@@ -10,7 +10,7 @@ class BackgroundEmptyState extends StatelessWidget {
 
   const BackgroundEmptyState({
     super.key,
-    required this.isSearching,
+    this.isSearching,
     required this.onRefresh, 
     required this.title, 
     required this.iconData, 
@@ -28,7 +28,7 @@ class BackgroundEmptyState extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              isSearching
+              isSearching == true
                   ? Icons.search_off_rounded
                   : iconData,
               size: 80.sp, // scale icon size
@@ -36,7 +36,7 @@ class BackgroundEmptyState extends StatelessWidget {
             ),
             SizedBox(height: 24.h),
             Text(
-              isSearching
+              isSearching == true
                   ? "Không Tìm Thấy $title"
                   : "Chưa Có Dữ Liệu $title",
               style: theme.textTheme.headlineSmall?.copyWith(
@@ -48,7 +48,7 @@ class BackgroundEmptyState extends StatelessWidget {
             ),
             SizedBox(height: 12.h),
             Text(
-              isSearching
+              isSearching == true
                   ? "Vui lòng thử lại với từ khóa tìm kiếm khác hoặc kiểm tra kết nối mạng."
                   : subTitle ??"Chúng tôi đang cập nhật dữ liệu. Vui lòng quay lại sau hoặc thử làm mới.",
               style: theme.textTheme.bodyLarge?.copyWith(
@@ -63,7 +63,7 @@ class BackgroundEmptyState extends StatelessWidget {
               onPressed: onRefresh,
               icon: Icon(Icons.refresh_rounded, size: 20.sp),
               label: Text(
-                isSearching ? "Xóa Tìm Kiếm & Làm Mới" : "Làm Mới Danh Sách",
+                isSearching == true ? "Xóa Tìm Kiếm & Làm Mới" : "Làm Mới Danh Sách",
                 style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
               ),
               style: ElevatedButton.styleFrom(

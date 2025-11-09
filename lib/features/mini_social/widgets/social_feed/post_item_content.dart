@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:job_connect/config/utils/image_url.dart';
 import 'package:job_connect/features/mini_social/model/social_post_model.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -79,7 +80,7 @@ class PostItemContent extends StatelessWidget {
                                   itemCount: images.length,
                                   builder: (context, i) {
                                     return PhotoViewGalleryPageOptions(
-                                      imageProvider: NetworkImage(images[i]),
+                                      imageProvider: ImageUtils.getImageProvider(images[i]),
                                       minScale: PhotoViewComputedScale.contained,
                                       maxScale: PhotoViewComputedScale.covered * 2,
                                     );

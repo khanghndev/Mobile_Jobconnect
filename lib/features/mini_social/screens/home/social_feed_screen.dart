@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/constant/app_strings.dart';
 import 'package:job_connect/config/enum/user_role.dart';
+import 'package:job_connect/config/utils/dialog_utils.dart';
 import 'package:job_connect/config/utils/snackbar_app.dart';
 import 'package:job_connect/config/widgets/background_error_state.dart';
 import 'package:job_connect/config/widgets/custom_button_icon_simple.dart';
@@ -11,6 +12,7 @@ import 'package:job_connect/config/widgets/reaction_picker.dart';
 import 'package:job_connect/config/widgets/section_title.dart';
 import 'package:job_connect/features/mini_social/model/social_comment_model.dart';
 import 'package:job_connect/features/mini_social/model/social_post_model.dart';
+import 'package:job_connect/features/mini_social/view_model/social_connection_view_model.dart';
 import 'package:job_connect/features/mini_social/widgets/shimmer/social_feed_shimmer.dart';
 import 'package:job_connect/features/mini_social/view_model/social_comment_view_model.dart';
 import 'package:job_connect/features/mini_social/view_model/social_post_view_model.dart';
@@ -25,15 +27,6 @@ import 'package:job_connect/config/constant/app_colors.dart';
 import 'package:job_connect/config/constant/app_images.dart';
 import 'package:job_connect/features/mini_social/widgets/social_feed/create_post_input.dart';
 import 'package:job_connect/features/mini_social/widgets/social_feed/post_item.dart';
-
-// Fake Story Model
-class Story {
-  final String imageUrl;
-  final String name;
-  final bool isDraft;
-
-  Story({required this.imageUrl, required this.name, this.isDraft = false});
-}
 
 class SocialFeedScreen extends StatefulWidget {
   final bool isLoggedIn;
@@ -60,17 +53,11 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
   late final SocialCommentViewModel socialCommentVm;
   late final SocialSavePostViewModel socialSavePostVm;
   late final UserViewModel userVm;
+  late final SocialConnectionViewModel socialConnectionVm;
   String selectedFolder = 'Bài viết yêu thích';
-
+  
   final TextEditingController _commentController = TextEditingController();
   final TextEditingController _folderController = TextEditingController();
-
-  final List<Story> stories = [
-    Story(imageUrl: AppImages.logoApp, name: 'Tạo tin', isDraft: true),
-    Story(imageUrl: AppImages.logoApp, name: 'Phùng Thanh Thảo'),
-    Story(imageUrl: AppImages.logoApp, name: 'Nhi Phương'),
-    Story(imageUrl: AppImages.logoApp, name: 'Anh Khoa'),
-  ];
 
   @override
   void initState() {
@@ -79,11 +66,14 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
     socialCommentVm = context.read<SocialCommentViewModel>();
     userVm = context.read<UserViewModel>();
     socialSavePostVm = context.read<SocialSavePostViewModel>();
+    socialConnectionVm = context.read<SocialConnectionViewModel>();
     WidgetsBinding.instance.addPostFrameCallback((_) async{
       await userVm.loadRoleName();
       if (userVm.roleName != null) {
-        // await socialPostVm.getPostsByRole(roleName: userVm.roleName!);
         await socialPostVm.getAllPosts();
+      }
+      if (widget.isLoggedIn && userVm.currentUser != null) {
+        await socialConnectionVm.getFriends(userId: userVm.currentUser!.idUser);
       }
     });
 
@@ -117,16 +107,6 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
     super.dispose();
   }
 
-  Future<String> getUsername(String id) async {
-    await userVm.getViewUser(id);
-    return userVm.viewedUser?.userName ?? "Người dùng";
-  }
-
-  Future<String> getUserAvatar(String id) async {
-    await userVm.getViewUser(id);
-    return userVm.viewedUser?.avatarUrl ?? 'https://i.pravatar.cc/150?img=1';
-  }
-
   void _onCreatePost() {
     context.push('/social/create-post');
   }
@@ -137,55 +117,88 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
       extra: {'userName': userName, 'authorName': authorName});
   }
 
-  void _onOpenDetail(SocialPostModel post, VoidCallback onFollow, VoidCallback onHide) {
+  void _onGoToGroup(String idGroup) {
+    context.push(
+      '/social/group',
+      extra: {
+        'idGroup': idGroup,
+        'isLoggedIn': widget.isLoggedIn,
+        'idUser': widget.idUser,
+      },
+    );
+  }
+
+  void _onOpenDetail(SocialPostModel post) {
+    final socialPostVm = context.read<SocialPostViewModel>();
+    final userVm = context.read<UserViewModel>();
+
     context.push(
       '/social/detail-post',
       extra: {
         'socialPostModel': post,
-        'onFollow': onFollow,
-        'onHide': onHide,
+        'onFollow': () {},
+        'onHide': () => socialPostVm.onHidePost(post.idPost),
         'onCopyLink': () => _onCopyPostLink(post.idPost),
         'onReport': () => _onReport(
           authorName: post.userName ?? 'Người dùng ${AppStrings.appName}',
-          userName: context.read<UserViewModel>().currentUser!.userName
+          userName: userVm.currentUser!.userName,
         ),
         'onOpenProfile': () => _onOpenProfile(post.idUser),
+        'onDeletePost': () => socialPostVm.deletePost(post.idPost),
+        'onEditPost': () => socialPostVm.updatePost(post),
         'isLiked': socialPostVm.isPostLiked(post.idPost),
         'isSaved': socialPostVm.isPostSaved(post.idPost),
         'roleName' : userVm.roleName,
         'onLike': () => socialPostVm.onToggleLike(post.idPost),
-        'onSave': () async {
-          final folders = await socialSavePostVm.getSavedFolders();
-
-          // Nếu không có folder nào, tạo folder mặc định
-          final defaultFolder = 'Bộ sưu tập ưu thích';
-          final folderToSelect = folders.isNotEmpty ? folders.first : defaultFolder;
-
-          // Hiển thị BottomSheet để người dùng chọn folder
-          _onShowBottomSheet(
-            postId: post.idPost,
-            type: 'save',
-            onSave: (String? selected) async {
-              // Nếu người dùng không chọn folder, dùng folder mặc định hoặc folder đầu tiên
-              final folderName = selected ?? folderToSelect;
-              await socialSavePostVm.toggleSavePostWithFolder(
-                idPost: post.idPost,
-                selectedFolder: folderName,
-              );
-            },
-          );
-        },
+        'onSave': () => _onSavePost(context, post),
         'onShare': () => _onShowBottomSheet(
           postId: post.idPost,
           type: 'share',
-          onShare: () => socialPostVm.onSharePost(post.idPost)
+          onShare: () => socialPostVm.onSharePost(post.idPost),
         ),
         'onComment': () => _onShowBottomSheet(
-            postId: post.idPost,
-            type: 'comment',
-            onComment: () => socialPostVm.onCommentPost(post.idPost),
-          ),
-        'onShowReactions': _onShowReactions,
+          postId: post.idPost,
+          type: 'comment',
+          onComment: () => socialPostVm.onCommentPost(post.idPost),
+        ),
+        'onShowReactions': () => _onShowReactions(),
+        'onGoToGroup': () => _onGoToGroup(post.idGroup ?? ''),
+      },
+    );
+  }
+
+  Future<void> _onSavePost(BuildContext context, SocialPostModel socialPost) async {
+    final folders = await socialSavePostVm.getSavedFolders();
+    const defaultFolder = 'Bộ sưu tập yêu thích';
+    final folderToSelect = folders.isNotEmpty ? folders.first : defaultFolder;
+    _onShowBottomSheet(
+      postId: socialPost.idPost,
+      type: 'save',
+      onSave: (String? selected) async {
+        final folderName = selected ?? folderToSelect;
+        await socialSavePostVm.toggleSavePostWithFolder(
+          idPost: socialPost.idPost,
+          selectedFolder: folderName,
+        );
+        if (socialSavePostVm.isSuccess && context.mounted) {
+          SnackbarApp.show(
+            context,
+            title: 'Thành công',
+            message: 'Đã lưu vào "$folderName"',
+            backgroundColor: BackgroundColors.backgroundSuccessPrimary,
+          );
+        }
+        if (socialSavePostVm.errorMessage != null && context.mounted) {
+          DialogUtils.showConfirmationDialog(
+            context: context,
+            title: "Thông báo",
+            message: "Lưu bài viết thất bại: ${socialSavePostVm.errorMessage}",
+            icon: Icons.delete_forever_rounded,
+            onConfirm: () async {
+              
+            },
+          );
+        }
       },
     );
   }
@@ -213,86 +226,9 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
     );
   }
 
-  void _onShowBottomSheet({
-    required String type,
-    required String postId,
-    VoidCallback? onShare,
-    VoidCallback? onComment,
-    Future<void> Function(String?)? onSave,
-  }) async {
-    if (type == 'comment') {
-    await socialCommentVm.getCommentsByPost(postId: postId);
-
+  Future<void> _showBottomSheetWrapper(Widget child) async {
     if (!mounted) return;
-
-    final Map<String, UserModel> userCache = {};
-    for (var comment in socialCommentVm.comments) {
-      if (!userCache.containsKey(comment.idUser)) {
-        await userVm.getViewUser(comment.idUser);
-        if (userVm.viewedUser != null) {
-          userCache[comment.idUser] = userVm.viewedUser!;
-        }
-      }
-    }
-
-    if(mounted){
-      showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
-        ),
-        builder: (_) {
-          return DraggableScrollableSheet(
-            expand: false,
-            initialChildSize: 0.6,
-            maxChildSize: 0.9,
-            minChildSize: 0.4,
-            builder: (_, controller) {
-              return ChangeNotifierProvider.value(
-                value: socialCommentVm,
-                child: Padding(
-                  padding: EdgeInsets.all(8.w),
-                  child: Consumer<SocialCommentViewModel>(
-                    builder: (context, vm, _) {
-                        return CommentBottomSheet(
-                          commentController: _commentController,
-                          comments: vm.comments,
-                          onSubmit:  (String text, String? parentId) async {
-                            if (text.isNotEmpty) {
-                              await vm.createComment(
-                                newComment: SocialCommentModel(
-                                  idComment: '',
-                                  idPost: postId,
-                                  idUser: widget.idUser,
-                                  content: text,
-                                  parentComment: parentId,
-                                  createdAt: DateTime.now(),
-                                ),
-                              );
-                              _commentController.clear();
-                            }
-                        },
-                        onRefresh: () => vm.refreshComments(postId: postId),
-                        resolveUsername: (id) => userCache[id]?.userName ?? "Người dùng $id",
-                        resolveUserAvatar: (id) => userCache[id]?.avatarUrl ?? AppImages.defaultAvatar,
-                      );
-                    },
-                  ),
-                ),
-              );
-            },
-          );
-        },
-      );
-    }
-  } else if (type == 'save') {
-    await socialSavePostVm.getSavedPosts();
-    final folders = await socialSavePostVm.getSavedFolders();
-    if (!mounted) return;
-
-    showModalBottomSheet(
+    await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.white,
@@ -304,121 +240,160 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
         initialChildSize: 0.6,
         maxChildSize: 0.9,
         minChildSize: 0.4,
-        builder: (_, controller) {
-          return ChangeNotifierProvider.value(
-            value: socialSavePostVm,
-            child: Consumer<SocialSavePostViewModel>(
-              builder: (context, vm, _) {
-                return SaveBottomSheet(
-                  folderSavedCount: vm.folderSavedCount,
-                  folders: folders,
-                  onSaved: (folderName) async {
-                    selectedFolder = folderName;
-                    await vm.savePost(
-                      idPost: postId,
-                      folderName: folderName,
-                    );
-                    vm.folderSavedCount[folderName] = (vm.folderSavedCount[folderName] ?? 0) + 1;
-                    if (onSave != null) await onSave(folderName);
-                    if(vm.isSuccess && context.mounted){
-                      context.pop();
-                      SnackbarApp.show(
-                        context,
-                        title: 'Thành công',
-                        message: 'Lưu vào $folderName thành công',
-                        backgroundColor: BackgroundColors.backgroundSuccessPrimary,
-                      );
-                    }
-                    else if(vm.errorMessage != null && context.mounted){
-                      context.pop();
-                      SnackbarApp.show(
-                        context,
-                        title: 'Thất bại',
-                        message: 'Lưu vào $folderName thất bại',
-                        backgroundColor: BackgroundColors.backgroundErrorPrimary,
-                      );
-                    }
-                    
-                  },
-                  onDelete: (folder) async {
-                    // Xóa folder/collection
-                    // if (folder['id'] != null) {
-                    //   await vm.deleteSavedPost(folder['id']);
-                    // }
-                  },
-                  onCreateFolder: () {
-                    showDialog(
-                      context: context,
-                      builder: (ctx) {
-                        return AlertDialog(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          title: const Text('Tạo bộ sưu tập mới'),
-                          content: TextField(
-                            controller: _folderController,
-                            decoration: const InputDecoration(
-                              hintText: 'Nhập tên bộ sưu tập',
-                            ),
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                _folderController.clear();
-                                Navigator.pop(ctx);
-                              },
-                              child: const Text('Hủy'),
-                            ),
-                            ElevatedButton(
-                              onPressed: () async {
-                                final name = _folderController.text.trim();
-                                if (name.isNotEmpty) {
-                                  await vm.savePost(idPost: postId, folderName: name);
-                                }
-                                _folderController.clear();
-                                Navigator.pop(ctx);
-                              },
-                              child: const Text('Tạo'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
+        builder: (_, controller) => Padding(
+          padding: EdgeInsets.all(8.w),
+          child: child,
+        ),
+      ),
+    );
+  }
+
+ Future<void> _showCommentSheet(String postId) async {
+    // Load comment và user trước (dù chỉ mất 1–2 frame để rebuild)
+    if (mounted) {
+      socialCommentVm.loadCommentsWithUsers(postId: postId, userVm: userVm);
+    }
+    // Mở sheet ngay
+    await _showBottomSheetWrapper(
+      Consumer<SocialCommentViewModel>(
+        builder: (context, vm, _) {
+          return CommentBottomSheet(
+            commentController: _commentController,
+            comments: vm.comments,
+            isLoading: vm.isLoading,
+            errorMessage: vm.errorMessage,
+            onSubmit: (text, parentId) async {
+              if (text.isNotEmpty) {
+                await vm.createComment(
+                  newComment: SocialCommentModel(
+                    idComment: '',
+                    idPost: postId,
+                    idUser: widget.idUser,
+                    content: text,
+                    parentComment: parentId,
+                    createdAt: DateTime.now(),
+                  ),
                 );
-              },
-            ),
+                _commentController.clear();
+              }
+            },
+            onRefresh: () => vm.loadCommentsWithUsers(postId: postId, userVm: userVm),
+            resolveUsername: vm.resolveUsername,
+            resolveUserAvatar: vm.resolveUserAvatar,
           );
         },
       ),
     );
   }
- else {
-      showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
+
+  Future<void> _showSaveSheet(String postId) async {
+    // Sau khi BottomSheet mở, load dữ liệu
+    if (mounted) {
+      socialSavePostVm.loadSavedData(); 
+    }
+    // Mở sheet ngay với trạng thái loading
+    await _showBottomSheetWrapper(
+      Consumer<SocialSavePostViewModel>(
+        builder: (context, vm, _) {
+          return SaveBottomSheet(
+            folderSavedCount: vm.folderSavedCount,
+            folders: vm.folders,
+            isLoading: vm.isLoading,
+            errorMessage: vm.errorMessage,
+            onSaved: (folderName) async {
+              vm.setSelectedFolder(folderName);
+              await vm.savePost(idPost: postId, folderName: folderName);
+              vm.folderSavedCount[folderName] = (vm.folderSavedCount[folderName] ?? 0) + 1;
+
+              if (vm.isSuccess && context.mounted) {
+                context.pop();
+                SnackbarApp.show(
+                  context,
+                  title: 'Thành công',
+                  message: 'Lưu vào $folderName thành công',
+                  backgroundColor: BackgroundColors.backgroundSuccessPrimary,
+                );
+              } else if (vm.errorMessage != null && context.mounted) {
+                context.pop();
+                SnackbarApp.show(
+                  context,
+                  title: 'Thất bại',
+                  message: 'Lưu vào $folderName thất bại',
+                  backgroundColor: BackgroundColors.backgroundErrorPrimary,
+                );
+              }
+            },
+            onDelete: (folder) async {},
+            onCreateFolder: () {
+              showDialog(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16.r),
+                  ),
+                  title: const Text('Tạo bộ sưu tập mới'),
+                  content: TextField(
+                    controller: _folderController,
+                    decoration: const InputDecoration(
+                      hintText: 'Nhập tên bộ sưu tập',
+                    ),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        _folderController.clear();
+                        ctx.pop();
+                      },
+                      child: const Text('Hủy'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        final name = _folderController.text.trim();
+                        if (name.isNotEmpty) await vm.savePost(idPost: postId, folderName: name);
+                        _folderController.clear();
+                        if (ctx.mounted) ctx.pop();
+                      },
+                      child: const Text('Tạo'),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Future<void> _showShareSheet(VoidCallback onShare) async {
+    await _showBottomSheetWrapper(
+      Consumer<SocialConnectionViewModel>(
+        builder: (context, vm, _) => ShareBottomSheet(
+          onShare: onShare,
+          listFriend: vm.friends,
+          isLoading: vm.isLoading,
         ),
-        builder: (_) => DraggableScrollableSheet(
-          expand: false,
-          initialChildSize: 0.6,
-          maxChildSize: 0.9,
-          minChildSize: 0.4,
-          builder: (_, controller) {
-            return ShareBottomSheet(
-            onShare: onShare!,
-            initialUsers: List.generate(
-              6,
-              (i) => {
-                'name': 'Người dùng $i',
-                'avatar': 'https://i.pravatar.cc/150?img=${i + 5}',
-              },
-            ),
-          );}
-        ),
-      );
+      ),
+    );
+  }
+
+  void _onShowBottomSheet({
+    required String type,
+    required String postId,
+    VoidCallback? onShare,
+    VoidCallback? onComment,
+    Future<void> Function(String?)? onSave,
+  }) {
+    switch (type) {
+      case 'comment':
+        _showCommentSheet(postId);
+        break;
+      case 'save':
+        _showSaveSheet(postId);
+        break;
+      case 'share':
+        if (onShare != null) _showShareSheet(onShare);
+        break;
     }
   }
 
@@ -473,10 +448,6 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
                         ),
                       ),
                       Divider(height: 20.h),
-                      // SizedBox(height: 8.h),
-                      // Stories(stories: stories),
-                      // SizedBox(height: 8.h),
-                      // Divider(height: 40.h),
                     ],
                   ),
                 ),
@@ -493,6 +464,7 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
                                 socialPostModel: post,
                                 isLiked: socialPostVm.isPostLiked(post.idPost),
                                 isSaved: post.isSaved,
+                                idUser: socialPostVm.currentUserId,
                                 roleName: userVm.roleName!,
                                 isFollowedOrTaken: userVm.roleName!.toLowerCase() == UserRole.candidate.name ? true : false,
                                 onFollow: () {
@@ -504,35 +476,10 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
                                     
                                   }
                                 },
+                                onDeletePost: () => socialPostVm.deletePost(post.idPost),
+                                onEditPost: () => socialPostVm.updatePost(post),
                                 onLike: () => socialPostVm.onToggleLike(post.idPost),
-                                onSave: () async {
-                                  // Lấy danh sách folder
-                                  final folders = await saveVm.getSavedFolders();
-                                  final defaultFolder = 'Bộ sưu tập ưu thích';
-                                  final folderToSelect = folders.isNotEmpty ? folders.first : defaultFolder;
-
-                                  // Hiển thị BottomSheet để chọn folder
-                                  _onShowBottomSheet(
-                                    postId: post.idPost,
-                                    type: 'save',
-                                    onSave: (String? selected) async {
-                                      final folderName = selected ?? folderToSelect;
-
-                                      // Toggle lưu/xóa bài viết
-                                      await saveVm.toggleSavePostWithFolder(
-                                        idPost: post.idPost,
-                                        selectedFolder: folderName,
-                                      );
-
-                                      // Cập nhật trực tiếp trạng thái isSaved trong post
-                                      socialPostVm.updatePostSavedStatus(
-                                        post.idPost,
-                                        saveVm.isPostSaved(post.idPost),
-                                      );
-                                    },
-                                  );
-                                },
-
+                                onSave: () => _onSavePost(context, post),
                                 onShare: () => _onShowBottomSheet(
                                   postId: post.idPost,
                                   type: 'share',
@@ -540,11 +487,7 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
                                 ),
                                 onHide: () => socialPostVm.onHidePost(post.idPost),
                                 onCopyLink: () => _onCopyPostLink(post.idPost),
-                                onOpenDetail: () => _onOpenDetail(
-                                  post,
-                                  () => socialPostVm.onToggleFollow(post.idUser, false),
-                                  () => socialPostVm.onHidePost(post.idPost),
-                                ),
+                                onOpenDetail: () => _onOpenDetail(post),
                                 onOpenProfile: () => _onOpenProfile(post.idUser),
                                 onReport: () => _onReport(
                                   authorName: post.userName ?? 'Người dùng ${AppStrings.appName}',
@@ -556,6 +499,7 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
                                   onComment: () => socialPostVm.onCommentPost(post.idPost),
                                 ),
                                 onShowReactions: _onShowReactions,
+                                onGoToGroup: () => _onGoToGroup(post.idGroup!),
                               );
                             }
                           ),

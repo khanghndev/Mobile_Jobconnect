@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:job_connect/appwrite/storage_appwrite_service.dart';
 import 'package:job_connect/config/enum/shared_prefs_key.dart';
 import 'package:job_connect/config/enum/user_role.dart';
 import 'package:job_connect/config/error/server_exception.dart';
@@ -10,6 +14,7 @@ import 'package:job_connect/features/profile/service/user_service.dart';
 class SocialPostViewModel extends ChangeNotifier {
   final SocialPostService _socialPostService = SocialPostService();
   final UserService _userService = UserService();
+  final StorageAppwriteService _storageAppwriteService = StorageAppwriteService();
   final SharedPrefsService _prefs;
 
   SocialPostViewModel({required SharedPrefsService prefs}) : _prefs = prefs;
@@ -19,6 +24,8 @@ class SocialPostViewModel extends ChangeNotifier {
   bool _isSuccess = false;
   String? _errorMessage;
   List<SocialPostModel> _posts = [];
+  List<SocialPostModel> _postsOfGroup = [];
+
   final Set<String> _selectedPosts = {};
   bool _selectMode = false;
 
@@ -34,6 +41,7 @@ class SocialPostViewModel extends ChangeNotifier {
   bool get isSuccess => _isSuccess;
   String? get errorMessage => _errorMessage;
   List<SocialPostModel> get posts => _posts.where((p) => p.visibility != 'hidden').toList();
+  List<SocialPostModel> get postsOfGroup => _postsOfGroup.where((p) => p.visibility != 'hidden').toList();
   Set<String> get selectedPosts => _selectedPosts;
   bool get selectMode => _selectMode;
   bool isPostLiked(String postId) => _likedPosts.contains(postId);
@@ -45,12 +53,14 @@ class SocialPostViewModel extends ChangeNotifier {
     bool? isSuccess,
     String? errorMessage,
     List<SocialPostModel>? posts,
+    List<SocialPostModel>? postsOfGroup,
     bool? selectMode,
   }) {
     _isLoading = isLoading ?? _isLoading;
     _isSuccess = isSuccess ?? _isSuccess;
     _errorMessage = errorMessage;
     _posts = posts ?? _posts;
+    _postsOfGroup = postsOfGroup ?? _postsOfGroup;
     _selectMode = selectMode ?? _selectMode;
     notifyListeners();
   }
@@ -74,6 +84,26 @@ class SocialPostViewModel extends ChangeNotifier {
     }
   }
 
+  Future<List<String>> uploadImages(List<String> imagePaths) async {
+    if (imagePaths.isEmpty) return [];
+    final bucketId = dotenv.env['APPWRITE_BUCKET_ID_IMAGE'] ?? '';
+    _setState(isLoading: true, errorMessage: null);
+    try {
+      final urls = await Future.wait(
+        imagePaths.map((path) async {
+          final file = File(path);
+          final uploadedFile = await _storageAppwriteService.uploadFile(file, bucketId: bucketId);
+          return _storageAppwriteService.getFileViewUrl(uploadedFile.$id, bucketId: bucketId);
+        }),
+      );
+      _setState(isLoading: false);
+      return urls;
+    } catch (e) {
+      _setState(isLoading: false, errorMessage: e.toString());
+      rethrow;
+    }
+  }
+
   Future<String> _getUserRole(String userId) async {
     final user = await _userService.getUserById(id: userId);
     return user.role?.roleName ?? UserRole.candidate.name;
@@ -91,6 +121,27 @@ class SocialPostViewModel extends ChangeNotifier {
           final likes = await _socialPostService.getPostLikes(id: post.idPost);
           if (likes.contains(currentUserId)) {
             _likedPosts.add(post.idPost);
+          }
+        }
+      },
+    );
+  }
+
+   Future<void> getAllPostsOfGroup({required String groupId, required String currentUserId}) async {
+    await _handleApiCall<List<SocialPostModel>>(
+      apiCall: () => _socialPostService.getAllPostsOfGroup(
+        groupId: groupId,
+        currentUserId: currentUserId,
+      ),
+      onSuccess: (data) async {
+        data.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+        _postsOfGroup = data;
+
+        //TODO: Lấy danh sách user đã like từng post
+        for (var postOfGroup in _postsOfGroup) {
+          final likes = await _socialPostService.getPostLikes(id: postOfGroup.idPost);
+          if (likes.contains(currentUserId)) {
+            _likedPosts.add(postOfGroup.idPost);
           }
         }
       },
@@ -117,7 +168,6 @@ class SocialPostViewModel extends ChangeNotifier {
             continue;
           }
         }
-
         _setState(isLoading: false, isSuccess: true, posts: filteredPosts);
       },
     );
@@ -185,27 +235,9 @@ class SocialPostViewModel extends ChangeNotifier {
   }
 
   //TODO: CREATE, UPDATE, DELETE POST
-  Future<void> createPost({
-    required String idUser,
-    required String idGroup,
-    required String content,
-    String imageUrl = '',
-    String videoUrl = '',
-    String visibility = 'public',
-    String postType = 'text',
-    List<String> hashtags = const [],
-  }) async {
+  Future<void> createPost(SocialPostModel postModel) async {
     await _handleApiCall<SocialPostModel>(
-      apiCall: () => _socialPostService.createPost(
-        idUser: idUser,
-        idGroup: idGroup,
-        content: content,
-        imageUrl: imageUrl,
-        videoUrl: videoUrl,
-        visibility: visibility,
-        postType: postType,
-        hashtags: hashtags,
-      ),
+      apiCall: () => _socialPostService.createPost(postModel),
       onSuccess: (newPost) {
         _posts.insert(0, newPost);
         notifyListeners();
@@ -223,14 +255,13 @@ class SocialPostViewModel extends ChangeNotifier {
     );
   }
 
-  Future<void> deletePosts(List<String> ids) async {
+  Future<void> deletePost(String postId) async {
     await _handleApiCall<void>(
       apiCall: () async {
-        final futures = ids.map((id) => _socialPostService.deletePost(id: id));
-        await Future.wait(futures);
-        _posts.removeWhere((p) => ids.contains(p.idPost));
-        _selectedPosts.clear();
-        _selectMode = false;
+        await _socialPostService.deletePost(id: postId);
+        _posts.removeWhere((p) => p.idPost == postId);
+        _selectedPosts.remove(postId);
+        if (_selectedPosts.isEmpty) _selectMode = false;
       },
     );
   }

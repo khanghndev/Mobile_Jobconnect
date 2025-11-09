@@ -1,14 +1,15 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/navigation/app_navigation.dart';
+import 'package:job_connect/features/mini_social/screens/group/social_create_group_screen.dart';
 import 'package:job_connect/features/mini_social/screens/home/social_profile_screen.dart';
 import 'package:job_connect/features/mini_social/screens/home/social_search_screen.dart';
 import 'package:job_connect/features/mini_social/screens/messeger/social_call_screen.dart';
 import 'package:job_connect/features/mini_social/screens/messeger/social_messenger_detail_screen.dart';
-import 'package:job_connect/features/mini_social/screens/post/social_create_post_screen.dart';
-import 'package:job_connect/features/mini_social/screens/group/social_connects_page.dart';
+import 'package:job_connect/features/mini_social/screens/social_post/social_create_post_screen.dart';
+import 'package:job_connect/features/mini_social/screens/group/social_connects_screen.dart';
 import 'package:job_connect/features/mini_social/screens/group/social_group_screen.dart';
-import 'package:job_connect/features/mini_social/screens/post/social_post_detail_screen.dart';
+import 'package:job_connect/features/mini_social/screens/social_post/social_post_detail_screen.dart';
 import 'package:job_connect/features/mini_social/screens/report/social_help_screen.dart';
 import 'package:job_connect/features/mini_social/screens/job_board/social_job_board_page.dart';
 import 'package:job_connect/features/mini_social/screens/report/social_report_post_screem.dart';
@@ -60,7 +61,9 @@ class SocialRouter {
           final onComment = extraData['onComment'];
           final onShowReactions = extraData['onShowReactions'];
           final roleName = extraData['roleName'];
-
+          final onDeletePost = extraData['onDeletePost'];
+          final onGoToGroup = extraData['onGoToGroup'];
+          final onEditPost = extraData['onEditPost'];
           return buildPageWithSlideTransition(
             SocialPostDetailScreen(
               socialPostModel: socialPostModel,
@@ -77,6 +80,9 @@ class SocialRouter {
               onShare: onShare,
               onComment: onComment,
               onShowReactions: onShowReactions,
+              onDeletePost: onDeletePost,
+              onEditPost: onEditPost,
+              onGoToGroup: onGoToGroup,
             ),
             state,
           );
@@ -110,13 +116,29 @@ class SocialRouter {
         ),
       ),
 
+      // Tạo nhóm
+      GoRoute(
+        path: 'create-group',
+        pageBuilder: (context, state) => buildPageWithSlideTransition(
+          SocialCreateGroupScreen(),
+          state,
+        ),
+      ),
+
       // Kết nối bạn bè
       GoRoute(
         path: 'connections',
-        pageBuilder: (context, state) => buildPageWithSlideTransition(
-          ConnectsPage(),
-          state,
-        ),
+        pageBuilder: (context, state) {
+          final extraData = state.extra as Map<String, dynamic>? ?? {};
+          final isLoggedIn = extraData['isLoggedIn'] ?? '';
+          final idUser = extraData['idUser'] ?? '';
+          return buildPageWithSlideTransition(
+            SocialConnectsScreen(
+              isLoggedIn: isLoggedIn,
+              idUser: idUser,
+            ),
+          state, );
+        },
       ),
 
       // Trợ giúp
@@ -157,10 +179,19 @@ class SocialRouter {
       // Nhóm
       GoRoute(
         path: 'group',
-        pageBuilder: (context, state) => buildPageWithSlideTransition(
-          GroupScreen(),
-          state,
-        ),
+        pageBuilder: (context, state) {
+          final extraData = state.extra as Map<String, dynamic>? ?? {};
+          final isLoggedIn = extraData['isLoggedIn'] ?? '';
+          final idUser = extraData['idUser'] ?? '';
+          final idGroup = extraData['idGroup'] ?? '';
+          return buildPageWithSlideTransition(
+            SocialGroupScreen(
+              isLoggedIn: isLoggedIn,
+              idUser: idUser,
+              idGroup: idGroup,
+            ),
+          state, );
+        },
       ),
 
       // Messenger chi tiết

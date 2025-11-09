@@ -31,16 +31,16 @@ class StatItem extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
         decoration: BoxDecoration(
           color: isSelected
-              ? color.withOpacity(0.12)
-              : theme.colorScheme.surfaceVariant.withOpacity(0.3),
+              ? color.withValues(alpha: 0.12)
+              : theme.colorScheme.surface.withValues(alpha: 0.3),
           borderRadius: BorderRadius.circular(16.r),
           border: isSelected
-              ? Border.all(color: color.withOpacity(0.8), width: 1.8.w)
-              : Border.all(color: theme.dividerColor.withOpacity(0.5)),
+              ? Border.all(color: color.withValues(alpha: 0.8), width: 1.8.w)
+              : Border.all(color: theme.dividerColor.withValues(alpha: 0.5)),
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: color.withOpacity(0.15),
+                    color: color.withValues(alpha: 0.15),
                     blurRadius: 8.r,
                     offset: const Offset(0, 3),
                   ),
@@ -67,7 +67,7 @@ class StatItem extends StatelessWidget {
               style: theme.textTheme.bodySmall?.copyWith(
                 color: isSelected
                     ? color
-                    : theme.colorScheme.onSurfaceVariant.withOpacity(0.9),
+                    : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.9),
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
                 fontSize: 13.sp,
               ),

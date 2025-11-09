@@ -1,53 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:job_connect/config/constant/app_images.dart';
 import 'package:job_connect/config/error/server_exception.dart';
 import 'package:job_connect/features/mini_social/model/social_comment_model.dart';
 import 'package:job_connect/features/mini_social/service/social_comment_service.dart';
+import 'package:job_connect/features/profile/model/user_model.dart';
+import 'package:job_connect/features/profile/view_model/user_view_model.dart';
 
 class SocialCommentViewModel extends ChangeNotifier {
   final SocialCommentService _commentService = SocialCommentService();
 
   // STATE
   bool _isLoading = false;
-  bool _isSuccess = false;
   String? _errorMessage;
   List<SocialCommentModel> _comments = [];
+  final Map<String, UserModel> userCache = {}; // Cache user info
 
   // GETTERS
   List<SocialCommentModel> get comments => _comments;
   bool get isLoading => _isLoading;
-  bool get isSuccess => _isSuccess;
   String? get errorMessage => _errorMessage;
+
+  String resolveUsername(String id) => userCache[id]?.userName ?? "Người dùng $id";
+  String resolveUserAvatar(String id) => userCache[id]?.avatarUrl ?? AppImages.defaultAvatar;
 
   // PRIVATE SET STATE
   void _setState({
     bool? isLoading,
-    bool? isSuccess,
     String? errorMessage,
     List<SocialCommentModel>? comments,
   }) {
     _isLoading = isLoading ?? _isLoading;
-    _isSuccess = isSuccess ?? _isSuccess;
     _errorMessage = errorMessage;
     _comments = comments ?? _comments;
     notifyListeners();
   }
 
-  // API HANDLER (giữ nguyên logic của bạn)
-
+  // API HANDLER
   Future<void> _handleApiCall<T>({
     required Future<T> Function() apiCall,
     void Function(T)? onSuccess,
   }) async {
-    _setState(isLoading: true, isSuccess: false, errorMessage: null);
+    _setState(isLoading: true, errorMessage: null);
     try {
       final result = await apiCall();
       if (onSuccess != null) onSuccess(result);
-      _setState(isSuccess: true);
+      _setState(isLoading: false);
     } on ServerException catch (e) {
-      _setState(errorMessage: e.err, isSuccess: false);
+      _setState(isLoading: false, errorMessage: e.err);
     } catch (e) {
-      _setState(errorMessage: e.toString(), isSuccess: false);
-    }  
+      _setState(isLoading: false, errorMessage: e.toString());
+    }
   }
 
   // GET COMMENTS BY POST
@@ -55,7 +57,7 @@ class SocialCommentViewModel extends ChangeNotifier {
     await _handleApiCall<List<SocialCommentModel>>(
       apiCall: () => _commentService.getCommentsByPost(postId: postId),
       onSuccess: (data) {
-        data.sort((a, b) => b.createdAt.compareTo(a.createdAt)); // mới nhất trước
+        data.sort((a, b) => b.createdAt.compareTo(a.createdAt));
         _comments = data;
       },
     );
@@ -100,9 +102,37 @@ class SocialCommentViewModel extends ChangeNotifier {
   void resetState() {
     _setState(
       isLoading: false,
-      isSuccess: false,
       errorMessage: null,
       comments: [],
     );
+    userCache.clear();
+  }
+
+  /// Load comments và cache user info, UI sẽ rebuild dần
+  Future<void> loadCommentsWithUsers({required String postId, required UserViewModel userVm}) async {
+    _setState(isLoading: true);
+
+    try {
+      final data = await _commentService.getCommentsByPost(postId: postId);
+      data.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      _comments = data;
+      notifyListeners(); // rebuild ngay với danh sách comment
+
+      // Load user info từng comment
+      for (var comment in _comments) {
+        if (!userCache.containsKey(comment.idUser)) {
+          await userVm.getViewUser(comment.idUser);
+          if (userVm.viewedUser != null) {
+            userCache[comment.idUser] = userVm.viewedUser!;
+            notifyListeners(); // rebuild mỗi khi có user info mới
+          }
+        }
+      }
+    } catch (e) {
+      _setState(errorMessage: e.toString());
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 }

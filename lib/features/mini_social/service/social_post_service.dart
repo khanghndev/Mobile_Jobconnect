@@ -39,31 +39,14 @@ class SocialPostService {
   }
 
   //TODO: POST /api/SocialPosts - Tạo bài viết mới
-  Future<SocialPostModel> createPost({
-    required String idUser,
-    required String idGroup,
-    required String content,
-    String imageUrl = '',
-    String videoUrl = '',
-    String visibility = 'public',
-    String postType = 'text',
-    List<String> hashtags = const [],
-  }) async {
+  Future<SocialPostModel> createPost(SocialPostModel postModel) async {
     return _handleApi(
       () async {
         final res = await _apiService.post(
           endpoint: ApiConstants.socialPostsEndpoint,
-          body: {
-            "idUser": idUser,
-            "idGroup": idGroup,
-            "content": content,
-            "imageUrl": imageUrl,
-            "videoUrl": videoUrl,
-            "visibility": visibility,
-            "postType": postType,
-            "hashtags": hashtags,
-          },
+          body: postModel.toJson(),
         );
+
         return ApiResponseParser.parseObject(
           res: res,
           fromJson: (json) => SocialPostModel.fromJson(json),
@@ -230,6 +213,25 @@ class SocialPostService {
     //   },
     //   'Lỗi khi chia sẻ bài viết',
     // );
+  }
+
+  Future<List<SocialPostModel>> getAllPostsOfGroup({
+    required String groupId,
+    required String currentUserId,
+  }) async {
+    return _handleApi(
+      () async {
+        final res = await _apiService.get(
+          endpoint: '${ApiConstants.socialPostsInGroupByUserEndpoint.replaceFirst('{groupId}', groupId)}?currentUserId=$currentUserId'
+        );
+        return ApiResponseParser.parseList(
+          res: res,
+          fromJson: (json) => SocialPostModel.fromJson(json),
+          errorMsg: 'Phản hồi không hợp lệ khi lấy tất cả bài viết của nhóm',
+        );
+      },
+      'Lỗi khi tải tất cả bài viết của nhóm',
+    );
   }
 
 }

@@ -12,7 +12,6 @@ import 'package:job_connect/features/profile/service/user_service.dart';
 class UserViewModel extends ChangeNotifier {
   final UserService _userService = UserService();
   final StorageAppwriteService _storageService = StorageAppwriteService();
-
   final String _bucketId = dotenv.env['APPWRITE_BUCKET_ID_IMAGE'] ?? '';
 
   bool _isLoading = false;

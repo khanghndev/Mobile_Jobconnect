@@ -29,7 +29,8 @@ class StorageAppwriteService {
         fileId: ID.unique(),
         file: InputFile.fromPath(path: file.path),
          permissions: [
-          'read:role:all',
+          Permission.read(Role.any()),
+          Permission.write(Role.any()),
         ],
       );
       return uploadedFile;

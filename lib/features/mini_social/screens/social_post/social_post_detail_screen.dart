@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/constant/app_colors.dart';
 import 'package:job_connect/config/constant/app_images.dart';
+import 'package:job_connect/config/utils/dialog_utils.dart';
 import 'package:job_connect/config/utils/get_adaptive_back_icon.dart';
 import 'package:job_connect/config/widgets/custom_adaptive_tap_effect.dart';
 import 'package:job_connect/config/widgets/custom_app_bar.dart';
@@ -14,6 +15,7 @@ import 'package:job_connect/features/mini_social/view_model/social_post_view_mod
 import 'package:job_connect/features/mini_social/widgets/bottom_sheet/comment_bottom_sheet.dart';
 import 'package:job_connect/features/mini_social/widgets/shimmer/social_post_detail_shimmer.dart';
 import 'package:job_connect/features/mini_social/widgets/social_feed/post_action_bar.dart';
+import 'package:job_connect/features/mini_social/widgets/social_feed/post_image_grid.dart';
 import 'package:job_connect/features/mini_social/widgets/social_feed/post_item_header.dart';
 import 'package:job_connect/features/profile/model/user_model.dart';
 import 'package:job_connect/features/profile/view_model/user_view_model.dart';
@@ -34,6 +36,9 @@ class SocialPostDetailScreen extends StatefulWidget {
   final VoidCallback onReport;
   final VoidCallback onCopyLink;
   final VoidCallback onOpenProfile;
+  final VoidCallback onDeletePost;
+  final VoidCallback onEditPost;
+  final VoidCallback onGoToGroup;
 
   const SocialPostDetailScreen({
     super.key,
@@ -51,6 +56,9 @@ class SocialPostDetailScreen extends StatefulWidget {
     required this.onReport,
     required this.onCopyLink,
     required this.onOpenProfile,
+    required this.onDeletePost,
+    required this.onEditPost,
+    required this.onGoToGroup,
   });
 
   @override
@@ -171,6 +179,10 @@ class _SocialPostDetailScreenState extends State<SocialPostDetailScreen> {
                             onCopyLink: widget.onCopyLink,
                             onReport: widget.onReport,
                             onOpenProfile: widget.onOpenProfile,
+                            onDeletePost: widget.onDeletePost,
+                            onEditPost: widget.onEditPost,
+                            idUser: widget.socialPostModel.idUser,
+                            onGoToGroup: widget.onGoToGroup,
                           ),
                           SizedBox(height: 8.h),
                           Html(
@@ -185,7 +197,17 @@ class _SocialPostDetailScreenState extends State<SocialPostDetailScreen> {
                               ),
                             },
                           ),
-                          SizedBox(height: 12.h),
+                          if (widget.socialPostModel.imageUrls != null)...[
+                            SizedBox(height: 16.h),
+                            GestureDetector(
+                              onTap: () => DialogUtils.showImageViewer(context, widget.socialPostModel.imageUrls!, 0),
+                              child: PostImageGrid(
+                                imagePaths: widget.socialPostModel.imageUrls!,
+                                isNetwork: true,
+                              ),
+                            ),
+                          ],
+                          SizedBox(height: 16.h),
                           PostActionBar(
                             likesCount: widget.socialPostModel.likesCount,
                             commentCount: widget.socialPostModel.commentsCount,
@@ -195,7 +217,6 @@ class _SocialPostDetailScreenState extends State<SocialPostDetailScreen> {
                             onLike: widget.onLike,
                             onSave: widget.onSave,
                             onShare: widget.onShare,
-                            onComment: widget.onComment,
                             onShowReactions: widget.onShowReactions,
                           ),
                         ],

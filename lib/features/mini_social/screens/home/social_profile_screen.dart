@@ -45,7 +45,6 @@ class _SocialProfileScreenState extends State<SocialProfileScreen> {
     final user = userVm.viewedUser;
     final posts = socialPostVm.posts;
     final theme = Theme.of(context);
-
     if (userVm.isDetailLoading) {
       return const SocialProfileShimmer();
     }
@@ -62,7 +61,10 @@ class _SocialProfileScreenState extends State<SocialProfileScreen> {
                 padding: EdgeInsets.all(16.w),
                 child: Column(
                   children: [
-                    const ProfileHeader(),
+                    ProfileHeader(
+                      isCurrentUser: userVm.currentUser?.idUser == userVm.viewedUser?.idUser,
+                      onAddFriend: () {}
+                    ),
                     SizedBox(height: 12.h),
                     ProfileAMainAvatar(
                       imageUrl: user?.avatarUrl ?? AppImages.logoApp,
@@ -76,11 +78,15 @@ class _SocialProfileScreenState extends State<SocialProfileScreen> {
                       ),
                     ),
                     SizedBox(height: 16.h),
-                    const ProfileStats(),
+                    ProfileStats(),
                     SizedBox(height: 24.h),
-                    const ProfileActions(),
+                    ProfileActions(),
                     SizedBox(height: 24.h),
-                    const ProfileGoals(),
+                    ProfileGoals(
+                      posts: socialPostVm.posts.length,
+                      views: 2000,
+                      saves: 10,
+                    ),
                     SizedBox(height: 24.h),
                     DefaultTabController(
                       length: 3,
@@ -93,8 +99,7 @@ class _SocialProfileScreenState extends State<SocialProfileScreen> {
                             indicatorColor: Colors.blue,
                             tabs: [
                               Tab(text: "Đã đăng"),
-                              Tab(text: "Đã ẩn"),
-                              Tab(text: "Đã xóa"),
+                              Tab(text: "Video"),
                             ],
                           ),
                           SizedBox(
@@ -107,16 +112,10 @@ class _SocialProfileScreenState extends State<SocialProfileScreen> {
                                   isExpanded: _isExpanded,
                                   onToggle: () => setState(() => _isExpanded = !_isExpanded),
                                 ),
+                                
                                 Center(
                                   child: Text(
-                                    "Chưa có bài viết ẩn",
-                                    style: TextStyle(
-                                        fontSize: 16.sp, color: Colors.grey),
-                                  ),
-                                ),
-                                Center(
-                                  child: Text(
-                                    "Chưa có bài viết bị xóa",
+                                    "Chưa có video",
                                     style: TextStyle(
                                         fontSize: 16.sp, color: Colors.grey),
                                   ),

@@ -7,10 +7,11 @@ class CustomButtomLeadingIcon extends StatelessWidget {
   final String? text;
   final Color backgroundColor;
   final Color textColor;
-  final IconData icon;
+  final IconData? icon;
   final Color iconColor;
   final bool hasBorder;
   final double? width;
+  final double? borderRadius;
 
   const CustomButtomLeadingIcon({
     super.key,
@@ -18,10 +19,11 @@ class CustomButtomLeadingIcon extends StatelessWidget {
     this.text,
     required this.backgroundColor,
     required this.textColor,
-    required this.icon,
+    this.icon,
     required this.iconColor,
     this.hasBorder = false, 
-    this.width,
+    this.width, 
+    this.borderRadius,
   });
 
   @override
@@ -60,7 +62,7 @@ class CustomButtomLeadingIcon extends StatelessWidget {
           foregroundColor: textColor,
           elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r),
+            borderRadius: BorderRadius.circular(borderRadius ?? 12.r),
             side: hasBorder
                 ? BorderSide(color: BorderColors.borderDefaultDefault.withValues(alpha: 0.3), width: 1.w) 
                 : BorderSide.none,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/constant/app_strings.dart';
-import 'package:job_connect/config/enum/user_role.dart';
 import 'package:job_connect/config/utils/date_utils_helper.dart';
 import 'package:job_connect/config/utils/image_url.dart';
 import 'package:job_connect/features/mini_social/model/social_post_model.dart';
@@ -13,9 +12,13 @@ class PostItemHeader extends StatelessWidget {
   final VoidCallback onHide;
   final VoidCallback onReport;
   final VoidCallback onCopyLink;
+  final VoidCallback onDeletePost;
+  final VoidCallback onEditPost;
   final VoidCallback onOpenProfile;
   final String roleName;
   final bool isFollowedOrTaken;
+  final String idUser;
+  final VoidCallback onGoToGroup;
 
   const PostItemHeader({
     super.key,
@@ -24,16 +27,18 @@ class PostItemHeader extends StatelessWidget {
     required this.onHide,
     required this.onReport,
     required this.onCopyLink,
+    required this.onDeletePost,
+    required this.onEditPost,
     required this.onOpenProfile,
     required this.roleName,
     this.isFollowedOrTaken = false,
+    required this.idUser,
+    required this.onGoToGroup,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final post = socialPostModel;
-
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -41,7 +46,7 @@ class PostItemHeader extends StatelessWidget {
           onTap: onOpenProfile,
           child: CircleAvatar(
             radius: 20.r,
-            backgroundImage: ImageUtils.getImageProvider(post.avatarUrl),
+            backgroundImage: ImageUtils.getImageProvider(socialPostModel.avatarUrl),
           ),
         ),
         SizedBox(width: 12.w),
@@ -55,7 +60,7 @@ class PostItemHeader extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () => context.push('/social/profile'),
                       child: Text(
-                        post.userName ?? 'Người dùng ${AppStrings.appName}',
+                        socialPostModel.userName ?? 'Người dùng ${AppStrings.appName}',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 14.sp,
@@ -64,7 +69,7 @@ class PostItemHeader extends StatelessWidget {
                       ),
                     ),
                   ),
-                  if (post.groupName != null && post.groupName!.isNotEmpty) ...[
+                  if (socialPostModel.groupName != null && socialPostModel.groupName!.isNotEmpty) ...[
                     Icon(
                       Icons.arrow_right,
                       color: Colors.black,
@@ -72,12 +77,12 @@ class PostItemHeader extends StatelessWidget {
                     ),
                     Flexible(
                       child: GestureDetector(
-                        onTap: () => context.push('/social/group'),
+                        onTap: onGoToGroup,
                         child: Text(
-                          post.groupName!,
-                          style: const TextStyle(
+                          socialPostModel.groupName!,
+                          style: TextStyle(
                             fontWeight: FontWeight.w500,
-                            fontSize: 14,
+                            fontSize: 14.sp,
                             color: Colors.black,
                           ),
                           overflow: TextOverflow.ellipsis,
@@ -88,35 +93,48 @@ class PostItemHeader extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 2.h),
-              Text(
-                DateUtilsHelper.getTimeAgo(post.createdAt),
-                style: theme.textTheme.labelSmall?.copyWith(
-                    fontSize: 13.sp, fontWeight: FontWeight.w400),
-              )
+              Row(
+                children: [
+                  Text(
+                    DateUtilsHelper.timeAgo(socialPostModel.createdAt),
+                    style: theme.textTheme.labelSmall?.copyWith
+                    ( fontSize: 13.sp, fontWeight: FontWeight.w400),
+                  ),
+                  SizedBox(width: 8.w),
+                  Icon(
+                    socialPostModel.visibility == 'public' 
+                      ? Icons.public 
+                      : Icons.lock,
+                    size: 16.sp,
+                    color: Colors.grey,
+                  ),
+                ],
+              ),
             ],
           ),
         ),
         SizedBox(width: 8.w),
         // Nút follow / nhận việc
-        TextButton(
-          onPressed: onFollow,
-          style: TextButton.styleFrom(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
-            minimumSize: Size.zero,
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            foregroundColor: isFollowedOrTaken ? Colors.grey : Colors.blue,
-            side: BorderSide(color: isFollowedOrTaken ? Colors.grey : Colors.blue),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          ),
-          child: Text(
-            roleName.toLowerCase() == UserRole.recruiter.name
-                ? (isFollowedOrTaken ? "Đang theo dõi" : "Theo dõi")
-                : (isFollowedOrTaken ? "Đã nhận việc" : "Nhận việc"),
-            style: theme.textTheme.labelSmall?.copyWith(
-                color: isFollowedOrTaken ? Colors.grey : Colors.blue,
-                fontWeight: FontWeight.w600),
-          ),
-        ),
+        // TextButton(
+        //   onPressed: onFollow,
+        //   style: TextButton.styleFrom(
+        //     padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+        //     minimumSize: Size.zero,
+        //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        //     foregroundColor: isFollowedOrTaken ? Colors.blue : Colors.grey,
+        //     side: BorderSide(color: isFollowedOrTaken ? Colors.blue : Colors.grey),
+        //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
+        //   ),
+        //   child: Text(
+        //     roleName.toLowerCase() == UserRole.recruiter.name
+        //       ? (isFollowedOrTaken ? "Theo dõi" : "Đang theo dõi" )
+        //       : (isFollowedOrTaken ? "Nhận việc" : "Đã nhận việc"),
+        //     style: theme.textTheme.labelSmall?.copyWith(
+        //       color: isFollowedOrTaken ? Colors.blue : Colors.grey,
+        //       fontWeight: FontWeight.w600
+        //     ),
+        //   ),
+        // ),
         SizedBox(width: 8.w),
         // Popup menu
         SizedBox(
@@ -134,20 +152,27 @@ class PostItemHeader extends StatelessWidget {
                   onReport();
                   break;
                 case 2:
-                  onFollow(); 
+                  onHide(); 
                   break;
                 case 3:
-                  onHide();
+                  onEditPost();
                   break;
                 case 4:
+                  onDeletePost();
+                  break;
+                case 5:
                   onCopyLink();
                   break;
               }
             },
-            itemBuilder: (_) => const [
+            itemBuilder: (_) => [
               PopupMenuItem(value: 1, child: Text("Báo cáo bài viết")),
-              PopupMenuItem(value: 3, child: Text("Ẩn bài viết")),
-              PopupMenuItem(value: 4, child: Text("Sao chép link bài viết")),
+              PopupMenuItem(value: 2, child: Text("Ẩn bài viết")),
+              if(idUser == socialPostModel.idUser)...[
+                PopupMenuItem(value: 3, child: Text("Chỉnh sửa bài viết")),
+                PopupMenuItem(value: 4, child: Text("Xóa bài viết")),
+              ],
+              PopupMenuItem(value: 5, child: Text("Sao chép link bài viết")),
             ],
           ),
         ),

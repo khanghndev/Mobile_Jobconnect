@@ -8,6 +8,7 @@ enum SharedPrefsKey {
   idUser,
   favoritePodcasts,
   roleName,
+  referralCode
 }
 
 extension SharedPrefsKeyExtension on SharedPrefsKey {
@@ -32,6 +33,8 @@ extension SharedPrefsKeyExtension on SharedPrefsKey {
         return 'role_name';
       case SharedPrefsKey.idUserSupabase:
         return 'id_user_supabase';
+      case SharedPrefsKey.referralCode:
+        return 'referral_code';
     }
   }
 }

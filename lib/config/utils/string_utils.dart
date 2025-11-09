@@ -78,6 +78,26 @@ class StringUtils {
     return path.split('/').last;
   }
 
+  // Xóa html
+  static String removeHtmlTags(String htmlString) {
+    if (htmlString.isEmpty) return '';
+    final regex = RegExp(r'<[^>]*>', multiLine: true, caseSensitive: true);
+    return htmlString.replaceAll(regex, '');
+  }
+
+  /// Trả về danh sách tất cả @username trong text
+  static List<String> extractUsernames(String text) {
+    final regex = RegExp(r'@(\w+)'); // tìm các từ bắt đầu bằng @
+    return regex.allMatches(text).map((match) => match.group(1)!).toList();
+  }
+
+  /// Kiểm tra xem text có chứa @username cụ thể không
+  static bool containsUsername(String text, String username) {
+    final regex = RegExp(r'@' + RegExp.escape(username) + r'\b');
+    return regex.hasMatch(text);
+  }
+
+
 }
 
 // Cách sử dụng

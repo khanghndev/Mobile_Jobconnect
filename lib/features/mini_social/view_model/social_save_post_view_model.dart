@@ -17,14 +17,18 @@ class SocialSavePostViewModel extends ChangeNotifier {
   String? _errorMessage;
   List<SavedPostModel> _savedPosts = [];
   Map<String, int> _folderSavedCount = {};
+  List<String> _folders = [];
+  String? _selectedFolder;
 
   // GETTERS
   bool get isLoading => _isLoading;
   bool get isSuccess => _isSuccess;
   String? get errorMessage => _errorMessage;
   List<SavedPostModel> get savedPosts => _savedPosts;
-  String get currentUserId => _prefs.getString(SharedPrefsKey.idUser) ?? '';
   Map<String, int> get folderSavedCount => _folderSavedCount;
+  List<String> get folders => _folders;
+  String? get selectedFolder => _selectedFolder;
+  String get currentUserId => _prefs.getString(SharedPrefsKey.idUser) ?? '';
 
   // PRIVATE SET STATE
   void _setState({
@@ -32,61 +36,29 @@ class SocialSavePostViewModel extends ChangeNotifier {
     bool? isSuccess,
     String? errorMessage,
     List<SavedPostModel>? savedPosts,
+    Map<String, int>? folderSavedCount,
+    List<String>? folders,
   }) {
     _isLoading = isLoading ?? _isLoading;
     _isSuccess = isSuccess ?? _isSuccess;
     _errorMessage = errorMessage;
-    _savedPosts = savedPosts ?? _savedPosts;
+    if (savedPosts != null) _savedPosts = savedPosts;
+    if (folderSavedCount != null) _folderSavedCount = folderSavedCount;
+    if (folders != null) _folders = folders;
+    notifyListeners();
+  }
+
+  void setSelectedFolder(String folder) {
+    _selectedFolder = folder;
     notifyListeners();
   }
 
   void incrementFolderCount(String folderName) {
-    folderSavedCount[folderName] = (folderSavedCount[folderName] ?? 0) + 1;
+    _folderSavedCount[folderName] = (_folderSavedCount[folderName] ?? 0) + 1;
     notifyListeners();
   }
 
-  bool isPostSaved(String idPost) {
-    return _savedPosts.any((p) => p.idPost == idPost);
-  }
-
-  Future<void> toggleSavePostWithFolder({
-    required String idPost,
-    String? selectedFolder,
-  }) async {
-    if (isPostSaved(idPost)) {
-      // Nếu đã lưu → xóa bài
-      final folderName = _savedPosts.firstWhere((p) => p.idPost == idPost,
-              orElse: () => SavedPostModel(idPost: '', idUser: '', folderName: 'Bài viết yêu thích', savedAt: DateTime.now(), note: 'Yêu thích của tôi'))
-          .folderName;
-
-      await _service.deleteSavedPost(idPost: idPost, idUser: currentUserId);
-      _savedPosts.removeWhere((p) => p.idPost == idPost);
-
-      // Update folder count
-      if (_folderSavedCount[folderName] != null) {
-        _folderSavedCount[folderName] =
-            (_folderSavedCount[folderName]! - 1).clamp(0, double.infinity).toInt();
-      }
-
-      notifyListeners();
-    } else {
-      // Nếu chưa lưu → lưu bài
-      final folders = await getSavedFolders();
-      final folderToSave = selectedFolder ?? (folders.isNotEmpty ? folders.first : 'Bộ sưu tập ưu thích');
-
-      final savedPost = await _service.createSavedPost(
-        idPost: idPost,
-        idUser: currentUserId,
-        folderName: folderToSave,
-        note: ""
-      );
-
-      _savedPosts.add(savedPost);
-      _folderSavedCount[folderToSave] = (_folderSavedCount[folderToSave] ?? 0) + 1;
-
-      notifyListeners();
-    }
-  }
+  bool isPostSaved(String idPost) => _savedPosts.any((p) => p.idPost == idPost);
 
   // HELPER API CALL
   Future<void> _handleApiCall<T>({
@@ -97,12 +69,37 @@ class SocialSavePostViewModel extends ChangeNotifier {
     try {
       final result = await apiCall();
       if (onSuccess != null) onSuccess(result);
-      _setState(isSuccess: true);
+      _setState(isSuccess: true, isLoading: false);
     } on ServerException catch (e) {
-      _setState(errorMessage: e.err, isSuccess: false);
+      _setState(errorMessage: e.err, isSuccess: false, isLoading: false);
     } catch (e) {
-      _setState(errorMessage: e.toString(), isSuccess: false);
-    }  
+      _setState(errorMessage: e.toString(), isSuccess: false, isLoading: false);
+    }
+  }
+
+  // LOAD ALL DATA (dùng để mở BottomSheet trước, rồi load dần)
+  Future<void> loadSavedData() async {
+    _setState(isLoading: true);
+
+    try {
+      final posts = await _service.getSavedPostsByUser(currentUserId);
+      final folders = await _service.getSavedPostsFolders(currentUserId);
+
+      final folderCount = <String, int>{};
+      for (var post in posts) {
+        folderCount[post.folderName] = (folderCount[post.folderName] ?? 0) + 1;
+      }
+
+      _setState(
+        savedPosts: posts,
+        folders: folders,
+        folderSavedCount: folderCount,
+        isLoading: false,
+        isSuccess: true,
+      );
+    } catch (e) {
+      _setState(errorMessage: e.toString(), isLoading: false, isSuccess: false);
+    }
   }
 
   // LẤY DANH SÁCH BÀI VIẾT ĐÃ LƯU
@@ -131,7 +128,10 @@ class SocialSavePostViewModel extends ChangeNotifier {
         folderName: folderName,
         note: note,
       ),
-      onSuccess: (savedPost) => _savedPosts.add(savedPost),
+      onSuccess: (savedPost) {
+        _savedPosts.add(savedPost);
+        _folderSavedCount[folderName] = (_folderSavedCount[folderName] ?? 0) + 1;
+      },
     );
   }
 
@@ -159,8 +159,57 @@ class SocialSavePostViewModel extends ChangeNotifier {
   Future<void> deleteSavedPost(String idPost) async {
     await _handleApiCall<void>(
       apiCall: () => _service.deleteSavedPost(idPost: idPost, idUser: currentUserId),
-      onSuccess: (_) => _savedPosts.removeWhere((p) => p.idPost == idPost),
+      onSuccess: (_) {
+        final post = _savedPosts.firstWhere(
+            (p) => p.idPost == idPost,
+            orElse: () => SavedPostModel(
+                idPost: '', idUser: '', folderName: '', savedAt: DateTime.now(), note: ''));
+        _savedPosts.removeWhere((p) => p.idPost == idPost);
+        if (_folderSavedCount[post.folderName] != null) {
+          _folderSavedCount[post.folderName] =
+              (_folderSavedCount[post.folderName]! - 1).clamp(0, double.infinity).toInt();
+        }
+      },
     );
+  }
+
+  // TOGGLE SAVE BÀI VIẾT
+  Future<void> toggleSavePostWithFolder({
+    required String idPost,
+    String? selectedFolder,
+  }) async {
+    if (isPostSaved(idPost)) {
+      final folderName = _savedPosts.firstWhere(
+              (p) => p.idPost == idPost,
+              orElse: () => SavedPostModel(
+                  idPost: '', idUser: '', folderName: 'Bài viết yêu thích', savedAt: DateTime.now(), note: 'Yêu thích của tôi'))
+          .folderName;
+
+      await _service.deleteSavedPost(idPost: idPost, idUser: currentUserId);
+      _savedPosts.removeWhere((p) => p.idPost == idPost);
+
+      if (_folderSavedCount[folderName] != null) {
+        _folderSavedCount[folderName] =
+            (_folderSavedCount[folderName]! - 1).clamp(0, double.infinity).toInt();
+      }
+
+      notifyListeners();
+    } else {
+      final folders = await getSavedFolders();
+      final folderToSave = selectedFolder ?? (folders.isNotEmpty ? folders.first : 'Bộ sưu tập ưu thích');
+
+      final savedPost = await _service.createSavedPost(
+        idPost: idPost,
+        idUser: currentUserId,
+        folderName: folderToSave,
+        note: "",
+      );
+
+      _savedPosts.add(savedPost);
+      _folderSavedCount[folderToSave] = (_folderSavedCount[folderToSave] ?? 0) + 1;
+
+      notifyListeners();
+    }
   }
 
   // RESET STATE
@@ -170,6 +219,8 @@ class SocialSavePostViewModel extends ChangeNotifier {
       isSuccess: false,
       errorMessage: null,
       savedPosts: [],
+      folders: [],
+      folderSavedCount: {},
     );
   }
 }

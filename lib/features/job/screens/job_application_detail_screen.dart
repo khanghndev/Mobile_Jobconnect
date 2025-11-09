@@ -136,16 +136,21 @@ class _JobApplicationDetailScreenState extends State<JobApplicationDetailScreen>
                 title: 'Mô Tả Công Việc',
                 icon: Icons.description_rounded,
               ),
+              SizedBox(height: 8.h),
               CardMain(
                 child: Row(
                   children: [
-                    Text(
-                      (jobPosting?.description == null || jobPosting!.description.trim().isEmpty)
+                    Expanded(
+                      child: Text(
+                        (jobPosting?.description == null || jobPosting!.description.trim().isEmpty)
                           ? 'Chưa có mô tả chi tiết.'
                           : jobPosting.description,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w500,
-                        color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                        softWrap: true,
+                        overflow: TextOverflow.visible,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w500,
+                          color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                        ),
                       ),
                     ),
                   ],
@@ -158,16 +163,21 @@ class _JobApplicationDetailScreenState extends State<JobApplicationDetailScreen>
                 title: 'Yêu Cầu Ứng Viên',
                 icon: Icons.checklist_rtl_rounded,
               ),
+              SizedBox(height: 8.h),
               CardMain(
                 child: Row(
                   children: [
-                    Text(
-                      (jobPosting?.requirements == null || jobPosting!.requirements.trim().isEmpty)
+                    Expanded(
+                      child: Text(
+                        (jobPosting?.requirements == null || jobPosting!.requirements.trim().isEmpty)
                           ? 'Chưa có yêu cầu chi tiết.'
                           : jobPosting.requirements,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w500,
-                        color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                        softWrap: true,
+                        overflow: TextOverflow.visible,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w500,
+                          color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                        ),
                       ),
                     ),
                   ],
@@ -181,6 +191,7 @@ class _JobApplicationDetailScreenState extends State<JobApplicationDetailScreen>
                 title: 'Thông Tin Công Ty',
                 icon: Icons.business_rounded,
               ),
+              SizedBox(height: 8.h),
               CardMain(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -215,55 +226,40 @@ class _JobApplicationDetailScreenState extends State<JobApplicationDetailScreen>
                   title: 'Hồ Sơ Đã Nộp',
                   icon: Icons.folder_shared_rounded,
                 ),
+                SizedBox(height: 8.h),
                 CardMain(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (jobApp.cvFileUrl != null)
-                        ProfileInfoRow(
-                          icon: Icons.picture_as_pdf_rounded,
-                          title:
-                              'Xem CV đã nộp (${(StringUtils.extractFileName(jobApp.cvFileUrl!))})',
-                          onTap: () {
-                            print(  jobApp.cvFileUrl);
-                            context.push(
-                              '/resume/file',
-                              extra: {
-                                'fileUrl': jobApp.cvFileUrl,
-                                'fileName': jobApp.cvFileUrl,
-                              },
-                            );
-                          },
-                        ),
-                      if (jobApp.cvFileUrl != null &&
-                          (jobApp.coverLetter != null &&
-                              jobApp.coverLetter!.isNotEmpty))
-                        const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10.0),
-                          child: Divider(height: 1),
-                        ),
-                      if (jobApp.coverLetter != null && jobApp.coverLetter!.isNotEmpty) ... [
-                        SectionTitle(
-                          title: 'Thư Giới Thiệu',
-                          icon: Icons.business_rounded,
-                        ),
-                        CardMain(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ProfileInfoRow(
-                                icon: Icons.location_city_rounded,
-                                title: jobApp.coverLetter ?? 'Chưa có thư giới thiệu',
-                              ),
-                            ],
-                          ),
-                        ),
-                      ]
-
-                    ],
+                  child: ProfileInfoRow(
+                    icon: Icons.picture_as_pdf_rounded,
+                    title: 'Xem CV đã nộp (${(StringUtils.extractFileName(jobApp.cvFileUrl!))})',
+                    onTap: () {
+                      context.push(
+                        '/resume/file',
+                        extra: {
+                          'fileUrl': jobApp.cvFileUrl,
+                          'fileName': jobApp.cvFileUrl,
+                        },
+                      );
+                    },
                   ),
                 ),
               ],
+              SizedBox(height: 16.h),
+              SectionTitle(
+                title: 'Thư Giới Thiệu',
+                icon: Icons.business_rounded,
+              ),
+              SizedBox(height: 8.h),
+              CardMain(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ProfileInfoRow(
+                      icon: Icons.drafts,
+                      title: jobApp.coverLetter ?? 'Chưa có thư giới thiệu',
+                    ),
+                  ],
+                ),
+              ),
 
               SizedBox(height: 24.h),
 

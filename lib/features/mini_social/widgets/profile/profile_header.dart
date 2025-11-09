@@ -3,7 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class ProfileHeader extends StatelessWidget {
-  const ProfileHeader({super.key});
+  final bool isCurrentUser;
+  final VoidCallback onAddFriend;
+  const ProfileHeader({super.key, required this.isCurrentUser, required this.onAddFriend});
 
   @override
   Widget build(BuildContext context) {
@@ -17,13 +19,17 @@ class ProfileHeader extends StatelessWidget {
             onPressed: () => context.pop(),
           ),
         ),
-        CircleAvatar(
-          backgroundColor: Colors.blue.withValues(alpha: 0.1),
-          child: IconButton(
-            icon: Icon(Icons.person_add, color: Colors.blue, size: 22.sp),
-            onPressed: () {},
+        if(!isCurrentUser)...[
+          CircleAvatar(
+            backgroundColor: Colors.blue.withValues(alpha: 0.1),
+            child: IconButton(
+              icon: Icon(
+                Icons.person_add, color: Colors.blue, size: 22.sp
+              ),
+              onPressed: onAddFriend,
+            ),
           ),
-        ),
+        ]
       ],
     );
   }

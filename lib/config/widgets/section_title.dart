@@ -30,14 +30,14 @@ class SectionTitle extends StatelessWidget {
     return Row(
       mainAxisAlignment: isCenter == true ? MainAxisAlignment.center : MainAxisAlignment.start,
       children: [
-        if(icon == null)...[
+        if(icon != null)...[
           Icon(
             icon,
             color:iconColor ?? theme.primaryColor,
             size: 22.sp,
           ),
+          SizedBox(width: 10.w),
         ],
-        SizedBox(width: 10.w),
         Text(
           isToUpperCase == true ? title.toUpperCase() : title,
           style: theme.textTheme.titleLarge?.copyWith(

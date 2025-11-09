@@ -9,7 +9,7 @@ class OverlayLoading extends StatelessWidget {
   const OverlayLoading({
     super.key,
     required this.isLoading,
-    required this.child,
+    required this.child, required ,
   });
 
   @override

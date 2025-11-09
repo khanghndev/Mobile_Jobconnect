@@ -14,15 +14,15 @@ class AppStatus {
   // Map API status keys to display names, colors, and icons
   static Map<String, Map<String, dynamic>> displayConfig = {
     pending: {
-      'text': 'Đang xem xét',
-      'color': Colors.blue.shade700,
-      'bgColor': Colors.blue.shade50,
+      'text': 'Đã gửi NTD',
+      'color': Colors.yellow.shade700,
+      'bgColor': Colors.yellow.shade50,
       'icon': Icons.hourglass_top_rounded,
     },
     interview: {
       'text': 'Phỏng vấn',
-      'color': Colors.orange.shade700,
-      'bgColor': Colors.orange.shade50,
+      'color':  Colors.blue.shade700,
+      'bgColor': Colors.blue.shade50,
       'icon': Icons.people_alt_rounded,
     },
     rejected: {

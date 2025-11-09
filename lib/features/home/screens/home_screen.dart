@@ -300,7 +300,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, 
                         icon: Icons.radar_outlined,
                         gradientColors: [
                           theme.colorScheme.secondary,
-                          theme.colorScheme.tertiary.withOpacity(0.8),
+                          theme.colorScheme.tertiary.withValues(alpha: 0.8),
                         ],
                         onTap: () {
                           if (!isLoggedIn) {

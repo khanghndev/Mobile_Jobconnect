@@ -4,6 +4,8 @@ class SocialGroupsModel {
   final String? description;
   final String privacy;
   final String? coverImageUrl;
+  final String? avatarUrl;
+  final String? createdBy;
   final String creatorName;
   final DateTime createdAt;
   final int memberCount;
@@ -19,6 +21,8 @@ class SocialGroupsModel {
     this.description,
     this.privacy = 'public',
     this.coverImageUrl,
+    this.avatarUrl,
+    this.createdBy,
     required this.creatorName,
     required this.createdAt,
     this.memberCount = 0,
@@ -29,21 +33,32 @@ class SocialGroupsModel {
     this.userStatus,
   });
 
-  factory SocialGroupsModel.fromJson(Map<String, dynamic> json) => SocialGroupsModel(
-        idGroup: json['idGroup'],
-        groupName: json['groupName'],
-        description: json['description'],
-        privacy: json['privacy'] ?? 'public',
-        coverImageUrl: json['coverImageUrl'],
-        creatorName: json['creatorName'],
-        createdAt: DateTime.parse(json['createdAt']),
-        memberCount: json['memberCount'] ?? 0,
-        postCount: json['postCount'] ?? 0,
-        tags: json['tags'] != null ? List<String>.from(json['tags']) : [],
-        requirePostApproval: json['requirePostApproval'] == true,
-        userRole: json['userRole'],
-        userStatus: json['userStatus'],
-      );
+  factory SocialGroupsModel.fromJson(Map<String, dynamic> json) {
+    DateTime parsedCreatedAt;
+    try {
+      parsedCreatedAt = DateTime.parse(json['createdAt'] ?? '');
+    } catch (_) {
+      parsedCreatedAt = DateTime.now();
+    }
+
+    return SocialGroupsModel(
+      idGroup: json['idGroup'] ?? '',
+      groupName: json['groupName'] ?? '',
+      description: json['description'],
+      privacy: json['privacy'] ?? 'public',
+      coverImageUrl: json['coverImageUrl'],
+      avatarUrl: json['avatarUrl'],
+      createdBy: json['createdBy'] ?? '', // parse createdBy
+      creatorName: json['creatorName'] ?? '',
+      createdAt: parsedCreatedAt,
+      memberCount: json['memberCount'] ?? 0,
+      postCount: json['postCount'] ?? 0,
+      tags: json['tags'] != null ? List<String>.from(json['tags']) : [],
+      requirePostApproval: json['requirePostApproval'] == true,
+      userRole: json['userRole'],
+      userStatus: json['userStatus'],
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         'idGroup': idGroup,
@@ -51,6 +66,8 @@ class SocialGroupsModel {
         'description': description,
         'privacy': privacy,
         'coverImageUrl': coverImageUrl,
+        'avatarUrl': avatarUrl,
+        'createdBy': createdBy, // thêm vào toJson
         'creatorName': creatorName,
         'createdAt': createdAt.toIso8601String(),
         'memberCount': memberCount,
@@ -67,6 +84,8 @@ class SocialGroupsModel {
     String? description,
     String? privacy,
     String? coverImageUrl,
+    String? avatarUrl,
+    String? createdBy,
     String? creatorName,
     DateTime? createdAt,
     int? memberCount,
@@ -82,6 +101,8 @@ class SocialGroupsModel {
       description: description ?? this.description,
       privacy: privacy ?? this.privacy,
       coverImageUrl: coverImageUrl ?? this.coverImageUrl,
+      avatarUrl: avatarUrl ?? this.avatarUrl,
+      createdBy: createdBy ?? this.createdBy, // copyWith
       creatorName: creatorName ?? this.creatorName,
       createdAt: createdAt ?? this.createdAt,
       memberCount: memberCount ?? this.memberCount,

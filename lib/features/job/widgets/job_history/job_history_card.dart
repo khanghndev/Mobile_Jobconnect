@@ -192,9 +192,12 @@ class JobHistoryCard extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: textStyle ?? theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant, fontWeight: FontWeight.w500),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+            style: textStyle ?? theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant, 
+              fontWeight: FontWeight.w500
+            ),
+            softWrap: true,
+            overflow: TextOverflow.visible,
           ),
         ),
       ],

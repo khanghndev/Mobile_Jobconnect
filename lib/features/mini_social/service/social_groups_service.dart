@@ -41,10 +41,13 @@ class SocialGroupsService {
   }
 
   /// TODO: GET /api/SocialGroups/joined - Lấy danh sách nhóm đã tham gia
-  Future<List<SocialGroupsModel>> getJoinedGroups() async {
+  Future<List<SocialGroupsModel>> getJoinedGroups({required String userId}) async {
     return _handleApi(
       () async {
-        final res = await _apiService.get(endpoint: ApiConstants.socialGroupsJoinedEndpoint);
+        final res = await _apiService.get(
+          endpoint: ApiConstants.socialGroupsJoinedEndpoint,
+          queryParams: {'userId': userId},
+        );
         return ApiResponseParser.parseList(
           res: res,
           fromJson: (json) => SocialGroupsModel.fromJson(json),
@@ -52,6 +55,24 @@ class SocialGroupsService {
         );
       },
       'Lỗi khi tải danh sách nhóm đã tham gia',
+    );
+  }
+
+  /// TODO: GET /api/SocialGroups/pending - Lấy danh sách nhóm đang chờ tham gia
+  Future<List<SocialGroupsModel>> getPendingGroups({required String userId}) async {
+    return _handleApi(
+      () async {
+        final res = await _apiService.get(
+          endpoint: ApiConstants.socialGroupsPendingEndpoint,
+          queryParams: {'userId': userId},
+        );
+        return ApiResponseParser.parseList(
+          res: res,
+          fromJson: (json) => SocialGroupsModel.fromJson(json),
+          errorMsg: 'Phản hồi không hợp lệ từ API (get pending groups)',
+        );
+      },
+      'Lỗi khi tải danh sách nhóm đang chờ tham gia',
     );
   }
 
@@ -136,10 +157,13 @@ class SocialGroupsService {
   }
 
   /// TODO: POST /api/SocialGroups/{id}/join - Tham gia nhóm
-  Future<void> joinGroup({required String id}) async {
+  Future<void> joinGroup({
+    required String idGroup,
+    required String userId,
+  }) async {
     return _handleApi(
       () async {
-        final endpoint = '${ApiConstants.socialGroupByIdEndpoint.replaceFirst('{id}', id)}/join';
+        final endpoint = '${ApiConstants.socialGroupByIdEndpoint.replaceFirst('{id}', idGroup)}/join?userId=$userId';
         await _apiService.post(endpoint: endpoint, body: {});
       },
       'Lỗi khi tham gia nhóm',

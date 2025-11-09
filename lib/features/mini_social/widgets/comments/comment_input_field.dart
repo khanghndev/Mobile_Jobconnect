@@ -28,7 +28,7 @@ class CommentInputField extends StatelessWidget {
             maxLines: 3,
             onChanged: onChanged, 
             decoration: InputDecoration(
-              hintText: "Viết bình luận của bạn ...",
+              hintText: "Nhập bình luận...",
               suffixIcon: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [

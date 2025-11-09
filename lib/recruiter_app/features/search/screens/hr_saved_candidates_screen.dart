@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:job_connect/config/utils/image_url.dart';
 import 'package:job_connect/features/profile/model/candidate_info_model.dart';
 import 'package:job_connect/features/profile/model/user_model.dart';
 import 'package:job_connect/features/profile/service/candidate_info_service.dart';
@@ -132,9 +133,7 @@ class _HrSavedCandidatesScreenState extends State<HrSavedCandidatesScreen> {
                 CircleAvatar(
                   radius: 32,
                   backgroundColor: Colors.grey[200],
-                  backgroundImage: NetworkImage(
-                    account.avatarUrl ?? 'https://example.com/default-avatar.png',
-                  ),
+                  backgroundImage: ImageUtils.getImageProvider(account.avatarUrl),
                 ),
                 const SizedBox(width: 16),
                 Expanded(

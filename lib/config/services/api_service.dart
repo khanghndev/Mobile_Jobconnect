@@ -17,58 +17,111 @@ class ApiService {
     },
   });
 
-  Future<dynamic> get({required String endpoint}) async {
-    return _request(method: ApiMethod.get, endpoint: endpoint);
+  // ========== PUBLIC METHODS ==========
+  Future<dynamic> get({
+    required String endpoint,
+    Map<String, dynamic>? queryParams,
+  }) async {
+    return _request(
+      method: ApiMethod.get,
+      endpoint: endpoint,
+      queryParams: queryParams,
+    );
   }
 
-  Future<dynamic> post({required String endpoint, required dynamic body}) async {
-    return _request(method: ApiMethod.post, endpoint: endpoint, body: body);
+  Future<dynamic> post({
+    required String endpoint,
+    dynamic body,
+    Map<String, dynamic>? queryParams,
+  }) async {
+    return _request(
+      method: ApiMethod.post,
+      endpoint: endpoint,
+      body: body,
+      queryParams: queryParams,
+    );
   }
 
-  Future<dynamic> put({required String endpoint, required dynamic body}) async {
-    return _request(method: ApiMethod.put, endpoint: endpoint, body: body);
+  Future<dynamic> put({
+    required String endpoint,
+    dynamic body,
+    Map<String, dynamic>? queryParams,
+  }) async {
+    return _request(
+      method: ApiMethod.put,
+      endpoint: endpoint,
+      body: body,
+      queryParams: queryParams,
+    );
   }
 
-  Future<dynamic> patch({required String endpoint, required dynamic body}) async {
-    return _request(method: ApiMethod.patch, endpoint: endpoint, body: body);
+  Future<dynamic> patch({
+    required String endpoint,
+    dynamic body,
+    Map<String, dynamic>? queryParams,
+  }) async {
+    return _request(
+      method: ApiMethod.patch,
+      endpoint: endpoint,
+      body: body,
+      queryParams: queryParams,
+    );
   }
 
-  Future<dynamic> delete({required String endpoint, dynamic body}) async {
-    return _request(method: ApiMethod.delete, endpoint: endpoint, body: body);
+  Future<dynamic> delete({
+    required String endpoint,
+    dynamic body,
+    Map<String, dynamic>? queryParams,
+  }) async {
+    return _request(
+      method: ApiMethod.delete,
+      endpoint: endpoint,
+      body: body,
+      queryParams: queryParams,
+    );
   }
 
+  // CORE REQUEST
   Future<dynamic> _request({
     required ApiMethod method,
     required String endpoint,
     dynamic body,
+    Map<String, dynamic>? queryParams,
   }) async {
-    final url = Uri.parse(ApiConstants.baseUrl + endpoint);
-    http.Response response;
+    final uri = Uri.parse(ApiConstants.baseUrl + endpoint).replace(
+      queryParameters: queryParams?.map(
+        (key, value) => MapEntry(key, value?.toString() ?? ''),
+      ),
+    );
 
+    http.Response response;
     final stopwatch = Stopwatch()..start();
 
     try {
       debugPrint('\n===== 🌐 API REQUEST =====');
       debugPrint('➡️ METHOD: ${method.name.toUpperCase()}');
-      debugPrint('📍 URL: $url');
+      debugPrint('📍 URL: $uri');
       debugPrint('📦 HEADERS: $defaultHeaders');
+      if (queryParams != null && queryParams.isNotEmpty) {
+        debugPrint('🔍 QUERY: $queryParams');
+      }
       if (body != null) debugPrint('🧾 BODY: ${jsonEncode(body)}');
 
       switch (method) {
         case ApiMethod.get:
-          response = await http.get(url, headers: defaultHeaders);
+          response = await http.get(uri, headers: defaultHeaders);
           break;
         case ApiMethod.post:
-          response = await http.post(url, headers: defaultHeaders, body: _encodeBody(body));
+          response = await http.post(uri, headers: defaultHeaders, body: _encodeBody(body));
           break;
         case ApiMethod.put:
-          response = await http.put(url, headers: defaultHeaders, body: _encodeBody(body));
+          response = await http.put(uri, headers: defaultHeaders, body: _encodeBody(body));
           break;
         case ApiMethod.delete:
-          response = await http.delete(url, headers: defaultHeaders);
+          response = await http.delete(uri, headers: defaultHeaders, body: _encodeBody(body));
           break;
         case ApiMethod.patch:
-          response = await http.patch(url, headers: defaultHeaders, body: _encodeBody(body));
+          response = await http.patch(uri, headers: defaultHeaders, body: _encodeBody(body));
           break;
       }
 
@@ -83,33 +136,32 @@ class ApiService {
       return handleResponse(response, method);
     } on SocketException {
       throw ServerException(
-        err: 'No Internet connection',
+        err: 'Không có kết nối Internet',
         type: ServerExceptionType.network,
       );
     } on TimeoutException {
       throw ServerException(
-        err: 'Request timeout',
+        err: 'Yêu cầu quá thời gian chờ',
         type: ServerExceptionType.timeout,
       );
     } catch (e) {
       throw ServerException(
-        err: 'Unexpected error: $e',
+        err: 'Lỗi không xác định: $e',
         type: ServerExceptionType.unknown,
       );
     }
   }
 
-  /// Giới hạn log body nếu quá dài
+  // ========== HELPERS ==========
   String _shorten(String body, {int maxLength = 500}) {
     if (body.length <= maxLength) return body;
     return '${body.substring(0, maxLength)}... (truncated)';
   }
 
-  /// Encode body phù hợp: Map, List, String hoặc null
   String? _encodeBody(dynamic body) {
     if (body == null) return null;
-    if (body is String) return body; // raw string
-    return jsonEncode(body); // Map/List/Object
+    if (body is String) return body;
+    return jsonEncode(body);
   }
 
   dynamic handleResponse(http.Response response, ApiMethod method) {
@@ -145,9 +197,7 @@ class ApiService {
       }
 
       debugPrint('❌ API ERROR: $errorMessage');
-
       throw ServerException(
-        // err: '$method failed: ${response.statusCode} - $errorMessage',
         err: 'Lỗi: $errorMessage',
         type: ServerExceptionType.api,
       );

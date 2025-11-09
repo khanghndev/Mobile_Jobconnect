@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:job_connect/config/utils/image_url.dart';
 
 class UserInfoModel {
@@ -28,35 +29,38 @@ class CreatePostInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 12, 0, 8),
+      padding: EdgeInsets.fromLTRB(0, 12.h, 0, 8.h),
       child: InkWell(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(8.r),
         onTap: onCreatePost,
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        hoverColor: Colors.transparent,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             CircleAvatar(
-              radius: 20,
+              radius: 20.r,
               backgroundImage: ImageUtils.getImageProvider(user.avatarUrl),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: 12.w),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     user.username,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 15,
+                      fontSize: 15.sp,
                       color: Colors.black,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4.h),
                   Text(
                     user.placeholder,
-                    style: const TextStyle(
-                      fontSize: 14,
+                    style: TextStyle(
+                      fontSize: 14.sp,
                       color: Colors.grey,
                     ),
                   ),
@@ -64,7 +68,7 @@ class CreatePostInput extends StatelessWidget {
               ),
             ),
             IconButton(
-              icon: const Icon(Icons.search_rounded, color: Colors.grey),
+              icon: Icon(Icons.search_rounded, color: Colors.grey, size: 22.sp),
               onPressed: onSearch,
             ),
           ],

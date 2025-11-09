@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:job_connect/config/enum/dialog_type.dart';
 import 'package:job_connect/config/utils/dialog_utils.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 Future<Uint8List?> pickImage(
@@ -76,6 +77,56 @@ Future<Uint8List?> pickImage(
     return null;
   } catch (e) {
     return null;
+  }
+}
+
+Future<List<File>> pickImagesMultiple(BuildContext context) async {
+  try {
+    final ImagePicker picker = ImagePicker();
+    List<XFile>? pickedFiles;
+
+    // Kiểm tra quyền
+    PermissionStatus result;
+    if (Platform.isAndroid) {
+      final androidInfo = await DeviceInfoPlugin().androidInfo;
+      if (androidInfo.version.sdkInt <= 32) {
+        result = await Permission.storage.request();
+      } else {
+        result = await Permission.photos.request();
+      }
+    } else {
+      result = await Permission.photos.request();
+    }
+
+    if (!context.mounted) return [];
+
+    if (result.isGranted) {
+      pickedFiles = await picker.pickMultiImage();
+      if (pickedFiles.isEmpty) return [];
+
+      final tempDir = await getTemporaryDirectory();
+      final List<File> files = [];
+
+      for (var file in pickedFiles) {
+        final bytes = await file.readAsBytes();
+        final tempFile = File('${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}_${file.name}');
+        await tempFile.writeAsBytes(bytes);
+        files.add(tempFile);
+      }
+
+      return files;
+    } else {
+      DialogUtils.showDialogMessage(
+        context,
+        message: "Bạn cần cấp quyền để truy cập thư viện!",
+        title: "Thông báo",
+        type: DialogType.error,
+        buttonText: "Đóng",
+      );
+      return [];
+    }
+  } catch (e) {
+    return [];
   }
 }
 

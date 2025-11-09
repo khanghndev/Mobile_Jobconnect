@@ -7,6 +7,7 @@ class SocialPostModel {
   final String? groupName;
   final String content;
   final String? imageUrl;
+  final List<String>? imageUrls;
   final String? videoUrl;
   final String visibility;
   final String? postType;
@@ -29,6 +30,7 @@ class SocialPostModel {
     this.groupName,
     required this.content,
     this.imageUrl,
+    this.imageUrls,
     this.videoUrl,
     this.visibility = 'public',
     this.postType,
@@ -43,55 +45,63 @@ class SocialPostModel {
     this.currentUserReaction,
   });
 
-  factory SocialPostModel.fromJson(Map<String, dynamic> json) => SocialPostModel(
-        idPost: json['idPost'] ?? '',
-        idUser: json['idUser'] ?? '',
-        userName: json['userName'] ?? '',
-        avatarUrl: json['avatarUrl'],
-        idGroup: json['idGroup'],
-        groupName: json['groupName'],
-        content: json['content'] ?? '',
-        imageUrl: json['imageUrl'],
-        videoUrl: json['videoUrl'],
-        visibility: json['visibility'] ?? 'public',
-        postType: json['postType'],
-        hashtags: json['hashtags'] != null
-            ? List<String>.from(json['hashtags'])
-            : [],
-        createdAt: DateTime.parse(json['createdAt']),
-        updatedAt: DateTime.parse(json['updatedAt']),
-        likesCount: json['likesCount'] ?? 0,
-        commentsCount: json['commentsCount'] ?? 0,
-        sharesCount: json['sharesCount'] ?? 0,
-        isSaved: json['isSaved'] ?? false,
-        reactionsSummary: json['reactionsSummary'] != null
-            ? Map<String, int>.from(json['reactionsSummary'])
-            : {},
-        currentUserReaction: json['currentUserReaction'],
-      );
+  factory SocialPostModel.fromJson(Map<String, dynamic> json) {
+    return SocialPostModel(
+      idPost: json['idPost'] ?? '',
+      idUser: json['idUser'] ?? '',
+      userName: json['userName'],
+      avatarUrl: json['avatarUrl'],
+      idGroup: json['idGroup'],
+      groupName: json['groupName'],
+      content: json['content'] ?? '',
+      imageUrl: json['imageUrl'],
+      imageUrls: json['imageUrls'] != null
+          ? List<String>.from(json['imageUrls'])
+          : [],
+      videoUrl: json['videoUrl'],
+      visibility: json['visibility'] ?? 'public',
+      postType: json['postType'],
+      hashtags: json['hashtags'] != null
+          ? List<String>.from(json['hashtags'])
+          : [],
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
+      likesCount: json['likesCount'] ?? 0,
+      commentsCount: json['commentsCount'] ?? 0,
+      sharesCount: json['sharesCount'] ?? 0,
+      isSaved: json['isSaved'] ?? false,
+      reactionsSummary: json['reactionsSummary'] != null
+          ? Map<String, int>.from(json['reactionsSummary'])
+          : {},
+      currentUserReaction: json['currentUserReaction'],
+    );
+  }
 
-  Map<String, dynamic> toJson() => {
-        'idPost': idPost,
-        'idUser': idUser,
-        'userName': userName,
-        'avatarUrl': avatarUrl,
-        'idGroup': idGroup,
-        'groupName': groupName,
-        'content': content,
-        'imageUrl': imageUrl,
-        'videoUrl': videoUrl,
-        'visibility': visibility,
-        'postType': postType,
-        'hashtags': hashtags,
-        'createdAt': createdAt.toIso8601String(),
-        'updatedAt': updatedAt.toIso8601String(),
-        'likesCount': likesCount,
-        'commentsCount': commentsCount,
-        'sharesCount': sharesCount,
-        'isSaved': isSaved,
-        'reactionsSummary': reactionsSummary,
-        'currentUserReaction': currentUserReaction,
-      };
+  Map<String, dynamic> toJson() {
+    return {
+      'idPost': idPost,
+      'idUser': idUser,
+      'userName': userName,
+      'avatarUrl': avatarUrl,
+      'idGroup': idGroup,
+      'groupName': groupName,
+      'content': content,
+      'imageUrl': imageUrl,
+      'imageUrls': imageUrls,
+      'videoUrl': videoUrl,
+      'visibility': visibility,
+      'postType': postType,
+      'hashtags': hashtags,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
+      'likesCount': likesCount,
+      'commentsCount': commentsCount,
+      'sharesCount': sharesCount,
+      'isSaved': isSaved,
+      'reactionsSummary': reactionsSummary,
+      'currentUserReaction': currentUserReaction,
+    };
+  }
 
   SocialPostModel copyWith({
     String? idPost,
@@ -102,6 +112,7 @@ class SocialPostModel {
     String? groupName,
     String? content,
     String? imageUrl,
+    List<String>? imageUrls,
     String? videoUrl,
     String? visibility,
     String? postType,
@@ -124,6 +135,7 @@ class SocialPostModel {
       groupName: groupName ?? this.groupName,
       content: content ?? this.content,
       imageUrl: imageUrl ?? this.imageUrl,
+      imageUrls: imageUrls ?? this.imageUrls,
       videoUrl: videoUrl ?? this.videoUrl,
       visibility: visibility ?? this.visibility,
       postType: postType ?? this.postType,
@@ -140,6 +152,8 @@ class SocialPostModel {
   }
 
   @override
-  String toString() =>
-      'SocialPostModel(idPost: $idPost, userName: $userName, content: ${content.substring(0, content.length > 20 ? 20 : content.length)}...)';
+  String toString() {
+    final preview = content.length > 20 ? '${content.substring(0, 20)}...' : content;
+    return 'SocialPostModel(idPost: $idPost, userName: $userName, content: $preview)';
+  }
 }
