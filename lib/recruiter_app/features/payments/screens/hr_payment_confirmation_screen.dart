@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:job_connect/config/enum/job_transaction_status.dart';
 import 'package:job_connect/features/job/model/job_transaction_model.dart';
@@ -8,8 +9,8 @@ import 'package:job_connect/features/profile/model/user_model.dart';
 import 'package:job_connect/features/profile/service/user_service.dart';
 import 'package:job_connect/recruiter_app/features/job/navigation_recruiter/screen/navigation_recruiter_screen.dart';
 import '../../../../features/job/model/job_transaction_detail_model.dart';
-import '../../../services/job_transaction_detail_service.dart';
-import '../../../services/job_transaction_service.dart';
+import '../../../../features/job/service/job_transaction_detail_service.dart';
+import '../../../../features/job/service/job_transaction_service.dart';
 import '../../../services/subscriptionpackage_service.dart';
 
 // ignore: must_be_immutable
@@ -149,7 +150,7 @@ class _PaymentConfirmationDetailScreenState extends State<PaymentConfirmationDet
     try {
       await _transactionService.deleteTransaction(transactionId: widget.idTransaction);
       if (!mounted) return;
-      Navigator.pop(context);
+      context.pop();
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(

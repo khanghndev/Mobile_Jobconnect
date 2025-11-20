@@ -19,7 +19,7 @@ class ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = active ? Colors.blue : Colors.black87;
+    final color = active ? Colors.pinkAccent : Colors.black87;
 
     return Expanded(
       child: GestureDetector(

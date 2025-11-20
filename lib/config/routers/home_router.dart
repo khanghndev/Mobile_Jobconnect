@@ -3,6 +3,8 @@ import 'package:job_connect/config/navigation/app_navigation.dart';
 import 'package:job_connect/features/company/screens/company_screen.dart';
 import 'package:job_connect/features/home/screens/nearby_jobs_map_screen.dart';
 import 'package:job_connect/features/home/screens/podcast_screen.dart';
+import 'package:job_connect/features/home/screens/smart_schedule_request_screen.dart';
+import 'package:job_connect/features/home/screens/smart_schedule_screen.dart';
 import 'package:job_connect/features/navigation/screens/navigation_page.dart';
 import 'package:job_connect/features/resume/screens/cv_options_screen.dart';
 import 'package:job_connect/features/search/screens/search_screen.dart';
@@ -66,7 +68,7 @@ class HomeRouter {
           final idUser = extraData['idUser'];
           final initialTabIndex = extraData['initialTabIndex'];
           return buildPageWithSlideTransition(
-            SearchPage(
+            SearchScreen(
               isLoggedIn: isLoggedIn,
               idUser: idUser,
               initialTabIndex: initialTabIndex
@@ -97,6 +99,34 @@ class HomeRouter {
             CVOptionsScreen(
               isLoggedIn: isLoggedIn,
               idUser: idUser,
+            ), 
+            state
+          );
+        },
+      ),
+
+      GoRoute(
+        path: 'smart-shedule',
+        pageBuilder: (context, state) {
+          final extraData = state.extra as Map<String, dynamic>;
+          final userId = extraData['userId'];
+          return buildPageWithSlideTransition(
+            SmartScheduleScreen(
+              userId: userId,
+            ), 
+            state
+          );
+        },
+      ),
+
+      GoRoute(
+        path: 'request-smart-shedule',
+        pageBuilder: (context, state) {
+          final extraData = state.extra as Map<String, dynamic>;
+          final schedule = extraData['schedule'];
+          return buildPageWithSlideTransition(
+            SmartScheduleResultScreen(
+              schedule: schedule,
             ), 
             state
           );

@@ -6,7 +6,9 @@ import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/utils/download_file.dart';
 import 'package:job_connect/config/widgets/custom_app_bar_title_large.dart';
 import 'package:job_connect/config/widgets/custom_dialog.dart';
+import 'package:job_connect/features/mini_social/widgets/connect/groups_tab_shimmer.dart';
 import 'package:job_connect/features/resume/view_model/resum_view_model.dart';
+import 'package:job_connect/features/resume/widgets/cv_options/cv_options_shimmer.dart';
 import 'package:provider/provider.dart';
 import 'package:job_connect/config/constant/app_colors.dart';
 import 'package:job_connect/config/utils/snackbar_app.dart';
@@ -422,7 +424,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
                     ),
                     vm.isListLoading
                         ? const SliverFillRemaining(
-                            child: Center(child: CircularProgressIndicator()),
+                            child: Center(child: GroupsTabShimmer(),),
                           )
                         : filteredResumes.isEmpty
                             ? SliverFillRemaining(

@@ -91,7 +91,7 @@ class ExpandedGridIcons extends StatelessWidget {
                               color: item['color'] as Color,
                               size: 30.r,
                             ),
-                            SizedBox(height: 8.h),
+                            SizedBox(height: 2.h),
                             Text(
                               item['label'] as String,
                               style: TextStyle(

@@ -7,6 +7,7 @@ class BackgroundEmptyState extends StatelessWidget {
   final String title;
   final IconData iconData;
   final String? subTitle;
+  final double? padding;
 
   const BackgroundEmptyState({
     super.key,
@@ -15,6 +16,7 @@ class BackgroundEmptyState extends StatelessWidget {
     required this.title, 
     required this.iconData, 
     this.subTitle,
+    this.padding
   });
 
   @override
@@ -23,7 +25,7 @@ class BackgroundEmptyState extends StatelessWidget {
 
     return Center(
       child: Padding(
-        padding: EdgeInsets.all(32.w),
+        padding: EdgeInsets.all(padding ?? 32.w),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -49,8 +51,8 @@ class BackgroundEmptyState extends StatelessWidget {
             SizedBox(height: 12.h),
             Text(
               isSearching == true
-                  ? "Vui lòng thử lại với từ khóa tìm kiếm khác hoặc kiểm tra kết nối mạng."
-                  : subTitle ??"Chúng tôi đang cập nhật dữ liệu. Vui lòng quay lại sau hoặc thử làm mới.",
+                  ? subTitle ?? "Vui lòng thử lại với từ khóa tìm kiếm khác hoặc kiểm tra kết nối mạng."
+                  : subTitle ?? "Chúng tôi đang cập nhật dữ liệu. Vui lòng quay lại sau hoặc thử làm mới.",
               style: theme.textTheme.bodyLarge?.copyWith(
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.65),
                 height: 1.5,

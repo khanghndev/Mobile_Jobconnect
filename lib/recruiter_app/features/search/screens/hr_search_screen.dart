@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/utils/image_url.dart';
 import 'package:job_connect/features/profile/model/candidate_info_model.dart';
 import 'package:job_connect/features/profile/model/user_model.dart';
@@ -284,7 +285,7 @@ class _HrSearchScreenState extends State<HrSearchScreen> {
                         selectedSort = value!;
                         _filterCandidates();
                       });
-                      Navigator.pop(context);
+                      context.pop();
                     },
                   ),
                   title: Text(option),
@@ -293,7 +294,7 @@ class _HrSearchScreenState extends State<HrSearchScreen> {
                       selectedSort = option;
                       _filterCandidates();
                     });
-                    Navigator.pop(context);
+                    context.pop();
                   },
                 );
               // ignore: unnecessary_to_list_in_spreads
@@ -334,7 +335,7 @@ class _HrSearchScreenState extends State<HrSearchScreen> {
                       ),
                       IconButton(
                         icon: const Icon(Icons.close),
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () => context.pop(),
                       ),
                     ],
                   ),
@@ -460,7 +461,7 @@ class _HrSearchScreenState extends State<HrSearchScreen> {
                                 ),
                                 onPressed: () {
                                   _filterCandidates();
-                                  Navigator.pop(context);
+                                  context.pop();
                                 },
                               ),
                             ),

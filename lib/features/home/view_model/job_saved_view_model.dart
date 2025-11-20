@@ -32,20 +32,33 @@ class JobSavedViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // TODO: Lấy tất cả việc làm đã lưu của user
-  Future<void> fetchSavedJobsByUser(String idUser) async {
-    _setState(isLoading: true, isSuccess: false, errorMessage: null);
+  // PRIVATE API HANDLER
+  Future<void> _handleApiCall<T>({
+    required Future<T> Function() apiCall,
+    void Function(T)? onSuccess,
+    bool updateLoading = true,
+  }) async {
+    if (updateLoading) _setState(isLoading: true, errorMessage: null);
     try {
-      final jobs = await _jobSavedService.getSavedJobsByUser(idUser);
-      _setState(savedJobs: jobs, isSuccess: true);
+      final result = await apiCall();
+      if (onSuccess != null) onSuccess(result);
+      if (updateLoading) _setState(isLoading: false);
     } on ServerException catch (e) {
-      _setState(errorMessage: e.err, isSuccess: false);
+      _setState(isLoading: false, errorMessage: e.err);
     } catch (e) {
-      _setState(errorMessage: e.toString(), isSuccess: false);
-    }  
+      _setState(isLoading: false, errorMessage: e.toString());
+    }
   }
 
-  // TODO: Kiểm tra job đã lưu
+  // Lấy danh sách công việc đã lưu
+  Future<void> fetchSavedJobsByUser(String idUser) async {
+    await _handleApiCall<List<JobSavedModel>>(
+      apiCall: () => _jobSavedService.getSavedJobsByUser(idUser),
+      onSuccess: (jobs) => _setState(savedJobs: jobs, isSuccess: true),
+    );
+  }
+
+  // Kiểm tra job đã lưu
   Future<bool> isJobSaved(String jobPost, String user) async {
     try {
       return await _jobSavedService.checkJobSaved(jobPost, user);
@@ -54,35 +67,35 @@ class JobSavedViewModel extends ChangeNotifier {
     }
   }
 
-  // TODO: Lưu job
+  // Lưu job
   Future<void> saveJob(JobSavedModel job) async {
-    _setState(isLoading: true, errorMessage: null);
-    try {
-      await _jobSavedService.saveJob(job);
-      _setState(isSuccess: true);
-    } on ServerException catch (e) {
-      _setState(errorMessage: e.err, isSuccess: false);
-    } catch (e) {
-      _setState(errorMessage: e.toString(), isSuccess: false);
-    }  
+    await _handleApiCall(
+      apiCall: () => _jobSavedService.saveJob(job),
+      onSuccess: (_) {
+        // Cập nhật danh sách local ngay
+        final exists = _savedJobs.any(
+            (j) => j.idJobPost == job.idJobPost && j.idUser == job.idUser);
+        if (!exists) {
+          _savedJobs = [..._savedJobs, job];
+        }
+        _setState(isSuccess: true);
+      },
+    );
   }
 
-  // TODO: Xóa job đã lưu
+  // Xóa job đã lưu
   Future<void> deleteSavedJob(String jobPost, String user) async {
-    _setState(isLoading: true, errorMessage: null);
-    try {
-      await _jobSavedService.deleteSavedJob(jobPost, user);
-      // Cập nhật lại danh sách local sau khi xóa
-      _savedJobs.removeWhere((job) => job.idJobPost == jobPost && job.idUser == user);
-      _setState(isSuccess: true);
-    } on ServerException catch (e) {
-      _setState(errorMessage: e.err, isSuccess: false);
-    } catch (e) {
-      _setState(errorMessage: e.toString(), isSuccess: false);
-    }  
+    await _handleApiCall(
+      apiCall: () => _jobSavedService.deleteSavedJob(jobPost, user),
+      onSuccess: (_) {
+        _savedJobs.removeWhere(
+            (job) => job.idJobPost == jobPost && job.idUser == user);
+        _setState(isSuccess: true);
+      },
+    );
   }
 
-  // TODO: Reset state
+  // Reset state
   void resetState() {
     _setState(
       isLoading: false,

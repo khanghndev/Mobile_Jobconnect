@@ -42,7 +42,7 @@ class GroupAppbar extends StatelessWidget {
           collapsePercent = collapsePercent.clamp(0.0, 1.0);
 
           return FlexibleSpaceBar(
-            background: Image(image: ImageUtils.getImageProvider(groupCoverImage), fit: BoxFit.contain),
+            background: Image(image: ImageUtils.getImageProvider(groupCoverImage), fit: BoxFit.cover),
             title: Opacity(
               opacity: 1 - collapsePercent,
               child: Row(

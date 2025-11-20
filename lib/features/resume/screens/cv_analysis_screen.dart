@@ -1,49 +1,68 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:job_connect/config/widgets/custom_app_bar_title_large.dart';
+import 'package:job_connect/features/resume/view_model/resum_view_model.dart';
+import 'package:job_connect/features/resume/model/resume_model.dart';
+import 'package:provider/provider.dart';
 
 class CvAnalysisScreen extends StatefulWidget {
-  const CvAnalysisScreen({super.key});
+  final String idUser;
+  const CvAnalysisScreen({super.key, required this.idUser});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _CvAnalysisScreenState createState() => _CvAnalysisScreenState();
+  State<CvAnalysisScreen> createState() => _CvAnalysisScreenState();
 }
 
 class _CvAnalysisScreenState extends State<CvAnalysisScreen> {
   List<JobRecommendation> _recommendations = [];
   bool _isAnalyzed = false;
-  bool _isProcessing =
-      false; // Đổi tên để rõ ràng hơn: đang tải lên HOẶC đang phân tích
+  bool _isProcessing = false;
   File? _selectedFile;
+  ResumeModel? _selectedResume;
+  bool _isMounted = true;
 
-  // Mock data for previously imported CVs
-  final List<PreviousCV> _previousCVs = [
-    PreviousCV(
-      fileName: 'CV_NguyenVanA.pdf',
-      userName: 'Nguyễn Văn A',
-      uploadDate: '20250310',
-      fileType: 'pdf',
-    ),
-    PreviousCV(
-      fileName: 'CV_TranThiB.docx',
-      userName: 'Trần Thị B',
-      uploadDate: '20250325',
-      fileType: 'docx',
-    ),
-    PreviousCV(
-      fileName: 'CV_LeVanC.doc',
-      userName: 'Lê Văn C',
-      uploadDate: '20250401',
-      fileType: 'doc',
-    ),
-  ];
+  late ResumeViewModel _resumeVm;
+
+  @override
+  void initState() {
+    super.initState();
+    _resumeVm = context.read<ResumeViewModel>();
+    
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_isMounted && mounted) {
+        _loadResumes();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _isMounted = false;
+    super.dispose();
+  }
+
+  Future<void> _loadResumes() async {
+    if (!_isMounted || !mounted) return;
+    
+    try {
+      await _resumeVm.getResumesByUser(idUser: widget.idUser);
+    } catch (e) {
+      if (_isMounted && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Lỗi: $e')),
+        );
+      }
+    }
+  }
 
   Future<void> _pickFile() async {
+    if (!_isMounted || !mounted) return;
+    
     setState(() {
-      _isProcessing = true; // Bắt đầu quá trình tải lên
-      _isAnalyzed = false; // Đảm bảo ẩn kết quả cũ
+      _isProcessing = true;
+      _isAnalyzed = false;
     });
 
     try {
@@ -52,23 +71,23 @@ class _CvAnalysisScreenState extends State<CvAnalysisScreen> {
         allowedExtensions: ['pdf', 'doc', 'docx'],
       );
 
+      if (!_isMounted || !mounted) return;
+
       if (result != null) {
         setState(() {
           _selectedFile = File(result.files.single.path!);
-          // Sau khi tải lên thành công, chuyển sang phân tích
-          _analyzeCV(); // Sẽ tự động set _isProcessing = true lại bên trong
+          _selectedResume = null;
         });
+        
+        await _analyzeCV();
       } else {
-        // User cancelled the picker
         setState(() {
           _isProcessing = false;
         });
       }
     } catch (e) {
-      setState(() {
-        _isProcessing = false;
-      });
-      if (mounted) {
+      if (_isMounted && mounted) {
+        setState(() => _isProcessing = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Có lỗi xảy ra khi tải file: $e'),
@@ -79,70 +98,55 @@ class _CvAnalysisScreenState extends State<CvAnalysisScreen> {
     }
   }
 
-  void _analyzeCV() {
-    setState(() {
-      _isProcessing = true; // Hiển thị loading spinner cho quá trình phân tích
-    });
+  Future<void> _analyzeCV() async {
+    setState(() => _isProcessing = true);
 
     // Giả lập thời gian phân tích
-    Future.delayed(const Duration(seconds: 2), () {
-      if (mounted) {
-        // Kiểm tra mounted trước khi gọi setState
-        setState(() {
-          _isAnalyzed = true;
-          _isProcessing = false;
-          _recommendations = [
-            JobRecommendation(
-              title: 'Frontend Developer',
-              company: 'Tech Solutions Inc.',
-              matchPercentage: 92,
-              description:
-                  'Phát triển giao diện người dùng ứng dụng di động và web với React và Flutter.',
-              requirements: ['React', 'Flutter', 'JavaScript', 'UI/UX'],
-            ),
-            JobRecommendation(
-              title: 'Mobile Developer (Native)',
-              company: 'Digital Innovation Hub',
-              matchPercentage: 87,
-              description:
-                  'Thiết kế và phát triển ứng dụng di động đa nền tảng (iOS/Android).',
-              requirements: [
-                'Flutter',
-                'Dart',
-                'Firebase',
-                'REST API',
-                'Swift/Kotlin',
-              ],
-            ),
-            JobRecommendation(
-              title: 'Full Stack Engineer',
-              company: 'Global Software Solutions',
-              matchPercentage: 75,
-              description:
-                  'Xây dựng và duy trì hệ thống ứng dụng web end-to-end.',
-              requirements: [
-                'JavaScript',
-                'Node.js',
-                'React',
-                'MongoDB',
-                'AWS',
-              ],
-            ),
-          ];
-        });
-      }
-    });
-  }
+    await Future.delayed(const Duration(seconds: 2));
 
-  void _selectPreviousCV(PreviousCV cv) {
+    if (!_isMounted || !mounted) return;
+
     setState(() {
-      // Giả lập file từ PreviousCV, trong thực tế bạn sẽ cần đường dẫn file thật
-      _selectedFile = File('path/to/${cv.fileName}');
-      _analyzeCV(); // Tự động phân tích CV đã có
+      _isAnalyzed = true;
+      _isProcessing = false;
+      _recommendations = [
+        JobRecommendation(
+          title: 'Frontend Developer',
+          company: 'Tech Solutions Inc.',
+          matchPercentage: 92,
+          description: 'Phát triển giao diện người dùng ứng dụng di động và web với React và Flutter.',
+          requirements: ['React', 'Flutter', 'JavaScript', 'UI/UX'],
+        ),
+        JobRecommendation(
+          title: 'Mobile Developer (Native)',
+          company: 'Digital Innovation Hub',
+          matchPercentage: 87,
+          description: 'Thiết kế và phát triển ứng dụng di động đa nền tảng (iOS/Android).',
+          requirements: ['Flutter', 'Dart', 'Firebase', 'REST API', 'Swift/Kotlin'],
+        ),
+        JobRecommendation(
+          title: 'Full Stack Engineer',
+          company: 'Global Software Solutions',
+          matchPercentage: 75,
+          description: 'Xây dựng và duy trì hệ thống ứng dụng web end-to-end.',
+          requirements: ['JavaScript', 'Node.js', 'React', 'MongoDB', 'AWS'],
+        ),
+      ];
     });
   }
 
-  // Hàm helper để lấy Icon và Color dựa trên loại file
+  void _selectPreviousCV(ResumeModel resume) {
+    if (!_isMounted || !mounted) return;
+
+    setState(() {
+      _selectedResume = resume;
+      _selectedFile = null;
+      _isAnalyzed = false;
+    });
+
+    _analyzeCV();
+  }
+
   Map<String, dynamic> _getFileIconAndColor(String? filePath) {
     String fileName = filePath?.split('/').last ?? 'unknown';
     if (fileName.toLowerCase().endsWith('.pdf')) {
@@ -157,27 +161,27 @@ class _CvAnalysisScreenState extends State<CvAnalysisScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context); // Lấy theme từ context
+    final theme = Theme.of(context);
+    final resumeVm = context.watch<ResumeViewModel>();
 
     return Scaffold(
       appBar: const CustomAppbarTitleLarge(title: 'Phân tích CV'),
-      body:
-          _isProcessing
-              ? _buildLoadingView(theme) // Truyền theme vào
-              : SingleChildScrollView(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (!_isAnalyzed) ...[
-                      _buildInitialOptions(theme),
-                    ], // Truyền theme vào
-                    if (_isAnalyzed) ...[
-                      _buildAnalysisResults(theme),
-                    ], // Truyền theme vào
+      body: _isProcessing
+          ? _buildLoadingView(theme)
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (!_isAnalyzed) ...[
+                    _buildInitialOptions(theme, resumeVm),
                   ],
-                ),
+                  if (_isAnalyzed) ...[
+                    _buildAnalysisResults(theme),
+                  ],
+                ],
               ),
+            ),
     );
   }
 
@@ -208,20 +212,14 @@ class _CvAnalysisScreenState extends State<CvAnalysisScreen> {
     );
   }
 
-  Widget _buildInitialOptions(ThemeData theme) {
+  Widget _buildInitialOptions(ThemeData theme, ResumeViewModel resumeVm) {
+    final resumes = resumeVm.resumes;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Chọn CV để phân tích',
-          style: theme.textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.onSurface,
-          ),
-        ),
-        const SizedBox(height: 24),
 
-        // Option 1: Import new CV
+        //TODO: Upload new CV
         Card(
           elevation: 4,
           shape: RoundedRectangleBorder(
@@ -237,7 +235,7 @@ class _CvAnalysisScreenState extends State<CvAnalysisScreen> {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.primary, // Dùng primary color
+                      color: theme.colorScheme.primary,
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(
@@ -262,7 +260,7 @@ class _CvAnalysisScreenState extends State<CvAnalysisScreen> {
                         Text(
                           'Tải lên file CV của bạn (PDF, DOC, DOCX)',
                           style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.hintColor, // Dùng hint color
+                            color: theme.hintColor,
                           ),
                         ),
                       ],
@@ -277,8 +275,19 @@ class _CvAnalysisScreenState extends State<CvAnalysisScreen> {
 
         const SizedBox(height: 16),
 
-        // Option 2: Previous CVs
-        if (_previousCVs.isNotEmpty) ...[
+        //TODO: Previous CVs từ ResumeViewModel
+        if (resumeVm.isListLoading)
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  theme.colorScheme.primary,
+                ),
+              ),
+            ),
+          )
+        else if (resumes.isNotEmpty)
           Card(
             elevation: 4,
             shape: RoundedRectangleBorder(
@@ -294,10 +303,7 @@ class _CvAnalysisScreenState extends State<CvAnalysisScreen> {
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color:
-                              theme
-                                  .colorScheme
-                                  .secondary, // Dùng secondary color
+                          color: theme.colorScheme.secondary,
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(
@@ -306,9 +312,11 @@ class _CvAnalysisScreenState extends State<CvAnalysisScreen> {
                           size: 30,
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      SizedBox(width: 16.w),
                       Text(
-                        'CV đã tải lên trước đó',
+                        'CV của bạn: ${resumes.length}',
+                        softWrap: true,
+                        maxLines: 2,
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: theme.colorScheme.onSurface,
@@ -317,36 +325,38 @@ class _CvAnalysisScreenState extends State<CvAnalysisScreen> {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  // Dùng Column.builder để tránh toList trong spread
                   ListView.separated(
-                    shrinkWrap:
-                        true, // Quan trọng để ListView trong SingleChildScrollView
-                    physics:
-                        const NeverScrollableScrollPhysics(), // Vô hiệu hóa cuộn riêng
-                    itemCount: _previousCVs.length,
-                    separatorBuilder:
-                        (context, index) =>
-                            Divider(color: theme.dividerColor, height: 1),
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: resumes.length,
+                    separatorBuilder: (context, index) =>
+                        Divider(color: theme.dividerColor, height: 1),
                     itemBuilder: (context, index) {
-                      return _buildPreviousCVItem(_previousCVs[index], theme);
+                      return _buildPreviousCVItem(resumes[index], theme);
                     },
                   ),
                 ],
               ),
             ),
+          )
+        else
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                'Chưa có CV nào được lưu',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ),
           ),
-        ],
       ],
     );
   }
 
-  Widget _buildPreviousCVItem(PreviousCV cv, ThemeData theme) {
-    String formattedDate =
-        '${cv.uploadDate.substring(6, 8)}/${cv.uploadDate.substring(4, 6)}/${cv.uploadDate.substring(0, 4)}';
-
-    final fileInfo = _getFileIconAndColor(
-      'dummy.${cv.fileType}',
-    ); // Dùng fileType để lấy icon/color
+  Widget _buildPreviousCVItem(ResumeModel cv, ThemeData theme) {
+    final fileInfo = _getFileIconAndColor('dummy.${cv.fileName.split('.').last}');
     final IconData fileIcon = fileInfo['icon'];
     final Color fileIconColor = fileInfo['color'];
 
@@ -363,14 +373,16 @@ class _CvAnalysisScreenState extends State<CvAnalysisScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    cv.userName,
+                    cv.fileName,
                     style: theme.textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: theme.colorScheme.onSurface,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    'Tải lên: $formattedDate',
+                    '${cv.fileSizeKB} KB • ${cv.createdAt.day}/${cv.createdAt.month}/${cv.createdAt.year}',
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: theme.hintColor,
                     ),
@@ -390,8 +402,14 @@ class _CvAnalysisScreenState extends State<CvAnalysisScreen> {
   }
 
   Widget _buildAnalysisResults(ThemeData theme) {
-    String fileName = _selectedFile?.path.split('/').last ?? 'Unknown File';
-    final fileInfo = _getFileIconAndColor(_selectedFile?.path);
+    String fileName = '';
+    if (_selectedFile != null) {
+      fileName = _selectedFile!.path.split('/').last;
+    } else if (_selectedResume != null) {
+      fileName = _selectedResume!.fileName;
+    }
+
+    final fileInfo = _getFileIconAndColor(_selectedFile?.path ?? 'dummy.${_selectedResume?.fileName.split('.').last}');
     final IconData fileIcon = fileInfo['icon'];
     final Color fileIconColor = fileInfo['color'];
 
@@ -424,10 +442,7 @@ class _CvAnalysisScreenState extends State<CvAnalysisScreen> {
                       Text(
                         'Đã phân tích xong',
                         style: theme.textTheme.bodyMedium?.copyWith(
-                          color:
-                              Colors
-                                  .green
-                                  .shade600, // Có thể giữ màu xanh lá cho trạng thái hoàn thành
+                          color: Colors.green.shade600,
                         ),
                       ),
                     ],
@@ -438,7 +453,8 @@ class _CvAnalysisScreenState extends State<CvAnalysisScreen> {
                   onPressed: () {
                     setState(() {
                       _isAnalyzed = false;
-                      _selectedFile = null; // Reset file selection
+                      _selectedFile = null;
+                      _selectedResume = null;
                     });
                   },
                   tooltip: 'Chọn CV khác',
@@ -513,11 +529,9 @@ class _CvAnalysisScreenState extends State<CvAnalysisScreen> {
         ),
         const SizedBox(height: 16),
 
-        // Dùng ListView.builder cho các recommendations
         ListView.builder(
           shrinkWrap: true,
-          physics:
-              const NeverScrollableScrollPhysics(), // Vô hiệu hóa cuộn riêng
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: _recommendations.length,
           itemBuilder: (context, index) {
             return _buildJobRecommendationCard(_recommendations[index], theme);
@@ -552,7 +566,7 @@ class _CvAnalysisScreenState extends State<CvAnalysisScreen> {
                         Icons.circle,
                         size: 6,
                         color: theme.hintColor,
-                      ), // Bullet point đẹp hơn
+                      ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
@@ -593,7 +607,7 @@ class _CvAnalysisScreenState extends State<CvAnalysisScreen> {
                         job.title,
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: theme.colorScheme.primary, // Title color
+                          color: theme.colorScheme.primary,
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -643,26 +657,24 @@ class _CvAnalysisScreenState extends State<CvAnalysisScreen> {
             Wrap(
               spacing: 8,
               runSpacing: 8,
-              children:
-                  job.requirements
-                      .map(
-                        (req) => Chip(
-                          label: Text(req),
-                          backgroundColor: theme.colorScheme.primary
-                              .withValues(alpha:0.1), // Chip background
-                          labelStyle: theme.textTheme.labelSmall?.copyWith(
-                            color: theme.colorScheme.primary, // Chip text color
-                            fontWeight: FontWeight.w500,
-                          ),
-                          side: BorderSide(
-                            color: theme.colorScheme.primary.withValues(alpha:0.3),
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      )
-                      .toList(),
+              children: job.requirements
+                  .map(
+                    (req) => Chip(
+                      label: Text(req),
+                      backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.1),
+                      labelStyle: theme.textTheme.labelSmall?.copyWith(
+                        color: theme.colorScheme.primary,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      side: BorderSide(
+                        color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  )
+                  .toList(),
             ),
             const SizedBox(height: 16),
             Row(
@@ -670,7 +682,7 @@ class _CvAnalysisScreenState extends State<CvAnalysisScreen> {
               children: [
                 TextButton(
                   onPressed: () {
-                    // Hiển thị chi tiết công việc
+                    // Chi tiết công việc
                   },
                   style: TextButton.styleFrom(
                     foregroundColor: theme.colorScheme.primary,
@@ -680,13 +692,11 @@ class _CvAnalysisScreenState extends State<CvAnalysisScreen> {
                 const SizedBox(width: 8),
                 ElevatedButton(
                   onPressed: () {
-                    // Ứng tuyển công việc
+                    // Ứng tuyển
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        theme.colorScheme.primary, // Primary button color
-                    foregroundColor:
-                        theme.colorScheme.onPrimary, // Text color on primary
+                    backgroundColor: theme.colorScheme.primary,
+                    foregroundColor: theme.colorScheme.onPrimary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -705,15 +715,11 @@ class _CvAnalysisScreenState extends State<CvAnalysisScreen> {
     );
   }
 
-  // Thay đổi màu dựa trên dải phần trăm, sử dụng màu của theme
   Color _getMatchColor(int percentage) {
-    final theme = Theme.of(context);
-    if (percentage >= 90)
-      return Colors.green.shade600; // Hoặc theme.colorScheme.success nếu có
-    if (percentage >= 75) return theme.colorScheme.primary;
-    if (percentage >= 60)
-      return Colors.orange.shade700; // Hoặc theme.colorScheme.warning
-    return theme.colorScheme.error;
+    if (percentage >= 90) return Colors.green.shade600;
+    if (percentage >= 75) return Theme.of(context).colorScheme.primary;
+    if (percentage >= 60) return Colors.orange.shade700;
+    return Theme.of(context).colorScheme.error;
   }
 }
 
@@ -730,19 +736,5 @@ class JobRecommendation {
     required this.matchPercentage,
     required this.description,
     required this.requirements,
-  });
-}
-
-class PreviousCV {
-  final String fileName;
-  final String userName;
-  final String uploadDate;
-  final String fileType; // Dùng fileType thay vì IconData và Color
-
-  PreviousCV({
-    required this.fileName,
-    required this.userName,
-    required this.uploadDate,
-    required this.fileType,
   });
 }

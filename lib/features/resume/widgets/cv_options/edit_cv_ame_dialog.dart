@@ -30,12 +30,13 @@ class _EditCVNameDialogState extends State<EditCVNameDialog> {
         children: [
           Icon(
             Icons.drive_file_rename_outline_rounded,
-            color: theme.primaryColor,
+            color: Colors.black,
+            size: 20.sp,
           ),
           SizedBox(width: 10.w),
-          const Text(
+          Text(
             'Chỉnh Sửa Tên CV',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp),
           ),
         ],
       ),

@@ -140,36 +140,95 @@ class DialogUtils {
     );
   }
 
-  static void showImageViewer(BuildContext context, List<String> images, int initialIndex) {
+  static void showImageViewer(
+    BuildContext context,
+    List<String> images,
+    int initialIndex, {
+    bool canDelete = false,
+    void Function(int index)? onDelete,
+  }) {
+    final List<String> localImages = List<String>.from(images);
+    final PageController pageController = PageController(initialPage: initialIndex);
+    int currentIndex = initialIndex;
+
     showDialog(
       context: context,
-      builder: (_) => Dialog(
-        backgroundColor: Colors.black,
-        insetPadding: EdgeInsets.zero,
-        child: Stack(
-          children: [
-            PhotoViewGallery.builder(
-              itemCount: images.length,
-              pageController: PageController(initialPage: initialIndex),
-              builder: (context, index) => PhotoViewGalleryPageOptions(
-                imageProvider: ImageUtils.getImageProvider(images[index]),
-                minScale: PhotoViewComputedScale.contained,
-                maxScale: PhotoViewComputedScale.covered * 3,
-              ),
-              loadingBuilder: (context, event) => const Center(
-                child: CircularProgressIndicator(),
-              ),
+      builder: (_) => StatefulBuilder(
+        builder: (context, setState) {
+          if (currentIndex >= localImages.length && localImages.isNotEmpty) {
+            currentIndex = localImages.length - 1;
+            pageController.jumpToPage(currentIndex);
+          }
+          return Dialog(
+            backgroundColor: Colors.black,
+            insetPadding: EdgeInsets.zero,
+            child: Stack(
+              children: [
+                PhotoViewGallery.builder(
+                  itemCount: localImages.length,
+                  pageController: pageController,
+                  onPageChanged: (idx) => setState(() => currentIndex = idx),
+                  builder: (context, index) => PhotoViewGalleryPageOptions(
+                    imageProvider: ImageUtils.getImageProvider(localImages[index]),
+                    minScale: PhotoViewComputedScale.contained,
+                    maxScale: PhotoViewComputedScale.covered * 3,
+                  ),
+                  loadingBuilder: (context, event) => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+
+                Positioned(
+                  top: 40.h,
+                  right: 20.w,
+                  child: IconButton(
+                    icon: Icon(Icons.close, color: Colors.white, size: 28.sp),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ),
+
+                if (canDelete)
+                  Positioned(
+                    top: 52.h,
+                    left: 20.w,
+                    child: Container(
+                      padding: EdgeInsets.all(8.w),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.9),
+                        shape: BoxShape.circle,
+                      ),
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(30.r),
+                        onTap: () {
+                          try {
+                            if (onDelete != null) onDelete(currentIndex);
+                          } catch (_) {}
+                          if (localImages.isNotEmpty) {
+                            setState(() {
+                              localImages.removeAt(currentIndex);
+                              if (localImages.isEmpty) {
+                                context.pop();
+                                return;
+                              }
+                              if (currentIndex >= localImages.length) {
+                                currentIndex = localImages.length - 1;
+                              }
+                              pageController.jumpToPage(currentIndex);
+                            });
+                          }
+                        },
+                        child: Icon(
+                          Icons.delete_outline_rounded,
+                          color: Colors.redAccent,
+                          size: 24.sp,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
             ),
-            Positioned(
-              top: 40.h,
-              right: 20.w,
-              child: IconButton(
-                icon: Icon(Icons.close, color: Colors.white, size: 28.sp),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

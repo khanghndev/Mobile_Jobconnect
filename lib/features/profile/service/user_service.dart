@@ -105,4 +105,30 @@ class UserService {
       );
     }
   }
+
+  // TODO: Lấy tất cả người dùng
+  Future<List<UserModel>> getAllUsers() async {
+    try {
+      final res = await _apiService.get(
+        endpoint: ApiConstants.userEndpoint,
+      );
+
+      if (res is! List) {
+        throw ServerException(
+          err: 'Phản hồi không hợp lệ từ API (danh sách người dùng)',
+          type: ServerExceptionType.api,
+        );
+      }
+
+      // Chuyển List<dynamic> sang List<UserModel>
+      return res.map((e) => UserModel.fromJson(e as Map<String, dynamic>)).toList();
+    } on ServerException {
+      rethrow;
+    } catch (e) {
+      throw ServerException(
+        err: 'Lỗi khi tải danh sách người dùng: ${e.toString()}',
+        type: ServerExceptionType.unknown,
+      );
+    }
+  }
 }

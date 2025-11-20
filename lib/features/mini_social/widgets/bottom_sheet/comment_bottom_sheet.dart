@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/widgets/background_error_state.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:job_connect/config/utils/date_utils_helper.dart';
-import 'package:job_connect/config/widgets/reaction_picker.dart';
 import 'package:job_connect/features/mini_social/model/social_comment_model.dart';
 import 'package:job_connect/features/mini_social/widgets/comments/comment_filter_dropdown.dart';
 import 'package:job_connect/features/mini_social/widgets/comments/comment_input_field.dart';
@@ -82,15 +81,6 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
     );
   }
 
-  Future<void> _onShowReactions(SocialCommentModel comment) async {
-    await ReactionPicker.show(
-      context,
-      onSelected: (reaction) {
-        setState(() => _selectedReaction = reaction);
-        widget.onReact?.call(comment);
-      },
-    );
-  }
 
   void _onReply(SocialCommentModel comment) {
     final username = widget.resolveUsername?.call(comment.idUser) ?? "Người dùng";
@@ -154,7 +144,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
             icon: _selectedReaction ?? '👍',
             count: 0,
             onReplyTap: () => _onReply(comment),
-            onReactTap: () => _onShowReactions(comment),
+            onReactTap: () => (){},
             onUserTap: () => _onGoToProfile(comment.idUser),
           ),
 
@@ -177,7 +167,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                       icon: _selectedReaction ?? '👍',
                       count: 0,
                       onReplyTap: () => _onReply(comment), 
-                      onReactTap: () => _onShowReactions(reply),
+                      onReactTap: () => (){},
                       onUserTap: () => _onGoToProfile(reply.idUser),
                     ),
                   );
@@ -257,19 +247,19 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                 ),
               ),
             // Filter dropdown
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.w),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: CommentFilterDropdown(
-                  filters: _filters,
-                  selectedFilter: _selectedFilter,
-                  onChanged: (val) {
-                    if (val != null) setState(() => _selectedFilter = val);
-                  },
-                ),
-              ),
-            ),
+            // Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: 12.w),
+            //   child: Align(
+            //     alignment: Alignment.centerLeft,
+            //     child: CommentFilterDropdown(
+            //       filters: _filters,
+            //       selectedFilter: _selectedFilter,
+            //       onChanged: (val) {
+            //         if (val != null) setState(() => _selectedFilter = val);
+            //       },
+            //     ),
+            //   ),
+            // ),
 
             // Comment list hoặc shimmer khi loading
             Flexible(

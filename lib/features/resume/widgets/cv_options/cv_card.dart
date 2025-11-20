@@ -6,20 +6,20 @@ import 'package:job_connect/features/resume/widgets/cv_options/card_popup_menu.d
 
 class CvCard extends StatelessWidget {
   final ResumeModel resume;
-  final VoidCallback onView;
-  final VoidCallback onEditName;
-  final VoidCallback onShare;
-  final VoidCallback onDownload;
-  final VoidCallback onDelete;
+  final VoidCallback? onView;
+  final VoidCallback? onEditName;
+  final VoidCallback? onShare;
+  final VoidCallback? onDownload;
+  final VoidCallback? onDelete;
 
   const CvCard({
     super.key,
     required this.resume,
-    required this.onView,
-    required this.onEditName,
-    required this.onShare,
-    required this.onDownload,
-    required this.onDelete,
+    this.onView,
+    this.onEditName,
+    this.onShare,
+    this.onDownload,
+    this.onDelete,
   });
 
   @override
@@ -116,10 +116,10 @@ class CvCard extends StatelessWidget {
                 ),
               ),
               CVCardPopupMenu(
-                onEditName: onEditName,
-                onShare: onShare,
-                onDownload: onDownload,
-                onDelete: onDelete,
+                onEditName: onEditName ?? (){},
+                onShare: onShare ?? (){},
+                onDownload: onDownload ?? (){},
+                onDelete: onDelete ?? (){},
               ),
             ],
           ),

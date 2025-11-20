@@ -6,15 +6,19 @@ import 'package:job_connect/features/mini_social/model/friend_model.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ShareBottomSheet extends StatefulWidget {
-  final VoidCallback onShare;
   final List<FriendModel>? listFriend;
   final bool isLoading;
+  final String postId;
+  final String? titleSheet;
+  final Future<void> Function(String targetUserId, String postId) onSendMessage;
 
   const ShareBottomSheet({
     super.key,
-    required this.onShare,
+    required this.postId,
+    required this.onSendMessage,
     this.listFriend,
-    this.isLoading = false,
+    this.isLoading = false, 
+    this.titleSheet,
   });
 
   @override
@@ -33,7 +37,7 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: Colors.black.withValues( alpha: 0.05),
             blurRadius: 12,
             offset: const Offset(0, -2),
           ),
@@ -57,7 +61,7 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
           Row(
             children: [
               Text(
-                "Chia sẻ tới",
+                widget.titleSheet ?? "Chia sẻ tới",
                 style: TextStyle(
                   fontSize: 20.sp,
                   fontWeight: FontWeight.w700,
@@ -79,87 +83,85 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
 
           // List
           Expanded(
-            child: widget.isLoading
-                ? _buildShimmer()
-                : (widget.listFriend == null || widget.listFriend!.isEmpty)
-                    ? Center(
-                        child: Text(
-                          "Không có bạn bè để chia sẻ",
-                          style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
-                        ),
-                      )
-                    : ListView.separated(
-                        padding: EdgeInsets.only(bottom: 12.h),
-                        itemCount: widget.listFriend!.length,
-                        separatorBuilder: (_, __) => SizedBox(height: 10.h),
-                        itemBuilder: (_, i) {
-                          final user = widget.listFriend![i];
+            child: Builder(
+              builder: (context) {
+                // Nếu đang loading, show shimmer
+                if (widget.isLoading) return _buildShimmer();
 
-                          return Container(
-                            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16.r),
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.03),
-                                  blurRadius: 6,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
-                            ),
-                            child: Row(
-                              children: [
-                                // Avatar
-                                CircleAvatar(
-                                  radius: 26.r,
-                                  backgroundImage: ImageUtils.getImageProvider(user.avatar),
-                                ),
-                                SizedBox(width: 14.w),
+                // Nếu dữ liệu null hoặc rỗng
+                final friends = widget.listFriend ?? [];
+                if (friends.isEmpty) {
+                  return Center(
+                    child: Text(
+                      "Không có bạn bè để ${widget.titleSheet == null ? "chia sẻ" : "mời"}",
+                      style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
+                    ),
+                  );
+                }
 
-                                // Name
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        user.name,
-                                        style: TextStyle(
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.black87,
-                                        ),
-                                      ),
-                                      SizedBox(height: 2.h),
-                                      Text(
-                                        "Nhấn để chia sẻ",
-                                        style: TextStyle(
-                                          fontSize: 12.sp,
-                                          color: Colors.grey[600],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                // Nếu có dữ liệu
+                return ListView.separated(
+                  padding: EdgeInsets.only(bottom: 12.h),
+                  itemCount: friends.length,
+                  separatorBuilder: (_, __) => SizedBox(height: 10.h),
+                  itemBuilder: (_, i) {
+                    final user = friends[i];
+                    return _buildFriendItem(user, theme);
+                  },
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
-                                // Send button (circle)
-                                InkWell(
-                                  borderRadius: BorderRadius.circular(50),
-                                  onTap: () {},
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: theme.primaryColor,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    padding: EdgeInsets.all(10.w),
-                                    child: Icon(Icons.send, color: Colors.white, size: 18.sp),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
+  Widget _buildFriendItem(FriendModel user, ThemeData theme) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16.r),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues( alpha: 0.03),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 26.r,
+            backgroundImage: ImageUtils.getImageProvider(user.avatar),
+          ),
+          SizedBox(width: 14.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  user.name,
+                  style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600, color: Colors.black87),
+                ),
+                SizedBox(height: 2.h),
+                Text("Nhấn để chia sẻ", style: TextStyle(fontSize: 12.sp, color: Colors.grey[600])),
+              ],
+            ),
+          ),
+          InkWell(
+            borderRadius: BorderRadius.circular(50),
+            onTap: () async {
+              await widget.onSendMessage(user.id, widget.postId);
+              if (context.mounted) context.pop();
+            },
+            child: Container(
+              decoration: BoxDecoration(color: theme.primaryColor, shape: BoxShape.circle),
+              padding: EdgeInsets.all(10.w),
+              child: Icon(Icons.send, color: Colors.white, size: 18.sp),
+            ),
           ),
         ],
       ),
@@ -176,10 +178,7 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
         highlightColor: Colors.grey[100]!,
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16.r),
-          ),
+          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16.r)),
           child: Row(
             children: [
               Container(width: 52.w, height: 52.w, decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle)),

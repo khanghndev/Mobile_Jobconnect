@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:job_connect/config/constant/api_constants.dart';
+import 'package:job_connect/config/constant/app_colors.dart';
+import 'package:job_connect/config/utils/snackbar_app.dart';
 import 'package:job_connect/config/utils/string_utils.dart';
 import 'package:job_connect/config/widgets/background_empty_state.dart';
+import 'package:job_connect/features/home/view_model/job_saved_view_model.dart';
 import 'package:job_connect/features/profile/model/user_model.dart';
 import 'package:job_connect/features/job/model/job_application_model.dart';
 import 'package:job_connect/features/job/model/job_posting_model.dart';
@@ -14,13 +17,14 @@ import 'package:job_connect/features/search/widgets/search_filter_panel.dart';
 import 'package:job_connect/features/search/widgets/search_header.dart';
 import 'package:job_connect/features/search/widgets/search_job_item_card.dart';
 import 'package:job_connect/features/search/widgets/search_job_shimmer.dart';
+import 'package:provider/provider.dart';
 
-class SearchPage extends StatefulWidget {
+class SearchScreen extends StatefulWidget {
   final bool isLoggedIn;
   final String idUser;
   final int? initialTabIndex;
 
-  const SearchPage({
+  const SearchScreen({
     super.key,
     required this.idUser,
     required this.isLoggedIn,
@@ -28,10 +32,11 @@ class SearchPage extends StatefulWidget {
   });
 
   @override
-  SearchPageState createState() => SearchPageState();
+  SearchScreenState createState() => SearchScreenState();
 }
 
-class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
+class SearchScreenState extends State<SearchScreen> with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+  late JobSavedViewModel _jobSavedVM;
   final TextEditingController _searchController = TextEditingController();
   late TabController _tabController;
   bool _showClearButton = false;
@@ -39,7 +44,6 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
 
   List<JobPostingModel> _jobList = [];
   List<JobPostingModel> _filteredJobs = [];
-  List<JobSavedModel> _savedJobs = [];
   List<JobApplicationModel> _appliedJobs = [];
   UserModel? _account;
   bool _isLoading = false;
@@ -62,7 +66,10 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-
+    _jobSavedVM = context.read<JobSavedViewModel>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _jobSavedVM.fetchSavedJobsByUser(widget.idUser);
+    });
     _tabController = TabController(
       length: 3,
       vsync: this,
@@ -119,7 +126,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         _fetchJobs().then((_) {
           if (!mounted) return;
           for (var job in _jobList) {
-            final location = FormatUtils.extractDistrictAndCity(job.location ?? '');
+            final location = FormatUtils.extractDistrictAndCity(job.location);
             if (location.contains('TP.') || location.contains('Thành phố')) {
               final parts = location.split(',');
               if (parts.length >= 2) {
@@ -136,8 +143,8 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
 
           _locationGroups.forEach((city, districts) => districts.sort());
 
-          _jobTypes.addAll(_jobList.map((job) => job.workType ?? '').toSet().toList());
-          _experienceLevels.addAll(_jobList.map((job) => job.experienceLevel ?? '').toSet().toList());
+          _jobTypes.addAll(_jobList.map((job) => job.workType).toSet().toList());
+          _experienceLevels.addAll(_jobList.map((job) => job.experienceLevel).toSet().toList());
           _maxSalary = _jobList.fold(0, (max, job) {
             return job.salary != null && job.salary! > max ? job.salary!.toDouble() : max;
           });
@@ -145,10 +152,9 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           _currentMaxSalary = _maxSalary;
           _filteredJobs = List.from(_jobList);
         }),
-        _fetchSavedJobs(),
       ]);
     } catch (e) {
-      print("SearchPage _loadAllData: Error loading data - $e");
+      print("SearchScreen _loadAllData: Error loading data - $e");
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -158,7 +164,6 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     if (!mounted) return;
     setState(() => _isLoading = true);
     _jobList.clear();
-    _savedJobs.clear();
     _selectedLocation = 'Tất cả';
     _selectedJobType = 'Tất cả';
     _selectedExperience = 'Tất cả';
@@ -194,18 +199,6 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     }
   }
 
-  Future<void> _fetchSavedJobs() async {
-    if (widget.idUser.isEmpty) return;
-    try {
-      final response = await _apiService.get(endpoint: "${ApiConstants.jobSavedEndpoint}/${widget.idUser}");
-      if (!mounted) return;
-      _savedJobs.clear();
-      _savedJobs.addAll(response.map((job) => JobSavedModel.fromJson(job)));
-    } catch (e) {
-      print('Error fetching saved jobs: $e');
-    }
-  }
-
   Future<void> _fetchApplicationJob() async {
     if (widget.idUser.isEmpty) return;
     try {
@@ -218,43 +211,22 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     }
   }
 
-  Future<void> _saveJob(String idJobPost, bool isSaved) async {
-    if (!mounted) return;
-    final theme = Theme.of(context);
-
+  Future<void> _onSaveJob(String idJobPost, bool isSaved) async {
     if (isSaved) {
-      try {
-        await _apiService.delete(endpoint: "${ApiConstants.jobSavedEndpoint}/$idJobPost/${widget.idUser}");
-        _onRefresh();
-      } catch (e) {
-        _showSnackBar(theme, "Không thể bỏ lưu: ${e.toString()}", theme.colorScheme.error);
-      }
+      await _jobSavedVM.deleteSavedJob(idJobPost, widget.idUser);
+      _showSnackBar( "Đã bỏ lưu công việc", BackgroundColors.backgroundInfoPrimary);
     } else {
-      try {
-        final response = await _apiService.post(
-          endpoint: ApiConstants.jobSavedEndpoint,
-          body: {"idJobPost": idJobPost, "idUser": widget.idUser},
-        );
-        if (!mounted) return;
-
-        if (response == 200 || response == 201) {
-          _showSnackBar(theme, "Đã lưu công việc!", theme.colorScheme.secondaryContainer);
-          _onRefresh();
-        } else {
-          _showSnackBar(theme, "Không thể lưu! Status: $response", theme.colorScheme.error);
-        }
-      } catch (e) {
-        _showSnackBar(theme, 'Lưu thất bại: ${e.toString()}', theme.colorScheme.error);
-      }
+      final jobToSave = JobSavedModel(idJobPost: idJobPost, idUser: widget.idUser);
+      await _jobSavedVM.saveJob(jobToSave);
+      _showSnackBar( "Đã lưu công việc", BackgroundColors.backgroundSuccessPrimary);
     }
   }
 
-  void _showSnackBar(ThemeData theme, String message, Color bgColor) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message, style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onError)),
-        backgroundColor: bgColor,
-      ),
+  void _showSnackBar(String message, Color bgColor) {
+    SnackbarApp.show(
+      context,
+      message: message,
+      backgroundColor: bgColor,
     );
   }
 
@@ -264,16 +236,16 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     setState(() {
       _filteredJobs = _jobList.where((job) {
         final matchesQuery =
-            StringUtils.removeDiacritics(job.title!.toLowerCase()).contains(query) ||
+            StringUtils.removeDiacritics(job.title.toLowerCase()).contains(query) ||
             StringUtils.removeDiacritics(job.company!.companyName.toLowerCase()).contains(query);
         final matchesLocation = _selectedLocation == 'Tất cả' ||
-            StringUtils.removeDiacritics(FormatUtils.extractDistrictAndCity(job.location ?? '').toLowerCase()) ==
+            StringUtils.removeDiacritics(FormatUtils.extractDistrictAndCity(job.location).toLowerCase()) ==
                 StringUtils.removeDiacritics(_selectedLocation.toLowerCase());
         final matchesJobType = _selectedJobType == 'Tất cả' ||
-            StringUtils.removeDiacritics(job.workType!.toLowerCase()) ==
+            StringUtils.removeDiacritics(job.workType.toLowerCase()) ==
                 StringUtils.removeDiacritics(_selectedJobType.toLowerCase());
         final matchesExperience = _selectedExperience == 'Tất cả' ||
-            StringUtils.removeDiacritics(job.experienceLevel!.toLowerCase()) ==
+            StringUtils.removeDiacritics(job.experienceLevel.toLowerCase()) ==
                 StringUtils.removeDiacritics(_selectedExperience.toLowerCase());
         final matchesSalary = job.salary == null ||
             (job.salary! >= _currentMinSalary && job.salary! <= _currentMaxSalary);
@@ -310,58 +282,66 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
+
   Widget build(BuildContext context) {
+    super.build(context);
     final theme = Theme.of(context);
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
-      body: Column(
-        children: [
-          SearchHeader(
-            searchController: _searchController,
-            onFilterTap: _toggleFilterPanel,
-            tabController: _tabController,
-          ),
-          Expanded(
-            child: Stack(
-              children: [
-                TabBarView(
-                  controller: _tabController,
-                  physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                  children: [
-                    _buildJobListView(isFeatured: true, sortByNewest: false),
-                    _buildJobListView(isFeatured: false, sortByNewest: true),
-                    _buildSavedJobsView(),
-                  ],
-                ),
-                if (_showFilters)
-                  FilterPanelWidget(
-                    locationGroups: _locationGroups,
-                    jobTypes: _jobTypes,
-                    experienceLevels: _experienceLevels,
-                    onResetFilters: _resetFilters,
-                    onApply: ({
-                      required location,
-                      required jobType,
-                      required experience,
-                      required minSalary,
-                      required maxSalary,
-                    }) {
-                      setState(() {
-                        _selectedLocation = location;
-                        _selectedJobType = jobType;
-                        _selectedExperience = experience;
-                        _currentMinSalary = minSalary;
-                        _currentMaxSalary = maxSalary;
-                      });
-                      _applyFilters();
-                    },
-                    onClose: _toggleFilterPanel,
-                  ),
-              ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SearchHeader(
+              searchController: _searchController,
+              onFilterTap: _toggleFilterPanel,
+              tabController: _tabController,
             ),
-          ),
-        ],
+            SizedBox(
+              height: MediaQuery.of(context).size.height - 150.h,
+              child: Stack(
+                children: [
+                  TabBarView(
+                    controller: _tabController,
+                    physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                    children: [
+                      _buildJobListView(isFeatured: true, sortByNewest: false),
+                      _buildJobListView(isFeatured: false, sortByNewest: true),
+                      _buildSavedJobsView(),
+                    ],
+                  ),
+                  if (_showFilters)
+                    FilterPanelWidget(
+                      locationGroups: _locationGroups,
+                      jobTypes: _jobTypes,
+                      experienceLevels: _experienceLevels,
+                      onResetFilters: _resetFilters,
+                      onApply: ({
+                        required location,
+                        required jobType,
+                        required experience,
+                        required minSalary,
+                        required maxSalary,
+                      }) {
+                        setState(() {
+                          _selectedLocation = location;
+                          _selectedJobType = jobType;
+                          _selectedExperience = experience;
+                          _currentMinSalary = minSalary;
+                          _currentMaxSalary = maxSalary;
+                        });
+                        _applyFilters();
+                      },
+                      onClose: _toggleFilterPanel,
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -373,11 +353,11 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       jobsToDisplay.sort((a, b) {
         if (a.isFeatured == 1 && b.isFeatured != 1) return -1;
         if (a.isFeatured != 1 && b.isFeatured == 1) return 1;
-        return b.createdAt!.compareTo(a.createdAt!);
+        return b.createdAt.compareTo(a.createdAt);
       });
       jobsToDisplay.retainWhere((j) => j.isFeatured == 1);
     } else if (sortByNewest) {
-      jobsToDisplay.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+      jobsToDisplay.sort((a, b) => b.createdAt.compareTo(a.createdAt));
     }
 
     if (_isLoading && jobsToDisplay.isEmpty) {
@@ -395,60 +375,65 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       );
     }
 
-    return RefreshIndicator(
-      onRefresh: _onRefresh,
-      color: Theme.of(context).primaryColor,
-      child: AnimationLimiter(
-        child: ListView.builder(
-          physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
-          itemCount: jobsToDisplay.length,
-          itemBuilder: (context, index) {
-            final job = jobsToDisplay[index];
-            final bool isJobSavedModel = _savedJobs.any((savedJob) => savedJob.idJobPost == job.idJobPost);
-
-            return AnimationConfiguration.staggeredList(
-              position: index,
-              duration: const Duration(milliseconds: 425),
-              child: SlideAnimation(
-                verticalOffset: 50.h,
-                child: FadeInAnimation(
-                  child: SearchJobItemCard(
-                    job: job,
-                    isSaved: isJobSavedModel,
-                    idUser: widget.idUser,
-                    onSaveJob: _saveJob,
-                    onRefresh: _onRefresh,
+    return Consumer<JobSavedViewModel>(
+      builder: (context, jobSavedVM, _) {
+        return RefreshIndicator(
+          onRefresh: _onRefresh,
+          color: Theme.of(context).primaryColor,
+          child: AnimationLimiter(
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
+              itemCount: jobsToDisplay.length,
+              itemBuilder: (context, index) {
+                final job = jobsToDisplay[index];
+                final isSaved = jobSavedVM.savedJobs.any((s) => s.idJobPost == job.idJobPost);
+                return AnimationConfiguration.staggeredList(
+                  position: index,
+                  duration: const Duration(milliseconds: 425),
+                  child: SlideAnimation(
+                    verticalOffset: 50.h,
+                    child: FadeInAnimation(
+                      child: SearchJobItemCard(
+                        job: job,
+                        isSaved: isSaved,
+                        idUser: widget.idUser,
+                        onSaveJob: _onSaveJob,
+                        onRefresh: _onRefresh,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            );
-          },
-        ),
-      ),
+                );
+              },
+            ),
+          ),
+        );
+      },
     );
+
   }
 
   Widget _buildSavedJobsView() {
     final savedJobPostsFromFullList = _jobList.where((job) {
-      final isActuallySaved = _savedJobs.any((savedJob) => savedJob.idJobPost == job.idJobPost);
+      final isActuallySaved = _jobSavedVM.savedJobs.any((savedJob) => savedJob.idJobPost == job.idJobPost);
       if (!isActuallySaved) return false;
 
       final query = StringUtils.removeDiacritics(_searchController.text.toLowerCase());
       final matchesQuery = query.isEmpty ||
-          StringUtils.removeDiacritics(job.title!.toLowerCase()).contains(query) ||
+          StringUtils.removeDiacritics(job.title.toLowerCase()).contains(query) ||
           StringUtils.removeDiacritics(job.company!.companyName.toLowerCase()).contains(query);
 
       final matchesLocation = _selectedLocation == 'Tất cả' ||
-          StringUtils.removeDiacritics(FormatUtils.extractDistrictAndCity(job.location ?? '').toLowerCase()) ==
+          StringUtils.removeDiacritics(FormatUtils.extractDistrictAndCity(job.location ).toLowerCase()) ==
               StringUtils.removeDiacritics(_selectedLocation.toLowerCase());
 
       final matchesJobType = _selectedJobType == 'Tất cả' ||
-          StringUtils.removeDiacritics(job.workType!.toLowerCase()) ==
+          StringUtils.removeDiacritics(job.workType.toLowerCase()) ==
               StringUtils.removeDiacritics(_selectedJobType.toLowerCase());
 
       final matchesExperience = _selectedExperience == 'Tất cả' ||
-          StringUtils.removeDiacritics(job.experienceLevel!.toLowerCase()) ==
+          StringUtils.removeDiacritics(job.experienceLevel.toLowerCase()) ==
               StringUtils.removeDiacritics(_selectedExperience.toLowerCase());
 
       final matchesSalary =
@@ -457,7 +442,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       return matchesQuery && matchesLocation && matchesJobType && matchesExperience && matchesSalary;
     }).toList();
 
-    savedJobPostsFromFullList.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+    savedJobPostsFromFullList.sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
     if (_isLoading && savedJobPostsFromFullList.isEmpty) {
       return Center(
@@ -479,6 +464,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       color: Theme.of(context).primaryColor,
       child: AnimationLimiter(
         child: ListView.builder(
+          shrinkWrap: true,
           physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
           itemCount: savedJobPostsFromFullList.length,
@@ -494,7 +480,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                     job: job,
                     isSaved: true,
                     idUser: widget.idUser,
-                    onSaveJob: _saveJob,
+                    onSaveJob: _onSaveJob,
                     onRefresh: _onRefresh,
                   ),
                 ),

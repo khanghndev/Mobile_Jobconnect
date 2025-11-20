@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
                     data: MediaQuery.of(context).copyWith(
                       textScaler: TextScaler.linear(textSizeProvider.textScaleFactor),
                     ),
-                    child: child!,
+                    child: child ?? const SizedBox.shrink(),
                   ),
                 );
               },

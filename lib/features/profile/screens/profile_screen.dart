@@ -1,27 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:job_connect/config/constant/api_constants.dart';
 import 'package:job_connect/config/enum/user_role.dart';
-import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/config/utils/dialog_utils.dart';
 import 'package:job_connect/config/widgets/custom_button_border.dart';
 import 'package:job_connect/config/widgets/overlay_loading.dart';
-import 'package:job_connect/features/job/model/job_application_model.dart';
 import 'package:job_connect/features/auth/viewmodel/auth_view_model.dart';
-import 'package:job_connect/features/home/model/job_saved_model.dart';
+import 'package:job_connect/features/home/view_model/job_saved_view_model.dart';
+import 'package:job_connect/features/job/view_model/job_application_view_model.dart';
+import 'package:job_connect/features/profile/model/user_model.dart';
 import 'package:job_connect/features/profile/view_model/candidate_info_view_model.dart';
 import 'package:job_connect/features/profile/view_model/user_view_model.dart';
+import 'package:job_connect/features/profile/widgets/profile/profile_button_logout.dart';
+import 'package:job_connect/features/profile/widgets/profile/profile_header_card.dart';
+import 'package:job_connect/features/profile/widgets/profile/profile_info_row.dart';
+import 'package:job_connect/features/profile/widgets/profile/profile_section_card.dart';
+import 'package:job_connect/features/profile/widgets/profile/profile_skills_section.dart';
 import 'package:job_connect/features/profile/widgets/profile/profile_un_loggin.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
-
-import '../model/user_model.dart';
-import '../widgets/profile/profile_header_card.dart';
-import '../widgets/profile/profile_section_card.dart';
-import '../widgets/profile/profile_info_row.dart';
-import '../widgets/profile/profile_skills_section.dart';
-import '../widgets/profile/profile_button_logout.dart';
 import 'edit_profile_screen.dart';
 
 class ProfilePageScreen extends StatefulWidget {
@@ -37,31 +34,38 @@ class ProfilePageScreen extends StatefulWidget {
   ProfilePageState createState() => ProfilePageState();
 }
 
-class ProfilePageState extends State<ProfilePageScreen> with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  final List<JobApplicationModel> _applicationJobs = [];
-  final List<JobSavedModel> _savedJobs = [];
+class ProfilePageState extends State<ProfilePageScreen>
+    with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   late AnimationController _fabPulseController;
   final ScrollController _scrollController = ScrollController();
+
   late UserViewModel userViewModel;
   late CandidateInfoViewModel candidateViewModel;
   late AuthViewModel authViewModel;
+  late JobApplicationViewModel jobApplicationViewModel;
+  late JobSavedViewModel jobSavedViewModel;
+
+  bool _isLoading = true;
 
   bool get isLoggedIn => widget.isLoggedIn;
 
   @override
   void initState() {
     super.initState();
-
     userViewModel = context.read<UserViewModel>();
     candidateViewModel = context.read<CandidateInfoViewModel>();
     authViewModel = context.read<AuthViewModel>();
+    jobApplicationViewModel = context.read<JobApplicationViewModel>();
+    jobSavedViewModel = context.read<JobSavedViewModel>();
 
     _fabPulseController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1000),
     )..repeat(reverse: true);
 
-    _onRefresh();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _onRefresh();
+    });
   }
 
   @override
@@ -72,35 +76,18 @@ class ProfilePageState extends State<ProfilePageScreen> with TickerProviderState
   }
 
   Future<void> _onRefresh() async {
-    await Future.wait([
-      userViewModel.getCurrentUser(widget.idUser),
-      candidateViewModel.getCandidateDetail(widget.idUser),
-      _fetchApplicationJobs(),
-      _fetchSavedJobs(),
-    ]);
-  }
-
-  Future<void> _fetchApplicationJobs() async {
+    setState(() => _isLoading = true);
     try {
-      final response = await ApiService().get(
-        endpoint: "${ApiConstants.jobApplicationEndpoint}/${widget.idUser}",
-      );
-      _applicationJobs.clear();
-      _applicationJobs.addAll(response.map((job) => JobApplicationModel.fromJson(job)));
+      await Future.wait([
+        userViewModel.getCurrentUser(widget.idUser),
+        candidateViewModel.getCandidateDetail(widget.idUser),
+        jobApplicationViewModel.getJobApplicationsByUser(widget.idUser),
+        jobSavedViewModel.fetchSavedJobsByUser(widget.idUser),
+      ]);
     } catch (e) {
-      print('Error fetching application jobs: $e');
-    }
-  }
-
-  Future<void> _fetchSavedJobs() async {
-    try {
-      final response = await ApiService().get(
-        endpoint: "${ApiConstants.jobSavedEndpoint}/${widget.idUser}",
-      );
-      _savedJobs.clear();
-      _savedJobs.addAll(response.map((job) => JobSavedModel.fromJson(job)));
-    } catch (e) {
-      print('Error fetching saved jobs: $e');
+      debugPrint("Error refreshing profile: $e");
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
@@ -147,17 +134,17 @@ class ProfilePageState extends State<ProfilePageScreen> with TickerProviderState
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
     final theme = Theme.of(context);
-    final userViewModel = context.watch<UserViewModel>();
+    final userVM = context.watch<UserViewModel>();
     final candidateVM = context.watch<CandidateInfoViewModel>();
-    final account = userViewModel.currentUser;
+    final jobAppVM = context.watch<JobApplicationViewModel>();
+    final jobSavedVM = context.watch<JobSavedViewModel>();
+    final account = userVM.currentUser;
     final candidateInfo = candidateVM.candidateDetail;
+
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
-      body: OverlayLoading(
-        isLoading: userViewModel.isLoading || candidateVM.isLoading || authViewModel.isLoggingOut,
-        child: !isLoggedIn
+      body: !isLoggedIn
           ? ProfileUnLoggin()
           : SafeArea(
               minimum: EdgeInsets.fromLTRB(16.w, 0.h, 16.w, 16.w),
@@ -172,8 +159,8 @@ class ProfilePageState extends State<ProfilePageScreen> with TickerProviderState
                       ProfileHeaderCard(
                         idUser: widget.idUser,
                         completion: _onCompletion(account, candidateVM),
-                        applicationCount: _applicationJobs.length,
-                        savedJobsCount: _savedJobs.length,
+                        applicationCount: jobAppVM.applications.length,
+                        savedJobsCount: jobSavedVM.savedJobs.length,
                         onOpenEditProfile: _onOpenEditProfile,
                         userName: account?.userName,
                         avatarUrl: account?.avatarUrl,
@@ -191,7 +178,8 @@ class ProfilePageState extends State<ProfilePageScreen> with TickerProviderState
                           ProfileInfoRow(
                             icon: Icons.celebration_outlined,
                             title: account?.dateOfBirth != null
-                                ? DateFormat('dd/MM/yyyy').format(account?.dateOfBirth ?? DateTime.now())
+                                ? DateFormat('dd/MM/yyyy')
+                                    .format(account!.dateOfBirth!)
                                 : "Chưa cập nhật",
                             subtitle: "Ngày sinh",
                           ),
@@ -229,7 +217,7 @@ class ProfilePageState extends State<ProfilePageScreen> with TickerProviderState
                           ProfileInfoRow(
                             icon: Icons.model_training_outlined,
                             title: candidateInfo?.experienceYears != null
-                                ?  "${candidateInfo?.experienceYears} năm"
+                                ? "${candidateInfo!.experienceYears} năm"
                                 : "Chưa có kinh nghiệm",
                             subtitle: "Kinh nghiệm",
                           ),
@@ -238,23 +226,22 @@ class ProfilePageState extends State<ProfilePageScreen> with TickerProviderState
                       SizedBox(height: 16.w),
                       ProfileSkillsSection(
                         skills: candidateInfo?.skills
-                          ?.split(',')
-                          .map((e) => e.trim())
-                          .where((e) => e.isNotEmpty)
-                          .toList() ?? [],
+                                ?.split(',')
+                                .map((e) => e.trim())
+                                .where((e) => e.isNotEmpty)
+                                .toList() ??
+                            [],
                       ),
                       SizedBox(height: 16.w),
                       CustomButtonBorder(
                         title: isLoggedIn ? "Đăng xuất" : "Đăng nhập",
-                        icon: isLoggedIn ? Icons.logout_outlined : Icons.login_outlined,
+                        icon: isLoggedIn
+                            ? Icons.logout_outlined
+                            : Icons.login_outlined,
                         onPressed: () => isLoggedIn
-                          ? DialogUtils.showLogoutDialog(context)
-                          : context.push(
-                            '/auth/login', 
-                            extra: {
-                              'role': UserRole.candidate.name
-                            }
-                          )
+                            ? DialogUtils.showLogoutDialog(context)
+                            : context.push('/auth/login',
+                                extra: {'role': UserRole.candidate.name}),
                       ),
                       SizedBox(height: 80.h),
                     ],
@@ -262,14 +249,13 @@ class ProfilePageState extends State<ProfilePageScreen> with TickerProviderState
                 ),
               ),
             ),
-      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: ScaleTransition(
         scale: Tween<double>(begin: 0.9, end: 1.0).animate(
           CurvedAnimation(parent: _fabPulseController, curve: Curves.easeInOut),
         ),
         child: !isLoggedIn
-            ? SizedBox.shrink()
+            ? const SizedBox.shrink()
             : ProfileButtonLogout(
                 onPressed: _onOpenEditProfile,
                 icon: Icons.edit,

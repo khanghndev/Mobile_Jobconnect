@@ -8,7 +8,6 @@ import 'package:job_connect/config/utils/input_validators.dart';
 import 'package:job_connect/config/utils/snackbar_app.dart';
 import 'package:job_connect/config/widgets/button_primary_gradient.dart';
 import 'package:job_connect/config/widgets/custom_pass_field_with_label.dart';
-import 'package:job_connect/config/widgets/custom_primary_button.dart';
 import 'package:job_connect/config/widgets/custom_text_field_with_label.dart';
 
 class RegisterForm extends StatefulWidget {

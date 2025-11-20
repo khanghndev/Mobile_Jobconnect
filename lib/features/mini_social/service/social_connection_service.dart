@@ -4,6 +4,8 @@ import 'package:job_connect/config/enum/server_exception_type.dart';
 import 'package:job_connect/config/error/server_exception.dart';
 import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/features/mini_social/model/friend_model.dart';
+import 'package:job_connect/features/mini_social/model/friend_request_model.dart';
+import 'package:job_connect/features/mini_social/model/sent_request_model.dart';
 import 'package:job_connect/features/mini_social/model/social_connection_model.dart';
 
 class SocialConnectionService {
@@ -25,54 +27,44 @@ class SocialConnectionService {
   }
 
   /// Gửi yêu cầu kết bạn
-  Future<SocialConnectionModel> sendRequest({required SocialConnectionRequest request}) async {
+  Future<String> sendRequest({required SocialConnectionRequest request}) async {
     return _handleApi(
       () async {
         final res = await _apiService.post(
           endpoint: ApiConstants.socialConnectionsRequestEndpoint,
           body: request.toJson(),
         );
-        return ApiResponseParser.parseObject(
-          res: res,
-          fromJson: (json) => SocialConnectionModel.fromJson(json),
-          errorMsg: 'Phản hồi không hợp lệ khi gửi kết bạn',
-        );
+
+        // Server luôn trả {"message": "..."}
+        return res.data["message"] ?? "Thành công";
       },
       'Lỗi khi gửi kết bạn',
     );
   }
 
   /// Chấp nhận yêu cầu kết bạn
-  Future<SocialConnectionModel> acceptRequest({required SocialConnectionRequest request}) async {
+  Future<void> acceptRequest({required SocialConnectionRequest request}) async {
     return _handleApi(
       () async {
-        final res = await _apiService.post(
+        await _apiService.post(
           endpoint: ApiConstants.socialConnectionsAcceptEndpoint,
           body: request.toJson(),
         );
-        return ApiResponseParser.parseObject(
-          res: res,
-          fromJson: (json) => SocialConnectionModel.fromJson(json),
-          errorMsg: 'Phản hồi không hợp lệ khi chấp nhận kết bạn',
-        );
+        // Không cần parse JSON, vì backend chỉ trả 200 OK
       },
       'Lỗi khi chấp nhận kết bạn',
     );
   }
 
   /// Từ chối yêu cầu kết bạn
-  Future<SocialConnectionModel> rejectRequest({required SocialConnectionRequest request}) async {
+  Future<void> rejectRequest({required SocialConnectionRequest request}) async {
     return _handleApi(
       () async {
-        final res = await _apiService.post(
+        await _apiService.post(
           endpoint: ApiConstants.socialConnectionsRejectEndpoint,
           body: request.toJson(),
         );
-        return ApiResponseParser.parseObject(
-          res: res,
-          fromJson: (json) => SocialConnectionModel.fromJson(json),
-          errorMsg: 'Phản hồi không hợp lệ khi từ chối kết bạn',
-        );
+        // Không cần parse JSON, vì backend chỉ trả 200 OK
       },
       'Lỗi khi từ chối kết bạn',
     );
@@ -86,24 +78,21 @@ class SocialConnectionService {
           endpoint: ApiConstants.socialConnectionsCancelEndpoint,
           body: request.toJson(),
         );
+        // Không cần parse JSON, vì backend chỉ trả 200 OK
       },
       'Lỗi khi huỷ yêu cầu kết bạn',
     );
   }
 
   /// Chặn người dùng
-  Future<SocialConnectionModel> blockUser({required SocialConnectionRequest request}) async {
+  Future<void> blockUser({required SocialConnectionRequest request}) async {
     return _handleApi(
       () async {
-        final res = await _apiService.post(
+        await _apiService.post(
           endpoint: ApiConstants.socialConnectionsBlockEndpoint,
           body: request.toJson(),
         );
-        return ApiResponseParser.parseObject(
-          res: res,
-          fromJson: (json) => SocialConnectionModel.fromJson(json),
-          errorMsg: 'Phản hồi không hợp lệ khi chặn người dùng',
-        );
+        // Không cần parse JSON, vì backend chỉ trả 200 OK
       },
       'Lỗi khi chặn người dùng',
     );
@@ -115,7 +104,7 @@ class SocialConnectionService {
       () async {
         await _apiService.delete(
           endpoint: ApiConstants.socialConnectionsUnfriendEndpoint,
-          body: {
+          queryParams: {
             'userId1': userId1,
             'userId2': userId2,
           }
@@ -142,14 +131,16 @@ class SocialConnectionService {
   }
 
   /// Lấy danh sách yêu cầu kết bạn
-  Future<List<String>> getRequests({required String userId}) async {
+  Future<List<FriendRequestModel>> getRequests({required String userId}) async {
     return _handleApi(
       () async {
-        final endpoint = ApiConstants.socialConnectionsRequestsByUserEndpoint.replaceFirst('{userId}', userId);
+        final endpoint = ApiConstants.socialConnectionsRequestsByUserEndpoint
+            .replaceFirst('{userId}', userId);
         final res = await _apiService.get(endpoint: endpoint);
+
         return ApiResponseParser.parseList(
           res: res,
-          fromJson: (json) => json.toString(),
+          fromJson: (json) => FriendRequestModel.fromJson(json),
           errorMsg: 'Phản hồi không hợp lệ khi lấy danh sách yêu cầu kết bạn',
         );
       },
@@ -157,15 +148,17 @@ class SocialConnectionService {
     );
   }
 
-  /// Lấy danh sách yêu cầu đã gửi
-  Future<List<String>> getSentRequests({required String userId}) async {
+ /// Lấy danh sách yêu cầu đã gửi
+  Future<List<SentRequestModel>> getSentRequests({required String userId}) async {
     return _handleApi(
       () async {
-        final endpoint = ApiConstants.socialConnectionsSentByUserEndpoint.replaceFirst('{userId}', userId);
+        final endpoint = ApiConstants.socialConnectionsSentByUserEndpoint
+            .replaceFirst('{userId}', userId);
         final res = await _apiService.get(endpoint: endpoint);
+
         return ApiResponseParser.parseList(
           res: res,
-          fromJson: (json) => json.toString(),
+          fromJson: (json) => SentRequestModel.fromJson(json),
           errorMsg: 'Phản hồi không hợp lệ khi lấy danh sách yêu cầu đã gửi',
         );
       },
@@ -200,12 +193,20 @@ class SocialConnectionService {
   }
 
   /// Lấy trạng thái kết bạn
-  Future<SocialConnectionModel> getStatus({required SocialConnectionRequest request}) async {
+  Future<SocialConnectionModel> getStatus({
+    required String currentUserId, 
+    required String targetUserId,
+  }) async {
     return _handleApi(
       () async {
         final res = await _apiService.get(
           endpoint: ApiConstants.socialConnectionsStatusEndpoint,
+          queryParams: {
+            'currentUserId': currentUserId,
+            'targetUserId': targetUserId,
+          },
         );
+
         return ApiResponseParser.parseObject(
           res: res,
           fromJson: (json) => SocialConnectionModel.fromJson(json),

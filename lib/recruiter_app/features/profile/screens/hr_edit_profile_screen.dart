@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:job_connect/config/constant/app_images.dart';
@@ -156,7 +157,7 @@ class _HrEditProfileScreenState extends State<HrEditProfileScreen> {
           backgroundColor: Colors.green,
         ),
       );
-      Navigator.pop(context);
+      context.pop();
     } catch (e) {
       print(e);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -178,7 +179,7 @@ class _HrEditProfileScreenState extends State<HrEditProfileScreen> {
         backgroundColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black87),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => context.pop(),
         ),
         title: const Text(
           "Chỉnh sửa hồ sơ",
@@ -656,7 +657,7 @@ class _HrEditProfileScreenState extends State<HrEditProfileScreen> {
                         width: double.infinity,
                         height: 56,
                         child: TextButton(
-                          onPressed: () => Navigator.pop(context),
+                          onPressed: () => context.pop(),
                           style: TextButton.styleFrom(
                             foregroundColor: Colors.grey[700],
                             shape: RoundedRectangleBorder(

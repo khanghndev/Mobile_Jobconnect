@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/utils/image_url.dart';
 import 'package:job_connect/features/mini_social/model/social_post_model.dart';
 import 'package:photo_view/photo_view.dart';
@@ -96,7 +97,7 @@ class PostItemContent extends StatelessWidget {
                                   child: IconButton(
                                     icon: const Icon(Icons.close,
                                         color: Colors.white),
-                                    onPressed: () => Navigator.pop(context),
+                                    onPressed: () => context.pop(),
                                   ),
                                 ),
                               ],

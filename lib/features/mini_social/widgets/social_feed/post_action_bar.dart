@@ -8,11 +8,12 @@ class PostActionBar extends StatelessWidget {
   final int shareCount;
   final bool isLiked; 
   final bool isSaved;
+  final bool isAccessJob;
   final VoidCallback onLike;
   final VoidCallback onSave;
   final VoidCallback onShare;
   final VoidCallback? onComment;
-  final VoidCallback onShowReactions;
+  final VoidCallback? onAccessJob;
 
   const PostActionBar({
     super.key,
@@ -21,15 +22,17 @@ class PostActionBar extends StatelessWidget {
     required this.shareCount,
     this.isLiked = false,
     this.isSaved = false,
+    this.isAccessJob = false,
     required this.onLike,
     required this.onSave,
     required this.onShare,
     this.onComment,
-    required this.onShowReactions,
+    this.onAccessJob,
   });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       children: [
         Padding(
@@ -39,30 +42,39 @@ class PostActionBar extends StatelessWidget {
               Row(
                 children: [
                   if(likesCount > 0)...[
-                    Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        Positioned(left: 30, child: Text('😢', style: TextStyle(fontSize: 18.sp))),
-                        Positioned(left: 14, child: Text('😍', style: TextStyle(fontSize: 18.sp))),
-                        Positioned(child: Text('😂', style: TextStyle(fontSize: 18.sp))),
-                      ],
-                    ),
+                    Icon(
+                      Icons.local_fire_department_rounded,
+                      size: 20.sp,
+                      color: Colors.pinkAccent
+                    )
                   ],
-                  SizedBox(width: 40.w),
+                  SizedBox(width: 4.w),
                   Text(
                     '$likesCount',
                     style: TextStyle(
                       fontSize: 14.sp,
-                      color: Colors.grey[800],
+                      color: theme.colorScheme.onSurfaceVariant,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],
               ),
               Spacer(),
-              Text('$commentCount bình luận', style: TextStyle(fontSize: 14.sp)),
+              Text(
+                '$commentCount bình luận',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontSize: 14.sp,
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
               SizedBox(width: 8.w),
-              Text('$shareCount lượt chia sẻ', style: TextStyle(fontSize: 14.sp)),
+              Text(
+                '$shareCount lượt chia sẻ',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontSize: 14.sp,
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
             ],
           ),
         ),
@@ -73,10 +85,9 @@ class PostActionBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               ActionButton(
-                icon: isLiked ? Icons.thumb_up_alt : Icons.thumb_up_alt_outlined,
+                icon: isLiked ? Icons.local_fire_department_rounded : Icons.local_fire_department_outlined,
                 label: isLiked ? "Đã thích" : "Thích",
                 onTap: onLike,
-                onLongPress: onShowReactions,
                 active: isLiked,
               ),
               ActionButton(
@@ -91,10 +102,17 @@ class PostActionBar extends StatelessWidget {
                 active: isSaved,
               ),
               ActionButton(
-                icon: Icons.reply_outlined,
+                icon: Icons.share_outlined,
                 label: "Chia sẻ",
                 onTap: onShare,
               ),
+              if(isAccessJob)...[
+                ActionButton(
+                  icon: Icons.check_circle_outlined,
+                  label: "Nhận việc",
+                  onTap: onAccessJob ?? (){},
+                ),
+              ]
             ],
           ),
         ),

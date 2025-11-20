@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/widgets/login_required_dialog.dart';
-import 'package:job_connect/features/chat/screens/ai_chat_screen.dart';
 import 'package:job_connect/features/navigation/screens/navigation_page.dart';
 
 class BannerSlideshow extends StatefulWidget {

@@ -9,6 +9,7 @@ class GroupItemCard extends StatelessWidget {
   final JoinStatus joinStatus;
   final void Function(SocialGroupsModel group)? onJoinGroup;
   final void Function(String id)? onTap;
+  final void Function(String id)? onDeleteGroup;
 
   const GroupItemCard({
     super.key,
@@ -16,6 +17,7 @@ class GroupItemCard extends StatelessWidget {
     required this.joinStatus,
     this.onJoinGroup,
     this.onTap,
+    this.onDeleteGroup,
   });
 
   @override
@@ -81,13 +83,34 @@ class GroupItemCard extends StatelessWidget {
             IconButton(
               onPressed: (joinStatus == JoinStatus.joined || joinStatus == JoinStatus.pending) 
                 ? null 
-                : () => onJoinGroup?.call(group),
-              icon: Icon(
+                : joinStatus == JoinStatus.myGroup
+                  ? () => onDeleteGroup?.call(group.idGroup)
+                  : () => onJoinGroup?.call(group),
+              icon:  
+                joinStatus == JoinStatus.myGroup 
+                ? Row(
+                  children: [
+                    Icon(
+                      Icons.delete_forever,
+                      color: Colors.red,
+                      size: 24.sp,
+                    ),
+                    SizedBox(width: 6.w),
+                    // Icon(
+                    //   Icons.edit,
+                    //   color: Colors.black.withValues(alpha: 0.5),
+                    //   size: 24.sp,
+                    // ),
+                  ],
+                )
+                : Icon(
                 joinStatus == JoinStatus.joined
                     ? Icons.check_circle
                     : joinStatus == JoinStatus.canJoin
                         ? Icons.group_add
-                        : Icons.lock_clock,
+                        : joinStatus == JoinStatus.myGroup
+                            ? Icons.delete_forever
+                            : Icons.lock_clock,
                 color: joinStatus == JoinStatus.joined 
                   ? Colors.green 
                   : joinStatus == JoinStatus.canJoin  

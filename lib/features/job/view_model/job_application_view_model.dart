@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:job_connect/config/error/server_exception.dart';
 import 'package:job_connect/features/job/model/job_application_model.dart';
-import 'package:job_connect/recruiter_app/services/job_application_service.dart';
+import 'package:job_connect/features/job/service/job_application_service.dart';
 
 class JobApplicationViewModel extends ChangeNotifier {
   final JobApplicationService _jobApplicationService = JobApplicationService();

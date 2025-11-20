@@ -4,9 +4,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/constant/app_colors.dart';
 import 'package:job_connect/config/constant/app_images.dart';
+import 'package:job_connect/config/enum/user_role.dart';
 import 'package:job_connect/config/widgets/button_primary_gradient.dart';
 import 'package:job_connect/config/widgets/custom_pass_field_with_label.dart';
-import 'package:job_connect/config/widgets/custom_primary_button.dart';
 import 'package:job_connect/config/widgets/custom_text_field_with_label.dart';
 import 'package:job_connect/features/auth/screens/forgot_password_screen.dart';
 
@@ -18,6 +18,7 @@ class LoginForm extends StatelessWidget {
   final VoidCallback onLogin;
   final VoidCallback onBack;
   final bool? isRemmeber;
+  final String? role;
 
   const LoginForm({
     super.key,
@@ -27,7 +28,8 @@ class LoginForm extends StatelessWidget {
     required this.isLoading,
     required this.onLogin,
     required this.onBack,
-    this.isRemmeber = true
+    this.isRemmeber = true, 
+    this.role
   });
 
   @override
@@ -196,8 +198,8 @@ class LoginForm extends StatelessWidget {
             onPressed: onLogin
           ),
 
-            SizedBox(height: 20.h),
-
+          SizedBox(height: 20.h),
+          if(role == UserRole.candidate.name)...[
             // Register link
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -224,6 +226,7 @@ class LoginForm extends StatelessWidget {
                 ),
               ],
             ),
+          ]
           ],
         ),
       ),

@@ -43,4 +43,26 @@ class ApiResponseParser {
     return res;
   }
 
+  /// Parse double từ response JSON
+  static double parseDouble({
+    required dynamic res,
+    required String errorMsg,
+  }) {
+    if (res == null) {
+      throw ServerException(
+        err: errorMsg,
+        type: ServerExceptionType.api,
+      );
+    }
+    if (res is double) return res;
+    if (res is int) return res.toDouble();
+    if (res is String) {
+      final d = double.tryParse(res);
+      if (d != null) return d;
+    }
+    throw ServerException(
+      err: errorMsg,
+      type: ServerExceptionType.api,
+    );
+  }
 }

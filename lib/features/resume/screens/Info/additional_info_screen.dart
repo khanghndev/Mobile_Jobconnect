@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:job_connect/features/resume/screens/Info/customize_style_screen.dart';
 import 'package:job_connect/features/resume/screens/Info/education_screen.dart';
 
@@ -242,7 +243,7 @@ class _AdditionalInfoScreenState extends State<AdditionalInfoScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () => context.pop(),
                   child: Text("Back"),
                 ),
                 TextButton(onPressed: _skipStep, child: Text("Skip")),

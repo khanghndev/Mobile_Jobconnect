@@ -114,7 +114,6 @@ class AuthViewModel extends ChangeNotifier {
         rethrow;
       }
     } on AuthException catch (e) {
-      debugPrint('⚠️ AuthException: ${e.message}');
       _setState(isLoading: false, errorMessage: e.message, isSuccess: false);
     } catch (e) {
       _setState(isLoading: false, errorMessage: e.toString(), isSuccess: false);

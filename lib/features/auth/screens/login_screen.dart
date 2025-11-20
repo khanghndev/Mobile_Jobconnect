@@ -7,6 +7,7 @@ import 'package:job_connect/config/enum/user_role.dart';
 import 'package:job_connect/config/utils/snackbar_app.dart';
 import 'package:job_connect/config/utils/string_utils.dart';
 import 'package:job_connect/config/widgets/custom_dialog.dart';
+import 'package:job_connect/config/widgets/overlay_loading.dart';
 import 'package:job_connect/config/widgets/unfocus_widget.dart';
 import 'package:job_connect/features/auth/viewmodel/auth_view_model.dart';
 import 'package:job_connect/features/auth/widgets/login/login_form.dart';
@@ -193,103 +194,106 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
   Widget build(BuildContext context) {
     return Consumer<AuthViewModel>(
       builder: (context, authVM, child) {
-        return Scaffold(
-          body: Container(
-            width: 1.sw,
-            height: 1.sh,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFF0D47A1),
-                  Color(0xFF1976D2),
-                  Color(0xFF42A5F5),
-                ],
-              ),
-            ),
-            child: UnfocusWidget(
-              child: SafeArea(
-                child: Stack(
-                  children: [
-                    FadeTransition(
-                      opacity: _fadeInAnimation,
-                      child: Center(
-                        child: SingleChildScrollView(
-                          child: Padding(
-                            padding: EdgeInsets.all(24.w),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color:
-                                    BackgroundColors.backgroundDefaultPrimary.withValues(alpha:0.9),
-                                borderRadius: BorderRadius.circular(20.r),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: BackgroundColors.backgroundDefaultPrimarySub
-                                        .withValues(alpha:0.2),
-                                    blurRadius: 20.r,
-                                    offset: Offset(0, 10.h),
-                                  ),
-                                ],
-                              ),
-                              child: AnimatedSwitcher(
-                                duration: const Duration(milliseconds: 500),
-                                transitionBuilder: (child, anim) =>
-                                    FadeTransition(opacity: anim, child: child),
-                                child: _showLoginForm
-                                    ? LoginForm(
-                                        formKey: _formKey,
-                                        emailController: _emailController,
-                                        passwordController: _passwordController,
-                                        isLoading: authVM.isLoading,
-                                        onLogin: () => _onLogin(authVM),
-                                        onBack: () =>
-                                            setState(() => _showLoginForm = false),
-                                        isRemmeber: false,
-                                      )
-                                    : SocialLoginView(
-                                        role: widget.role ??
-                                            StringUtils.capitalize(
-                                                UserRole.candidate.name),
-                                        onShowTraditionalLogin: () =>
-                                            setState(() => _showLoginForm = true),
-                                        onGoogleLogin: (context) =>
-                                            _onLoginGoogle(authVM),
-                                      ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      top: 12.h,
-                      left: 12.w,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(50.r),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                          child: Container(
-                            color: Colors.black.withValues(alpha:0.25),
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.arrow_back_ios_new_rounded,
-                                color: Colors.white,
-                                size: 22.sp,
-                              ),
-                              onPressed: () {
-                                if (_showLoginForm) {
-                                  setState(() => _showLoginForm = false);
-                                } else {
-                                  context.go('/auth/role');
-                                }
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+        return OverlayLoading(
+          isLoading: authVM.isLoading,
+          child: Scaffold(
+            body: Container(
+              width: 1.sw,
+              height: 1.sh,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(0xFF0D47A1),
+                    Color(0xFF1976D2),
+                    Color(0xFF42A5F5),
                   ],
+                ),
+              ),
+              child: UnfocusWidget(
+                child: SafeArea(
+                  child: Stack(
+                    children: [
+                      FadeTransition(
+                        opacity: _fadeInAnimation,
+                        child: Center(
+                          child: SingleChildScrollView(
+                            child: Padding(
+                              padding: EdgeInsets.all(24.w),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color:
+                                      BackgroundColors.backgroundDefaultPrimary.withValues(alpha:0.9),
+                                  borderRadius: BorderRadius.circular(20.r),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: BackgroundColors.backgroundDefaultPrimarySub
+                                          .withValues(alpha:0.2),
+                                      blurRadius: 20.r,
+                                      offset: Offset(0, 10.h),
+                                    ),
+                                  ],
+                                ),
+                                child: AnimatedSwitcher(
+                                  duration: const Duration(milliseconds: 500),
+                                  transitionBuilder: (child, anim) =>
+                                      FadeTransition(opacity: anim, child: child),
+                                  child: _showLoginForm
+                                      ? LoginForm(
+                                          formKey: _formKey,
+                                          emailController: _emailController,
+                                          passwordController: _passwordController,
+                                          isLoading: authVM.isLoading,
+                                          onLogin: () => _onLogin(authVM),
+                                          onBack: () =>
+                                              setState(() => _showLoginForm = false),
+                                          isRemmeber: false,
+                                        )
+                                      : SocialLoginView(
+                                          role: widget.role ??
+                                              StringUtils.capitalize(
+                                                  UserRole.candidate.name),
+                                          onShowTraditionalLogin: () =>
+                                              setState(() => _showLoginForm = true),
+                                          onGoogleLogin: (context) =>
+                                              _onLoginGoogle(authVM),
+                                        ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 12.h,
+                        left: 12.w,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(50.r),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                            child: Container(
+                              color: Colors.black.withValues(alpha:0.25),
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.arrow_back_ios_new_rounded,
+                                  color: Colors.white,
+                                  size: 22.sp,
+                                ),
+                                onPressed: () {
+                                  if (_showLoginForm) {
+                                    setState(() => _showLoginForm = false);
+                                  } else {
+                                    context.go('/auth/role');
+                                  }
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:job_connect/features/resume/widgets/cv_options/create_option_item.dart';
 
 class CreateOptionsModal extends StatelessWidget {
@@ -31,8 +32,8 @@ class CreateOptionsModal extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: theme.cardColor,
-        borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(28),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(28.r),
         ),
       ),
       child: Column(
@@ -46,22 +47,21 @@ class CreateOptionsModal extends StatelessWidget {
                 "Thêm CV Mới",
                 style: theme.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
+                  fontSize: 22.sp,
                 ),
               ),
               IconButton(
                 icon: Icon(
                   Icons.close_rounded,
                   color: theme.iconTheme.color?.withValues(alpha:0.7),
-                  size: 26.sp,
+                  size: 24.sp,
                 ),
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => context.pop(),
                 splashRadius: 24.r,
               ),
             ],
           ),
-          SizedBox(height: 10.h),
           Divider(color: theme.dividerColor.withValues(alpha:0.5)),
-          SizedBox(height: 15.h),
           CreateOptionItem(
             icon: Icons.cloud_upload_rounded,
             title: "Tải Lên Từ Thiết Bị",
@@ -99,28 +99,28 @@ class CreateOptionsModal extends StatelessWidget {
                 : null,
           ),
           SizedBox(height: 10.h),
-          Divider(color: theme.dividerColor.withValues(alpha:0.2)),
-          SizedBox(height: 10.h),
-          CreateOptionItem(
-            icon: Icons.auto_awesome_rounded,
-            title: "Tạo CV Bằng AI",
-            subtitle: "Để trí tuệ nhân tạo hỗ trợ bạn tạo CV ấn tượng.",
-            iconBgColor: theme.colorScheme.secondaryContainer.withValues(alpha:0.7),
-            iconColor: theme.colorScheme.onSecondaryContainer,
-            onTap: onAICreate,
-          ),
-          SizedBox(height: 10.h),
-          Divider(color: theme.dividerColor.withValues(alpha:0.2)),
-          SizedBox(height: 10.h),
-          CreateOptionItem(
-            icon: Icons.article_outlined,
-            title: "Sử Dụng Mẫu CV Có Sẵn",
-            subtitle: "Lựa chọn từ thư viện mẫu CV chuyên nghiệp.",
-            iconBgColor: theme.colorScheme.tertiaryContainer.withValues(alpha:0.7),
-            iconColor: theme.colorScheme.onTertiaryContainer,
-            onTap: onTemplates,
-          ),
-          SizedBox(height: 10.h),
+          // Divider(color: theme.dividerColor.withValues(alpha:0.2)),
+          // SizedBox(height: 10.h),
+          // CreateOptionItem(
+          //   icon: Icons.auto_awesome_rounded,
+          //   title: "Tạo CV Bằng AI",
+          //   subtitle: "Để trí tuệ nhân tạo hỗ trợ bạn tạo CV ấn tượng.",
+          //   iconBgColor: theme.colorScheme.secondaryContainer.withValues(alpha:0.7),
+          //   iconColor: theme.colorScheme.onSecondaryContainer,
+          //   onTap: onAICreate,
+          // ),
+          // SizedBox(height: 10.h),
+          // Divider(color: theme.dividerColor.withValues(alpha:0.2)),
+          // SizedBox(height: 10.h),
+          // CreateOptionItem(
+          //   icon: Icons.article_outlined,
+          //   title: "Sử Dụng Mẫu CV Có Sẵn",
+          //   subtitle: "Lựa chọn từ thư viện mẫu CV chuyên nghiệp.",
+          //   iconBgColor: theme.colorScheme.tertiaryContainer.withValues(alpha:0.7),
+          //   iconColor: theme.colorScheme.onTertiaryContainer,
+          //   onTap: onTemplates,
+          // ),
+          // SizedBox(height: 10.h),
         ],
       ),
     );

@@ -1,8 +1,8 @@
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/navigation/app_navigation.dart';
 import 'package:job_connect/recruiter_app/features/candidate/screens/hr_candidate_management_screen.dart';
-import 'package:job_connect/recruiter_app/features/hr/screens/hr_home_screen.dart';
-import 'package:job_connect/recruiter_app/features/hr/screens/hr_interview_schedule.dart';
+import 'package:job_connect/recruiter_app/features/hr/screen/hr_home_screen.dart';
+import 'package:job_connect/recruiter_app/features/hr/screen/hr_interview_schedule.dart';
 import 'package:job_connect/recruiter_app/features/job/navigation_recruiter/screen/navigation_recruiter_screen.dart';
 import 'package:job_connect/recruiter_app/features/report/screens/hr_report_screen.dart';
 import 'package:job_connect/recruiter_app/features/search/screens/hr_search_screen.dart';
@@ -35,7 +35,7 @@ class RecruiterRouter {
           final extraData = state.extra as Map<String, dynamic>;
           final userAccount = extraData['userAccount'];
           return buildPageWithSlideTransition(
-            HRHomeScreen(userAccount: userAccount),
+            HrHomeScreen(userAccount: userAccount),
             state,
           );
         },

@@ -1,11 +1,9 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 class AppStatus {
   // Define API status keys
   static const String pending = 'pending';
-  static const String interview = 'interview'; // or 'interview' if that's what your API uses
+  static const String interview = 'interview'; 
   static const String rejected = 'rejected';
   static const String accepted = 'accepted';
   static const String viewed = 'viewed';
@@ -14,7 +12,7 @@ class AppStatus {
   // Map API status keys to display names, colors, and icons
   static Map<String, Map<String, dynamic>> displayConfig = {
     pending: {
-      'text': 'Đã gửi NTD',
+      'text': 'Đang chờ',
       'color': Colors.yellow.shade700,
       'bgColor': Colors.yellow.shade50,
       'icon': Icons.hourglass_top_rounded,

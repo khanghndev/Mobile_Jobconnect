@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/utils/image_url.dart';
 
 class SocialCallScreen extends StatefulWidget {
@@ -88,7 +89,7 @@ class _SocialCallScreenState extends State<SocialCallScreen>
             child: IconButton(
               icon: Icon(Icons.close, color: Colors.white, size: 28.sp),
               onPressed: () {
-                Navigator.pop(context);
+                context.pop();
               },
             ),
           ),
@@ -144,7 +145,7 @@ class _SocialCallScreenState extends State<SocialCallScreen>
 
                   // END CALL
                   _buildActionButton(Icons.call_end, Colors.red, onTap: () {
-                    Navigator.pop(context);
+                    context.pop();
                   }),
                   SizedBox(width: 24.w),
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:job_connect/features/mini_social/model/social_post_model.dart';
 import 'package:job_connect/features/mini_social/widgets/profile/posted_card.dart';
 
@@ -59,6 +60,7 @@ class _DiscoverListState extends State<DiscoverList> with SingleTickerProviderSt
           children: [
             Expanded(
               child: ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: widget.isExpanded 

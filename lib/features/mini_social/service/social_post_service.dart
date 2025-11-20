@@ -74,19 +74,23 @@ class SocialPostService {
   }
 
   //TODO: PUT /api/SocialPosts/{id} - Cập nhật bài viết
-  Future<SocialPostModel> updatePost({required String id, required SocialPostModel post}) async {
+  Future<void> updatePost({
+    required String id,
+    required SocialPostModel post,
+  }) async {
     return _handleApi(
       () async {
         final endpoint = ApiConstants.socialPostByIdEndpoint.replaceFirst('{id}', id);
-        final res = await _apiService.put(
-          endpoint: endpoint,
-          body: post.toJson(),
-        );
-        return ApiResponseParser.parseObject(
-          res: res,
-          fromJson: (json) => SocialPostModel.fromJson(json),
-          errorMsg: 'Phản hồi không hợp lệ khi cập nhật bài viết',
-        );
+        final body = {
+          'content': post.content,
+          'imageUrl': post.imageUrl ?? '',
+          'imageUrls': post.imageUrls ?? [],
+          'videoUrl': post.videoUrl ?? '',
+          'visibility': post.visibility,
+          'postType': post.postType ?? '',
+          'hashtags': post.hashtags ?? [],
+        };
+        await _apiService.put(endpoint: endpoint, body: body);
       },
       'Lỗi khi cập nhật bài viết',
     );
@@ -218,12 +222,23 @@ class SocialPostService {
   Future<List<SocialPostModel>> getAllPostsOfGroup({
     required String groupId,
     required String currentUserId,
+    int page = 1,
+    int pageSize = 20,
   }) async {
     return _handleApi(
       () async {
+        final endpoint = ApiConstants.socialPostsInGroupByUserEndpoint
+            .replaceFirst('{groupId}', groupId);
+
         final res = await _apiService.get(
-          endpoint: '${ApiConstants.socialPostsInGroupByUserEndpoint.replaceFirst('{groupId}', groupId)}?currentUserId=$currentUserId'
+          endpoint: endpoint,
+          queryParams: {
+            'currentUserId': currentUserId,
+            'page': page.toString(),
+            'pageSize': pageSize.toString(),
+          },
         );
+
         return ApiResponseParser.parseList(
           res: res,
           fromJson: (json) => SocialPostModel.fromJson(json),

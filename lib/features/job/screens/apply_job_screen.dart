@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -7,7 +8,6 @@ import 'package:job_connect/config/utils/snackbar_app.dart';
 import 'package:job_connect/config/widgets/overlay_loading.dart';
 import 'package:job_connect/features/job/view_model/job_application_view_model.dart';
 import 'package:job_connect/features/resume/view_model/resum_view_model.dart';
-import 'dart:io';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:job_connect/config/constant/app_strings.dart';
@@ -51,9 +51,6 @@ class _ApplyJobScreenState extends State<ApplyJobScreen> with TickerProviderStat
   bool _isCvListExpanded = false;
   bool _isSubmitting = false;
 
-  ResumeModel? _uploadedResume;
-  final List<ResumeModel> _savedCVs = [];
-
   late AnimationController _formAnimationController;
   late Animation<double> _formFadeAnimation;
 
@@ -69,6 +66,11 @@ class _ApplyJobScreenState extends State<ApplyJobScreen> with TickerProviderStat
       curve: Curves.easeInOut,
     );
     _formAnimationController.forward();
+
+    // Load danh sách CV từ ViewModel
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<ResumeViewModel>().getResumesByUser(idUser: widget.idUser);
+    });
   }
 
   @override
@@ -79,82 +81,81 @@ class _ApplyJobScreenState extends State<ApplyJobScreen> with TickerProviderStat
   }
 
   Future<void> _pickCV() async {
-  final resumeViewModel = context.read<ResumeViewModel>();
+    final resumeViewModel = context.read<ResumeViewModel>();
 
-  try {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf', 'doc', 'docx'],
-    );
-
-    if (result == null || result.files.single.path == null) return;
-
-    final pickedFile = result.files.single;
-    final file = File(pickedFile.path!);
-    final fileName = pickedFile.name;
-
-    if (mounted) {
-      SnackbarApp.show(
-        context,
-        title: 'Đang tải lên...',
-        message: 'Vui lòng chờ trong giây lát.',
-        backgroundColor: Colors.blueAccent,
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf', 'doc', 'docx'],
       );
-    }
 
-    // Upload file lên Appwrite qua ViewModel
-    await resumeViewModel.createResume(
-      resume: ResumeModel(
-        idResume: '',
-        idUser: widget.idUser,
-        fileName: fileName,
-        fileUrl: '', // sẽ được BE trả về
-        fileId: '',
-        fileSizeKB: (pickedFile.size / 1024).ceil(),
-        isDefault: 1,
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-      ),
-      file: file,
-    );
+      if (result == null || result.files.single.path == null) return;
 
-    if (!mounted) return;
+      final pickedFile = result.files.single;
+      final file = File(pickedFile.path!);
+      final fileName = pickedFile.name;
 
-    if (resumeViewModel.isSuccess && resumeViewModel.lastCreatedResume != null) {
-      final uploadedResume = resumeViewModel.lastCreatedResume!;
+      if (mounted) {
+        SnackbarApp.show(
+          context,
+          title: 'Đang tải lên...',
+          message: 'Vui lòng chờ trong giây lát.',
+          backgroundColor: Colors.blueAccent,
+        );
+      }
 
-      setState(() {
-        selectedCVFile = file;
-        selectedCVFileName = uploadedResume.fileName;
-        _selectedSavedCvUrl = uploadedResume.fileUrl;
-        _selectedSavedCvName = uploadedResume.fileName;
-      });
-
-      SnackbarApp.show(
-        context,
-        title: 'Thành công',
-        message: 'Tải lên CV thành công!',
-        backgroundColor: Colors.green,
+      // Upload file lên Appwrite qua ViewModel
+      await resumeViewModel.createResume(
+        resume: ResumeModel(
+          idResume: '',
+          idUser: widget.idUser,
+          fileName: fileName,
+          fileUrl: '', // sẽ được BE trả về
+          fileId: '',
+          fileSizeKB: (pickedFile.size / 1024).ceil(),
+          isDefault: 1,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+        ),
+        file: file,
       );
-    } else {
-      SnackbarApp.show(
-        context,
-        title: 'Lỗi',
-        message: resumeViewModel.errorMessage ?? 'Không thể tải lên CV.',
-        backgroundColor: Colors.redAccent,
-      );
-    }
-  } catch (e) {
-    if (mounted) {
-      SnackbarApp.show(
-        context,
-        title: 'Lỗi',
-        message: 'Đã xảy ra lỗi khi tải lên CV.',
-        backgroundColor: Colors.redAccent,
-      );
+
+      if (!mounted) return;
+
+      if (resumeViewModel.isSuccess && resumeViewModel.lastCreatedResume != null) {
+        final uploadedResume = resumeViewModel.lastCreatedResume!;
+
+        setState(() {
+          selectedCVFile = file;
+          selectedCVFileName = uploadedResume.fileName;
+          _selectedSavedCvName = uploadedResume.fileName;
+        });
+
+        SnackbarApp.show(
+          context,
+          title: 'Thành công',
+          message: 'Tải lên CV thành công!',
+          backgroundColor: Colors.green,
+        );
+      } else {
+        SnackbarApp.show(
+          context,
+          title: 'Lỗi',
+          message: resumeViewModel.errorMessage ?? 'Không thể tải lên CV.',
+          backgroundColor: Colors.redAccent,
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        SnackbarApp.show(
+          context,
+          title: 'Lỗi',
+          message: 'Đã xảy ra lỗi khi tải lên CV.',
+          backgroundColor: Colors.redAccent,
+        );
+      }
     }
   }
-}
 
   Future<void> _onSubmitApplication() async {
     final jobVm = context.read<JobApplicationViewModel>();
@@ -253,6 +254,9 @@ class _ApplyJobScreenState extends State<ApplyJobScreen> with TickerProviderStat
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final resumeVm = context.watch<ResumeViewModel>();
+    final savedCVs = resumeVm.resumes;
+
     return OverlayLoading(
       isLoading: _isSubmitting,
       child: Scaffold(
@@ -280,7 +284,7 @@ class _ApplyJobScreenState extends State<ApplyJobScreen> with TickerProviderStat
                           icon: Icons.file_present_rounded,
                         ),
                         CvSelectionSection(
-                          savedCVs: _savedCVs,
+                          savedCVs: savedCVs,
                           selectedSavedCvUrl: _selectedSavedCvUrl,
                           selectedSavedCvName: _selectedSavedCvName,
                           selectedCVFileName: selectedCVFileName,

@@ -4,11 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class BackgroundErrorState extends StatelessWidget {
   final String title;
   final VoidCallback onRetry;
+  final double? padding;
 
   const BackgroundErrorState({
     super.key,
     required this.title,
     required this.onRetry,
+    this.padding,
   });
 
   @override
@@ -16,7 +18,7 @@ class BackgroundErrorState extends StatelessWidget {
     final theme = Theme.of(context);
     return Center(
       child: Padding(
-        padding: EdgeInsets.all(24.r),
+        padding: EdgeInsets.all(padding ?? 24.r),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

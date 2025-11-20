@@ -35,6 +35,7 @@ class FeaturedJobsList extends StatelessWidget {
         return AnimationLimiter(
           child: ListView.builder(
             shrinkWrap: true,
+            padding: EdgeInsets.zero,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: jobs.length > 4 ? 4 : jobs.length,
             itemBuilder: (context, index) {

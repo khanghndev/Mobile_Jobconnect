@@ -11,10 +11,10 @@ class PostItem extends StatelessWidget {
   final SocialPostModel socialPostModel;
   final bool isLiked;
   final bool isSaved;
+  final bool isAccessJob;
   final String roleName;
   final String idUser;
-  final bool isFollowedOrTaken;
-  final VoidCallback onFollow;
+  final VoidCallback? onFollow;
   final VoidCallback onLike;
   final VoidCallback onSave;
   final VoidCallback onShare;
@@ -26,7 +26,7 @@ class PostItem extends StatelessWidget {
   final VoidCallback onOpenDetail;
   final VoidCallback onOpenProfile;
   final VoidCallback onComment;
-  final VoidCallback onShowReactions;
+  final VoidCallback onAccessJob;
   final VoidCallback onGoToGroup;
 
   const PostItem({
@@ -34,10 +34,10 @@ class PostItem extends StatelessWidget {
     required this.socialPostModel,
     required this.isLiked,
     required this.isSaved,
+    required this.isAccessJob,
     required this.roleName,
     required this.idUser,
-    required this.isFollowedOrTaken,
-    required this.onFollow,
+    this.onFollow,
     required this.onLike,
     required this.onSave,
     required this.onShare,
@@ -49,7 +49,7 @@ class PostItem extends StatelessWidget {
     required this.onOpenDetail,
     required this.onOpenProfile,
     required this.onComment,
-    required this.onShowReactions,
+    required this.onAccessJob,
     required this.onGoToGroup,
   });
 
@@ -60,15 +60,14 @@ class PostItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 16.h),
+          SizedBox(height: 8.h),
 
           // Header: Avatar + Info + Theo dõi / Nhận việc
           PostItemHeader(
             socialPostModel: socialPostModel,
             roleName: roleName,
             idUser: idUser,
-            isFollowedOrTaken: isFollowedOrTaken,
-            onFollow: onFollow,
+            onFollow: onFollow ?? () {},
             onHide: onHide,
             onCopyLink: onCopyLink,
             onReport: onReport,
@@ -76,40 +75,41 @@ class PostItem extends StatelessWidget {
             onEditPost: onEditPost,
             onOpenProfile: onOpenProfile,
             onGoToGroup: onGoToGroup,
+            onOpenDetail: onOpenDetail 
           ),
-
-          SizedBox(height: 8.h),
 
           // Nội dung bài viết
-          InkWell(
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            onTap: onOpenDetail,
-            child: Html(
-              data: socialPostModel.content,
-              style: {
-                "body": Style(
-                  fontSize: FontSize(14),
-                  lineHeight: LineHeight.number(1.5),
-                  margin: Margins.zero,
-                  padding: HtmlPaddings.zero,
-                  color: Colors.black87,
-                ),
-              },
+          if(socialPostModel.content.isNotEmpty)...[
+            SizedBox(height: 16.h),
+            InkWell(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              onTap: onOpenDetail,
+              child: Html(
+                data: socialPostModel.content,
+                style: {
+                  "body": Style(
+                    fontSize: FontSize(14),
+                    lineHeight: LineHeight.number(1.5),
+                    margin: Margins.zero,
+                    padding: HtmlPaddings.zero,
+                    color: Colors.black87,
+                  ),
+                },
+              ),
             ),
-          ),
-
+          ],
           if (socialPostModel.imageUrls != null)...[
+            SizedBox(height: 16.h),
             GestureDetector(
               onTap: () => DialogUtils.showImageViewer(context, socialPostModel.imageUrls!, 0),
               child: PostImageGrid(
                 imagePaths: socialPostModel.imageUrls!,
-                isNetwork: true, 
               ),
             ),
           ],
 
-          SizedBox(height: 16.h),
+          SizedBox(height: 8.h),
 
           // Action Bar: like, save, share, comment, reactions
           PostActionBar(
@@ -118,11 +118,12 @@ class PostItem extends StatelessWidget {
             shareCount: socialPostModel.sharesCount,
             isLiked: isLiked,
             isSaved: isSaved,
+            isAccessJob: isAccessJob,
             onLike: onLike,
             onSave: onSave,
             onShare: onShare,
             onComment: onComment,
-            onShowReactions: onShowReactions,
+            onAccessJob: onAccessJob,
           ),
         ],
       ),

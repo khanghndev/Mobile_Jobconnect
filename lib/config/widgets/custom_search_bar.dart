@@ -11,6 +11,7 @@ class CustomSearchBar extends StatefulWidget {
   final VoidCallback? onTap;
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSubmitted;
+  final double? borderRadius;
 
   const CustomSearchBar({
     super.key,
@@ -22,6 +23,7 @@ class CustomSearchBar extends StatefulWidget {
     this.onTap,
     this.onChanged,
     this.onSubmitted,
+    this.borderRadius,
   });
 
   @override
@@ -30,7 +32,7 @@ class CustomSearchBar extends StatefulWidget {
 
 class _CustomSearchBarState extends State<CustomSearchBar> {
   late TextEditingController _controller;
-  late FocusNode _focusNode;
+  late FocusNode _focusNode;  
 
   bool _showClearIcon = false;
 
@@ -76,7 +78,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 7.h),
       decoration: BoxDecoration(
           color: ElementColors.quaternary,
-          borderRadius: BorderRadius.circular(8.r)),
+          borderRadius: BorderRadius.circular(widget.borderRadius ?? 8.r)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,

@@ -49,7 +49,7 @@ class FilterChipFile extends StatelessWidget {
         ),
         padding: EdgeInsets.symmetric(
           horizontal: 16.w,
-          vertical: 9.h,
+          vertical: 8.h,
         ),
         showCheckmark: false,
         elevation: isSelected ? 1.5 : 0.5,

@@ -1,30 +1,29 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:job_connect/config/utils/image_url.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:job_connect/config/utils/image_url.dart';
 
 class PostImageGrid extends StatelessWidget {
   final List<String> imagePaths;
-  final bool isNetwork;
-
+  final void Function(String path)? onRemoveImage; 
   const PostImageGrid({
     super.key,
     required this.imagePaths,
-    this.isNetwork = false,
+    this.onRemoveImage,
   });
 
-  Widget buildImage(String path, {bool overlay = false, int? extraCount}) {
+  Widget buildImage(String path,{bool overlay = false, int? extraCount, bool canRemove = true}) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(8.r),
       child: Stack(
         fit: StackFit.expand,
         children: [
+          // Ảnh hiển thị
           Image(
-            image: isNetwork
-                ? ImageUtils.getImageProvider(path)
-                : FileImage(File(path)),
+            image: ImageUtils.getImageProvider(path),
             fit: BoxFit.cover,
           ),
+
+          // Overlay nếu >4 ảnh
           if (overlay && extraCount != null)
             Container(
               color: Colors.black45,
@@ -35,6 +34,29 @@ class PostImageGrid extends StatelessWidget {
                   color: Colors.white,
                   fontSize: 24.sp,
                   fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+
+          //  Nút xóa ảnh
+          if (!overlay && canRemove && onRemoveImage != null)
+            Positioned(
+              top: 6.w,
+              right: 6.w,
+              child: GestureDetector(
+                onTap: () => onRemoveImage!(path),
+                child: Container(
+                  width: 24.w,
+                  height: 24.w,
+                  decoration: BoxDecoration(
+                    color: Colors.black54,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.close_rounded,
+                    size: 16.sp,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
@@ -52,20 +74,27 @@ class PostImageGrid extends StatelessWidget {
     int extraCount = total > 4 ? total - 4 : 0;
 
     if (total == 1) {
-      return AspectRatio(aspectRatio: 1, child: buildImage(imagePaths[0]));
+      return AspectRatio(
+        aspectRatio: 1,
+        child: buildImage(imagePaths[0]),
+      );
     }
 
     if (total == 2) {
       return Row(
-        children: imagePaths.map((p) => Expanded(
-          child: AspectRatio(
-            aspectRatio: 1,
-            child: Padding(
-              padding: EdgeInsets.only(right: p != imagePaths.last ? 8.w : 0),
-              child: buildImage(p),
+        children: imagePaths.asMap().entries.map((entry) {
+          final p = entry.value;
+          final isLast = entry.key == imagePaths.length - 1;
+          return Expanded(
+            child: AspectRatio(
+              aspectRatio: 1,
+              child: Padding(
+                padding: EdgeInsets.only(right: isLast ? 0 : 8.w),
+                child: buildImage(p),
+              ),
             ),
-          ),
-        )).toList(),
+          );
+        }).toList(),
       );
     }
 
@@ -74,9 +103,13 @@ class PostImageGrid extends StatelessWidget {
         children: [
           Row(
             children: [
-              Expanded(child: AspectRatio(aspectRatio: 1, child: buildImage(imagePaths[0]))),
+              Expanded(
+                  child: AspectRatio(
+                      aspectRatio: 1, child: buildImage(imagePaths[0]))),
               SizedBox(width: 8.w),
-              Expanded(child: AspectRatio(aspectRatio: 1, child: buildImage(imagePaths[1]))),
+              Expanded(
+                  child: AspectRatio(
+                      aspectRatio: 1, child: buildImage(imagePaths[1]))),
             ],
           ),
           SizedBox(height: 8.h),
@@ -85,7 +118,7 @@ class PostImageGrid extends StatelessWidget {
       );
     }
 
-    // 4 hoặc nhiều hơn → 2x2, ảnh cuối cùng overlay nếu nhiều hơn 4
+    // 4 hoặc nhiều hơn → 2x2 grid
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -98,7 +131,11 @@ class PostImageGrid extends StatelessWidget {
       itemCount: displayCount,
       itemBuilder: (context, index) {
         bool overlay = index == 3 && extraCount > 0;
-        return buildImage(imagePaths[index], overlay: overlay, extraCount: overlay ? extraCount : null);
+        return buildImage(
+          imagePaths[index],
+          overlay: overlay,
+          extraCount: overlay ? extraCount : null,
+        );
       },
     );
   }

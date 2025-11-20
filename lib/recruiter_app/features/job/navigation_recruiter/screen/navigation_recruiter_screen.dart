@@ -6,7 +6,7 @@ import 'package:job_connect/features/mini_social/screens/messeger/social_messeng
 import 'package:job_connect/features/navigation/widgets/custom_appbar_with_drawer/custom_appbar_with_drawer.dart';
 import 'package:job_connect/features/navigation/widgets/custom_appbar_with_drawer/drawer_recruiter_section.dart';
 import 'package:job_connect/features/profile/model/user_model.dart';
-import 'package:job_connect/recruiter_app/features/hr/screens/hr_home_screen.dart';
+import 'package:job_connect/recruiter_app/features/hr/screen/hr_home_screen.dart';
 import 'package:job_connect/recruiter_app/features/post/screens/hr_post_job_screen.dart';
 import 'package:job_connect/recruiter_app/features/profile/screens/hr_profile_screen.dart';
 import 'package:job_connect/recruiter_app/features/job/navigation_recruiter/widget/bottom_nav_bar.dart';
@@ -54,7 +54,7 @@ class _NavigationRecruiterScreenState extends State<NavigationRecruiterScreen> {
           isLoggedIn: widget.isLoggedIn,
           idUser: widget.userAccount.idUser,
           title: 'Trang chủ',
-          bodyBuilder: HRHomeScreen(
+          bodyBuilder: HrHomeScreen(
             key: PageStorageKey('HRHomeScreen'),
             userAccount: widget.userAccount,
           ),

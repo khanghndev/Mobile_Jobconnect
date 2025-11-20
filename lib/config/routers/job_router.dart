@@ -5,7 +5,6 @@ import 'package:job_connect/features/job/screens/job_application_detail_screen.d
 import 'package:job_connect/features/job/screens/job_detail_screen.dart';
 import 'package:job_connect/features/job/screens/job_history_screen.dart';
 import 'package:job_connect/features/job/screens/job_matching_screen.dart';
-import 'package:job_connect/features/job/screens/saved_jobs_screen.dart';
 import 'package:job_connect/features/search/screens/search_screen.dart';
 
 class JobRouter {
@@ -18,7 +17,7 @@ class JobRouter {
       final isLoggedIn = extraData['isLoggedIn'];
       final idUser = extraData['idUser'];
       return buildPageWithSlideTransition(
-        SearchPage(
+        SearchScreen(
           isLoggedIn: isLoggedIn,
           idUser: idUser,
         ), 
@@ -26,7 +25,6 @@ class JobRouter {
       );
     },
     routes: [
-      // TODO: Trang công việc chi tiết
       GoRoute(
         path: 'detail',
         pageBuilder: (context, state) {
@@ -38,21 +36,6 @@ class JobRouter {
               jobPosting: jobPosting,
               idUser: idUser,
             ), 
-            state
-          );
-        },
-      ),
-
-      // TODO: Trang công việc đã lưu
-      GoRoute(
-        path: 'saved',
-        pageBuilder: (context, state) {
-          final extraData = state.extra as Map<String, dynamic>;
-          final idUser = extraData['idUser'];
-          return buildPageWithSlideTransition(
-            SavedJobsScreen(
-              idUser : idUser,
-            ),
             state
           );
         },

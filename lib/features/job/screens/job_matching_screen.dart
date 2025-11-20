@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:job_connect/config/constant/api_constants.dart';
+import 'package:job_connect/config/widgets/custom_app_bar_title_large.dart';
 import 'package:job_connect/features/job/model/job_posting_model.dart';
+import 'package:job_connect/features/job/screens/job_match_detail_screen.dart';
 import 'package:job_connect/features/profile/model/user_model.dart';
 import 'package:job_connect/features/profile/model/candidate_info_model.dart';
 import 'package:job_connect/config/services/api_service.dart';
@@ -76,13 +78,41 @@ class _JobMatchingScreenState extends State<JobMatchingScreen> {
 
   Future<void> _fetchJobs() async {
     try {
-      final response = await _apiService.get(endpoint: ApiConstants.jobPostingEndpoint);
-      if (mounted) {
-        _jobs.clear();
-        _jobs.addAll(response.map((job) => JobPostingModel.fromJson(job)));
+      final response = await _apiService.get(
+        endpoint: ApiConstants.jobPostingEndpoint,
+      );
+      
+      if (!mounted) return;
+
+      _jobs.clear();
+      
+      // ✅ Chuyển đổi an toàn với validation
+      final List<dynamic> jobsList = response is List ? response : [];
+      
+      for (var jobData in jobsList) {
+        if (jobData is Map<String, dynamic>) {
+          try {
+            final job = JobPostingModel.fromJson(jobData);
+            _jobs.add(job);
+          } catch (parseError) {
+            print('Lỗi parse job: $parseError');
+            // Tiếp tục với job tiếp theo thay vì crash
+            continue;
+          }
+        }
       }
+      
+      print('Tải thành công ${_jobs.length} công việc');
     } catch (e) {
-      print('Error fetching jobs: $e');
+      print('Lỗi tải công việc: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Lỗi tải công việc: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
@@ -351,217 +381,13 @@ class _JobMatchingScreenState extends State<JobMatchingScreen> {
   }
 
   void _showMatchDetailsDialog(BuildContext context, JobMatch jobMatch) {
-    showDialog(
-      context: context,
-      builder:
-          (context) => Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              jobMatch.job.title,
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              jobMatch.job.company!.companyName,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey[600],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.close),
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.blue.withValues(alpha:0.1),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.analytics, color: Colors.blue),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Tổng điểm phù hợp',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.blue,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                '${jobMatch.matchPercentage.toStringAsFixed(1)}%',
-                                style: const TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.blue,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    'Chi tiết đánh giá',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 12),
-                  _buildScoreItem(
-                    'Kỹ năng',
-                    jobMatch.skillScore,
-                    Icons.code,
-                    'Đánh giá dựa trên kỹ năng của bạn so với yêu cầu công việc',
-                  ),
-                  _buildScoreItem(
-                    'Kinh nghiệm',
-                    jobMatch.experienceScore,
-                    Icons.work,
-                    'Đánh giá dựa trên số năm kinh nghiệm của bạn',
-                  ),
-                  _buildScoreItem(
-                    'Học vấn',
-                    jobMatch.educationScore,
-                    Icons.school,
-                    'Đánh giá dựa trên trình độ học vấn của bạn',
-                  ),
-                  _buildScoreItem(
-                    'Vị trí',
-                    jobMatch.positionScore,
-                    Icons.business_center,
-                    'Đánh giá dựa trên vị trí công việc hiện tại của bạn',
-                  ),
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        Navigator.pop(context); // Đóng dialog
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (context) => JobDetailScreen(
-                                  idUser: widget.idUser,
-                                  jobPosting: jobMatch.job,
-                                ),
-                          ),
-                        );
-                      },
-                      icon: const Icon(Icons.arrow_forward),
-                      label: const Text('Xem chi tiết công việc'),
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-    );
-  }
-
-  Widget _buildScoreItem(
-    String title,
-    double score,
-    IconData icon,
-    String description,
-  ) {
-    // Tính phần trăm dựa trên điểm tối đa của tiêu chí (25 điểm)
-    double percentage = (score / 25) * 100;
-
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.grey[100],
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(icon, size: 20, color: Colors.grey[700]),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      title,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      '${percentage.toStringAsFixed(1)}%',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: _getMatchColor(percentage),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  description,
-                  style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                ),
-                const SizedBox(height: 8),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(4),
-                  child: LinearProgressIndicator(
-                    value: percentage / 100,
-                    backgroundColor: Colors.grey[200],
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      _getMatchColor(percentage),
-                    ),
-                    minHeight: 6,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => JobMatchDetailScreen(
+          jobMatch: jobMatch,
+          idUser: widget.idUser,
+        ),
       ),
     );
   }
@@ -569,11 +395,8 @@ class _JobMatchingScreenState extends State<JobMatchingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Công việc phù hợp',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+      appBar: CustomAppbarTitleLarge(
+        title: 'Công việc phù hợp',
         actions: [
           IconButton(icon: const Icon(Icons.refresh), onPressed: _onRefresh),
         ],

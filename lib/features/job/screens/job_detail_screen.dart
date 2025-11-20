@@ -9,7 +9,6 @@ import 'package:job_connect/features/job/model/job_posting_model.dart';
 import 'package:job_connect/features/home/model/job_saved_model.dart';
 import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/features/company/widgets/company_detail/company_detail_appbar.dart';
-import 'package:job_connect/features/job/screens/apply_job_screen.dart';
 import 'package:job_connect/features/job/widgets/job_detail/company_info_card.dart';
 import 'package:job_connect/features/job/widgets/job_detail/job_detail_section.dart';
 import 'package:job_connect/features/job/widgets/job_detail/job_detail_shimmer.dart';

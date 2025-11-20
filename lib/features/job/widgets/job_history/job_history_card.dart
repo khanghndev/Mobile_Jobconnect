@@ -95,6 +95,7 @@ class JobHistoryCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     _buildStatusChip(theme),
+                    SizedBox(width: 4.w),
                     _buildActionButtons(theme),
                   ],
                 ),

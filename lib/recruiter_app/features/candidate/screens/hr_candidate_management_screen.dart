@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:job_connect/config/enum/job_application_status.dart';
 import 'package:job_connect/config/utils/image_url.dart';
@@ -9,8 +10,8 @@ import 'package:job_connect/features/profile/model/candidate_info_model.dart';
 import 'package:job_connect/features/profile/model/user_model.dart';
 import 'package:job_connect/features/profile/service/candidate_info_service.dart';
 import 'package:job_connect/features/profile/service/user_service.dart';
-import 'package:job_connect/recruiter_app/services/job_application_service.dart';
-import 'package:job_connect/recruiter_app/services/job_posting_service.dart';
+import 'package:job_connect/features/job/service/job_application_service.dart';
+import 'package:job_connect/features/job/service/job_posting_service.dart';
 import 'package:job_connect/recruiter_app/services/recruiter_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -242,7 +243,7 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
         SnackBar(content: Text('Cập nhật trạng thái thành công')),
       );
       // ignore: use_build_context_synchronously
-      Navigator.pop(context);
+      context.pop();
     } catch (e) {
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
@@ -266,7 +267,7 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
         SnackBar(content: Text('Cập nhật trạng thái thành công')),
       );
       // ignore: use_build_context_synchronously
-      Navigator.pop(context);
+      context.pop();
     } catch (e) {
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
@@ -357,7 +358,7 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
                     ),
                   ),
                   IconButton(
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () => context.pop(),
                     icon: const Icon(Icons.close),
                   ),
                 ],

@@ -54,7 +54,13 @@ class DrawerCandidateSection extends StatelessWidget {
           DrawerItem(
             icon: Icons.document_scanner_outlined,
             title: 'Phân tích CV',
-            onTap: () => _checkLoginOrRouter(context: context, route: '/resume/analysis'),
+            onTap: () => _checkLoginOrRouter(
+              context: context, 
+              route: '/resume/analysis',
+              extra: {
+                'idUser': idUser,
+              }
+            ),
             isSelected: selectedRoute == '/resume/analysis',
           ),
           DrawerItem(
@@ -86,7 +92,13 @@ class DrawerCandidateSection extends StatelessWidget {
           DrawerItem(
             icon: Icons.home_outlined,
             title: 'Bảng tin',
-            onTap: () => _checkLoginOrRouter(context: context, route: '/social/job-board'),
+            onTap: () => _checkLoginOrRouter(
+              context: context, 
+              route: '/social/job-board',
+              extra: {
+                'idUser': idUser,
+              }
+            ),
             isSelected: selectedRoute == '/social/job-board',
           ),
           DrawerItem(
@@ -98,7 +110,13 @@ class DrawerCandidateSection extends StatelessWidget {
           DrawerItem(
             icon: Icons.edit_note_outlined,
             title: 'Tạo bài viết',
-            onTap: () => _checkLoginOrRouter(context: context, route: '/social/create-post'),
+            onTap: () => _checkLoginOrRouter(
+              context: context, 
+              route: '/social/create-post',
+              extra: {
+                'idUser': idUser,
+              }
+            ),
             isSelected: selectedRoute == '/social/create-post',
           ),
           DrawerItem(

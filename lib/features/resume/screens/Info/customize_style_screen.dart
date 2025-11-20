@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:job_connect/features/resume/screens/Info/preview_and_edit_screen.dart';
 import 'package:job_connect/features/resume/screens/Info/education_screen.dart';
 
@@ -173,7 +174,7 @@ class _CustomizeStyleScreenState extends State<CustomizeStyleScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () => context.pop(),
                   child: Text("Back"),
                 ),
                 TextButton(

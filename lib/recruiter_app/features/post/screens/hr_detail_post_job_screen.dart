@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:job_connect/features/job/model/job_posting_model.dart';
 
@@ -40,11 +41,11 @@ class HrDetailPostJobScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _sectionHeader(Icons.info, "Thông tin chung"),
-              _infoRow("Tiêu đề", jobPosting.title ?? ''),
+              _infoRow("Tiêu đề", jobPosting.title),
               _infoRow("Mức lương", "${jobPosting.salary} VND"),
-              _infoRow("Địa điểm", jobPosting.location ?? ''),
-              _infoRow("Hình thức làm việc", jobPosting.workType ?? ''),
-              _infoRow("Kinh nghiệm", jobPosting.experienceLevel ?? ''),
+              _infoRow("Địa điểm", jobPosting.location),
+              _infoRow("Hình thức làm việc", jobPosting.workType),
+              _infoRow("Kinh nghiệm", jobPosting.experienceLevel),
               _infoRow("Hạn nộp hồ sơ",
                   dateFormat.format(jobPosting.applicationDeadline ?? DateTime.now())),
               const Divider(height: 30),
@@ -120,7 +121,7 @@ class HrDetailPostJobScreen extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton.icon(
                       onPressed: () {
-                        Navigator.pop(context);
+                        context.pop();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.grey.shade400,

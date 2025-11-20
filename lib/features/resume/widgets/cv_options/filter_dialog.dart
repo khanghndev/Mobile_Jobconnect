@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class FilterDialogWidget extends StatelessWidget {
 
@@ -16,11 +17,11 @@ class FilterDialogWidget extends StatelessWidget {
       ),
       title: Row(
         children: [
-          Icon(Icons.filter_alt_outlined, color: theme.primaryColor),
+          Icon(Icons.filter_alt_outlined, color: Colors.black, size: 24.sp),
           SizedBox(width: 10.w),
-          const Text(
+          Text(
             'Lọc CV Nâng Cao',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22.sp),
           ),
         ],
       ),
@@ -30,7 +31,7 @@ class FilterDialogWidget extends StatelessWidget {
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => context.pop(),
           child: Text(
             'ĐÃ HIỂU',
             style: TextStyle(

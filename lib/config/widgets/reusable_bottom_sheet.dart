@@ -5,8 +5,8 @@ class FilterOption {
   final IconData icon;
   final String title;
   final String value;
-  final Color? iconColor; // màu icon tùy chỉnh
-  final VoidCallback? onTapItem; // callback khi nhấn vào item
+  final Color? iconColor;
+  final VoidCallback? onTapItem;
 
   FilterOption({
     required this.icon,
@@ -24,6 +24,7 @@ class ReusableBottomSheet extends StatefulWidget {
   final String? headerTitle;
   final IconData? headerIcon;
   final bool showRadio;
+
   const ReusableBottomSheet({
     super.key,
     required this.options,
@@ -49,10 +50,12 @@ class _ReusableBottomSheetState extends State<ReusableBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16.h),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).canvasColor,
         borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
       ),
       child: Column(
@@ -65,7 +68,7 @@ class _ReusableBottomSheetState extends State<ReusableBottomSheet> {
                   : null,
               title: Text(
                 widget.headerTitle!,
-                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
           ...widget.options.map((option) {
@@ -76,10 +79,18 @@ class _ReusableBottomSheetState extends State<ReusableBottomSheet> {
                   color: Colors.grey.shade300,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(option.icon,
-                    size: 24.sp, color: option.iconColor ?? Colors.black),
+                child: Icon(
+                  option.icon,
+                  size: 24.sp,
+                  color: option.iconColor ?? Theme.of(context).iconTheme.color,
+                ),
               ),
-              title: Text(option.title, style: TextStyle(fontSize: 16.sp)),
+              title: Text(
+                option.title,
+                style: textTheme.bodyMedium?.copyWith(
+                  color: option.title.contains('Xóa') ? Colors.red : textTheme.bodyMedium?.color,
+                ),
+              ),
               trailing: widget.showRadio
                   ? Radio<String>(
                       value: option.value,

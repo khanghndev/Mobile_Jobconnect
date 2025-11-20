@@ -1,1 +1,1 @@
-enum JoinStatus { joined, pending, canJoin }
+enum JoinStatus { joined, pending, canJoin, myGroup }

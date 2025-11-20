@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:job_connect/features/resume/screens/Info/skills_screen.dart';
 import 'work_experience_screen.dart';
 
@@ -375,7 +376,7 @@ class _EducationScreenState extends State<EducationScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () => context.pop(),
                   child: Text("Quay lại"),
                 ),
                 ElevatedButton(

@@ -1,17 +1,22 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/constant/app_strings.dart';
+import 'package:job_connect/config/enum/messenger_type.dart';
+import 'package:job_connect/config/enum/post_type.dart';
 import 'package:job_connect/config/enum/user_role.dart';
 import 'package:job_connect/config/utils/dialog_utils.dart';
 import 'package:job_connect/config/utils/snackbar_app.dart';
 import 'package:job_connect/config/widgets/background_error_state.dart';
 import 'package:job_connect/config/widgets/custom_button_icon_simple.dart';
-import 'package:job_connect/config/widgets/reaction_picker.dart';
 import 'package:job_connect/config/widgets/section_title.dart';
+import 'package:job_connect/features/mini_social/model/conversation_model.dart';
 import 'package:job_connect/features/mini_social/model/social_comment_model.dart';
 import 'package:job_connect/features/mini_social/model/social_post_model.dart';
+import 'package:job_connect/features/mini_social/view_model/conversation_view_model.dart';
+import 'package:job_connect/features/mini_social/view_model/message_view_model.dart';
 import 'package:job_connect/features/mini_social/view_model/social_connection_view_model.dart';
 import 'package:job_connect/features/mini_social/widgets/shimmer/social_feed_shimmer.dart';
 import 'package:job_connect/features/mini_social/view_model/social_comment_view_model.dart';
@@ -20,7 +25,6 @@ import 'package:job_connect/features/mini_social/view_model/social_save_post_vie
 import 'package:job_connect/features/mini_social/widgets/bottom_sheet/comment_bottom_sheet.dart';
 import 'package:job_connect/features/mini_social/widgets/bottom_sheet/save_bottom_sheet.dart';
 import 'package:job_connect/features/mini_social/widgets/bottom_sheet/share_bottom_sheet.dart';
-import 'package:job_connect/features/profile/model/user_model.dart';
 import 'package:job_connect/features/profile/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:job_connect/config/constant/app_colors.dart';
@@ -54,12 +58,15 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
   late final SocialSavePostViewModel socialSavePostVm;
   late final UserViewModel userVm;
   late final SocialConnectionViewModel socialConnectionVm;
+  late final ConversationViewModel conversationViewModel;
+  late final MessageViewModel messageViewModel;
   String selectedFolder = 'Bài viết yêu thích';
   
   final TextEditingController _commentController = TextEditingController();
   final TextEditingController _folderController = TextEditingController();
 
   @override
+
   void initState() {
     super.initState();
     socialPostVm = context.read<SocialPostViewModel>();
@@ -67,6 +74,8 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
     userVm = context.read<UserViewModel>();
     socialSavePostVm = context.read<SocialSavePostViewModel>();
     socialConnectionVm = context.read<SocialConnectionViewModel>();
+    conversationViewModel = context.read<ConversationViewModel>();
+    messageViewModel = context.read<MessageViewModel>();
     WidgetsBinding.instance.addPostFrameCallback((_) async{
       await userVm.loadRoleName();
       if (userVm.roleName != null) {
@@ -100,7 +109,6 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
     _scrollController.dispose();
     _animationController.dispose();
     _commentController.dispose();
-
     _folderController.dispose();
     _commentController.dispose();
 
@@ -108,7 +116,12 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
   }
 
   void _onCreatePost() {
-    context.push('/social/create-post');
+    context.push(
+      '/social/create-post',
+      extra: {
+        'idUser': widget.idUser,
+      }
+    );
   }
 
   void _onReport({required String userName, required String authorName}) {
@@ -128,75 +141,80 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
     );
   }
 
-  void _onOpenDetail(SocialPostModel post) {
-    final socialPostVm = context.read<SocialPostViewModel>();
-    final userVm = context.read<UserViewModel>();
+  void _onDeletePost(String idPost) {
+    DialogUtils.showConfirmationDialog(
+      context: context,
+      title: "Xóa bài viết",
+      message: "Bạn muốn xóa bài viết nây?",
+      icon: Icons.delete_forever_rounded,
+      onConfirm: () async {
+        socialPostVm.deletePost(idPost);
+        context.pop();
+      },
+    );
+  }
 
+  void _onOpenDetail(SocialPostModel post) {
     context.push(
       '/social/detail-post',
       extra: {
         'socialPostModel': post,
-        'onFollow': () {},
-        'onHide': () => socialPostVm.onHidePost(post.idPost),
-        'onCopyLink': () => _onCopyPostLink(post.idPost),
-        'onReport': () => _onReport(
-          authorName: post.userName ?? 'Người dùng ${AppStrings.appName}',
-          userName: userVm.currentUser!.userName,
-        ),
-        'onOpenProfile': () => _onOpenProfile(post.idUser),
-        'onDeletePost': () => socialPostVm.deletePost(post.idPost),
-        'onEditPost': () => socialPostVm.updatePost(post),
-        'isLiked': socialPostVm.isPostLiked(post.idPost),
-        'isSaved': socialPostVm.isPostSaved(post.idPost),
-        'roleName' : userVm.roleName,
-        'onLike': () => socialPostVm.onToggleLike(post.idPost),
-        'onSave': () => _onSavePost(context, post),
-        'onShare': () => _onShowBottomSheet(
-          postId: post.idPost,
-          type: 'share',
-          onShare: () => socialPostVm.onSharePost(post.idPost),
-        ),
-        'onComment': () => _onShowBottomSheet(
-          postId: post.idPost,
-          type: 'comment',
-          onComment: () => socialPostVm.onCommentPost(post.idPost),
-        ),
-        'onShowReactions': () => _onShowReactions(),
-        'onGoToGroup': () => _onGoToGroup(post.idGroup ?? ''),
+        'isLoggedIn': true, // hoặc lấy từ trạng thái hiện tại
+        'idUser': userVm.currentUser?.idUser ?? '',
       },
     );
   }
 
   Future<void> _onSavePost(BuildContext context, SocialPostModel socialPost) async {
+    if (socialPost.isSaved) {
+      await socialSavePostVm.deleteSavedPost(socialPost.idPost);
+      socialPostVm.updateLocalSavedState(socialPost.idPost, false);
+      if (context.mounted) {
+        SnackbarApp.show(
+          context,
+          title: 'Đã bỏ lưu',
+          message: 'Bài viết đã được xoá khỏi "Bộ sưu tập yêu thích"',
+          backgroundColor: BackgroundColors.backgroundWarningPrimary,
+        );
+      }
+      return;
+    }
+
     final folders = await socialSavePostVm.getSavedFolders();
     const defaultFolder = 'Bộ sưu tập yêu thích';
     final folderToSelect = folders.isNotEmpty ? folders.first : defaultFolder;
+
     _onShowBottomSheet(
       postId: socialPost.idPost,
       type: 'save',
       onSave: (String? selected) async {
         final folderName = selected ?? folderToSelect;
+
         await socialSavePostVm.toggleSavePostWithFolder(
           idPost: socialPost.idPost,
           selectedFolder: folderName,
         );
+
+        final isNowSaved = socialSavePostVm.isPostSaved(socialPost.idPost);
+
+        socialPostVm.updateLocalSavedState(socialPost.idPost, isNowSaved);
+
         if (socialSavePostVm.isSuccess && context.mounted) {
           SnackbarApp.show(
             context,
             title: 'Thành công',
-            message: 'Đã lưu vào "$folderName"',
+            message: isNowSaved
+                ? 'Đã lưu vào "$folderName"'
+                : 'Đã bỏ lưu bài viết',
             backgroundColor: BackgroundColors.backgroundSuccessPrimary,
           );
-        }
-        if (socialSavePostVm.errorMessage != null && context.mounted) {
+        } else if (socialSavePostVm.errorMessage != null && context.mounted) {
           DialogUtils.showConfirmationDialog(
             context: context,
             title: "Thông báo",
             message: "Lưu bài viết thất bại: ${socialSavePostVm.errorMessage}",
-            icon: Icons.delete_forever_rounded,
-            onConfirm: () async {
-              
-            },
+            icon: Icons.error_outline_rounded,
+            onConfirm: () async => context.pop(),
           );
         }
       },
@@ -205,6 +223,15 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
 
   void _onOpenProfile(String idUser) {
     context.push('/social/profile', extra: {'idUser': idUser});
+  }
+
+  void _onOpenEditPost(SocialPostModel socialPostModel) {
+    context.push(
+      '/social/edit-post', 
+      extra: {
+        'socialPostModel': socialPostModel
+      }
+    );
   }
 
   void onFirstPage() {
@@ -325,6 +352,7 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
             },
             onDelete: (folder) async {},
             onCreateFolder: () {
+              // TODO: tạo bộ sưu tập
               showDialog(
                 context: context,
                 builder: (ctx) => AlertDialog(
@@ -365,13 +393,17 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
     );
   }
 
-  Future<void> _showShareSheet(VoidCallback onShare) async {
+  Future<void> _showShareSheet(String postId) async {
+    final vm = context.read<SocialConnectionViewModel>();
+    await vm.getFriends(userId: userVm.currentUser!.idUser);
+
     await _showBottomSheetWrapper(
       Consumer<SocialConnectionViewModel>(
         builder: (context, vm, _) => ShareBottomSheet(
-          onShare: onShare,
+          postId: postId,
           listFriend: vm.friends,
           isLoading: vm.isLoading,
+          onSendMessage: (targetUserId, postId) => _onAccessJobToUser(postId, targetUserId),
         ),
       ),
     );
@@ -392,17 +424,108 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
         _showSaveSheet(postId);
         break;
       case 'share':
-        if (onShare != null) _showShareSheet(onShare);
+        if (onShare != null) _showShareSheet(postId);
         break;
     }
   }
 
-  void _onShowReactions() async {
-    await ReactionPicker.show(
-      context,
-      onSelected: (reaction) {
-      
+  void _onAccessJob(SocialPostModel post) async {
+    if (!mounted) return;
+    final currentUserId = userVm.currentUser?.idUser;
+    if (currentUserId == null) return;
+    ConversationModel? conversation = conversationViewModel.conversations.firstWhereOrNull(
+      (c) =>
+          c.members.length == 2 &&
+          c.members.contains(currentUserId) &&
+          c.members.contains(post.idUser),
+    );
+    if (conversation == null) {
+      conversation = await conversationViewModel.createConversation(
+        memberIds: [post.idUser, currentUserId],
+      );
+      if (conversation == null) return;
+    }
+    final otherUser = await userVm.getViewUser(post.idUser);
+    final currentAvatar = userVm.currentUser?.avatarUrl ?? '';
+    await messageViewModel.createMessage(
+      idConversation: conversation.idConversation,
+      idSender: currentUserId,
+      content: post.idPost,
+      messageType: MessengerType.text.name,
+      fileUrl: null,
+      fileName: null,
+      fileSize: null,
+    );
+    await messageViewModel.createMessage(
+      idConversation: conversation.idConversation,
+      idSender: currentUserId,
+      content: 'Tôi muốn nhận công việc này',
+      messageType: MessengerType.text.name,
+      fileUrl: null,
+      fileName: null,
+      fileSize: null,
+    );
+
+    if (!mounted) return;
+
+    context.push(
+      '/social/messenger-detail',
+      extra: {
+        'isLoggedIn': widget.isLoggedIn,
+        'idUser': widget.idUser,
+        'conversationId': conversation.idConversation,
+        'otherUserName': otherUser?.userName,
+        'otherUserId': otherUser?.idUser,
+        'otherUserAvatar': otherUser?.avatarUrl,
+        'currentUserAvatar': currentAvatar,
       },
+    );
+  }
+
+  Future<void> _onAccessJobToUser(String postId, String targetUserId) async {
+    final currentUserId = userVm.currentUser?.idUser;
+    if (currentUserId == null) return;
+
+    ConversationModel? conversation = conversationViewModel.conversations.firstWhereOrNull(
+      (c) =>
+        c.members.contains(currentUserId) &&
+        c.members.contains(targetUserId) &&
+        c.members.length == 2, // đảm bảo là 1-1 conversation
+    );
+
+      conversation ??= await conversationViewModel.createConversation(
+        memberIds: [currentUserId, targetUserId],
+      );
+
+    if (conversation == null) return;
+
+    await messageViewModel.createMessage(
+      idConversation: conversation.idConversation,
+      idSender: currentUserId,
+      content: postId,
+      messageType: 'text',
+    );
+
+    final otherUser = await userVm.getViewUser(targetUserId);
+    if (!mounted) return;
+
+    context.push('/social/messenger-detail', extra: {
+      'isLoggedIn': widget.isLoggedIn,
+      'idUser': widget.idUser,
+      'conversationId': conversation.idConversation,
+      'otherUserName': otherUser?.userName,
+      'otherUserId': otherUser?.idUser,
+      'otherUserAvatar': otherUser?.avatarUrl,
+      'currentUserAvatar': userVm.currentUser?.avatarUrl ?? '',
+    });
+  }
+
+  void _onSearchUser(String idUser) async {
+    context.push(
+      '/social/search',
+      extra: {
+        'idUser' : idUser
+      }
     );
   }
 
@@ -443,11 +566,12 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
                             username: userVm.currentUser?.userName ?? "Chưa có tên người dùng",
                             placeholder: 'Có gì mới?',
                           ),
-                          onSearch: widget.onSearch,
+                          onSearch: ()=>_onSearchUser(userVm.currentUser!.idUser),
                           onCreatePost: _onCreatePost,
                         ),
                       ),
                       Divider(height: 20.h),
+                      
                     ],
                   ),
                 ),
@@ -458,50 +582,39 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
                       final isLast = index == socialPostVm.posts.length - 1;
                       return Column(
                         children: [
-                          Consumer<SocialSavePostViewModel>(
-                            builder: (context, saveVm, _) {
-                              return PostItem(
-                                socialPostModel: post,
-                                isLiked: socialPostVm.isPostLiked(post.idPost),
-                                isSaved: post.isSaved,
-                                idUser: socialPostVm.currentUserId,
-                                roleName: userVm.roleName!,
-                                isFollowedOrTaken: userVm.roleName!.toLowerCase() == UserRole.candidate.name ? true : false,
-                                onFollow: () {
-                                  if (userVm.roleName!.toLowerCase() == UserRole.recruiter.name) {
-                                    //TODO: Theo dõi người dùng
-                                    socialPostVm.onToggleFollow(post.idUser, false);
-                                  } else if (userVm.roleName!.toLowerCase() == UserRole.candidate.name){
-                                    //TODO: Nhận việc
-                                    
-                                  }
-                                },
-                                onDeletePost: () => socialPostVm.deletePost(post.idPost),
-                                onEditPost: () => socialPostVm.updatePost(post),
-                                onLike: () => socialPostVm.onToggleLike(post.idPost),
-                                onSave: () => _onSavePost(context, post),
-                                onShare: () => _onShowBottomSheet(
-                                  postId: post.idPost,
-                                  type: 'share',
-                                  onShare: () => socialPostVm.onSharePost(post.idPost)
-                                ),
-                                onHide: () => socialPostVm.onHidePost(post.idPost),
-                                onCopyLink: () => _onCopyPostLink(post.idPost),
-                                onOpenDetail: () => _onOpenDetail(post),
-                                onOpenProfile: () => _onOpenProfile(post.idUser),
-                                onReport: () => _onReport(
-                                  authorName: post.userName ?? 'Người dùng ${AppStrings.appName}',
-                                  userName: userVm.currentUser!.userName,
-                                ),
-                                onComment: () => _onShowBottomSheet(
-                                  postId: post.idPost,
-                                  type: 'comment',
-                                  onComment: () => socialPostVm.onCommentPost(post.idPost),
-                                ),
-                                onShowReactions: _onShowReactions,
-                                onGoToGroup: () => _onGoToGroup(post.idGroup!),
-                              );
-                            }
+                          PostItem(
+                            socialPostModel: post,
+                            isLiked: socialPostVm.isPostLiked(post.idPost),
+                            isSaved: post.isSaved,
+                            isAccessJob: post.postType == PostType.job.name,
+                            idUser: socialPostVm.currentUserId,
+                            roleName: userVm.roleName!,
+                            onDeletePost: () => _onDeletePost(post.idPost),
+                            onEditPost: () => _onOpenEditPost(post),
+                            onLike: () => socialPostVm.onToggleLike(post.idPost),
+                            onSave: () => _onSavePost(context, post),
+                            onShare: () => _onShowBottomSheet(
+                              postId: post.idPost,
+                              type: 'share',
+                              onShare:() => _onAccessJob(post)
+                            ),
+                            onHide: () => socialPostVm.onHidePost(post.idPost),
+                            onCopyLink: () => _onCopyPostLink(post.idPost),
+                            onOpenDetail: () => _onOpenDetail(post),
+                            onOpenProfile: () => _onOpenProfile(post.idUser),
+                            onReport: () => _onReport(
+                              authorName: post.userName ?? 'Người dùng ${AppStrings.appName}',
+                              userName: userVm.currentUser!.userName,
+                            ),
+                            onComment: () => _onShowBottomSheet(
+                              postId: post.idPost,
+                              type: 'comment',
+                              onComment: () => socialPostVm.onCommentPost(post.idPost),
+                            ),
+                            onAccessJob: post.idUser == userVm.currentUser?.idUser 
+                              ? (){} 
+                              : () => _onAccessJob(post),
+                            onGoToGroup: () => _onGoToGroup(post.idGroup!),
                           ),
                           SizedBox(
                             height: 4.h,

@@ -92,7 +92,7 @@ class GroupPostService {
     );
   }
 
-  //TODO: DELETE /api/GroupPosts/{id} - Xóa bài viết
+  //TODO: DELETE /api/GroupPosts/{id} - Xóa nhóm
   Future<void> deleteGroupPost({required String id}) async {
     return _handleApi(
       () async {

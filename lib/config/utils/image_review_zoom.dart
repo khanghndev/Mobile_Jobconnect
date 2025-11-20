@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/constant/app_colors.dart';
 
 class ImageReviewZoom extends StatelessWidget {
@@ -43,7 +44,7 @@ class ImageReviewZoom extends StatelessWidget {
                 color: IconColors.iconBrandOnbrand,
                 size: 30.sp, // size theo sp
               ),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => context.pop(),
             ),
           ),
 

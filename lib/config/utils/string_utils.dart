@@ -97,6 +97,26 @@ class StringUtils {
     return regex.hasMatch(text);
   }
 
+  // Phân tách địa chỉ
+  static Map<String, String> splitLocation(String? location) {
+    if (location == null || location.isEmpty) return {};
+
+    // Giả sử địa chỉ được phân tách bằng dấu ','
+    final parts = location.split(',').map((e) => e.trim()).toList();
+
+    final Map<String, String> result = {};
+
+    // Cấp cuối là thành phố
+    if (parts.isNotEmpty) result['city'] = parts.last;
+
+    // Cấp trước là quận/huyện
+    if (parts.length > 1) result['district'] = parts[parts.length - 2];
+
+    // Cấp đầu là phường/xã
+    if (parts.length > 2) result['ward'] = parts.sublist(0, parts.length - 2).join(', ');
+
+    return result;
+  }
 
 }
 

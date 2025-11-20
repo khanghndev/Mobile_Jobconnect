@@ -62,6 +62,23 @@ class ApiConstants {
   static const String jobSavedCheck = "/api/JobSaved/{jobPost}/{user}";
   static const String jobSavedDelete = "/api/JobSaved/{jobPost}/{user}";
 
+  // JOBRECOMMENDATION - Gợi ý công vụ
+  static const String jobRecommendationEndpoint = "/api/JobRecommendation";
+  static const String jobRecommendationPersonalized = "$jobRecommendationEndpoint/personalized";
+  static const String jobRecommendationHomepage = "$jobRecommendationEndpoint/homepage";
+  static const String jobRecommendationTrendingSkills = "$jobRecommendationEndpoint/trending-skills";
+  static const String jobRecommendationPopularLocations = "$jobRecommendationEndpoint/popular-locations";
+  static const String jobRecommendationMatchScore = "$jobRecommendationEndpoint/match-score/{jobId}";
+  static const String jobRecommendationHomepagePublic = "$jobRecommendationEndpoint/homepage/public";
+  static const String jobRecommendationSmartSchedule = "$jobRecommendationEndpoint/smart-schedule";
+
+  // JOBCATEGORY - Danh sách danh mục
+  static const String jobCategory = "/api/JobCategory";
+  static const String jobCategoryAll = "/api/JobCategory/all";
+  static const String jobCategoryById = "/api/JobCategory/{id}";
+  static const String jobCategoryByCode = "/api/JobCategory/code/{code}";
+
+
   // RESUME - Hồ sơ & Kỹ năng
   static const String resumeEndpoint = "/api/Resume";
   static const String resumeSkillEndpoint = "/api/ResumeSkill";
@@ -86,8 +103,7 @@ class ApiConstants {
   static const String conversationsByUserEndpoint = "/api/Conversations/by-user/{userId}";
   static const String conversationMessagesEndpoint = "/api/Conversations/{conversationId}/messages";
   static const String conversationMembersEndpoint = "/api/Conversations/{conversationId}/members";
-  static const String conversationMemberByIdEndpoint = "/api/Conversations/{conversationId}/members/{userId}"
-  ;
+  static const String conversationMemberByIdEndpoint = "/api/Conversations/{conversationId}/members/{userId}";
   static const String notificationEndpoint = "/api/Notification";
   static const String notificationByIdEndpoint = "/api/Notification/{id}";
   static const String notificationByIdUserEndpoint = "/api/Notification/user/{idUser}";
@@ -98,7 +114,21 @@ class ApiConstants {
   static const String socialMessageMarkReadEndpoint = "/api/SocialMessages/mark-read";
   static const String socialMessageUnreadCountEndpoint = "/api/SocialMessages/unread-count";
 
-  // CHAT - Trò chuyện 
+  // CHAT - Trò chuyện
+  static const String createConversationEndpoint = "/api/Conversations";
+  static const String addMemberToConversationEndpoint = "/api/Conversations/{conversationId}/members";
+  static const String removeMemberFromConversationEndpoint = "/api/Conversations/{conversationId}/members/{userId}";
+  static const String getConversationsByUserEndpoint = "/api/Conversations/by-user/{userId}";
+  static const String getConversationMessagesEndpoint = "/api/Conversations/{conversationId}/messages";
+
+  // MESSAGES - Tin nhắn
+  static const String createMessageEndpoint = "/api/Messages";
+  static const String sendMessageEndpoint = "/api/Messages/send";
+  static const String getMessagesByConversationIdEndpoint = "/api/Messages/by-conversation/{conversationId}";
+  static const String markMessagesAsReadEndpoint = "/api/Messages/mark-read/{conversationId}";
+  static const String getUnreadMessageCountEndpoint = "/api/Messages/unread-count/{userId}";
+
+  // CHAT - Trò chuyện
   static const String chatEndpoint = "/api/Chat"; 
   static const String chatThreadsEndpoint = "/api/chat/threads";
   static const String chatMessagesEndpoint = "/api/chat/threads";

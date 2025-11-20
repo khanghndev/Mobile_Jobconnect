@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ProfileButtonLogout extends StatelessWidget {
   final VoidCallback onPressed;
   final IconData icon;
-  final String title;
+  final String? title;
   final Color backgroundColor;
   final Color iconColor;
   final Color titleColor;
@@ -16,7 +16,7 @@ class ProfileButtonLogout extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.icon,
-    required this.title,
+    this.title,
     this.backgroundColor = Colors.blue,
     this.iconColor = Colors.white,
     this.titleColor = Colors.white,
@@ -37,7 +37,7 @@ class ProfileButtonLogout extends StatelessWidget {
         size: iconSize.sp,
       ),
       label: Text(
-        title,
+        title ?? '',
         style: theme.textTheme.titleLarge?.copyWith(
           color: titleColor,
           fontWeight: FontWeight.bold,

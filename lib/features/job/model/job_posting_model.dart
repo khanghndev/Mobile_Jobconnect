@@ -1,4 +1,8 @@
+import 'dart:convert';
 import 'package:job_connect/features/company/model/company_model.dart';
+import 'package:job_connect/features/job/model/job_category_model.dart';
+import 'work_schedule_model.dart';
+import 'skill_model.dart';
 
 class JobPostingModel {
   final String idJobPost;
@@ -34,8 +38,15 @@ class JobPostingModel {
   final double? projectBudget;
   final bool? isSeasonal;
   final bool? isUrgent;
-  final List<dynamic> workSchedules;
-  final List<dynamic> skills;
+  final JobCategoryModel? category;
+  final List<WorkScheduleModel> workSchedules;
+  final List<SkillModel> skills;
+
+  // Thêm các trường match
+  final double? matchScore;
+  final String? matchReason;
+  final List<String>? matchedSkills;
+  final double? distanceKm;
 
   JobPostingModel({
     required this.idJobPost,
@@ -71,63 +82,77 @@ class JobPostingModel {
     this.projectBudget,
     this.isSeasonal,
     this.isUrgent,
+    this.category,
     this.workSchedules = const [],
     this.skills = const [],
+    this.matchScore,
+    this.matchReason,
+    this.matchedSkills,
+    this.distanceKm,
   });
 
-  factory JobPostingModel.fromJson(Map<String, dynamic> json) =>
-      JobPostingModel(
-        idJobPost: json['idJobPost'],
-        title: json['title'],
-        description: json['description'],
-        requirements: json['requirements'],
-        salary:
-            (json['salary'] != null) ? (json['salary'] as num).toDouble() : null,
-        location: json['location'] as String? ?? '',
-        latitude: (json['latitude'] as num?)?.toDouble(),
-        longitude: (json['longitude'] as num?)?.toDouble(),
-        workType: json['workType'],
-        experienceLevel: json['experienceLevel'],
-        idCompany: json['idCompany'],
-        applicationDeadline: json['applicationDeadline'] != null
-            ? DateTime.parse(json['applicationDeadline'])
-            : null,
-        benefits: json['benefits'],
-        createdAt: DateTime.parse(json['createdAt']),
-        updatedAt: DateTime.parse(json['updatedAt']),
-        postStatus: json['postStatus'],
-        isFeatured: json['isFeatured'] ?? 0,
-        company: json['company'] != null
-            ? CompanyModel.fromJson(json['company'])
-            : null,
-        idCategory: json['idCategory'],
-        jobCategory: json['jobCategory'],
-        urgencyLevel: json['urgencyLevel'],
-        workSchedule: json['workSchedule'],
-        minHoursPerWeek: json['minHoursPerWeek'],
-        maxHoursPerWeek: json['maxHoursPerWeek'],
-        workDaysPerWeek: json['workDaysPerWeek'],
-        projectDuration: json['projectDuration'],
-        seasonalStartDate: json['seasonalStartDate'] != null
-            ? DateTime.parse(json['seasonalStartDate'])
-            : null,
-        seasonalEndDate: json['seasonalEndDate'] != null
-            ? DateTime.parse(json['seasonalEndDate'])
-            : null,
-        hourlyRate: (json['hourlyRate'] != null)
-            ? (json['hourlyRate'] as num).toDouble()
-            : null,
-        dailyRate: (json['dailyRate'] != null)
-            ? (json['dailyRate'] as num).toDouble()
-            : null,
-        projectBudget: (json['projectBudget'] != null)
-            ? (json['projectBudget'] as num).toDouble()
-            : null,
-        isSeasonal: json['isSeasonal'] ?? false,
-        isUrgent: json['isUrgent'] ?? false,
-        workSchedules: json['workSchedules'] ?? [],
-        skills: json['skills'] ?? [],
-      );
+  factory JobPostingModel.fromJson(Map<String, dynamic> json) {
+    return JobPostingModel(
+      idJobPost: json['idJobPost'] ?? '',
+      title: json['title'] ?? '',
+      description: json['description'] ?? '',
+      requirements: json['requirements'] ?? '',
+      salary: (json['salary'] as num?)?.toDouble(),
+      location: json['location'] ?? '',
+      latitude: (json['latitude'] as num?)?.toDouble(),
+      longitude: (json['longitude'] as num?)?.toDouble(),
+      workType: json['workType'] ?? '',
+      experienceLevel: json['experienceLevel'] ?? '',
+      idCompany: json['idCompany'],
+      applicationDeadline: json['applicationDeadline'] != null
+          ? DateTime.parse(json['applicationDeadline'])
+          : null,
+      benefits: json['benefits'],
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
+      postStatus: json['postStatus'] ?? '',
+      isFeatured: json['isFeatured'] ?? 0,
+      company: json['company'] != null
+          ? CompanyModel.fromJson(json['company'])
+          : null,
+      idCategory: json['idCategory'],
+      jobCategory: json['jobCategory'],
+      urgencyLevel: json['urgencyLevel'],
+      workSchedule: json['workSchedule'],
+      minHoursPerWeek: json['minHoursPerWeek'],
+      maxHoursPerWeek: json['maxHoursPerWeek'],
+      workDaysPerWeek: json['workDaysPerWeek'],
+      projectDuration: json['projectDuration'],
+      seasonalStartDate: json['seasonalStartDate'] != null
+          ? DateTime.parse(json['seasonalStartDate'])
+          : null,
+      seasonalEndDate: json['seasonalEndDate'] != null
+          ? DateTime.parse(json['seasonalEndDate'])
+          : null,
+      hourlyRate: (json['hourlyRate'] as num?)?.toDouble(),
+      dailyRate: (json['dailyRate'] as num?)?.toDouble(),
+      projectBudget: (json['projectBudget'] as num?)?.toDouble(),
+      isSeasonal: json['isSeasonal'],
+      isUrgent: json['isUrgent'],
+      category: json['category'] != null
+          ? JobCategoryModel.fromJson(json['category'])
+          : null,
+      workSchedules: (json['workSchedules'] as List<dynamic>?)
+              ?.map((e) => WorkScheduleModel.fromJson(e))
+              .toList() ??
+          [],
+      skills: (json['skills'] as List<dynamic>?)
+              ?.map((e) => SkillModel.fromJson(e))
+              .toList() ??
+          [],
+      matchScore: (json['matchScore'] as num?)?.toDouble(),
+      matchReason: json['matchReason'],
+      matchedSkills: (json['matchedSkills'] as List<dynamic>?)
+          ?.map((e) => e.toString())
+          .toList(),
+      distanceKm: (json['distanceKm'] as num?)?.toDouble(),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         'idJobPost': idJobPost,
@@ -163,8 +188,13 @@ class JobPostingModel {
         'projectBudget': projectBudget,
         'isSeasonal': isSeasonal,
         'isUrgent': isUrgent,
-        'workSchedules': workSchedules,
-        'skills': skills,
+        'category': category?.toJson(),
+        'workSchedules': workSchedules.map((e) => e.toJson()).toList(),
+        'skills': skills.map((e) => e.toJson()).toList(),
+        'matchScore': matchScore,
+        'matchReason': matchReason,
+        'matchedSkills': matchedSkills,
+        'distanceKm': distanceKm,
       };
 
   JobPostingModel copyWith({
@@ -201,8 +231,13 @@ class JobPostingModel {
     double? projectBudget,
     bool? isSeasonal,
     bool? isUrgent,
-    List<dynamic>? workSchedules,
-    List<dynamic>? skills,
+    JobCategoryModel? category,
+    List<WorkScheduleModel>? workSchedules,
+    List<SkillModel>? skills,
+    double? matchScore,
+    String? matchReason,
+    List<String>? matchedSkills,
+    double? distanceKm,
   }) {
     return JobPostingModel(
       idJobPost: idJobPost ?? this.idJobPost,
@@ -238,11 +273,16 @@ class JobPostingModel {
       projectBudget: projectBudget ?? this.projectBudget,
       isSeasonal: isSeasonal ?? this.isSeasonal,
       isUrgent: isUrgent ?? this.isUrgent,
+      category: category ?? this.category,
       workSchedules: workSchedules ?? this.workSchedules,
       skills: skills ?? this.skills,
+      matchScore: matchScore ?? this.matchScore,
+      matchReason: matchReason ?? this.matchReason,
+      matchedSkills: matchedSkills ?? this.matchedSkills,
+      distanceKm: distanceKm ?? this.distanceKm,
     );
   }
 
   @override
-  String toString() => 'JobPostingModel($idJobPost - $title)';
+  String toString() => jsonEncode(toJson());
 }

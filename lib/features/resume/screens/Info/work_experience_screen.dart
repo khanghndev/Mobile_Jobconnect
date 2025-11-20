@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:job_connect/features/resume/screens/Info/education_screen.dart';
 
 // Model cho kinh nghiệm làm việc
@@ -405,13 +406,13 @@ class _WorkExperienceScreenState extends State<WorkExperienceScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () => context.pop(),
                   child: Text("Quay lại"),
                 ),
                 ElevatedButton(
                   onPressed: _nextStep,
-                  child: Text("Tiếp tục"),
                   style: ElevatedButton.styleFrom(minimumSize: Size(120, 40)),
+                  child: Text("Tiếp tục"),
                 ),
               ],
             ),

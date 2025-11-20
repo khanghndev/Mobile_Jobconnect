@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:job_connect/features/resume/screens/Info/additional_info_screen.dart';
 import 'package:job_connect/features/resume/screens/Info/education_screen.dart';
 
@@ -184,7 +185,7 @@ that allows for professional growth and contribution to organizational success.
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () => context.pop(),
                   child: Text("Back"),
                 ),
                 TextButton(onPressed: _skipStep, child: Text("Skip")),

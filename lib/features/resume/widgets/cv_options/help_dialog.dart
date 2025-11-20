@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class HelpDialogWidget extends StatelessWidget {
   const HelpDialogWidget({
@@ -17,12 +18,13 @@ class HelpDialogWidget extends StatelessWidget {
         children: [
           Icon(
             Icons.help_center_outlined,
-            color: theme.colorScheme.secondary,
+            color: Colors.black,
+            size: 24.sp,
           ),
           SizedBox(width: 10.w),
-          const Text(
+          Text(
             'Hướng Dẫn Sử Dụng',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp),
           ),
         ],
       ),
@@ -64,7 +66,7 @@ class HelpDialogWidget extends StatelessWidget {
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => context.pop(),
           child: Text(
             'OKAY, TÔI HIỂU RỒI!',
             style: TextStyle(

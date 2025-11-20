@@ -7,11 +7,12 @@ import 'package:job_connect/features/company/model/company_model.dart';
 class FeaturedCompanyCard extends StatelessWidget {
   final CompanyModel company;
   final int index;
+  final String idUser;
 
   const FeaturedCompanyCard({
     super.key,
     required this.company,
-    required this.index,
+    required this.index, required this.idUser,
   });
 
   @override
@@ -59,7 +60,7 @@ class FeaturedCompanyCard extends StatelessWidget {
               "/company/detail",
               extra: {
                 "company" : company,
-                "idUser" : ""
+                "idUser" : idUser
               }
             );
           },

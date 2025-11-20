@@ -6,7 +6,7 @@ import 'package:job_connect/model/subscription_package_model.dart';
 import 'package:job_connect/features/payments/widgets/payment/payment_method.dart';
 import 'package:job_connect/features/profile/model/user_model.dart';
 import 'package:job_connect/features/profile/service/user_service.dart';
-import '../../../services/job_transaction_service.dart';
+import '../../../../features/job/service/job_transaction_service.dart';
 import '../../../services/subscriptionpackage_service.dart';
 import 'hr_payment_confirmation_screen.dart';
 

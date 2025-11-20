@@ -71,8 +71,6 @@ class ResumeRouter  {
       GoRoute(
         path: 'update',
         pageBuilder: (context, state) {
-          final extraData = state.extra as Map<String, dynamic>;
-          final template = extraData['template'];
           return buildPageWithSlideTransition(
             EditCvScreen(
             ),
@@ -84,8 +82,6 @@ class ResumeRouter  {
       GoRoute(
         path: 'managent',
         pageBuilder: (context, state) {
-          final extraData = state.extra as Map<String, dynamic>;
-          final template = extraData['template'];
           return buildPageWithSlideTransition(
             CvManagementScreen(
             ),
@@ -114,9 +110,11 @@ class ResumeRouter  {
         path: 'analysis',
         pageBuilder: (context, state) {
           final extraData = state.extra as Map<String, dynamic>;
-          final templateId = extraData['templateId'];
+          final idUser = extraData['idUser'];
           return buildPageWithSlideTransition(
-            CvAnalysisScreen(),
+            CvAnalysisScreen(
+              idUser: idUser
+            ),
             state
           );
         },

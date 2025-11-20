@@ -4,6 +4,7 @@ import 'package:job_connect/config/enum/join_status.dart';
 import 'package:job_connect/config/widgets/background_empty_state.dart';
 import 'package:job_connect/config/widgets/background_error_state.dart';
 import 'package:job_connect/config/widgets/custom_buttom_leading_icon.dart';
+import 'package:job_connect/config/widgets/custom_search_bar.dart';
 import 'package:job_connect/config/widgets/section_title.dart';
 import 'package:job_connect/features/mini_social/model/social_groups_model.dart';
 import 'package:job_connect/features/mini_social/widgets/connect/group_item_card.dart';
@@ -15,10 +16,13 @@ class GroupsTab extends StatelessWidget {
   final List<SocialGroupsModel> joinedGroups;
   final List<SocialGroupsModel> notJoinedGroups;
   final List<SocialGroupsModel> pendingGroups;
+  final List<SocialGroupsModel> myGroups;
   final Future<void> Function() onRefresh;
   final void Function(SocialGroupsModel group)? onJoinGroup;
   final void Function(String id)? onTapGroup;
   final VoidCallback? onCreateGroup;
+  final void Function(String id)? onDeleteGroup;
+  final TextEditingController? searchController;
 
   const GroupsTab({
     super.key,
@@ -27,10 +31,13 @@ class GroupsTab extends StatelessWidget {
     required this.joinedGroups,
     required this.pendingGroups,
     required this.notJoinedGroups,
+    required this.myGroups,
     required this.onRefresh,
     this.onJoinGroup,
     this.onTapGroup,
     this.onCreateGroup,
+    this.onDeleteGroup,
+    this.searchController,
   });
 
   @override
@@ -45,7 +52,7 @@ class GroupsTab extends StatelessWidget {
       );
     }
 
-    if (joinedGroups.isEmpty && notJoinedGroups.isEmpty) {
+    if (joinedGroups.isEmpty && notJoinedGroups.isEmpty && pendingGroups.isEmpty && myGroups.isEmpty) {
       return BackgroundEmptyState(
         onRefresh: onRefresh,
         title: 'Không có nhóm nào để hiển thị',
@@ -58,6 +65,25 @@ class GroupsTab extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
         children: [
+          SizedBox(height: 4.h),
+          // CustomSearchBar(controller: searchController, hintText: 'Tìm kiếm nhóm', borderRadius: 30.r),
+          // SizedBox(height:20.h),
+          if (myGroups.isNotEmpty) ...[
+            const SectionTitle(
+              title: 'Nhóm của bạn',
+              icon: Icons.contacts_sharp,
+            ),
+            SizedBox(height: 12.h),
+            ...myGroups.map(
+              (group) => GroupItemCard(
+                group: group,
+                joinStatus: JoinStatus.myGroup,
+                onTap: onTapGroup,
+                onDeleteGroup: onDeleteGroup,
+              ),
+            ),
+            SizedBox(height: 12.h),
+          ],
           if (joinedGroups.isNotEmpty) ...[
             const SectionTitle(
               title: 'Nhóm đã tham gia',
@@ -71,7 +97,7 @@ class GroupsTab extends StatelessWidget {
                 onTap: onTapGroup,
               ),
             ),
-            SizedBox(height: 20.h),
+            SizedBox(height: 12.h),
           ],
           if (pendingGroups.isNotEmpty) ...[
             const SectionTitle(
@@ -86,7 +112,7 @@ class GroupsTab extends StatelessWidget {
                 onTap: onTapGroup,
               ),
             ),
-            SizedBox(height: 20.h),
+            SizedBox(height: 12.h),
           ],
           if (notJoinedGroups.isNotEmpty) ...[
             const SectionTitle(
@@ -104,7 +130,7 @@ class GroupsTab extends StatelessWidget {
             ),
           ],
 
-          SizedBox(height: 20.h),
+          SizedBox(height: 12.h),
           CustomButtomLeadingIcon(
             onPressed: onCreateGroup ?? () {},
             text: 'Tạo nhóm mới',
@@ -114,7 +140,7 @@ class GroupsTab extends StatelessWidget {
             textColor: theme.colorScheme.onPrimary,
             borderRadius: 50.r,
           ),
-          SizedBox(height: 20.h),
+          SizedBox(height: 12.h),
         ],
       ),
     );

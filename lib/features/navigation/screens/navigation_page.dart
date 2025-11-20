@@ -96,7 +96,7 @@ class NavigationPageState extends State<NavigationPage> with TickerProviderState
 
     final List<Widget> bodies = [
       HomeScreen(isLoggedIn: args.loggedIn, idUser: args.userId),
-      SearchPage(idUser: args.userId, isLoggedIn: args.loggedIn),
+      SearchScreen(idUser: args.userId, isLoggedIn: args.loggedIn),
       SocialFeedScreen(isLoggedIn: args.loggedIn, idUser: args.userId, onSearch: _onSearch,),
       SocialMessengerScreen(isLoggedIn: args.loggedIn, idUser: args.userId),
       ProfilePageScreen(isLoggedIn: args.loggedIn, idUser: args.userId),

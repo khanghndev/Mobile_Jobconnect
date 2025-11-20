@@ -13,10 +13,10 @@ class FileViewerScreen extends StatefulWidget {
   final String fileName;
 
   const FileViewerScreen({
-    Key? key,
+    super.key,
     required this.fileUrl,
     required this.fileName,
-  }) : super(key: key);
+  });
 
   @override
   State<FileViewerScreen> createState() => _FileViewerScreenState();

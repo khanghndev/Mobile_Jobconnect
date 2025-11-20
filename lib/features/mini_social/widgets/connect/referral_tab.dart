@@ -98,7 +98,7 @@ class ReferralTabWidget extends StatelessWidget {
           ),
           
           CustomButtomLeadingIcon(
-            onPressed: () => onShare,
+            onPressed: onShare,
             text: "Chia sẻ mã giới thiệu",
             icon: Icons.share_outlined,
             iconColor: theme.colorScheme.onPrimary,

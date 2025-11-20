@@ -76,6 +76,27 @@ class SocialGroupsService {
     );
   }
 
+  // TODO: GET /api/SocialGroups/my-group - Lấy danh sách nhóm của tôi
+  Future<List<SocialGroupsModel>> getMyGroups({required String userId, required String createdBy}) async {
+    return _handleApi(
+      () async {
+        final res = await _apiService.get(
+          endpoint: ApiConstants.socialGroupsEndpoint,
+          queryParams: {
+            'userId': userId,
+            'createdBy': createdBy,
+          },
+        );
+        return ApiResponseParser.parseList(
+          res: res,
+          fromJson: (json) => SocialGroupsModel.fromJson(json),
+          errorMsg: 'Phản hồi không hợp lệ từ API (get my groups)',
+        );
+      },
+      'Lỗi khi tải danh sách nhóm của tôi',
+    );
+  }
+
   /// TODO: GET /api/SocialGroups/search?q=keyword - Tìm kiếm nhóm
   Future<List<SocialGroupsModel>> searchGroups({required String keyword}) async {
     return _handleApi(
@@ -126,67 +147,118 @@ class SocialGroupsService {
     );
   }
 
-  /// TODO: PUT /api/SocialGroups/{id} - Cập nhật nhóm
-  Future<SocialGroupsModel> updateGroup({required String id, required SocialGroupsModel group}) async {
-    return _handleApi(
+  /// PUT /api/SocialGroups/{id}?userId=xxx - Cập nhật nhóm
+  Future<void> updateGroup({
+    required String id,
+    required String userId,
+    required String groupName,
+    required String description,
+    required String privacy, // "private" hoặc "public"
+    String? coverImageUrl,
+    String? avatarUrl,
+    bool? requirePostApproval,
+    List<String>? tags,
+  }) async {
+    await _handleApi(
       () async {
-        final endpoint = ApiConstants.socialGroupByIdEndpoint.replaceFirst('{id}', id);
-        final res = await _apiService.put(
+        final endpoint =
+            ApiConstants.socialGroupByIdEndpoint.replaceFirst('{id}', id);
+
+        final body = {
+          "groupName": groupName,
+          "description": description,
+          "privacy": privacy,
+          "coverImageUrl": coverImageUrl ?? "",
+          "avatarUrl": avatarUrl ?? "",
+          "requirePostApproval": requirePostApproval ?? true,
+          "tags": tags ?? [],
+        };
+
+        // PUT request với query param userId
+        await _apiService.put(
           endpoint: endpoint,
-          body: group.toJson(),
+          body: body,
+          queryParams: {"userId": userId},
         );
-        return ApiResponseParser.parseObject(
-          res: res,
-          fromJson: (json) => SocialGroupsModel.fromJson(json),
-          errorMsg: 'Phản hồi không hợp lệ từ API (update group)',
-        );
+
+        // không parse response vì backend trả về 200 OK không body
       },
       'Lỗi khi cập nhật nhóm',
     );
   }
 
   /// TODO: DELETE /api/SocialGroups/{id} - Xóa nhóm
-  Future<void> deleteGroup({required String id}) async {
+  Future<void> deleteGroup({required String id, required String userId}) async {
     return _handleApi(
       () async {
         final endpoint = ApiConstants.socialGroupByIdEndpoint.replaceFirst('{id}', id);
-        await _apiService.delete(endpoint: endpoint);
+        await _apiService.delete(
+          endpoint: endpoint,
+          queryParams: {
+            'userId': userId
+          }
+        );
       },
       'Lỗi khi xóa nhóm',
     );
   }
 
-  /// TODO: POST /api/SocialGroups/{id}/join - Tham gia nhóm
+    /// POST /api/SocialGroups/{id}/join - Tham gia nhóm
   Future<void> joinGroup({
     required String idGroup,
     required String userId,
   }) async {
     return _handleApi(
       () async {
-        final endpoint = '${ApiConstants.socialGroupByIdEndpoint.replaceFirst('{id}', idGroup)}/join?userId=$userId';
-        await _apiService.post(endpoint: endpoint, body: {});
+        final endpoint =
+            '${ApiConstants.socialGroupByIdEndpoint.replaceFirst('{id}', idGroup)}/join';
+
+        // Gọi API POST với query param userId
+        await _apiService.post(
+          endpoint: endpoint,
+          queryParams: {'userId': userId},
+        );
+
+        // backend trả về 200 OK không body
       },
       'Lỗi khi tham gia nhóm',
     );
   }
 
-  /// TODO: POST /api/SocialGroups/{id}/leave - Rời nhóm
-  Future<void> leaveGroup({required String id}) async {
+  /// POST /api/SocialGroups/{id}/leave - Rời nhóm
+  Future<void> leaveGroup({
+    required String idGroup,
+    required String userId,
+  }) async {
     return _handleApi(
       () async {
-        final endpoint = '${ApiConstants.socialGroupByIdEndpoint.replaceFirst('{id}', id)}/leave';
-        await _apiService.post(endpoint: endpoint, body: {});
+        final endpoint =
+            ApiConstants.socialGroupLeaveEndpoint.replaceFirst('{id}', idGroup);
+
+        // Gọi API POST với query param userId
+        await _apiService.post(
+          endpoint: endpoint,
+          queryParams: {'userId': userId},
+        );
       },
       'Lỗi khi rời nhóm',
     );
   }
 
-  /// TODO: GET /api/SocialGroups/{id}/members - Lấy danh sách thành viên nhóm
-  Future<List<GroupMemberModel>> getGroupMembers({required String groupId}) async {
+  // GET /api/SocialGroups/{id}/members - Lấy danh sách thành viên nhóm
+  Future<List<GroupMemberModel>> getGroupMembers({
+    required String groupId,
+  }) async {
     return _handleApi(
       () async {
-        final endpoint = '${ApiConstants.socialGroupByIdEndpoint.replaceFirst('{id}', groupId)}/members';
+        // endpoint với path param
+        final endpoint =
+            '${ApiConstants.socialGroupByIdEndpoint.replaceFirst('{id}', groupId)}/members';
+
+        // GET request
         final res = await _apiService.get(endpoint: endpoint);
+
+        // parse danh sách JSON thành List<GroupMemberModel>
         return ApiResponseParser.parseList(
           res: res,
           fromJson: (json) => GroupMemberModel.fromJson(json),
@@ -197,42 +269,58 @@ class SocialGroupsService {
     );
   }
 
-  /// TODO: PUT /api/SocialGroups/{id}/members/role - Cập nhật vai trò thành viên
+  /// PUT /api/SocialGroups/{id}/members/role - Cập nhật vai trò thành viên
   Future<void> updateMemberRole({
-    required String groupId,
-    required String userId,
-    required String role,
+    required String groupId,       // ID nhóm
+    required String currentUserId, // ID người thao tác
+    required String targetUserId,  // ID thành viên cần cập nhật
+    required String role,          // Vai trò mới ("admin", "member", ...)
   }) async {
     return _handleApi(
       () async {
-        final endpoint = '${ApiConstants.socialGroupByIdEndpoint.replaceFirst('{id}', groupId)}/members/role';
+        final endpoint =
+            '${ApiConstants.socialGroupByIdEndpoint.replaceFirst('{id}', groupId)}/members/role';
+
+        // Body JSON theo BE
+        final body = {
+          "idGroup": groupId,
+          "idUser": targetUserId,
+          "roleInGroup": role,
+        };
+
         await _apiService.put(
-          endpoint: endpoint, 
-          body: GroupMemberModel(
-            idGroup: groupId,
-            idUser: userId,
-            role: role,
-            joinedAt: DateTime.now(), 
-          ).toJson(),
+          endpoint: endpoint,
+          body: body,
+          queryParams: {"currentUserId": currentUserId}, // query param
         );
+
+        // backend trả về 200 OK, không cần parse response
       },
       'Lỗi khi cập nhật vai trò thành viên',
     );
   }
 
-  /// TODO: DELETE /api/SocialGroups/{id}/members/{userId} - Xóa thành viên
-  Future<void> removeMember({
-    required String groupId,
-    required String userId,
-  }) async {
-    return _handleApi(
-      () async {
-        final endpoint = '${ApiConstants.socialGroupByIdEndpoint.replaceFirst('{id}', groupId)}/members/$userId';
-        await _apiService.delete(endpoint: endpoint);
-      },
-      'Lỗi khi xóa thành viên',
-    );
-  }
+  /// DELETE /api/SocialGroups/{id}/members/{userId}?currentUserId=xxx - Xóa thành viên
+    Future<void> removeMember({
+      required String groupId,        // ID nhóm
+      required String targetUserId,   // ID thành viên cần xóa
+      required String currentUserId,  // ID người thao tác
+    }) async {
+      return _handleApi(
+        () async {
+          final endpoint =
+              '${ApiConstants.socialGroupByIdEndpoint.replaceFirst('{id}', groupId)}/members/$targetUserId';
+
+          await _apiService.delete(
+            endpoint: endpoint,
+            queryParams: {'currentUserId': currentUserId}, // query param
+          );
+
+          // backend trả về 200 OK, không cần parse response
+        },
+        'Lỗi khi xóa thành viên',
+      );
+    }
 
   /// TODO: GET /api/SocialGroups/tags - Lấy danh sách tags
   Future<List<String>> getGroupTags() async {
@@ -255,4 +343,73 @@ class SocialGroupsService {
       'Lỗi khi tải thống kê nhóm',
     );
   }
+
+  /// POST /api/SocialGroups/{id}/members/{userId}/approve - Duyệt một thành viên
+  Future<void> approveMember({
+    required String groupId,
+    required String targetUserId,
+    required String currentUserId,
+  }) async {
+    return _handleApi(
+      () async {
+        final endpoint =
+            '${ApiConstants.socialGroupByIdEndpoint.replaceFirst('{id}', groupId)}/members/$targetUserId/approve';
+
+        await _apiService.post(
+          endpoint: endpoint,
+          queryParams: {"currentUserId": currentUserId},
+        );
+      },
+      'Lỗi khi duyệt thành viên',
+    );
+  }
+
+  /// POST /api/SocialGroups/{id}/members/approve - Duyệt một thành viên (body JSON)
+  Future<void> approveMemberWithBody({
+    required String groupId,       // ID nhóm (path param)
+    required String currentUserId, // ID người thao tác (query param)
+    required String targetUserId,  // ID thành viên cần approve (body)
+  }) async {
+    return _handleApi(
+      () async {
+        final endpoint =
+            '${ApiConstants.socialGroupByIdEndpoint.replaceFirst('{id}', groupId)}/members/approve';
+
+        final body = {
+          "idUser": targetUserId,
+          "action": "approve",
+        };
+
+        await _apiService.post(
+          endpoint: endpoint,
+          body: body,
+          queryParams: {"currentUserId": currentUserId},
+        );
+
+        // Backend trả về 200 OK, không cần parse response
+      },
+      'Lỗi khi duyệt thành viên',
+    );
+  }
+
+  /// POST /api/SocialGroups/{id}/members/{userId}/reject - Từ chối thành viên
+  Future<void> rejectMember({
+    required String groupId,
+    required String targetUserId,
+    required String currentUserId,
+  }) async {
+    return _handleApi(
+      () async {
+        final endpoint =
+            '${ApiConstants.socialGroupByIdEndpoint.replaceFirst('{id}', groupId)}/members/$targetUserId/reject';
+
+        await _apiService.post(
+          endpoint: endpoint,
+          queryParams: {"currentUserId": currentUserId},
+        );
+      },
+      'Lỗi khi từ chối thành viên',
+    );
+  }
+
 }

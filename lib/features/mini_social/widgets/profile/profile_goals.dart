@@ -3,14 +3,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProfileGoals extends StatelessWidget {
   final int posts;
-  final int views;
-  final int saves;
+  final int likes;
+  final int shared;
+  final int followers;
 
   const ProfileGoals({
     super.key,
     required this.posts,
-    required this.views,
-    required this.saves,
+    required this.likes,
+    required this.shared,
+    required this.followers,
   });
 
   @override
@@ -18,9 +20,9 @@ class ProfileGoals extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        _buildGoal(Icons.post_add_outlined, posts.toString(), "Số bài viết", Colors.purple),
-        _buildGoal(Icons.remove_red_eye, views.toString(), "Số người xem", Colors.orange),
-        _buildGoal(Icons.save_alt, saves.toString(), "Lượt lưu", Colors.amber),
+        _buildGoal(Icons.post_add_outlined, posts.toString(), "Bài viết", Colors.purple),
+        _buildGoal(Icons.remove_red_eye, posts.toString(), "Số người xem", Colors.orange),
+        _buildGoal(Icons.save_alt, shared.toString(), "Lượt lưu", Colors.amber),
       ],
     );
   }

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/constant/app_strings.dart';
 import 'package:job_connect/config/utils/image_url.dart';
 import 'package:job_connect/features/job/screens/job_history_screen.dart';
+import 'package:job_connect/features/navigation/screens/navigation_page.dart';
 import 'package:job_connect/features/profile/widgets/profile/profile_avatar_breathing.dart';
 import 'package:job_connect/features/profile/widgets/profile/profile_state_item.dart';
 
@@ -135,14 +136,15 @@ class ProfileHeaderCard extends StatelessWidget {
                 icon: Icons.bookmark_rounded,
                 color: theme.colorScheme.secondary,
                 onTap: () {
-                  context.push(
-                    '/home/search', 
-                    extra: {
-                      'isLoggedIn': true,
-                      'idUser': idUser,
-                      'initialTabIndex' : 2,
-                    }
-                  );
+                  // context.push(
+                  //   '/home/search', 
+                  //   extra: {
+                  //     'isLoggedIn': true,
+                  //     'idUser': idUser,
+                  //     'initialTabIndex' : 2,
+                  //   }
+                  // );
+                  NavigationPage.goToSavedJobsTab(context);
                 }
               ),
               ProfileStateItem(

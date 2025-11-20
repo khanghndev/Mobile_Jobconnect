@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/utils/get_adaptive_back_icon.dart';
 
 class CustomAppbarTitleLarge extends StatelessWidget implements PreferredSizeWidget {
@@ -48,13 +49,13 @@ class CustomAppbarTitleLarge extends StatelessWidget implements PreferredSizeWid
       backgroundColor: backgroundColor ?? theme.scaffoldBackgroundColor,
       foregroundColor: foregroundColor ?? theme.colorScheme.onSurface,
       leading: showBackButton
-          ? IconButton(
-              icon: Icon(
+          ? GestureDetector(
+              onTap: onBack ?? () => context.pop(),
+              child: Icon(
                 leadingIcon ?? getAdaptiveBackIcon(context),
                 size: iconSize ?? 20.sp,
                 color: iconColor ?? theme.colorScheme.onSurface,
               ),
-              onPressed: onBack ?? () => Navigator.of(context).pop(),
             )
           : null,
       actions: actions,
