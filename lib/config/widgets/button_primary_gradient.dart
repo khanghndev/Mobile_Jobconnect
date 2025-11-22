@@ -8,6 +8,7 @@ class ButtonPrimaryGradient extends StatelessWidget {
   final List<Color>? gradientColors;
   final double height;
   final double borderRadius;
+  final Color? textColor;
 
   const ButtonPrimaryGradient({
     super.key,
@@ -16,6 +17,7 @@ class ButtonPrimaryGradient extends StatelessWidget {
     this.gradientColors,
     this.height = 55,
     this.borderRadius = 14,
+    this.textColor,
   });
 
   @override
@@ -55,7 +57,7 @@ class ButtonPrimaryGradient extends StatelessWidget {
           style: Theme.of(context).textTheme.titleMedium!.copyWith(
             fontSize: 16.sp,
             fontWeight: FontWeight.w700,
-            color: TextColors.textBrandOnbrand,
+            color: textColor ?? TextColors.textBrandOnbrand,
           ),
         ),
       ),

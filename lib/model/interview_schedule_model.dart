@@ -43,6 +43,29 @@ class InterviewScheduleModel {
         'note': note,
       };
 
+  // copyWith method
+  InterviewScheduleModel copyWith({
+    String? idSchedule,
+    String? idJobPost,
+    String? idUser,
+    DateTime? interviewDate,
+    String? interviewMode,
+    String? location,
+    String? interviewer,
+    String? note,
+  }) {
+    return InterviewScheduleModel(
+      idSchedule: idSchedule ?? this.idSchedule,
+      idJobPost: idJobPost ?? this.idJobPost,
+      idUser: idUser ?? this.idUser,
+      interviewDate: interviewDate ?? this.interviewDate,
+      interviewMode: interviewMode ?? this.interviewMode,
+      location: location ?? this.location,
+      interviewer: interviewer ?? this.interviewer,
+      note: note ?? this.note,
+    );
+  }
+
   @override
   String toString() {
     return 'InterviewScheduleModel($idSchedule) for job=$idJobPost user=$idUser at $interviewDate';

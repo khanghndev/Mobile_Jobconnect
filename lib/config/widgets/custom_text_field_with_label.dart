@@ -23,6 +23,7 @@ class CustomTextFieldWithLabel extends StatelessWidget {
   final Color? hintTextColor;
   final Color? labelTextColor;
   final double? borderRadius;
+  final bool? readOnly;
 
   const CustomTextFieldWithLabel({
     super.key,
@@ -44,7 +45,8 @@ class CustomTextFieldWithLabel extends StatelessWidget {
     this.borderColor,
     this.hintTextColor,
     this.labelTextColor,
-    this.borderRadius
+    this.borderRadius,
+    this.readOnly
   });
 
   @override
@@ -55,6 +57,7 @@ class CustomTextFieldWithLabel extends StatelessWidget {
       controller: controller,
       keyboardType: keyboardType,
       validator: validator,
+      readOnly: readOnly ?? false,
       onTap: onTap,
       maxLines: maxLines,
       inputFormatters: inputFormatters,

@@ -1,25 +1,25 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:job_connect/config/enum/job_transaction_status.dart';
+import 'package:job_connect/config/utils/format.dart';
+import 'package:job_connect/config/widgets/custom_app_bar_title_large.dart';
+import 'package:job_connect/config/widgets/background_empty_state.dart';
+import 'package:job_connect/config/widgets/background_error_state.dart';
 import 'package:job_connect/features/job/model/job_transaction_model.dart';
-import 'package:job_connect/model/subscription_package_model.dart';
+import 'package:job_connect/features/job/service/job_transaction_service.dart';
 import 'package:job_connect/features/payments/widgets/payment/payment_method.dart';
 import 'package:job_connect/features/profile/model/user_model.dart';
 import 'package:job_connect/features/profile/service/user_service.dart';
-import '../../../../features/job/service/job_transaction_service.dart';
-import '../../../services/subscriptionpackage_service.dart';
+import 'package:job_connect/model/subscription_package_model.dart';
+import 'package:job_connect/recruiter_app/services/subscriptionpackage_service.dart';
 import 'hr_payment_confirmation_screen.dart';
+import 'package:job_connect/features/mini_social/widgets/connect/groups_tab_shimmer.dart';
 
-// ignore: must_be_immutable
 class HrPaymentScreen extends StatefulWidget {
-  String idBank;
-  double balance;
-  String recruiterId;
-  SubscriptionPackageModel package;
-  HrPaymentScreen({
+  final String recruiterId;
+  final SubscriptionPackageModel package;
+  const HrPaymentScreen({
     super.key,
-    required this.idBank,
-    required this.balance,
     required this.recruiterId,
     required this.package,
   });
@@ -29,47 +29,92 @@ class HrPaymentScreen extends StatefulWidget {
 }
 
 class _HrPaymentScreenState extends State<HrPaymentScreen> {
-  //Khởi tạo service
   final UserService _accountService = UserService();
   final SubscriptionPackageService _subscriptionpackageService = SubscriptionPackageService();
   final JobTransactionService _jobtransactionService = JobTransactionService();
-  // Biến lưu trạng thái
+
   bool _isLoading = true;
   String? _error;
-  // Biến lưu thông tin tài khoản
-  late UserModel _account;  
-  late SubscriptionPackageModel _package;
-  late JobTransactionModel _jobTransaction; // Biến lưu thông tin giao dịch
 
-  // Danh sách các phương thức thanh toán
+  late UserModel _account;
+  late SubscriptionPackageModel _package;
+  late JobTransactionModel _jobTransaction;
+
   final List<PaymentMethod> _paymentMethods = [
-     PaymentMethod(
-      id: 'banking', 
-      name: 'Thanh toán nội bộ', 
+    PaymentMethod(
+      id: 'banking',
+      name: 'Thanh toán nội bộ',
       icon: Icons.account_balance,
       isSelected: true,
     ),
-    // PaymentMethod(
-    //   id: 'vn_pay', 
-    //   name: 'VN Pay', 
-    //   icon: Icons.qr_code_scanner,
-    //   isSelected: false,
-    // ),
-    // PaymentMethod(
-    //   id: 'zalo_pay', 
-    //   name: 'Zalo Pay', 
-    //   icon: Icons.savings,
-    //   isSelected: false,
-    // ),
-    // PaymentMethod(
-    //   id: 'momo', 
-    //   name: 'Ví MoMo', 
-    //   icon: Icons.account_balance_wallet,
-    //   isSelected: false,
-    // ),
   ];
 
-  // Chọn phuơng thức thanh toán
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _package = widget.package; // gán package ngay từ đầu
+    _fetchData();
+  }
+
+  Future<void> _fetchData() async {
+    try {
+      final account = await _accountService.getUserById(id: widget.recruiterId);
+      final package = await _subscriptionpackageService.fetchSubscriptionPackageById(
+        packageId: widget.package.idPackage,
+      );
+
+      if (!mounted) return;
+      setState(() {
+        _account = account;
+        _package = package;
+        _nameController.text = account.userName;
+        _phoneController.text = account.phoneNumber ?? "Chưa có số điện thoại";
+        _emailController.text = account.email;
+        _isLoading = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _error = e.toString();
+        _isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Lỗi lấy dữ liệu: $e'), backgroundColor: Colors.red),
+      );
+    }
+  }
+
+  Future<void> _createTransaction() async {
+    try {
+      final now = DateTime.now();
+      final jobTransaction = await _jobtransactionService.createTransaction(
+        transaction: JobTransactionModel(
+          idTransaction: '',
+          idUser: widget.recruiterId,
+          idPackage: _package.idPackage,
+          amount: _package.price,
+          paymentMethod: _paymentMethods.firstWhere((m) => m.isSelected).name,
+          transactionDate: now,
+          status: JobTransactionStatus.pending.name,
+        ),
+      );
+      if (!mounted) return;
+      setState(() {
+        _jobTransaction = jobTransaction;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _error = e.toString());
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Giao dịch thất bại'), backgroundColor: Colors.red),
+      );
+    }
+  }
+
   void _selectPaymentMethod(String id) {
     setState(() {
       for (var method in _paymentMethods) {
@@ -78,217 +123,91 @@ class _HrPaymentScreenState extends State<HrPaymentScreen> {
     });
   }
 
-  // Lấy toàn bộ dữ liệu 
-  Future<void> _fetchData() async {
-    try {
-      // Lấy thông tin tài khoản
-      final account = await _accountService.getUserById(id:widget.recruiterId);
-      // Lấy gói dịch vụ
-      final package = await _subscriptionpackageService.fetchSubscriptionPackageById(packageId: widget.package.idPackage);
-      if (!mounted) return;
-      setState(() {
-        _account = account;
-        _package = package;
-        _isLoading = false;
-      });
-    } catch (e) {
-      if (!mounted) return;
-      setState(() {
-        _error = e.toString();
-        _isLoading = false;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Lỗi lấy dữ liệu: $e'), backgroundColor: Colors.red,),
-      );
-    }
-  }
-
-  // Hàm tạp giao dịch mới và lưu về CSDL
-  Future<void> _createTransaction() async {
-    try {
-      // Lấy ngày giờ
-      final now = DateTime.now();
-      // Tạo giao dịch mới
-      final jobTransaction = await _jobtransactionService.createTransaction(
-        transaction:  JobTransactionModel(
-          idTransaction: '', // Tạo id tự động
-          idUser: widget.recruiterId,
-          idPackage: _package.idPackage,
-          amount: _package.price,
-          paymentMethod: _paymentMethods.firstWhere((method) => method.isSelected).name,
-          transactionDate: now,
-          status: JobTransactionStatus.pending.name, // ban đầu ở pending, xác nhận thành accepted
-        ),
-      );
-      if (!mounted) return;
-      setState(() {
-        _jobTransaction = jobTransaction;
-        _isLoading = false;
-      });
-      return;
-    } catch (e) {
-      if (!mounted) return;
-      setState(() {
-        _error = e.toString();
-        _isLoading = false;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Giao dịch thất bại'), backgroundColor: Colors.red,),
-      );
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    // Lấy dữ liệu
-    _fetchData();
-  }
-
   @override
   Widget build(BuildContext context) {
-    // Kiểm tra trạng thái loading
-    if (_isLoading) {
-      return const Center(child: CircularProgressIndicator());
-    }
-    // Kiểm tra lỗi
-    if (_error != null) {
-      return Scaffold(
-        appBar: AppBar(title: const Text("Thanh toán")),
-        body: Center(child: Text("Lỗi: $_error")),
-      );
-    }
+    final theme = Theme.of(context);
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
-      backgroundColor: Colors.grey[100],
-      // Tiêu đề
-      appBar: AppBar(
-        elevation: 0,
-        title: const Text("Thanh toán", style: TextStyle(fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black87,
-        centerTitle: true,
-      ),
-      // Nội dung
+      backgroundColor: theme.scaffoldBackgroundColor,
+      appBar: const CustomAppbarTitleLarge(title: 'Xác nhận thanh toán'),
       body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+        child: _isLoading
+            ? GroupsTabShimmer()
+            : _error != null
+                ? Center(
+                    child: BackgroundErrorState(
+                      title: "Hệ thống đang gặp sự cố\nVui lòng thử lại sau.",
+                      onRetry: _fetchData,
+                    ),
+                  )
+                : Column(
                     children: [
-                      // DỊch vụ đã chọn
-                      _buildServicesSummary(),
-                      const SizedBox(height: 24),
-                      // Phương thức thanh toán
-                      _buildPaymentMethodsSection(),
-                      const SizedBox(height: 24),
-                      // Thông tin khách hàng
-                      _buildBillingDetailsSection(),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          padding: EdgeInsets.all(16.w),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildServiceSummary(textTheme),
+                              SizedBox(height: 24.h),
+                              _buildPaymentMethodsSection(textTheme),
+                              SizedBox(height: 24.h),
+                              _buildBillingDetailsSection(textTheme),
+                            ],
+                          ),
+                        ),
+                      ),
+                      _buildBottomBar(textTheme),
                     ],
                   ),
-                ),
-              ),
-            ),
-            _buildBottomBar(),
-          ],
-        ),
       ),
     );
   }
 
-  // Tóm tắt dịch vụ đã chọn
-  Widget _buildServicesSummary() {
+  Widget _buildServiceSummary(TextTheme textTheme) {
     return Card(
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Dịch vụ đã chọn',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16),
-            ...List.generate(1, (index) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 12.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        // ignore: deprecated_member_use
-                        color: Colors.blue.withValues(alpha:0.1),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Icon(
-                        Icons.spa,
-                        color: Colors.blue,
-                        size: 20,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            _package.packageName,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            '${_package.durationDays} ngày',
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Text(
-                      '${_formatCurrency(_package.price)} đ',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+            Text('Dịch vụ đã chọn', style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold, fontSize: 16.sp)),
+            SizedBox(height: 16.h),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 40.w,
+                  height: 40.h,
+                  decoration: BoxDecoration(
+                    color: Colors.blue.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: const Icon(Icons.spa, color: Colors.blue, size: 20),
                 ),
-              );
-            }),
-            const Divider(),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(_package.packageName, style: textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500, fontSize: 16.sp)),
+                      SizedBox(height: 4.h),
+                      Text('${_package.durationDays} ngày', style: textTheme.bodySmall?.copyWith(color: Colors.grey[600], fontSize: 12.sp)),
+                    ],
+                  ),
+                ),
+                Text(FormatUtils.formatCurrency(_package.price), style: textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, fontSize: 16.sp)),
+              ],
+            ),
+            Divider(height: 24.h, thickness: 1),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Tổng cộng',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  '${_formatCurrency(_package.price)} đ',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.blue,
-                  ),
-                ),
+                Text('Tổng cộng', style: textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, fontSize: 16.sp)),
+                Text(FormatUtils.formatCurrency(_package.price), style: textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, fontSize: 16.sp, color: Colors.blue)),
               ],
             ),
           ],
@@ -297,60 +216,34 @@ class _HrPaymentScreenState extends State<HrPaymentScreen> {
     );
   }
 
-  // Danh sách các phương thức thanh toán
-  Widget _buildPaymentMethodsSection() {
+  Widget _buildPaymentMethodsSection(TextTheme textTheme) {
     return Card(
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Phương thức thanh toán',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Danh sách các phương thức thanh toán
-            ...List.generate(_paymentMethods.length, (index) {
-              final method = _paymentMethods[index];
+            Text('Phương thức thanh toán', style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold, fontSize: 16.sp)),
+            SizedBox(height: 16.h),
+            ..._paymentMethods.map((method) {
               return InkWell(
                 onTap: () => _selectPaymentMethod(method.id),
                 child: Container(
-                  margin: const EdgeInsets.only(bottom: 12),
+                  margin: EdgeInsets.only(bottom: 12.h),
                   decoration: BoxDecoration(
-                    border: Border.all(
-                      color: method.isSelected ? Colors.blue : Colors.grey.shade300,
-                      width: method.isSelected ? 2 : 1,
-                    ),
-                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: method.isSelected ? Colors.blue : Colors.grey.shade300, width: method.isSelected ? 2 : 1),
+                    borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: EdgeInsets.all(16.w),
                     child: Row(
                       children: [
-                        Icon(method.icon, color: method.isSelected ? Colors.blue : Colors.grey[600]),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Text(
-                            method.name,
-                            style: TextStyle(
-                              fontWeight: method.isSelected ? FontWeight.bold : FontWeight.normal,
-                            ),
-                          ),
-                        ),
-                        if (method.isSelected)
-                          const Icon(
-                            Icons.check_circle,
-                            color: Colors.blue,
-                          ),
+                        Icon(method.icon, color: method.isSelected ? Colors.blue : Colors.grey[600], size: 22.sp),
+                        SizedBox(width: 16.w),
+                        Expanded(child: Text(method.name, style: textTheme.bodyMedium?.copyWith(fontWeight: method.isSelected ? FontWeight.bold : FontWeight.normal, fontSize: 16.sp))),
+                        if (method.isSelected) Icon(Icons.check_circle, color: Colors.blue, size: 20.sp),
                       ],
                     ),
                   ),
@@ -362,94 +255,57 @@ class _HrPaymentScreenState extends State<HrPaymentScreen> {
       ),
     );
   }
-  
-  // Thông tin khách hàng
-  Widget _buildBillingDetailsSection() {
+
+  Widget _buildBillingDetailsSection(TextTheme textTheme) {
     return Card(
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Thông tin khách hàng',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16),
-            _buildTextField(
-              label: 'Họ và tên',
-              hint: 'Nhập họ và tên của bạn',
-              prefixIcon: Icons.person,
-              keyboardType: TextInputType.name,
-              initialValue: _account.userName,
-              readOnly: true,
-            ),
-            _buildTextField(
-              label: 'Số điện thoại',
-              hint: 'Nhập số điện thoại của bạn',
-              prefixIcon: Icons.phone,
-              keyboardType: TextInputType.phone,
-              initialValue: _account.phoneNumber,
-              readOnly: true,
-            ),
-            _buildTextField(
-              label: 'Email',
-              hint: 'Nhập địa chỉ email của bạn',
-              prefixIcon: Icons.email,
-              keyboardType: TextInputType.emailAddress,
-              initialValue: _account.email,
-              readOnly: true,
-            ),
+            Text('Thông tin khách hàng', style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold, fontSize: 16.sp)),
+            SizedBox(height: 16.h),
+            _buildTextField(label: 'Họ và tên', hint: 'Nhập họ và tên', controller: _nameController, readOnly: true),
+            _buildTextField(label: 'Số điện thoại', hint: 'Nhập số điện thoại', controller: _phoneController, readOnly: true, keyboardType: TextInputType.phone),
+            _buildTextField(label: 'Email', hint: 'Nhập email', controller: _emailController, readOnly: true, keyboardType: TextInputType.emailAddress),
           ],
         ),
       ),
     );
   }
-  
-  // Trường nhập liệu
+
   Widget _buildTextField({
     required String label,
     required String hint,
-    required IconData prefixIcon,
-    TextInputType keyboardType = TextInputType.text,
-    String? initialValue,
+    required TextEditingController controller,
     bool readOnly = false,
+    TextInputType keyboardType = TextInputType.text,
   }) {
-    // ignore: no_leading_underscores_for_local_identifiers
-    final _ctrl = TextEditingController(text: initialValue);
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
+      padding: EdgeInsets.only(bottom: 16.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),
-          const SizedBox(height: 8),
           TextField(
-            controller: _ctrl,
-            keyboardType: keyboardType,
+            controller: controller,
             readOnly: readOnly,
+            keyboardType: keyboardType,
             decoration: InputDecoration(
-              hintText: hint,
-              hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
-              prefixIcon: Icon(prefixIcon, size: 20),
+              label: label.isEmpty ? null : Text(label),
+              hintStyle: TextStyle(color: Colors.red[400], fontSize: 10.sp),
               filled: true,
               fillColor: Colors.grey[50],
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(10.r),
                 borderSide: BorderSide(color: Colors.grey[300]!),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(10.r),
                 borderSide: const BorderSide(color: Colors.blue, width: 2),
               ),
-              contentPadding: const EdgeInsets.symmetric(vertical: 16),
+              contentPadding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 12.w),
             ),
           ),
         ],
@@ -457,77 +313,43 @@ class _HrPaymentScreenState extends State<HrPaymentScreen> {
     );
   }
 
-  // Nút thanh toán
-  Widget _buildBottomBar() {
+  Widget _buildBottomBar(TextTheme textTheme) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
         color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            // ignore: deprecated_member_use
-            color: Colors.black.withValues(alpha:0.05),
-            blurRadius: 10,
-            offset: const Offset(0, -5),
-          ),
-        ],
+        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, -5))],
       ),
       child: SafeArea(
         child: Row(
           children: [
             ElevatedButton(
               onPressed: () async {
-                // Tạo giao dịch mới với trạng thái là "pending"
                 await _createTransaction();
                 await Future.delayed(const Duration(seconds: 1));
-                // Qua trang xác nhận thanh toán
+                if (!mounted) return;
                 Navigator.push(
-                  // ignore: use_build_context_synchronously
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => PaymentConfirmationDetailScreen(
-                      idBank: widget.idBank,
-                      balance: widget.balance,
-                      idTransaction: _jobTransaction.idTransaction,
-                    ),
-                  ),
+                  MaterialPageRoute(builder: (_) => PaymentConfirmationDetailScreen(idTransaction: _jobTransaction.idTransaction)),
                 );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 14),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 36.w, vertical: 14.h),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
               ),
-              child: const Text(
-                'Thanh toán ngay',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              child: Text('Thanh toán ngay', style: textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, fontSize: 16.sp, color: Colors.white)),
             ),
-            SizedBox(width: 32),
+            SizedBox(width: 16.w),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text(
-                    'Tổng thanh toán',
-                    style: TextStyle(
-                      color: Colors.grey,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    '${_formatCurrency(_package.price)} đ',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
+                  Text('Tổng thanh toán', style: textTheme.bodySmall?.copyWith(color: Colors.grey, fontSize: 14.sp)),
+                  SizedBox(height: 4.h),
+                  Text(FormatUtils.formatCurrency(_package.price), style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold, fontSize: 18.sp)),
                 ],
               ),
             ),
@@ -536,25 +358,4 @@ class _HrPaymentScreenState extends State<HrPaymentScreen> {
       ),
     );
   }
-  
-  // Định dạng tiền tệ
-  String _formatCurrency(double amount) {
-    String fixed = amount.toStringAsFixed(2);
-    final parts = fixed.split('.');
-    String integerPart = parts[0];
-    String decimalPart = parts[1];
-    final buffer = StringBuffer();
-    for (int i = 0; i < integerPart.length; i++) {
-      if (i > 0 && (integerPart.length - i) % 3 == 0) {
-        buffer.write('.');
-      }
-      buffer.write(integerPart[i]);
-    }
-    String formatted = buffer.toString(); 
-    if (decimalPart != '00') {
-      formatted = '$formatted,$decimalPart';
-    }
-    return formatted;
-  }
-
 }

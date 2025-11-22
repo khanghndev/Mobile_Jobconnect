@@ -42,11 +42,12 @@ class CandidateInfoViewModel extends ChangeNotifier {
   }
 
   //TODO: Lấy chi tiết ứng viên theo ID
-  Future<void> getCandidateDetail(String id) async {
+  Future<CandidateInfoModel?> getCandidateDetail(String id) async {
     _setState(isDetailLoading: true, errorMessage: null);
     try {
       final detail = await _candidateService.getCandidateById(id: id);
       _setState(candidateDetail: detail, isSuccess: true);
+      return detail;
     } on ServerException catch (e) {
       _setState(errorMessage: e.toString(), isSuccess: false);
     } catch (e) {
@@ -54,6 +55,7 @@ class CandidateInfoViewModel extends ChangeNotifier {
     } finally {
       _setState(isDetailLoading: false);
     }
+    return null;
   }
 
   //TODO: Tạo ứng viên mới

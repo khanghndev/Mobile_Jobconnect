@@ -11,7 +11,7 @@ class BackgroundEmptyState extends StatelessWidget {
 
   const BackgroundEmptyState({
     super.key,
-    this.isSearching,
+    this.isSearching = false,
     required this.onRefresh, 
     required this.title, 
     required this.iconData, 

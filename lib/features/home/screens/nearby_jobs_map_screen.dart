@@ -5,256 +5,46 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart' as flutter_geocoding;
 import 'package:job_connect/config/constant/api_constants.dart';
 import 'package:job_connect/config/services/api_service.dart';
+import 'package:job_connect/config/theme/app_google_theme.dart';
 import 'package:job_connect/config/utils/format.dart';
+import 'package:job_connect/features/home/model_ui/city_model_ui.dart';
+import 'package:job_connect/features/home/widgets/nearby_jobs_map/job_list_draggable_sheet.dart';
+import 'package:job_connect/features/home/widgets/nearby_jobs_map/location_button.dart';
+import 'package:job_connect/features/home/widgets/nearby_jobs_map/search_location_bar.dart';
 import 'package:job_connect/features/job/model/job_posting_model.dart';
 import 'package:job_connect/features/job/screens/job_detail_screen.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart'; // For nice loading indicators
-import 'dart:ui'; // For custom markers
-
+import 'package:flutter_spinkit/flutter_spinkit.dart'; 
+import 'dart:ui';
 class NearbyJobsMapScreen extends StatefulWidget {
   final bool isLoggedIn;
   final String idUser;
 
   const NearbyJobsMapScreen({
-    Key? key,
+    super.key,
     required this.isLoggedIn,
     required this.idUser,
-  }) : super(key: key);
+  });
 
   @override
   State<NearbyJobsMapScreen> createState() => _NearbyJobsMapScreenState();
 }
 
-const String _mapStyleLightJson = '''
-[
-  {
-    "featureType": "poi.business",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.park",
-    "elementType": "labels.text",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  }
-]
-''';
-
-const String _mapStyleDarkJson = '''
-[
-  {
-    "elementType": "geometry",
-    "stylers": [
-      {
-        "color": "#242f3e"
-      }
-    ]
-  },
-  {
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "color": "#746855"
-      }
-    ]
-  },
-  {
-    "elementType": "labels.text.stroke",
-    "stylers": [
-      {
-        "color": "#242f3e"
-      }
-    ]
-  },
-  {
-    "featureType": "administrative.locality",
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "color": "#d59563"
-      }
-    ]
-  },
-  {
-    "featureType": "poi",
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "color": "#d59563"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.business",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.park",
-    "elementType": "geometry",
-    "stylers": [
-      {
-        "color": "#263c3f"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.park",
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "color": "#6b9a76"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.park",
-    "elementType": "labels.text",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "road",
-    "elementType": "geometry",
-    "stylers": [
-      {
-        "color": "#38414e"
-      }
-    ]
-  },
-  {
-    "featureType": "road",
-    "elementType": "geometry.stroke",
-    "stylers": [
-      {
-        "color": "#212a37"
-      }
-    ]
-  },
-  {
-    "featureType": "road",
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "color": "#9ca5b3"
-      }
-    ]
-  },
-  {
-    "featureType": "road.highway",
-    "elementType": "geometry",
-    "stylers": [
-      {
-        "color": "#746855"
-      }
-    ]
-  },
-  {
-    "featureType": "road.highway",
-    "elementType": "geometry.stroke",
-    "stylers": [
-      {
-        "color": "#1f2835"
-      }
-    ]
-  },
-  {
-    "featureType": "road.highway",
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "color": "#f3d19c"
-      }
-    ]
-  },
-  {
-    "featureType": "transit",
-    "elementType": "geometry",
-    "stylers": [
-      {
-        "color": "#2f3948"
-      }
-    ]
-  },
-  {
-    "featureType": "transit.station",
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "color": "#d59563"
-      }
-    ]
-  },
-  {
-    "featureType": "water",
-    "elementType": "geometry",
-    "stylers": [
-      {
-        "color": "#17263c"
-      }
-    ]
-  },
-  {
-    "featureType": "water",
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "color": "#515c6d"
-      }
-    ]
-  },
-  {
-    "featureType": "water",
-    "elementType": "labels.text.stroke",
-    "stylers": [
-      {
-        "color": "#17263c"
-      }
-    ]
-  }
-]
-''';
-
-class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen>
-    with TickerProviderStateMixin {
-  // Add TickerProviderStateMixin
+class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen> with TickerProviderStateMixin {
   GoogleMapController? mapController;
   final Set<Marker> _markers = {};
   bool _showJobList = false;
   bool _isLoading = true;
-  // bool _isGeocodingMarkers = false; // Có thể không cần nếu geocoding ở backend
   String _errorMessage = '';
   LatLng? _currentPositionLatLng;
-  City? _currentCity;
-  // bool _isRenderingMarkers = false; // Đã tích hợp vào _isLoading
+  CityModelUi? _currentCity;
   final ApiService _apiService = ApiService( );
   List<JobPostingModel> _allFetchedJobs = [];
-  List<JobPostingModel> _jobsInView =
-      []; // Jobs hiển thị trong DraggableScrollableSheet, được lọc theo map bounds
-
-  final TextEditingController _searchLocationController =
-      TextEditingController();
+  List<JobPostingModel> _jobsInView = [];
+  final TextEditingController _searchLocationController = TextEditingController();
   Timer? _debounce;
   Timer? _cameraIdleDebounce;
-
-  // Animation
   late AnimationController _sheetAnimationController;
   late Animation<double> _sheetHeaderFadeAnimation;
-
-  // BitmapDescriptor for custom markers
   BitmapDescriptor? _jobMarkerIcon;
   BitmapDescriptor? _currentLocationMarkerIcon;
 
@@ -310,8 +100,7 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen>
           .placemarkFromCoordinates(position.latitude, position.longitude);
       if (placemarks.isNotEmpty) {
         flutter_geocoding.Placemark place = placemarks[0];
-        _currentCity = City(
-          // Sử dụng City model của bạn
+        _currentCity = CityModelUi(
           isoCountryCode: place.isoCountryCode ?? '',
           country: place.country ?? '',
           postalCode: place.postalCode ?? '',
@@ -493,7 +282,7 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen>
     final isDarkMode =
         Theme.of(context).brightness == Brightness.dark; // Lấy theme hiện tại
     // Áp dụng style cho map
-    controller.setMapStyle(isDarkMode ? _mapStyleDarkJson : _mapStyleLightJson);
+    controller.setMapStyle(isDarkMode ? AppGoogleTheme.dark : AppGoogleTheme.light);
     if (_currentPositionLatLng != null) {
       controller.animateCamera(
         CameraUpdate.newLatLngZoom(_currentPositionLatLng!, 13.5),
@@ -723,17 +512,14 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen>
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
-      resizeToAvoidBottomInset:
-          false, // Quan trọng để bàn phím không đẩy map lên
+      resizeToAvoidBottomInset: false, 
       body: Stack(
         children: [
           GoogleMap(
             onMapCreated: _onMapCreated,
             initialCameraPosition: CameraPosition(
-              target:
-                  _currentPositionLatLng ??
-                  const LatLng(10.8231, 106.6297), // Mặc định là TP.HCM
-              zoom: 13.0, // Zoom ra xa hơn một chút ban đầu
+              target: _currentPositionLatLng ?? const LatLng(10.8231, 106.6297), // Mặc định là TP.HCM
+              zoom: 13.0, 
             ),
             markers: _markers,
             myLocationEnabled: true, // Hiển thị chấm xanh vị trí người dùng
@@ -761,537 +547,34 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen>
                 },
               );
             },
-            style:
-                isDarkMode
-                    ? _mapStyleDarkJson
-                    : _mapStyleLightJson, // Áp dụng style tùy theo theme
+            style: isDarkMode? AppGoogleTheme.dark : AppGoogleTheme.light
+          ),
+          SearchLocationBar(
+            controller: _searchLocationController,
+            mapController: mapController,
+            currentPosition: _currentPositionLatLng,
+            onSubmitted: _searchAndGoToLocation,
           ),
 
-          // Bọc Row của bạn trong một Padding để nó không bị sát các cạnh màn hình
-          Padding(
-            padding: const EdgeInsets.only(
-              // Điều chỉnh các giá trị top, left, right cho phù hợp với thiết kế của bạn
-              top:
-                  50.0, // Ví dụ: bằng với MediaQuery.of(context).padding.top + 15
-              left: 15.0,
-              right: 15.0,
-            ),
-            child: Row(
-              crossAxisAlignment:
-                  CrossAxisAlignment.center, // Căn giữa các item theo chiều dọc
-              children: [
-                // 1. Nút Back (không cần Container bọc ngoài cũng được)
-                FloatingActionButton.small(
-                  heroTag: "backButtonMap",
-                  onPressed: () => Navigator.pop(context, true),
-                  backgroundColor: theme.cardColor.withValues(alpha:0.9),
-                  elevation: 3,
-                  child: Icon(
-                    Icons.arrow_back_ios_new_rounded,
-                    color: theme.primaryColor,
-                    size: 18,
-                  ),
-                ),
-
-                // Thêm một khoảng trống nhỏ giữa 2 widget
-                const SizedBox(width: 10),
-
-                // 2. Thanh tìm kiếm (dùng Expanded để nó chiếm hết không gian còn lại)
-                Expanded(
-                  child: Material(
-                    // Material để có shadow đẹp
-                    elevation: 4.0,
-                    borderRadius: BorderRadius.circular(30.0),
-                    shadowColor: theme.shadowColor.withValues(alpha:0.3),
-                    child: TextField(
-                      controller: _searchLocationController,
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        color: theme.colorScheme.onSurface,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: 'Tìm kiếm địa điểm, thành phố...',
-                        hintStyle: TextStyle(
-                          color: theme.hintColor.withValues(alpha:0.8),
-                        ),
-                        prefixIcon: Icon(
-                          Icons.search_rounded,
-                          color: theme.primaryColor,
-                          size: 22,
-                        ),
-                        suffixIcon:
-                            _searchLocationController.text.isNotEmpty
-                                ? IconButton(
-                                  icon: Icon(
-                                    Icons.clear_rounded,
-                                    color: theme.iconTheme.color?.withValues(alpha:
-                                      0.7,
-                                    ),
-                                    size: 20,
-                                  ),
-                                  onPressed: () {
-                                    _searchLocationController.clear();
-                                    FocusScope.of(context).unfocus();
-                                    if (_currentPositionLatLng != null &&
-                                        mapController != null) {
-                                      mapController!.animateCamera(
-                                        CameraUpdate.newLatLngZoom(
-                                          _currentPositionLatLng!,
-                                          13.0,
-                                        ),
-                                      );
-                                    }
-                                  },
-                                  splashRadius: 20,
-                                )
-                                : null,
-                        filled: true,
-                        fillColor: theme.cardColor,
-                        contentPadding: const EdgeInsets.symmetric(
-                          vertical: 14.0,
-                          horizontal: 20.0,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                          borderSide: BorderSide.none,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                          borderSide: BorderSide(
-                            color: theme.dividerColor.withValues(alpha:0.3),
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                          borderSide: BorderSide(
-                            color: theme.primaryColor,
-                            width: 1.5,
-                          ),
-                        ),
-                      ),
-                      onSubmitted: _searchAndGoToLocation,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // Danh sách công việc (DraggableScrollableSheet)
-          DraggableScrollableSheet(
-            initialChildSize: 0.15, // Bắt đầu nhỏ hơn
-            minChildSize: 0.15, // Giữ nguyên min
-            maxChildSize: 0.85, // Giảm max một chút
-            snap: true, // Cho phép snap tới các kích thước
-            snapSizes: const [0.15, 0.5, 0.85],
-            builder: (BuildContext context, ScrollController scrollController) {
-              // Cập nhật trạng thái _showJobList dựa trên vị trí của sheet
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                if (mounted) {
-                  final currentSheetSize =
-                      scrollController.hasClients
-                          ? (scrollController.position.viewportDimension /
-                              MediaQuery.of(context).size.height)
-                          : 0.15;
-                  if (currentSheetSize > 0.18 && !_showJobList) {
-                    // Ngưỡng để coi là đang mở list
-                    setState(() => _showJobList = true);
-                    _sheetAnimationController.forward();
-                  } else if (currentSheetSize <= 0.18 && _showJobList) {
-                    setState(() => _showJobList = false);
-                    _sheetAnimationController.reverse();
-                  }
-                }
-              });
-
-              return Container(
-                decoration: BoxDecoration(
-                  color: theme.scaffoldBackgroundColor,
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(24),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: theme.shadowColor.withValues(alpha:0.2),
-                      blurRadius: 15,
-                      offset: const Offset(0, -5),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Container(
-                      // Thanh kéo (Grabber)
-                      width: 45,
-                      height: 5.5,
-                      margin: const EdgeInsets.symmetric(vertical: 12),
-                      decoration: BoxDecoration(
-                        color: theme.dividerColor.withValues(alpha:0.7),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    FadeTransition(
-                      // Animation cho header của sheet
-                      opacity: _sheetHeaderFadeAnimation,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              _isLoading && _jobsInView.isEmpty
-                                  ? "Đang tìm việc làm..."
-                                  : "${_jobsInView.length} việc làm trong khu vực",
-                              style: theme.textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            if (_isLoading &&
-                                _jobsInView
-                                    .isNotEmpty) // Loading nhỏ khi đang update list
-                              SizedBox(
-                                width: 18,
-                                height: 18,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    theme.primaryColor,
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child:
-                          (_isLoading && _jobsInView.isEmpty)
-                              ? Center(
-                                child: Text(
-                                  _currentCity == null
-                                      ? "Vui lòng bật vị trí..."
-                                      : "Không có việc làm nào tại đây.",
-                                  style: theme.textTheme.bodyLarge?.copyWith(
-                                    color: theme.hintColor,
-                                  ),
-                                ),
-                              )
-                              : _jobsInView.isEmpty
-                              ? Center(
-                                child: Text(
-                                  "Không có việc làm nào trong vùng bản đồ này.",
-                                  style: theme.textTheme.bodyLarge?.copyWith(
-                                    color: theme.hintColor,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              )
-                              : ListView.separated(
-                                controller: scrollController,
-                                padding: const EdgeInsets.fromLTRB(
-                                  16,
-                                  0,
-                                  16,
-                                  16,
-                                ),
-                                itemCount: _jobsInView.length,
-                                separatorBuilder:
-                                    (context, index) =>
-                                        const SizedBox(height: 12),
-                                itemBuilder: (context, index) {
-                                  final job = _jobsInView[index];
-                                  return JobCard(
-                                    jobPosting: job,
-                                    idUser: widget.idUser,
-                                  );
-                                },
-                              ),
-                    ),
-                  ],
-                ),
-              );
+          JobListDraggableSheet(
+            isLoading: _isLoading,
+            jobsInView: _jobsInView,
+            sheetAnimationController: _sheetAnimationController,
+            showJobList: _showJobList,
+            onSheetStateChanged: (value) {
+              setState(() => _showJobList = value);
             },
+            idUser: widget.idUser,
+            currentCity: _currentCity?.locality,
           ),
 
           // Nút MyLocation và Toggle List/Map (đã được thiết kế lại)
-          Positioned(
-            bottom:
-                _showJobList
-                    ? (MediaQuery.of(context).size.height *
-                            (_jobsInView.isEmpty ? 0.18 : 0.5)) +
-                        25
-                    : 30, // Điều chỉnh vị trí dựa trên sheet
-            right: 15,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                FloatingActionButton(
-                  heroTag: "myLocationButtonMap",
-                  backgroundColor: theme.cardColor,
-                  elevation: 4,
-                  onPressed: () {
-                    if (_currentPositionLatLng != null &&
-                        mapController != null) {
-                      mapController!.animateCamera(
-                        CameraUpdate.newLatLngZoom(
-                          _currentPositionLatLng!,
-                          14.5,
-                        ),
-                      );
-                    } else {
-                      _loadInitialData(); // Thử tải lại nếu chưa có vị trí
-                    }
-                  },
-                  child: Icon(
-                    Icons.my_location_rounded,
-                    color: theme.primaryColor,
-                    size: 26,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                // FloatingActionButton(
-                //   heroTag: "toggleListMapButton",
-                //   backgroundColor: theme.primaryColor,
-                //   elevation: 4,
-                //   onPressed: () {
-                //     if (_showJobList) {
-                //       // Nếu danh sách đang hiển thị, thu nhỏ lại
-                //       setState(() => _showJobList = false);
-                //       _sheetAnimationController.reverse();
-                //     } else {
-                //       // Nếu danh sách đang thu nhỏ, mở rộng ra
-                //       setState(() => _showJobList = true);
-                //       _sheetAnimationController.forward();
-                //     }
-                //   },
-                //   child: Icon(
-                //     _showJobList
-                //         ? Icons.map_rounded
-                //         : Icons.format_list_bulleted_rounded,
-                //     color: Colors.white,
-                //     size: 26,
-                //   ),
-                // ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// --- City Class ---
-class City {
-  final String isoCountryCode;
-  final String country;
-  final String postalCode;
-  final String administrativeArea;
-  final String subAdministrativeArea;
-  final String locality;
-  final String subLocality;
-  final String thoroughfare;
-  final String subThoroughfare;
-
-  City({
-    required this.isoCountryCode,
-    required this.country,
-    required this.postalCode,
-    required this.administrativeArea,
-    required this.subAdministrativeArea,
-    required this.locality,
-    required this.subLocality,
-    required this.thoroughfare,
-    required this.subThoroughfare,
-  });
-
-  @override
-  String toString() {
-    return 'City(isoCountryCode: $isoCountryCode, country: $country, postalCode: $postalCode, administrativeArea: $administrativeArea, subAdministrativeArea: $subAdministrativeArea, locality: $locality, subLocality: $subLocality, thoroughfare: $thoroughfare, subThoroughfare: $subThoroughfare)';
-  }
-}
-
-// --- JobCard Widget (Cập nhật giao diện) ---
-class JobCard extends StatelessWidget {
-  final JobPostingModel jobPosting;
-  final String idUser;
-
-  const JobCard({Key? key, required this.jobPosting, required this.idUser})
-    : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final companyInitial =
-        (jobPosting.company!.companyName.isNotEmpty)
-            ? jobPosting.company!.companyName[0].toUpperCase()
-            : "C";
-    final salaryText =
-        (jobPosting.salary != null && jobPosting.salary! > 0)
-            ? FormatUtils.formatSalary(jobPosting.salary!)
-            : "Thỏa Thuận";
-
-    return Card(
-      // Sử dụng Card để có elevation và shape
-      elevation: 2.5,
-      margin: const EdgeInsets.only(
-        bottom: 1.0,
-      ), // Chỉ margin bottom để sát nhau hơn trong list
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-      color: theme.cardColor,
-      child: InkWell(
-        onTap:
-            () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder:
-                    (context) => JobDetailScreen(
-                      idUser: idUser,
-                      jobPosting: jobPosting,
-                    ),
-              ),
-            ),
-        borderRadius: BorderRadius.circular(14),
-        splashColor: theme.primaryColor.withValues(alpha:0.1),
-        highlightColor: theme.primaryColor.withValues(alpha:0.05),
-        child: Padding(
-          padding: const EdgeInsets.all(14.0), // Tăng padding
-          child: Row(
-            crossAxisAlignment:
-                CrossAxisAlignment.center, // Căn giữa theo chiều dọc
-            children: [
-              Container(
-                width: 56,
-                height: 56, // Tăng kích thước logo
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primaryContainer.withValues(alpha:0.15),
-                  borderRadius: BorderRadius.circular(12), // Bo góc lớn hơn
-                  border: Border.all(
-                    color: theme.dividerColor.withValues(alpha:0.3),
-                    width: 0.8,
-                  ),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(11),
-                  child:
-                      (jobPosting.company!.logoCompany != null &&
-                              jobPosting.company!.logoCompany!.isNotEmpty)
-                          ? Image.network(
-                            jobPosting.company!.logoCompany!,
-                            fit: BoxFit.contain,
-                            errorBuilder:
-                                (c, e, s) => Center(
-                                  child: Text(
-                                    companyInitial,
-                                    style: theme.textTheme.headlineSmall
-                                        ?.copyWith(
-                                          color: theme.primaryColor,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                  ),
-                                ),
-                          )
-                          : Center(
-                            child: Text(
-                              companyInitial,
-                              style: theme.textTheme.headlineSmall?.copyWith(
-                                color: theme.primaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                ),
-              ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      jobPosting.title,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        height: 1.3,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      jobPosting.company!.companyName,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant.withValues(alpha:
-                          0.85,
-                        ),
-                        fontWeight: FontWeight.w500,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 8),
-                    Wrap(
-                      // Gom các chip thông tin lại
-                      children: [
-                        _buildInfoChip(
-                          context,
-                          icon: Icons.attach_money_rounded,
-                          text: salaryText,
-                          color: theme.colorScheme.secondary,
-                          theme: theme,
-                        ),
-                        const SizedBox(width: 8),
-                        _buildInfoChip(
-                          context,
-                          icon: Icons.location_pin,
-                          text: FormatUtils.extractDistrictAndCity(
-                            jobPosting.location,
-                          ),
-                          color: theme.colorScheme.tertiary,
-                          theme: theme,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              // Bỏ nút bookmark ở đây để card gọn hơn, người dùng có thể vào chi tiết để lưu
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildInfoChip(
-    BuildContext context, {
-    required IconData icon,
-    required String text,
-    required Color color,
-    required ThemeData theme,
-  }) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 10,
-        vertical: 5,
-      ), // Điều chỉnh padding
-      decoration: BoxDecoration(
-        color: color.withValues(alpha:0.12),
-        borderRadius: BorderRadius.circular(16), // Bo tròn hơn
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, color: color, size: 15), // Icon nhỏ hơn
-          const SizedBox(width: 5),
-          Flexible(
-            child: Text(
-              text,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: color,
-                fontWeight: FontWeight.w600,
-              ), // Chữ đậm hơn
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-            ),
+          LocationButton(
+            showJobList: _showJobList,
+            jobsInView: _jobsInView,
+            currentPositionLatLng: _currentPositionLatLng,
+            mapController: mapController,
+            loadInitialData: _loadInitialData,
           ),
         ],
       ),

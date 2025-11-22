@@ -2,7 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/navigation/app_navigation.dart';
 import 'package:job_connect/recruiter_app/features/candidate/screens/hr_candidate_management_screen.dart';
 import 'package:job_connect/recruiter_app/features/hr/screen/hr_home_screen.dart';
-import 'package:job_connect/recruiter_app/features/hr/screen/hr_interview_schedule.dart';
+import 'package:job_connect/recruiter_app/features/interview/screens/hr_calendar_interview_schedule.dart';
 import 'package:job_connect/recruiter_app/features/job/navigation_recruiter/screen/navigation_recruiter_screen.dart';
 import 'package:job_connect/recruiter_app/features/report/screens/hr_report_screen.dart';
 import 'package:job_connect/recruiter_app/features/search/screens/hr_search_screen.dart';
@@ -99,8 +99,16 @@ class RecruiterRouter {
       GoRoute(
         path: 'interview-schedules',
         pageBuilder: (context, state) {
+          final extraData = state.extra as Map<String, dynamic>;
+          final idUser = extraData['idUser'];
+          final interviews = extraData['interviews'];
+          final jobPostingsList = extraData['jobPostingsList'];
           return buildPageWithSlideTransition(
-            HrInterviewSchedule(),
+            HrCalendarInterviewSchedule(
+              interviews: interviews,
+              idUser: idUser,
+              jobPostingsList: jobPostingsList,
+            ),
             state,
           );
         },

@@ -61,16 +61,21 @@
             <data android:scheme="appwrite-callback-68c6ceab002e684cb753" />
           </intent-filter>
         </activity>
-
+        
         <!-- Flutter embedding -->
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
 
+        <!-- Mapbox Access Token -->
+        <meta-data
+            android:name="com.mapbox.maps.token"
+            android:value="pk.eyJ1IjoidGllbmxlbWluaHByb3ZpcCIsImEiOiJjbWk5eXA0dGMwZGFrMnFxMDQzeXhqMTY1In0.FIjEJr3Gky79ZQ5oe-teJA" />
+
         <!-- Google Maps key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAOZhik5ijfCMF9usVnCIUnLXuKeRlkCJE"/>
+            android:value="AIzaSyBRLDsagaW-8MGWde9dLBAFCjX5ID9Gtqo"/>
 
         <!-- Facebook SDK -->
         <meta-data

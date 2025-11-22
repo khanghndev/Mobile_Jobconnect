@@ -157,15 +157,24 @@ class JobPostingService {
     );
   }
 
-  //TODO: Tạo mới job posting
+  // TODO: Tạo mới job posting
   Future<JobPostingModel> createJobPosting({
     required JobPostingModel jobPosting,
+    bool isUrgent = false,
+    bool isSeasonal = false,
   }) async {
     return _handleApi(
       () async {
+        // Build payload đúng chuẩn API
+        final body = {
+          "dto": jobPosting.toJson(),
+          "isUrgent": isUrgent,
+          "isSeasonal": isSeasonal,
+        };
+
         final res = await _apiService.post(
           endpoint: ApiConstants.jobPostingEndpoint,
-          body: jobPosting.toJson(),
+          body: body,
         );
 
         return ApiResponseParser.parseObject(

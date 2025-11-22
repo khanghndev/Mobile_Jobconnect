@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:job_connect/config/constant/app_strings.dart';
 import 'package:job_connect/config/enum/user_role.dart';
 import 'package:job_connect/config/utils/dialog_utils.dart';
 import 'package:job_connect/config/utils/label_title_small.dart';
@@ -63,14 +64,75 @@ class DrawerRecruiterSection extends StatelessWidget {
             ),
             isSelected: selectedRoute == '/recruiter/report',
           ),
-          DrawerItem(
-            icon: Icons.calendar_today_outlined,
-            title: 'Lịch phỏng vấn',
-            onTap: () => _checkLoginOrRouter(
-              context: context,
-              route: '/recruiter/interview-schedules',
+          // DrawerItem(
+          //   icon: Icons.calendar_today_outlined,
+          //   title: 'Lịch phỏng vấn',
+          //   onTap: () => _checkLoginOrRouter(
+          //     context: context,
+          //     route: '/recruiter/interview-schedules',
+          //     extra: {
+          //       'idUser': idUser,
+          //       'interviews': [],
+          //       'jobPostingsList': [],
+          //     },
+          //   ),
+          //   isSelected: selectedRoute == '/recruiter/interview-schedules',
+          // ),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              color: Colors.grey.withValues(alpha: 0.01),
             ),
-            isSelected: selectedRoute == '/recruiter/interview-schedules',
+          ),
+          LabelTitleSmall(title: AppStrings.appName,),
+
+          DrawerItem(
+            icon: Icons.home_outlined,
+            title: 'Bảng tin',
+            onTap: () => _checkLoginOrRouter(
+              context: context, 
+              route: '/social/job-board',
+              extra: {
+                'idUser': idUser,
+              }
+            ),
+            isSelected: selectedRoute == '/social/job-board',
+          ),
+          DrawerItem(
+            icon: Icons.person_outlined,
+            title: 'Trang cá nhân',
+            onTap: () => _checkLoginOrRouter(context: context, route: '/social/profile'),
+            isSelected: selectedRoute == '/social/profile',
+          ),
+          DrawerItem(
+            icon: Icons.edit_note_outlined,
+            title: 'Tạo bài viết',
+            onTap: () => _checkLoginOrRouter(
+              context: context, 
+              route: '/social/create-post',
+              extra: {
+                'idUser': idUser,
+              }
+            ),
+            isSelected: selectedRoute == '/social/create-post',
+          ),
+          DrawerItem(
+            icon: Icons.people_outline,
+            title: 'Kết nối',
+            onTap: () => _checkLoginOrRouter(
+              context: context, 
+              route: '/social/connections',
+              extra: {
+                'isLoggedIn': isLoggedIn,
+                'idUser': idUser,
+              }
+            ),
+            isSelected: selectedRoute == '/social/connections',
+          ),
+
+          DecoratedBox(
+            decoration: BoxDecoration(
+              color: Colors.grey.withValues(alpha: 0.01),
+            ),
           ),
 
           LabelTitleSmall(title: 'Hệ thống',),

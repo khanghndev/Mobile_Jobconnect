@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:job_connect/model/interview_schedule_model.dart';
-import 'package:job_connect/recruiter_app/services/interviewschedule_service.dart';
+import 'package:job_connect/recruiter_app/features/interview/service/interview_schedule_service.dart';
 
 class EditInterviewScheduleScreen extends StatefulWidget {
   final InterviewScheduleModel schedule;

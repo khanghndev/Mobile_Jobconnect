@@ -21,15 +21,12 @@ import 'package:job_connect/features/mini_social/model/social_connection_model.d
 import 'package:job_connect/features/mini_social/view_model/social_connection_view_model.dart';
 import 'package:job_connect/features/navigation/screens/navigation_page.dart';
 import 'package:job_connect/features/profile/model/user_model.dart';
-import 'package:job_connect/features/company/model/company_model.dart';
 import 'package:job_connect/features/job/model/job_posting_model.dart';
-import 'package:job_connect/features/notifications/model/notification_model.dart';
 import 'package:job_connect/features/home/model/podcast_model.dart';
 import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/features/home/widgets/home/banner_slide_show.dart';
 import 'package:job_connect/features/home/widgets/home/featured_companies_list.dart';
 import 'package:job_connect/features/home/widgets/home/featured_jobs_list.dart';
-import 'package:job_connect/features/home/widgets/podcast/featured_podcasts_list.dart';
 import 'package:job_connect/features/home/widgets/home/section_header.dart';
 import 'package:job_connect/features/home/widgets/home/wave_clipper.dart';
 import 'package:job_connect/features/profile/view_model/user_view_model.dart';
@@ -60,7 +57,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, 
 
   UserModel? _user;
   List<JobPostingModel> _featuredJobs = [];
-  List<PodcastModel> _featuredPodcasts = [];
   List<Map<String, dynamic>> _bannerItems = [];
   int unreadNotifications = 0;
   bool _isLoading = true;
@@ -73,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, 
   late UserViewModel _userViewModel;
   late JobRecommendationViewModel _jobRecommendationViewModel;
   late CompanyViewModel _companyViewModel;
-  late SocialConnectionViewModel connVm;
+  late SocialConnectionViewModel _connVm;
 
   @override
   bool get wantKeepAlive => true;
@@ -88,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, 
     _userViewModel = context.read<UserViewModel>();
     _jobRecommendationViewModel = context.read<JobRecommendationViewModel>();
     _companyViewModel = context.read<CompanyViewModel>();
-    connVm = context.read<SocialConnectionViewModel>();
+    _connVm = context.read<SocialConnectionViewModel>();
     WidgetsBinding.instance.addPostFrameCallback((_) async{
       await _jobSavedViewModel.fetchSavedJobsByUser(widget.idUser);
       await _jobPostingViewModel.fetchJobPostingsExcludeFullTime();
@@ -99,9 +95,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, 
       await _jobRecommendationViewModel.loadPopularLocations();
       await _jobRecommendationViewModel.loadTrendingSkills();
       await _jobRecommendationViewModel.createSmartSchedule(userId: widget.idUser);
-      await connVm.getFriends(userId: widget.idUser);
-      await connVm.getSentRequests(userId: widget.idUser);
-      await connVm.getRequests(userId: widget.idUser);
+      await _connVm.getFriends(userId: widget.idUser);
+      await _connVm.getSentRequests(userId: widget.idUser);
+      await _connVm.getRequests(userId: widget.idUser);
     });
     _initializeData();
   }
@@ -132,7 +128,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, 
     // Reset local state
     setState(() {
       _featuredJobs.clear();
-      _featuredPodcasts.clear();
       unreadNotifications = 0;
       _user = null;
     });
@@ -234,41 +229,41 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, 
   }
 
   Future<void> _sendFriendRequest(UserModel targetUser) async {
-    final connVm = context.read<SocialConnectionViewModel>();
+    final _connVm = context.read<SocialConnectionViewModel>();
 
-    await connVm.sendRequest(
+    await _connVm.sendRequest(
       request: SocialConnectionRequest(
         fromUserId: widget.idUser,
         toUserId: targetUser.idUser,
       ),
     );
 
-    await connVm.getSentRequests(userId: widget.idUser);
+    await _connVm.getSentRequests(userId: widget.idUser);
   }
 
   Future<void> _unfriend(UserModel targetUser) async {
-    final connVm = context.read<SocialConnectionViewModel>();
-    await connVm.unfriend(userId1: widget.idUser, userId2: targetUser.idUser);
+    final _connVm = context.read<SocialConnectionViewModel>();
+    await _connVm.unfriend(userId1: widget.idUser, userId2: targetUser.idUser);
 
     // Refresh tab nếu đang ở tab "Bạn bè"
-    await connVm.getFriends(userId: widget.idUser);
+    await _connVm.getFriends(userId: widget.idUser);
   }
 
   Future<void> _acceptRequest(UserModel user) async {
-    final connVm = context.read<SocialConnectionViewModel>();
-    await connVm.acceptRequest(
+    final _connVm = context.read<SocialConnectionViewModel>();
+    await _connVm.acceptRequest(
       request: SocialConnectionRequest(
         fromUserId: widget.idUser,
         toUserId: user.idUser,
       ),
     );
-    await connVm.getRequests(userId: widget.idUser); // cập nhật tab lời mời
-    await connVm.getFriends(userId: widget.idUser);  // cập nhật bạn bè
+    await _connVm.getRequests(userId: widget.idUser); // cập nhật tab lời mời
+    await _connVm.getFriends(userId: widget.idUser);  // cập nhật bạn bè
   }
 
   Future<void> _rejectRequest(UserModel user) async {
-    final connVm = context.read<SocialConnectionViewModel>();
-    await connVm.rejectRequest(
+    final _connVm = context.read<SocialConnectionViewModel>();
+    await _connVm.rejectRequest(
       request: SocialConnectionRequest(
         fromUserId:  widget.idUser,
         toUserId: user.idUser,
@@ -277,7 +272,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, 
   }
 
   Future<void> _cancelFriendRequest(UserModel targetUser) async {
-    final connVm = context.read<SocialConnectionViewModel>();
+    final _connVm = context.read<SocialConnectionViewModel>();
 
     // Tạo request object
     final request = SocialConnectionRequest(
@@ -285,7 +280,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, 
       toUserId: targetUser.idUser,
     );
 
-    await connVm.cancelRequest(request: request);
+    await _connVm.cancelRequest(request: request);
   }
 
   @override
@@ -457,9 +452,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, 
                         users: userVM.users.where((user) => user.idUser != widget.idUser).toList(),
                         getFriendStatus: (user) {
                           return {
-                            'isFriend': connVm.friends.any((f) => f.id == user.idUser),
-                            'isRequestSent': connVm.sentRequests.any((r) => r.idUser2 == user.idUser),
-                            'isRequestReceived': connVm.requests.any((r) => r.idUser1 == user.idUser),
+                            'isFriend': _connVm.friends.any((f) => f.id == user.idUser),
+                            'isRequestSent': _connVm.sentRequests.any((r) => r.idUser2 == user.idUser),
+                            'isRequestReceived': _connVm.requests.any((r) => r.idUser1 == user.idUser),
                           };
                         },
                         onSendRequest: (user) async {

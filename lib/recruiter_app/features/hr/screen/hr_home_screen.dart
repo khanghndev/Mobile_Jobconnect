@@ -2,13 +2,20 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:job_connect/config/constant/app_colors.dart';
 import 'package:job_connect/config/enum/job_application_status.dart';
-import 'package:job_connect/config/enum/user_role.dart';
 import 'package:job_connect/config/utils/date_utils_helper.dart';
+import 'package:job_connect/config/utils/snackbar_app.dart';
+import 'package:job_connect/features/home/widgets/home/featured_friends_list.dart';
+import 'package:job_connect/features/home/widgets/home/section_header.dart';
 import 'package:job_connect/features/job/service/job_application_service.dart';
 import 'package:job_connect/features/job/service/job_posting_service.dart';
 import 'package:job_connect/features/job/service/job_transaction_service.dart';
+import 'package:job_connect/features/mini_social/model/social_connection_model.dart';
+import 'package:job_connect/features/mini_social/view_model/social_connection_view_model.dart';
+import 'package:job_connect/features/profile/view_model/user_view_model.dart';
 import 'package:job_connect/model/interview_schedule_model.dart';
 import 'package:job_connect/features/job/model/job_application_model.dart';
 import 'package:job_connect/features/job/model/job_posting_model.dart';
@@ -17,21 +24,21 @@ import 'package:job_connect/model/recruiter_info_model.dart';
 import 'package:job_connect/model/subscription_package_model.dart';
 import 'package:job_connect/features/company/model/company_model.dart';
 import 'package:job_connect/features/company/service/company_service.dart';
-import 'package:job_connect/features/help/screens/help_screen.dart';
 import 'package:job_connect/features/profile/model/candidate_info_model.dart';
 import 'package:job_connect/features/profile/model/user_model.dart';
 import 'package:job_connect/features/profile/service/candidate_info_service.dart';
 import 'package:job_connect/features/profile/service/user_service.dart';
-import 'package:job_connect/features/settings/screens/settings_screen.dart';
 import 'package:job_connect/recruiter_app/features/hr/screen/hr_detail_recent_activitie_screen.dart';
-import 'package:job_connect/recruiter_app/features/job/screens/hr_job_list_screen.dart';
-import 'package:job_connect/recruiter_app/features/recruiter/screens/candidate_list_screen.dart';
-import 'package:job_connect/recruiter_app/services/interviewschedule_service.dart';
+import 'package:job_connect/recruiter_app/features/hr/widget/home/hr_home_shimmer.dart';
+import 'package:job_connect/recruiter_app/features/hr/widget/home/recent_activities_section.dart';
+import 'package:job_connect/recruiter_app/features/hr/widget/home/statistics_section.dart';
+import 'package:job_connect/recruiter_app/features/hr/widget/home/up_coming_interviews_section.dart';
+import 'package:job_connect/recruiter_app/features/hr/widget/home/welcome_section.dart';
+import 'package:job_connect/recruiter_app/features/interview/screens/hr_calendar_interview_schedule.dart';
+import 'package:job_connect/recruiter_app/features/interview/service/interview_schedule_service.dart';
 import 'package:job_connect/recruiter_app/services/recruiter_service.dart';
 import 'package:job_connect/recruiter_app/services/subscriptionpackage_service.dart';
-import 'hr_interview_schedule.dart';
-import 'hr_pending_aplication_screen.dart';
-import 'hr_recent_activitie_screen.dart';
+import 'package:provider/provider.dart';
 
 
 //Trang home của HR
@@ -43,9 +50,14 @@ class HrHomeScreen extends StatefulWidget {
   State<HrHomeScreen> createState() => _HrHomeScreenState();
 }
 
-class _HrHomeScreenState extends State<HrHomeScreen> {
+class _HrHomeScreenState extends State<HrHomeScreen> with AutomaticKeepAliveClientMixin{
+  @override
+  bool get wantKeepAlive => true;
+
   //Lấy ngày hiện tại
   final time = DateTime.now();
+  late UserViewModel _userViewModel;
+  late SocialConnectionViewModel _connVm;
 
   final UserService accountService = UserService();
   final CandidateInfoService candidateInfoService = CandidateInfoService();
@@ -57,9 +69,9 @@ class _HrHomeScreenState extends State<HrHomeScreen> {
   final JobTransactionService jobTransactionService = JobTransactionService();
   final SubscriptionPackageService subscriptionpackageService = SubscriptionPackageService();
 
-  late UserModel user;
-  late RecruiterInfoModel recruiterInfo;
-  late CompanyModel companyInfo;
+  UserModel? user;
+  RecruiterInfoModel? recruiterInfo;
+  CompanyModel? companyInfo;
   List<JobPostingModel> jobPostingsList = [];
   List<List<JobApplicationModel>> jobApplicationsList = [];
   List<List<InterviewScheduleModel>>? interviewSchedulesList;
@@ -93,7 +105,15 @@ class _HrHomeScreenState extends State<HrHomeScreen> {
   @override
   void initState() {
     super.initState();
-    _loadDataAndCalculateTrends();
+     _userViewModel = context.read<UserViewModel>();
+     _connVm = context.read<SocialConnectionViewModel>();
+    WidgetsBinding.instance.addPostFrameCallback((_) async{
+      _loadDataAndCalculateTrends();
+      _userViewModel.fetchAllUsers();
+      await _connVm.getFriends(userId: widget.userAccount.idUser);
+      await _connVm.getSentRequests(userId: widget.userAccount.idUser);
+      await _connVm.getRequests(userId: widget.userAccount.idUser);
+    });
   }
 
   // Load dữ liệu
@@ -134,104 +154,95 @@ class _HrHomeScreenState extends State<HrHomeScreen> {
     });
 
     try {
-      // 🧠 1. Tải dữ liệu cơ bản
-      final allCandidates = await candidateInfoService.getAllCandidates();
-
+      // 1. Lấy user và recruiter
       final acc = await accountService.getUserById(id: widget.userAccount.idUser);
-
       final rec = await recruiterService.getRecruiterById(id: acc.idUser);
       if (rec == null) throw Exception("Không tìm thấy thông tin nhà tuyển dụng.");
 
+      // 2. Lấy company (bỏ qua lỗi)
       CompanyModel? comp;
-      try {
-        comp = await companyService.getCompanyById(id: rec.idCompany!);
-      } catch (e) {
-        comp = null; // Nếu công ty bị xóa hoặc lỗi API
-        debugPrint("⚠️ Không lấy được thông tin công ty: $e");
+      if (rec.idCompany != null && rec.idCompany!.isNotEmpty) {
+        try {
+          comp = await companyService.getCompanyById(id: rec.idCompany!);
+        } catch (_) {
+          comp = null;
+        }
       }
 
-      // 🧠 2. Lấy danh sách bài đăng việc làm
+      // 3. Lấy job postings (bỏ qua lỗi)
       List<JobPostingModel> jobPostings = [];
       if (rec.idCompany != null && rec.idCompany!.isNotEmpty) {
         try {
           jobPostings = await jobPostingService.getJobPostingsByCompany(companyId: rec.idCompany!);
-        } catch (e) {
-          debugPrint("⚠️ Không lấy được danh sách bài đăng: $e");
-        }
+        } catch (_) {}
       }
 
-      // 🧠 3. Lấy danh sách ứng tuyển
-      List<List<JobApplicationModel>> jobApplications = [];
-      for (var job in jobPostings) {
+      // 4. Lấy job applications song song (bỏ qua lỗi từng job)
+      final jobApplications = await Future.wait(jobPostings.map((job) async {
         try {
-          final apps = await jobApplicationService.getApplicationsByJobPost(jobPostId: job.idJobPost);
-          jobApplications.add(apps);
-        } catch (e) {
-          if (e.toString().contains('Không tìm thấy hồ sơ ứng tuyển')) {
-            jobApplications.add([]); // job chưa có ứng viên
-          } else {
-            debugPrint("⚠️ Lỗi khi lấy ứng tuyển cho job ${job.idJobPost}: $e");
-            jobApplications.add([]);
-          }
+          return await jobApplicationService.getApplicationsByJobPost(jobPostId: job.idJobPost);
+        } catch (_) {
+          return <JobApplicationModel>[];
         }
-      }
+      }));
 
       final flatJobAppList = jobApplications.expand((e) => e).toList();
 
-      // 🧠 4. Lấy thông tin user và candidate tương ứng với job application
-      final userOfJobApp = <UserModel>[];
-      final candidateInforOfJobAppList = <CandidateInfoModel>[];
-
-      for (final jobApp in flatJobAppList) {
+      // 5. Lấy User & Candidate cho job applications (bỏ qua lỗi từng user)
+      final usersAndCandidates = await Future.wait(flatJobAppList.map((jobApp) async {
         try {
           final user = await accountService.getUserById(id: jobApp.idUser);
-          userOfJobApp.add(user);
-
-          final candidate = await candidateInfoService.getCandidateById(id: user.idUser);
-          candidateInforOfJobAppList.add(candidate);
-        } catch (e) {
-          debugPrint("⚠️ Lỗi khi lấy user/candidate của jobApp: $e");
+          final candidate = await candidateInfoService.getCandidateById(id: jobApp.idUser);
+          return {'user': user, 'candidate': candidate};
+        } catch (_) {
+          return null;
         }
-      }
+      }));
 
-      // 🧠 5. Lịch phỏng vấn
-      final interviewSchedulesTemp = <List<InterviewScheduleModel>>[];
-      for (final job in jobPostings) {
+      final userOfJobApp = usersAndCandidates.whereType<Map>().map((e) => e['user'] as UserModel).toList();
+      final candidateInforOfJobAppList = usersAndCandidates.whereType<Map>().map((e) => e['candidate'] as CandidateInfoModel).toList();
+
+      // 6. Lấy lịch phỏng vấn (bỏ qua lỗi từng job)
+      final interviewSchedulesTemp = await Future.wait(jobPostings.map((job) async {
         try {
-          final schedules = await interviewScheduleService.getInterviewScheduleByJobId(jobId: job.idJobPost);
-          interviewSchedulesTemp.add(schedules);
-        } catch (e) {
-          debugPrint("⚠️ Lỗi khi lấy lịch phỏng vấn cho job ${job.idJobPost}: $e");
-          interviewSchedulesTemp.add([]);
+          return await interviewScheduleService.getInterviewScheduleByJobId(jobId: job.idJobPost);
+        } catch (_) {
+          return <InterviewScheduleModel>[];
         }
-      }
+      }));
 
       final flatList = interviewSchedulesTemp.expand((e) => e).toList();
 
-      final accountList = <UserModel>[];
-      final candidateList = <CandidateInfoModel>[];
-
-      for (final schedule in flatList) {
+      // 7. Lấy User & Candidate cho lịch phỏng vấn (bỏ qua lỗi từng user)
+      final accountsAndCandidates = await Future.wait(flatList.map((schedule) async {
         try {
           final account = await accountService.getUserById(id: schedule.idUser);
-          accountList.add(account);
-          final candidate = await candidateInfoService.getCandidateById(id: account.idUser);
-          candidateList.add(candidate);
-                } catch (e) {
-          debugPrint("⚠️ Lỗi khi lấy user/candidate phỏng vấn: $e");
+          final candidate = await candidateInfoService.getCandidateById(id: schedule.idUser);
+          return {'account': account, 'candidate': candidate};
+        } catch (_) {
+          return null;
         }
-      }
+      }));
 
-      // 🧠 6. Giao dịch và gói dịch vụ
-      final jobTransactions = await jobTransactionService.getAllTransactions();
-      final subscriptionPackages = await SubscriptionPackageService().fetchSubscriptionPackages();
+      final accountList = accountsAndCandidates.whereType<Map>().map((e) => e['account'] as UserModel).toList();
+      final candidateList = accountsAndCandidates.whereType<Map>().map((e) => e['candidate'] as CandidateInfoModel).toList();
+
+      // 8. Lấy giao dịch & gói dịch vụ
+      final results = await Future.wait([
+        jobTransactionService.getAllTransactions(),
+        SubscriptionPackageService().fetchSubscriptionPackages(),
+      ]);
+
+      final jobTransactions = results[0] as List<JobTransactionModel>;
+      final subscriptionPackages = results[1] as List<SubscriptionPackageModel>;
 
       if (!mounted) return;
 
+      // 9. Set state cuối cùng
       setState(() {
         recruiterInfo = rec;
         user = acc;
-        companyInfo = comp!;
+        companyInfo = comp;
         jobPostingsList = jobPostings;
         jobApplicationsList = jobApplications;
         flatJobApplicationList = flatJobAppList;
@@ -242,23 +253,21 @@ class _HrHomeScreenState extends State<HrHomeScreen> {
         accountJobApplicationList = userOfJobApp;
         candidateJobApplicationList = candidateInforOfJobAppList;
         candidateInterviewList = candidateList;
-        candidateAllList = allCandidates;
         jobTransactionsList = jobTransactions;
         subscriptionPackagesList = subscriptionPackages;
         isLoading = false;
       });
-    } catch (e, s) {
-      debugPrint("❌ Lỗi tổng khi load dữ liệu: $e");
-      debugPrintStack(stackTrace: s);
-
+    } catch (_) {
       if (!mounted) return;
       setState(() {
-        error = e.toString();
+        error = 'Lỗi tải dữ liệu tổng.';
         isLoading = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Lỗi khi tải dữ liệu: ${e.toString()}')),
+      SnackbarApp.show(
+        context,
+        message: 'Không thể tải dữ liệu tổng.',
+        backgroundColor: BackgroundColors.backgroundErrorPrimary,
       );
     }
   }
@@ -275,20 +284,14 @@ class _HrHomeScreenState extends State<HrHomeScreen> {
 
   // Hàm lấy số hồ sơ ở trạng thái đang chờ - pending
   List<JobApplicationModel> getApplicationsWithStatus(String status) {
-    List<JobApplicationModel> pendingApplications = [];
-    for (var jobApplications in jobApplicationsList) {
-      for (var application in jobApplications) {
-        if (application.applicationStatus == status) {
-          pendingApplications.add(application);
-        }
-      }
-    }
-    return pendingApplications;
+    return jobApplicationsList.expand((list) => list)
+        .where((app) => app.applicationStatus == status)
+        .toList();
   }
 
   // Hàm tính tổng hồ sơ phỏng vấn
   int sumJobApplicationsList() {
-    return jobApplicationsList.fold(0, (total, sublist) => total! + sublist.length) ?? 0;
+    return jobApplicationsList.fold(0, (total, sublist) => total + sublist.length);
   }
 
   // Hàm tính tổng lịch phỏng vấn
@@ -377,559 +380,181 @@ class _HrHomeScreenState extends State<HrHomeScreen> {
     );
   }
 
-  @override
+  Future<void> _sendFriendRequest(UserModel targetUser) async {
+    final connVm = context.read<SocialConnectionViewModel>();
+
+    await connVm.sendRequest(
+      request: SocialConnectionRequest(
+        fromUserId: widget.userAccount.idUser,
+        toUserId: targetUser.idUser,
+      ),
+    );
+
+    await connVm.getSentRequests(userId: widget.userAccount.idUser);
+  }
+
+  Future<void> _unfriend(UserModel targetUser) async {
+    final connVm = context.read<SocialConnectionViewModel>();
+    await connVm.unfriend(userId1: widget.userAccount.idUser, userId2: targetUser.idUser);
+
+    // Refresh tab nếu đang ở tab "Bạn bè"
+    await connVm.getFriends(userId: widget.userAccount.idUser);
+  }
+
+  Future<void> _acceptRequest(UserModel user) async {
+    final connVm = context.read<SocialConnectionViewModel>();
+    await connVm.acceptRequest(
+      request: SocialConnectionRequest(
+        fromUserId: user.idUser,           // người gửi request
+        toUserId: widget.userAccount.idUser,  // HR nhận
+      ),
+    );
+    await connVm.getRequests(userId: widget.userAccount.idUser); // cập nhật tab lời mời
+    await connVm.getFriends(userId: widget.userAccount.idUser);  // cập nhật bạn bè
+  }
+
+  Future<void> _rejectRequest(UserModel user) async {
+    final connVm = context.read<SocialConnectionViewModel>();
+    await connVm.rejectRequest(
+      request: SocialConnectionRequest(
+        fromUserId: user.idUser,           // người gửi request
+        toUserId: widget.userAccount.idUser,  // HR nhận
+      ),
+    );
+  }
+
+  Future<void> _cancelFriendRequest(UserModel targetUser) async {
+    final connVm = context.read<SocialConnectionViewModel>();
+
+    // Tạo request object
+    final request = SocialConnectionRequest(
+      fromUserId: widget.userAccount.idUser,
+      toUserId: targetUser.idUser,
+    );
+
+    await connVm.cancelRequest(request: request);
+  }
+
+   @override
   Widget build(BuildContext context) {
-    
-    if (error != null) {
-      return Scaffold(body: Center(child: Text('Lỗi: $error')));
-    }
-
-    // Thiết lập theme chung
-    final primaryColor = Color(0xFF3366FF);
-    final backgroundColor = Color(0xFFF7F9FC);
-
+    super.build(context);
+    final userVM = context.watch<UserViewModel>();
+    final theme = Theme.of(context);
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
+      value: const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        backgroundColor: backgroundColor,
-        drawer: _buildDrawer(context, primaryColor),
+        backgroundColor: theme.scaffoldBackgroundColor,
         body: SafeArea(
-          child: RefreshIndicator(
-            onRefresh: () async {
-              await Future.delayed(
-                Duration(seconds: 1),
-              ); 
-              await _loadAllData();
-            },
+          child: isLoading
+          ? const HrHomeShimmer()
+          : RefreshIndicator(
+            onRefresh: _loadAllData,
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Phần chào mừng
-                    _buildWelcomeSection(),
-                    SizedBox(height: 16),
-                    // Phần thống kê
-                    _buildStatisticsSection(primaryColor),
-                    SizedBox(height: 16),
-                    // Phần hoạt động gần đây
-                    _buildRecentActivitiesSection(context),
-                    SizedBox(height: 16),
-                    // Phần lịch phỏng vấn sắp tới
-                    _buildUpcomingSection(context),
-                    SizedBox(height: 16),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-
-        // Nút AI chat
-        // floatingActionButton: FloatingActionButton.extended(
-        //   backgroundColor: primaryColor,
-        //   icon: const Icon(Icons.smart_toy, color: Colors.white),
-        //   label: const Text(
-        //     "AI Chat",
-        //     style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        //   ),
-        //   elevation: 4,
-        //   onPressed: () {
-        //     Navigator.push(
-        //       context,
-        //       MaterialPageRoute(builder: (context) => const AIChatScreen()),
-        //     );
-        //   },
-        // ),
-      ),
-    );
-  }
-
-  // Drawer
-  Widget _buildDrawer(BuildContext context, Color primaryColor) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          DrawerHeader(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [primaryColor, Color(0xFF5E91F2)],
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CircleAvatar(
-                  radius: 30,
-                  // ignore: deprecated_member_use
-                  backgroundColor: Colors.white.withValues(alpha:0.9),
-                  child: Icon(Icons.person, size: 40, color: primaryColor),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  widget.userAccount.userName,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  widget.userAccount.email,
-                  style: TextStyle(
-                    // ignore: deprecated_member_use
-                    color: Colors.white.withValues(alpha:0.9),
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          _buildDrawerItem(
-            Icons.people_outline,
-            'Quản lý ứng viên',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CandidateListPage(
-                    recruiterId: widget.userAccount.idUser,
-                    candidateInfoList: candidateJobApplicationList,
-                    jobApplicationList: flatJobApplicationList,
-                  ),
-                ),
-              );
-            },
-          ),
-          _buildDrawerItem(
-            Icons.work_outline,
-            'Danh sách công việc',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => JobListScreen(
-                  jobpostingList: jobPostingsList,
-                  jobApplications: flatJobApplicationList,
-                )),
-              );
-            },
-          ),
-        //  _buildDrawerItem(
-        //   Icons.star_border,
-        //   'Danh sách ứng viên nổi bật',
-        //   onTap: () {
-        //     Navigator.push(
-        //       context,
-        //       MaterialPageRoute(
-        //         builder: (context) => CandidateListScreen(
-        //           jobPostingList: jobPostingsList,
-        //           jobApplicationList: flatJobApplicationList,
-        //           candidateInfoList: candidateAllList,
-        //         ),
-        //       ),
-        //     );
-        //   },
-        // ),
-          _buildDrawerItem(Icons.topic_outlined, 'Báo cáo'),
-          _buildDrawerItem(
-            Icons.calendar_today_outlined,
-            'Lịch phỏng vấn',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => HrInterviewSchedule(),
-                ),
-              );
-            },
-          ),
-          Divider(),
-          _buildDrawerItem(
-            Icons.settings_outlined,
-            'Cài đặt',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SettingScreen(
-                  idUser: '',
-                  isLoggedIn: true,
-                )),
-              );
-            },
-          ),
-          _buildDrawerItem(
-            Icons.help_outline,
-            'Trợ giúp',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const HelpScreen()),
-              );
-            },
-          ),
-          _buildDrawerItem(
-            Icons.logout,
-            'Đăng xuất',
-            onTap: () {
-              // _logout(context);
-              context.go(
-            '/auth/login', 
-            extra: {
-              'role': UserRole.recruiter.name
-            }
-          );
-
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Các mục trong Drawer
-  Widget _buildDrawerItem(IconData icon, String title, {VoidCallback? onTap}) {
-    return ListTile(
-      leading: Icon(icon),
-      title: Text(title, style: TextStyle(fontWeight: FontWeight.w500)),
-      onTap: onTap, // Gán sự kiện onTap từ bên ngoài
-    );
-  }
-
-  //P1. Xây dựng phần chào mừng
-  Widget _buildWelcomeSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start, 
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // Phần greeting
-            Expanded(
+              padding: EdgeInsets.all(16.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Xin chào,\n${widget.userAccount.userName}',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  WelcomeSectionWidget(
+                    userName: widget.userAccount.userName,
+                    pendingApplications: getApplicationsWithStatus(JobApplicationStatus.pending.name),
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 16.h),
+                  StatisticsSection(
+                    primaryColor: theme.primaryColor,
+                    jobApplicationsList: jobApplicationsList,
+                    jobPostingsList: jobPostingsList,
+                    trendCandidate: trendCandidate,
+                    trendJob: trendJob,
+                    trendInterview: trendInterview,
+                    getApplicationsWithStatus: (status) => getApplicationsWithStatus(status).length,
+                  ),
+                  SizedBox(height: 16.h),
+                  RecentActivitiesSection(
+                    getRecentActivities: _getRecentActivities,
+                    detailScreenBuilder: (activity) => HrDetailRecentActivitieScreen(
+                      title: activity['title'],
+                      time: activity['time'],
+                      description: activity['description'],
+                      icon: activity['icon'],
+                      color: activity['color'],
+                      details: activity['details'],
+                      attachments: activity['attachments'],
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  SectionHeader(
+                    title: "Lịch phỏng vấn sắp tới",
+                    onSeeAll: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => HrCalendarInterviewSchedule(
+                        idUser: widget.userAccount.idUser,
+                        interviews: flatInterviewSchedulesList,
+                        jobPostingsList: jobPostingsList
+                      )),
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  UpComingInterviewsSection(
+                    upcomingInterviewSchedulesList: upcomingInterviewSchedulesList,
+                    accountInterviewList: accountInterviewList,
+                    candidateInterviewList: candidateInterviewList,
+                    onViewAll: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => HrCalendarInterviewSchedule(
+                        idUser: widget.userAccount.idUser,
+                        interviews: flatInterviewSchedulesList,
+                        jobPostingsList: jobPostingsList
+                      )),
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  SectionHeader(
+                    title: "Bạn có thể biết",
+                    onSeeAll: () => context.push('/social/search',extra: {'idUser' : widget.userAccount.idUser}),
+                  ),
+                  SizedBox(height: 16.h),
+                  FeaturedFriendsList(
+                    users: userVM.users.where((u) => u.idUser != widget.userAccount.idUser).toList(),
+                    getFriendStatus: (user) {
+                      return {
+                        'isFriend': _connVm.friends.any((f) => f.id == user.idUser),
+                          'isRequestSent': _connVm.sentRequests.any((r) => r.idUser2 == user.idUser),
+                          'isRequestReceived': _connVm.requests.any((r) => r.idUser1 == user.idUser),
+                      };
+                    },
+                    onSendRequest: (user) async {
+                      await _sendFriendRequest(user);
+                      setState(() {}); 
+                    },
+                    onCancelRequest: (user) async {
+                      await _cancelFriendRequest(user);
+                      setState(() {});
+                    },
+                    onAcceptRequest: (user) async {
+                      await _acceptRequest(user);
+                      setState(() {});
+                    },
+                    onRejectRequest: (user) async {
+                      await _rejectRequest(user);
+                      setState(() {});
+                    },
+                    onUnfriend: (user) async {
+                      await _unfriend(user);
+                      setState(() {});
+                    },
+                  ),
                 ],
               ),
             ),
-
-            // Phần nút ngày tháng
-            Padding(
-              padding: const EdgeInsets.only(top: 4),
-              child: OutlinedButton.icon(
-                icon: const Icon(Icons.calendar_month),
-                label: Text('${time.day}/${time.year}/${time.year}'),
-                onPressed: () {},
-                style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-
-       const Text(
-          'Chúc bạn một ngày làm việc hiệu quả!',
-          style: TextStyle(fontSize: 14, color: Colors.black54),
-        ),
-        SizedBox(height: 16),
-        Card(
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
           ),
-          color: Color(0xFFE9F3FF),
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Cần phê duyệt',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        '${getApplicationsWithStatus(JobApplicationStatus.pending.name).length} hồ sơ ứng viên chờ đánh giá',
-                        style: TextStyle(fontSize: 14, color: Colors.black54),
-                      ),
-                      SizedBox(height: 12),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HrPendingAplicationScreen(
-                                pendingApplications: getApplicationsWithStatus('pending'),
-                              ),
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF3366FF),
-                          foregroundColor: Colors.white,
-                          elevation: 0,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 10,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: Text('Xem ngay'),
-                      ),
-                    ],
-                  ),
-                ),
-                Icon(
-                  Icons.article_outlined,
-                  size: 60,
-                  // ignore: deprecated_member_use
-                  color: Color(0xFF3366FF).withValues(alpha:0.7),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  // P2. Xây dựng thống kê
-  Widget _buildStatisticsSection(Color primaryColor) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              'Thống kê tuyển dụng',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            TextButton(
-              onPressed: () {},
-              child: Text('Xem tất cả', style: TextStyle(color: Colors.white)),
-            ),
-          ],
-        ),
-        SizedBox(height: 8),
-        GridView.count(
-          physics: NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          crossAxisCount: 2,
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 16,
-          childAspectRatio: 1.0, 
-          children: [
-            _buildStatisticCard(
-              title: 'Ứng viên',
-              count: jobApplicationsList.length.toString(),
-              icon: Icons.people_outline,
-              iconBackgroundColor: Color(0xFFE2F1FF),
-              iconColor: primaryColor,
-              trendValue: '+ $trendCandidate',
-              trendUp: true,
-            ),
-            _buildStatisticCard(
-              title: 'Công việc đang tuyển',
-              count: jobPostingsList.length.toString(),
-              icon: Icons.work_outline,
-              iconBackgroundColor: Color(0xFFFFEEE3),
-              iconColor: Color(0xFFFF8A47),
-              trendValue: '+ $trendJob',
-              trendUp: true,
-            ),
-            _buildStatisticCard(
-              title: 'Đã phỏng vấn',
-              count: '${getApplicationsWithStatus(JobApplicationStatus.interview.name).length}',
-              icon: Icons.record_voice_over_outlined,
-              iconBackgroundColor: Color(0xFFE9F9E7),
-              iconColor: Color(0xFF4CAF50),
-              trendValue: '+ $trendInterview',
-              trendUp: true,
-            ),
-            _buildStatisticCard(
-              title: 'Được tuyển',
-              count: '${getApplicationsWithStatus(JobApplicationStatus.accepted.name).length}',
-              icon: Icons.check_circle_outline,
-              iconBackgroundColor: Color(0xFFE8E4FF),
-              iconColor: Color(0xFF7C4DFF),
-              trendUp: null,
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-  
-  // Item thống kê tuyển dụng
-  Widget _buildStatisticCard({
-    required String title,
-    required String count,
-    required IconData icon,
-    required Color iconBackgroundColor,
-    required Color iconColor,
-    String trendValue = '',
-    required bool? trendUp,
-  }) {
-    return Card(
-      elevation: 0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: iconBackgroundColor,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(icon, size: 24, color: iconColor),
-                ),
-                if (trendUp != null)
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: trendUp ? const Color(0xFFE9F9E7) : const Color(0xFFFFE8E8),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          trendUp ? Icons.arrow_upward : Icons.arrow_downward,
-                          size: 12,
-                          color: trendUp ? const Color(0xFF4CAF50) : const Color(0xFFE53935),
-                        ),
-                        const SizedBox(width: 2),
-                        Text(
-                          trendValue,
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: trendUp ? const Color(0xFF4CAF50) : const Color(0xFFE53935),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-              ],
-            ),
-            Expanded(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      count,
-                      style: const TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      maxLines: 1,
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      title,
-                      style: const TextStyle(fontSize: 14, color: Colors.black54),
-                      maxLines: 1,
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
         ),
       ),
     );
   }
-
-  // P3. Xây dựng hoạt động gần đây
-Widget _buildRecentActivitiesSection(BuildContext context) {
-  // Lấy danh sách hoạt động gần đây từ dữ liệu thật
-  final recentActivities = _getRecentActivities();
-
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Text(
-            'Hoạt động gần đây',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          TextButton(
-            onPressed: () {
-              //Điều hướng đến trang xem tất cả hoạt động
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => HrRecentActivitieScreen(activities: recentActivities),
-                ),
-              );
-            },
-            child: const Text(
-              'Xem tất cả',
-              style: TextStyle(color: Color(0xFF3366FF)),
-            ),
-          ),
-        ],
-      ),
-      const SizedBox(height: 12),
-      Card(
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: ListView.separated(
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: recentActivities.length > 3 ? 3 : recentActivities.length,
-          separatorBuilder: (context, index) => const Divider(height: 1),
-          itemBuilder: (context, index) {
-            final activity = recentActivities[index];
-            return _buildActivityItem(context: context, activity: activity);
-          },
-        ),
-      ),
-    ],
-  );
-}
 
   List<Map<String, dynamic>> _getRecentActivities() {
     List<Map<String, dynamic>> activities = [];
@@ -985,185 +610,12 @@ Widget _buildRecentActivitiesSection(BuildContext context) {
     return activities;
   }
 
-// Lấy tên user theo jobapplication
-String _getUserNameById(String idUser) {
-  final user = accountJobApplicationList.firstWhere(
-    (account) => account.idUser == idUser);
-  return user.userName;
-}
+  // Lấy tên user theo jobapplication
+  String _getUserNameById(String idUser) {
+    final user = accountJobApplicationList.firstWhere(
+      (account) => account.idUser == idUser,
+    );
+    return user.userName;
+  }
   
-  // Item hoạt động gần đây
-  Widget _buildActivityItem({required BuildContext context, required Map<String, dynamic> activity }) {
-    final String title = activity['title'] ?? 'Không có tiêu đề';
-    final String time = activity['time'] ?? '';
-    final String description = activity['description'] ?? 'Không có mô tả chi tiết.';
-    final IconData icon = activity['icon'] ?? Icons.info_outline;
-    final Color color = activity['color'] ?? Colors.blue;
-    final List<String>? details = activity['details'] != null
-        ? List<String>.from(activity['details'])
-        : null;
-    final dynamic attachments = activity['attachments'];
-
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => HrDetailRecentActivitieScreen(
-              title: title,
-              time: time,
-              description: description,
-              icon: icon,
-              color: color,
-              details: details,
-              attachments: attachments,
-            ),
-          ),
-        );
-      },
-      child: ListTile(
-        leading: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: color.withValues(alpha:0.1),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Icon(icon, size: 24, color: color),
-        ),
-        title: Text(
-          title,
-          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
-        ),
-        subtitle: Text(
-          time,
-          style: const TextStyle(fontSize: 13, color: Colors.black54),
-        ),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      ),
-    );
-  }
-
-  // P4. Phỏng vấn sắp tới 
- Widget _buildUpcomingSection(BuildContext context) {
-
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        'Lịch phỏng vấn sắp tới',
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-      ),
-      SizedBox(height: 16),
-      Card(
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            children: [
-              ListView.separated(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: upcomingInterviewSchedulesList.length,
-                separatorBuilder: (context, index) => Column(
-                  children: [
-                    SizedBox(height: 12),
-                    Divider(),
-                    SizedBox(height: 12),
-                  ],
-                ),
-                itemBuilder: (context, index) {
-                  final interviewSchedule = upcomingInterviewSchedulesList[index];
-                  final account = accountInterviewList[index];
-                  final candidate =  candidateInterviewList?[index];
-                  return _buildInterviewItem(
-                    userName: account.userName,
-                    position: candidate!.workPosition ?? '',
-                    hour: formatHourWithAmPm(interviewSchedule.interviewDate),
-                    date: getRelativeDateLabel(interviewSchedule.interviewDate),
-                    avatarColor: getRandomColor(),
-                  );
-                },
-              ),
-              SizedBox(height: 40),
-              OutlinedButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (contex)=> HrInterviewSchedule()));
-                },
-                style: OutlinedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  minimumSize: Size(double.infinity, 48),
-                ),
-                child: Text('Xem tất cả lịch phỏng vấn'),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ],
-  );
-}
-
-  // Item lịch phỏng vấn
-  Widget _buildInterviewItem({
-    required String userName,
-    required String position,
-    required String hour,
-    required String date,
-    required Color avatarColor,
-  }) {
-    return Row(
-      children: [
-        CircleAvatar(
-          radius: 24,
-          // ignore: deprecated_member_use
-          backgroundColor: avatarColor.withValues(alpha:0.2),
-          child: Text(
-            userName.split(' ').last,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 14
-            ),
-          )
-        ),
-        SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                userName,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-              SizedBox(height: 2),
-              SizedBox(
-                width: 150,
-                child: Text(
-                  position,
-                  style: TextStyle(color: Colors.black54, fontSize: 14),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(
-              hour,
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
-            ),
-            SizedBox(height: 2),
-            Text(date, style: TextStyle(color: Colors.black54, fontSize: 13)),
-          ],
-        ),
-      ],
-    );
-  }
 }

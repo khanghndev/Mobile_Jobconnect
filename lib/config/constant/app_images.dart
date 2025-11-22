@@ -10,6 +10,7 @@ class AppImages {
   static const String connect = '$_baseImage/connect.png';
   static const String ai = '$_baseImage/ai.png';
   static const String notImage = '$_baseImage/not_image.png';
-  
+  static const String bgCalendar = '$_baseImage/background_main.png';
+  static const String bgCalendarV2 = '$_baseImage/background_main_v2.png';
   static const String google = '$_baseIcon/google.png';
 }

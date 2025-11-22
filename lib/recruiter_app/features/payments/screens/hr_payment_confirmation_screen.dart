@@ -15,14 +15,10 @@ import '../../../services/subscriptionpackage_service.dart';
 
 // ignore: must_be_immutable
 class PaymentConfirmationDetailScreen extends StatefulWidget {
-  String idBank;
-  double balance;
   String idTransaction;
 
   PaymentConfirmationDetailScreen({
     super.key,
-    required this.idBank,
-    required this.balance,
     required this.idTransaction,
   });
 
@@ -507,7 +503,7 @@ class _PaymentConfirmationDetailScreenState extends State<PaymentConfirmationDet
 
   /// Phần "Nguồn chuyển tiền"
   Widget _buildSourceSection() {
-    final double currentBalance = widget.balance;
+    final double currentBalance = 0.0;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),

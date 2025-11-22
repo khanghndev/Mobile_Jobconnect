@@ -1,13 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:job_connect/config/constant/app_colors.dart';
-import 'package:job_connect/config/constant/app_strings.dart';
-import 'package:job_connect/config/enum/post_status.dart';
-import 'package:job_connect/config/utils/image_url.dart';
 import 'package:job_connect/config/utils/snackbar_app.dart';
 import 'package:job_connect/config/widgets/background_error_state.dart';
+import 'package:job_connect/config/widgets/unfocus_widget.dart';
 import 'package:job_connect/features/company/model/company_model.dart';
 import 'package:job_connect/features/company/service/company_service.dart';
 import 'package:job_connect/features/job/model/job_application_model.dart';
@@ -20,14 +19,14 @@ import 'package:job_connect/features/profile/model/user_model.dart';
 import 'package:job_connect/features/profile/service/user_service.dart';
 import 'package:job_connect/model/recruiter_info_model.dart';
 import 'package:job_connect/model/subscription_package_model.dart';
-import 'package:job_connect/recruiter_app/features/job/screens/hr_job_detail_screen.dart';
 import 'package:job_connect/recruiter_app/features/payments/screens/hr_subscription_screen.dart';
 import 'package:job_connect/recruiter_app/features/post/widget/post_job/active_jobs_tab.dart';
 import 'package:job_connect/recruiter_app/features/post/widget/post_job/history_tab.dart';
 import 'package:job_connect/recruiter_app/features/post/widget/post_job/pending_jobs_tab.dart';
-import 'package:job_connect/recruiter_app/features/post/widget/post_job/recruiter_info_row.dart';
-import 'package:job_connect/recruiter_app/features/post/widget/post_job/recruiter_tab_bar.dart';
+import 'package:job_connect/recruiter_app/features/post/widget/post_job/post_jobs_tab_bar.dart';
 import 'package:job_connect/recruiter_app/features/post/widget/post_job/recruitment_tab.dart';
+import 'package:job_connect/recruiter_app/features/post/widget/post_job/recruiter_info_row.dart';
+import 'package:job_connect/recruiter_app/features/post/widget/post_job/temporary_jobs_tab.dart';
 import 'package:job_connect/recruiter_app/features/post/widget/post_job/upgrade_posting_button.dart';
 import 'package:job_connect/recruiter_app/services/recruiter_service.dart';
 import 'package:job_connect/recruiter_app/services/subscriptionpackage_service.dart';
@@ -40,33 +39,73 @@ class HrPostJobScreen extends StatefulWidget {
   _HrPostJobScreenState createState() => _HrPostJobScreenState();
 }
 
-class _HrPostJobScreenState extends State<HrPostJobScreen> with SingleTickerProviderStateMixin {
+class _HrPostJobScreenState extends State<HrPostJobScreen>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late final PageController _pageController;
 
-  final _formKey = GlobalKey<FormState>();
-  final Random _random = Random();
+  // Form keys
+  final _recruitmentFormKey = GlobalKey<FormState>();
+  final _temporaryFormKey = GlobalKey<FormState>();
 
-  // Controllers cho form đăng job
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _salaryController = TextEditingController();
-  final TextEditingController _requirementsController = TextEditingController();
-  final TextEditingController _benefitsController = TextEditingController();
-  final TextEditingController _locationController = TextEditingController();
+  // Controllers for RecruitmentTab
+  final TextEditingController _recTitleController = TextEditingController();
+  final TextEditingController _recDescriptionController = TextEditingController();
+  final TextEditingController _recRequirementsController = TextEditingController();
+  final TextEditingController _recBenefitsController = TextEditingController();
+  final TextEditingController _recSalaryController = TextEditingController();
+  final TextEditingController _recLocationController = TextEditingController();
 
-  // Lọc & tìm kiếm
-  String _jobType = "fulltime";
-  String _experienceLevel = "Mới đi làm";
-  String _location = "TP. Hồ Chí Minh";
-  bool _isUrgent = false;
+  // Controllers for TemporaryJobsFormTab
+  final TextEditingController _tempTitleController = TextEditingController();
+  final TextEditingController _tempDescriptionController = TextEditingController();
+  final TextEditingController _tempRequirementsController = TextEditingController();
+  final TextEditingController _tempHourlyRateController = TextEditingController();
+  final TextEditingController _tempDailyRateController = TextEditingController();
+  final TextEditingController _tempLocationController = TextEditingController();
+  final TextEditingController _tempMinHoursController = TextEditingController();
+  final TextEditingController _tempMaxHoursController = TextEditingController();
+  final TextEditingController _tempWorkDaysController = TextEditingController();
+  final TextEditingController _workDaysController = TextEditingController();
 
-  final TextEditingController _searchController = TextEditingController();
-  String _selectedFilter = 'Tất cả';
+  // Dropdown / checkbox state for RecruitmentTab
+  String _recSelectedWorkType = 'Full-time';
+  String _recSelectedWorkSchedule = 'Sáng';
+  String _recSelectedExperience = 'Không yêu cầu';
+  String _recSelectedLocation = 'Hà Nội';
+  DateTime? _recApplicationDeadline;
+  bool _recIsUrgent = false;
+
+  // Dropdown / checkbox state for TemporaryJobsFormTab
+  String _tempSelectedWorkType = 'Full-time';
+  String _tempSelectedWorkSchedule = 'Sáng';
+  String _tempSelectedCategory = 'IT';
+  String _tempSelectedExperience = 'Không yêu cầu';
+  DateTime? _tempSeasonalStart;
+  DateTime? _tempSeasonalEnd;
+  DateTime? _tempApplicationDeadline;
+  bool _tempIsUrgent = false;
+
+  // Dropdown options
+  final List<String> workTypes = ['Full-time', 'Part-time', 'Temporary'];
+  final List<String> workSchedules = ['Sáng', 'Chiều', 'Tối'];
+  final List<String> categories = ['IT', 'Marketing', 'Sales'];
+  final List<String> experienceLevels = ['Không yêu cầu', 'Mới tốt nghiệp', '1-3 năm', '3-5 năm'];
+  final List<String> _locations = [
+    'An Giang','Bà Rịa - Vũng Tàu','Bạc Liêu','Bắc Giang','Bắc Kạn','Bắc Ninh',
+    'Bến Tre','Bình Dương','Bình Định','Bình Phước','Bình Thuận','Cà Mau','Cao Bằng',
+    'Cần Thơ','Đà Nẵng','Đắk Lắk','Đắk Nông','Điện Biên','Đồng Nai','Đồng Tháp',
+    'Gia Lai','Hà Giang','Hà Nam','Hà Nội','Hà Tĩnh','Hải Dương','Hải Phòng',
+    'Hậu Giang','Hòa Bình','Hưng Yên','Khánh Hòa','Kiên Giang','Kon Tum','Lai Châu',
+    'Lâm Đồng','Lạng Sơn','Lào Cai','Long An','Nam Định','Nghệ An','Ninh Bình',
+    'Ninh Thuận','Phú Thọ','Phú Yên','Quảng Bình','Quảng Nam','Quảng Ngãi','Quảng Ninh',
+    'Quảng Trị','Sóc Trăng','Sơn La','Tây Ninh','Thái Bình','Thái Nguyên','Thanh Hóa',
+    'Thừa Thiên Huế','Tiền Giang','TP. Hồ Chí Minh','Trà Vinh','Tuyên Quang','Vĩnh Long','Vĩnh Phúc',
+    'Yên Bái',
+  ];
 
   // Services
   final JobPostingService _jobPostingService = JobPostingService();
-  final JobApplicationService _jobApplicationService = JobApplicationService();
   final RecruiterService _recruiterService = RecruiterService();
   final UserService _accountService = UserService();
   final CompanyService _companyService = CompanyService();
@@ -82,60 +121,17 @@ class _HrPostJobScreenState extends State<HrPostJobScreen> with SingleTickerProv
   JobTransactionModel? transaction;
   SubscriptionPackageModel? subscriptionPackage;
 
-  // Trạng thái
+  // Loading / Error
   bool isLoading = true;
   String? error;
   bool _isPremiumUser = false;
 
-  // DatePicker
-  DateTime? _selectedDeadline;
-  final DateTime _defaultDeadline = DateTime.now().add(const Duration(days: 7));
-
-  // Danh sách cố định
-  final List<String> _jobTypes = [
-    "fulltime", "parttime", "freelancer",
-    "remote", "internship", "fresher", "senior", "junior", "contract"
-  ];
-
-  final List<String> _experienceLevels = [
-    "Mới đi làm",
-    "1-2 năm kinh nghiệm",
-    "3-5 năm kinh nghiệm",
-    "Trên 5 năm kinh nghiệm",
-    "Quản lý",
-  ];
-
-  final List<String> _locations = [
-    'An Giang','Bà Rịa - Vũng Tàu','Bạc Liêu','Bắc Giang','Bắc Kạn','Bắc Ninh',
-    'Bến Tre','Bình Dương','Bình Định','Bình Phước','Bình Thuận','Cà Mau','Cao Bằng',
-    'Cần Thơ','Đà Nẵng','Đắk Lắk','Đắk Nông','Điện Biên','Đồng Nai','Đồng Tháp',
-    'Gia Lai','Hà Giang','Hà Nam','Hà Nội','Hà Tĩnh','Hải Dương','Hải Phòng',
-    'Hậu Giang','Hòa Bình','Hưng Yên','Khánh Hòa','Kiên Giang','Kon Tum','Lai Châu',
-    'Lâm Đồng','Lạng Sơn','Lào Cai','Long An','Nam Định','Nghệ An','Ninh Bình',
-    'Ninh Thuận','Phú Thọ','Phú Yên','Quảng Bình','Quảng Nam','Quảng Ngãi','Quảng Ninh',
-    'Quảng Trị','Sóc Trăng','Sơn La','Tây Ninh','Thái Bình','Thái Nguyên','Thanh Hóa',
-    'Thừa Thiên Huế','Tiền Giang','TP. Hồ Chí Minh','Trà Vinh','Tuyên Quang','Vĩnh Long','Vĩnh Phúc',
-    'Yên Bái',
-  ];
-
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 5, vsync: this);
     _pageController = PageController();
     _loadAllData();
-  }
-
-  Future<void> _pickDeadline() async {
-    final today = DateTime.now();
-    final date = await showDatePicker(
-      context: context,
-      initialDate: _selectedDeadline ?? today,
-      firstDate: today,
-      lastDate: DateTime(today.year + 1),
-    );
-    if (date == null) return;
-    setState(() => _selectedDeadline = DateTime(date.year, date.month, date.day));
   }
 
   Future<void> _loadAllData() async {
@@ -178,67 +174,98 @@ class _HrPostJobScreenState extends State<HrPostJobScreen> with SingleTickerProv
     }
   }
 
-  Future<void> _deleteJobPosting(String jobId) async {
-    try {
-      await _jobPostingService.deleteJobPosting(jobId: jobId);
-      SnackbarApp.show(
-        context,
-        message: 'Xóa tin tuyển dụng thành công!',
-        backgroundColor: BackgroundColors.backgroundSuccessPrimary,
-      );
-      _loadAllData();
-    } catch (e) {
-      SnackbarApp.show(
-        context,
-        message: 'Lỗi khi xóa tin tuyển dụng: $e',
-        backgroundColor: BackgroundColors.backgroundErrorPrimary,
-      );
-    }
+  void _resetRecruitmentForm() {
+    _recTitleController.clear();
+    _recDescriptionController.clear();
+    _recRequirementsController.clear();
+    _recBenefitsController.clear();
+    _recSalaryController.clear();
+    _recLocationController.clear();
+    _workDaysController.clear();
+    setState(() {
+      _recSelectedWorkType = workTypes.first;
+      _recSelectedWorkSchedule = workSchedules.first;
+      _recSelectedExperience = experienceLevels.first;
+      _recIsUrgent = false;
+      _recApplicationDeadline = null;
+    });
   }
 
-  int _isFeatured() => _isUrgent ? 1 : 0;
+  void _resetTemporaryForm() {
+    _tempTitleController.clear();
+    _tempDescriptionController.clear();
+    _tempRequirementsController.clear();
+    _tempHourlyRateController.clear();
+    _tempDailyRateController.clear();
+    _tempLocationController.clear();
+    _tempMinHoursController.clear();
+    _tempMaxHoursController.clear();
+    _tempWorkDaysController.clear();
+    setState(() {
+      _tempSelectedWorkType = workTypes.first;
+      _tempSelectedWorkSchedule = workSchedules.first;
+      _tempSelectedCategory = categories.first;
+      _tempSelectedExperience = experienceLevels.first;
+      _tempSeasonalStart = null;
+      _tempSeasonalEnd = null;
+      _tempApplicationDeadline = null;
+      _tempIsUrgent = false;
+    });
+  }
 
-  Future<void> _createJobPosting() async {
-    if (!_formKey.currentState!.validate()) return;
+  Future<void> _pickTemporarySeasonalStart() async {
+    final date = await showDatePicker(
+      context: context,
+      initialDate: _tempSeasonalStart ?? DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
+    );
+    if (date != null) setState(() => _tempSeasonalStart = date);
+  }
 
-    if (!_canCreateJobPosting()) {
-      SnackbarApp.show(
-        context,
-        message: 'Bạn đã hết hạn mức đăng tin trong gói hiện tại.',
-        backgroundColor: BackgroundColors.backgroundWarningPrimary,
-      );
-      return;
-    }
+  Future<void> _pickTemporarySeasonalEnd() async {
+    final date = await showDatePicker(
+      context: context,
+      initialDate: _tempSeasonalEnd ?? DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
+    );
+    if (date != null) setState(() => _tempSeasonalEnd = date);
+  }
 
-    final now = DateTime.now();
-    final deadline = _selectedDeadline ?? now;
+  Future<void> _createTemporaryJob() async {
+    if (!_temporaryFormKey.currentState!.validate()) return;
 
     final newJob = JobPostingModel(
-      idJobPost: "auto-generated-id",
-      title: _titleController.text.trim(),
-      description: _descriptionController.text.trim(),
-      requirements: _requirementsController.text.trim(),
-      salary: double.tryParse(_salaryController.text) ?? 0.0,
-      location: _location,
-      workType: _jobType,
-      experienceLevel: _experienceLevel,
-      idCompany: companyInfo?.idCompany ?? "",
-      applicationDeadline: deadline,
-      benefits: _benefitsController.text.trim(),
-      createdAt: now,
-      updatedAt: now,
-      isFeatured: _isFeatured(),
-      postStatus: PostStatus.waiting.name,
+      idJobPost: '',
+      title: _tempTitleController.text.trim(),
+      description: _tempDescriptionController.text.trim(),
+      requirements: _tempRequirementsController.text.trim(),
+      salary: double.tryParse(_tempHourlyRateController.text) ?? 0,
+      location: _tempLocationController.text.trim(),
+      workType: _tempSelectedWorkType,
+      experienceLevel: _tempSelectedWorkSchedule,
+      idCompany: companyInfo?.idCompany ?? '',
+      applicationDeadline: _tempApplicationDeadline ?? DateTime.now().add(const Duration(days: 7)),
+      benefits: '',
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+      isFeatured: _tempIsUrgent ? 1 : 0,
+      postStatus: 'waiting',
     );
 
     try {
-      await _jobPostingService.createJobPosting(jobPosting: newJob);
+      await _jobPostingService.createJobPosting(
+        jobPosting: newJob,
+        isUrgent: _tempIsUrgent,
+        isSeasonal: false,
+      );
       SnackbarApp.show(
         context,
-        message: 'Đăng tuyển thành công!',
+        message: 'Đăng công việc thành công!',
         backgroundColor: BackgroundColors.backgroundSuccessPrimary,
       );
-      _resetForm();
+      _resetTemporaryForm();
       await _loadAllData();
     } catch (e) {
       SnackbarApp.show(
@@ -249,36 +276,71 @@ class _HrPostJobScreenState extends State<HrPostJobScreen> with SingleTickerProv
     }
   }
 
-  bool _canCreateJobPosting() => subscriptionPackage != null &&
-      jobPostingsList.length < subscriptionPackage!.jobPostLimit;
+  Future<void> _createRecruitmentJob() async {
+    if (!_recruitmentFormKey.currentState!.validate()) return;
 
-  void _resetForm() {
-    _titleController.clear();
-    _descriptionController.clear();
-    _salaryController.clear();
-    _requirementsController.clear();
-    _benefitsController.clear();
-    _locationController.clear();
-    setState(() {
-      _jobType = "fulltime";
-      _experienceLevel = "Mới đi làm";
-      _selectedDeadline = _defaultDeadline;
-      _isUrgent = false;
-    });
+    final newJob = JobPostingModel(
+      idJobPost: '',
+      title: _recTitleController.text.trim(),
+      description: _recDescriptionController.text.trim(),
+      requirements: _recRequirementsController.text.trim(),
+      salary: double.tryParse(_recSalaryController.text) ?? 0,
+      location: _recLocationController.text.trim(),
+      workType: _recSelectedWorkType,
+      experienceLevel: _recSelectedWorkSchedule,
+      idCompany: companyInfo?.idCompany ?? '',
+      applicationDeadline: _recApplicationDeadline ?? DateTime.now().add(const Duration(days: 7)),
+      benefits: _recBenefitsController.text.trim(),
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+      isFeatured: _recIsUrgent ? 1 : 0,
+      postStatus: 'waiting',
+    );
+
+    try {
+      await _jobPostingService.createJobPosting(jobPosting: newJob);
+      SnackbarApp.show(
+        context,
+        message: 'Đăng công việc thành công!',
+        backgroundColor: BackgroundColors.backgroundSuccessPrimary,
+      );
+      _resetRecruitmentForm();
+      await _loadAllData();
+    } catch (e) {
+      SnackbarApp.show(
+        context,
+        message: 'Lỗi khi đăng tuyển: $e',
+        backgroundColor: BackgroundColors.backgroundErrorPrimary,
+      );
+    }
   }
 
   @override
   void dispose() {
     _tabController.dispose();
     _pageController.dispose();
-    _titleController.dispose();
-    _descriptionController.dispose();
-    _salaryController.dispose();
-    _requirementsController.dispose();
-    _benefitsController.dispose();
-    _locationController.dispose();
+    // Recruitment controllers
+    _recTitleController.dispose();
+    _recDescriptionController.dispose();
+    _recRequirementsController.dispose();
+    _recBenefitsController.dispose();
+    _recSalaryController.dispose();
+    _recLocationController.dispose();
+    _workDaysController.dispose();
+    // Temporary controllers
+    _tempTitleController.dispose();
+    _tempDescriptionController.dispose();
+    _tempRequirementsController.dispose();
+    _tempHourlyRateController.dispose();
+    _tempDailyRateController.dispose();
+    _tempLocationController.dispose();
+    _tempMinHoursController.dispose();
+    _tempMaxHoursController.dispose();
+    _tempWorkDaysController.dispose();
+
     super.dispose();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -293,80 +355,170 @@ class _HrPostJobScreenState extends State<HrPostJobScreen> with SingleTickerProv
       );
     }
 
+    if (isLoading) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
     return Scaffold(
-      body: SafeArea(
-        child: RefreshIndicator(
-          onRefresh: _loadAllData,
-          child: NestedScrollView(
-            headerSliverBuilder: (context, innerBoxIsScrolled) => [
-              SliverToBoxAdapter(
-                child: Container(
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [Color(0xFF2563EB), Color(0xFF1E40AF)],
+      body: UnfocusWidget(
+        child: SafeArea(
+          child: RefreshIndicator(
+            onRefresh: _loadAllData,
+            child: NestedScrollView(
+              headerSliverBuilder: (_, __) => [
+                SliverToBoxAdapter(
+                  child: Container(
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [Color(0xFF2563EB), Color(0xFF1E40AF)],
+                      ),
+                    ),
+                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+                    child: Column(
+                      children: [
+                        RecruiterInfoRow(
+                          user: user,
+                          companyInfo: companyInfo,
+                          isPremiumUser: _isPremiumUser,
+                          packageName: subscriptionPackage?.packageName,
+                        ),
+                        const SizedBox(height: 12),
+                        UpgradePostingButton(
+                          onTap: () {
+                            if (subscriptionPackage == null) return;
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => HrSubscriptionScreen(
+                                  recruiterId: widget.recruiterId,
+                                  currentPackageId: subscriptionPackage!.idPackage,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ),
-                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-                  child: Column(
-                    children: [
-                      RecruiterInfoRow(
-                        user: user,
-                        companyInfo: companyInfo,
-                        isPremiumUser: _isPremiumUser,
-                        packageName: subscriptionPackage?.packageName,
-                      ),
-                      const SizedBox(height: 12),
-                      UpgradePostingButton(
-                        onTap: () {
-                          if (subscriptionPackage == null) return;
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => HrSubscriptionScreen(
-                                idBank: '1',
-                                balance: 0,
-                                recruiterId: widget.recruiterId,
-                                currentPackageId: subscriptionPackage!.idPackage,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
+                ),
+                SliverToBoxAdapter(
+                  child: PostJobsTabBar(
+                    tabController: _tabController,
+                    pageController: _pageController,
+                    tabs: const [
+                      Tab(icon: Icon(Icons.work_outline), text: "Tin tuyển dụng"),
+                      Tab(icon: Icon(Icons.work_history_outlined), text: "Tin thời vụ"),
+                      Tab(icon: Icon(Icons.history), text: "Lịch sử"),
+                      Tab(icon: Icon(Icons.visibility_outlined), text: "Đang hiển thị"),
+                      Tab(icon: Icon(Icons.pending_outlined), text: "Chờ xác thực"),
                     ],
                   ),
                 ),
-              ),
-              SliverToBoxAdapter(
-                child: RecruiterTabBar(
-                  tabController: _tabController,
-                  pageController: _pageController,
-                ),
-              ),
-            ],
-            body: PageView(
-              controller: _pageController,
-              onPageChanged: (idx) => _tabController.index = idx,
-              children: [
-                RecruitmentTab(isPremiumUser: true),
-                HistoryTab(
-                  jobPostings: jobPostingsList,
-                  jobApplicationsList: jobApplicationsList,
-                  onRepostJob: (jobId) async {
-                    await _jobPostingService.updateJobPostingStatus(jobId: jobId, newStatus: 'waiting');
-                  },
-                ),
-                ActiveJobsTab(jobPostings: jobPostingsList, jobApplicationsList: jobApplicationsList),
-                PendingJobsTab(
-                  jobPostings: jobPostingsList,
-                  onEditJob: (idJob) {},
-                  onCancelJob: (idJob) async {
-                    await _jobPostingService.updateJobPostingStatus(jobId: idJob, newStatus: 'closed');
-                  },
-                ),
               ],
+              body: PageView(
+                controller: _pageController,
+                onPageChanged: (idx) => _tabController.index = idx,
+                children: [
+                  RecruitmentTab(
+                    isPremiumUser: _isPremiumUser,
+                    titleController: _recTitleController,
+                    descriptionController: _recDescriptionController,
+                    requirementsController: _recRequirementsController,
+                    benefitsController: _recBenefitsController,
+                    salaryController: _recSalaryController,
+                    locationController: _recLocationController,
+                    workDaysController: _workDaysController,
+                    jobType: _recSelectedWorkType,
+                    experienceLevel: _recSelectedWorkSchedule,
+                    location: _recSelectedLocation,
+                    jobTypes: workTypes,
+                    experienceLevels: experienceLevels,
+                    locations: _locations,
+                    selectedDeadline: _recApplicationDeadline ?? DateTime.now(),
+                    isUrgent: _recIsUrgent,
+                    onPickDeadline: () async {
+                      final picked = await showDatePicker(
+                        context: context,
+                        initialDate: _recApplicationDeadline ?? DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime(2100),
+                      );
+                      if (picked != null) setState(() => _recApplicationDeadline = picked);
+                    },
+                    onJobTypeChanged: (v) => setState(() => _recSelectedWorkType = v),
+                    onExperienceChanged: (v) => setState(() => _recSelectedWorkSchedule = v),
+                    onLocationChanged:  (v) => setState(() => _recSelectedLocation = v),
+                    onUrgentChanged: (v) => setState(() => _recIsUrgent = v),
+                    onResetForm: _resetRecruitmentForm,
+                    onCreateJob: _createRecruitmentJob,
+                    formKey: _recruitmentFormKey,
+                  ),
+                  TemporaryJobsFormTab(
+                    isPremiumUser: _isPremiumUser,
+                    titleController: _tempTitleController,
+                    descriptionController: _tempDescriptionController,
+                    requirementsController: _tempRequirementsController,
+                    hourlyRateController: _tempHourlyRateController,
+                    dailyRateController: _tempDailyRateController,
+                    locationController: _tempLocationController,
+                    minHoursController: _tempMinHoursController,
+                    maxHoursController: _tempMaxHoursController,
+                    workDaysController: _tempWorkDaysController,
+                    workType: _tempSelectedWorkType,
+                    workSchedule: _tempSelectedWorkSchedule,
+                    category: _tempSelectedCategory,
+                    experienceLevel: _tempSelectedExperience,
+                    seasonalStart: _tempSeasonalStart,
+                    seasonalEnd: _tempSeasonalEnd,
+                    applicationDeadline: _tempApplicationDeadline,
+                    isUrgent: _tempIsUrgent,
+                    onCreateJob: _createTemporaryJob,
+                    onResetForm: _resetTemporaryForm,
+                    onPickSeasonalStart: _pickTemporarySeasonalStart,
+                    onPickSeasonalEnd: _pickTemporarySeasonalEnd,
+                    onPickDeadline: () async {
+                      final picked = await showDatePicker(
+                        context: context,
+                        initialDate: _tempApplicationDeadline ?? DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime(2100),
+                      );
+                      if (picked != null) setState(() => _tempApplicationDeadline = picked);
+                    },
+                    onWorkTypeChanged: (v) => setState(() => _tempSelectedWorkType = v),
+                    onWorkScheduleChanged: (v) => setState(() => _tempSelectedWorkSchedule = v),
+                    onCategoryChanged: (v) => setState(() => _tempSelectedCategory = v),
+                    onExperienceChanged: (v) => setState(() => _tempSelectedExperience = v),
+                    onUrgentChanged: (v) => setState(() => _tempIsUrgent = v),
+                    formKey: _temporaryFormKey,
+                    workTypes: workTypes,
+                    workSchedules: workSchedules,
+                    categories: categories,
+                    experienceLevels: experienceLevels,
+                  ),
+                  HistoryTab(
+                    jobPostings: jobPostingsList,
+                    jobApplicationsList: jobApplicationsList,
+                    onRepostJob: (jobId) async {
+                      await _jobPostingService.updateJobPostingStatus(jobId: jobId, newStatus: 'waiting');
+                    },
+                  ),
+                  ActiveJobsTab(
+                    jobPostings: jobPostingsList,
+                    jobApplicationsList: jobApplicationsList,
+                  ),
+                  PendingJobsTab(
+                    jobPostings: jobPostingsList,
+                    onEditJob: (idJob) {},
+                    onCancelJob: (idJob) async {
+                      await _jobPostingService.updateJobPostingStatus(jobId: idJob, newStatus: 'closed');
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),

@@ -1,5 +1,12 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:job_connect/config/constant/app_images.dart';
+import 'package:job_connect/config/utils/image_url.dart';
+import 'package:job_connect/config/widgets/button_primary_gradient.dart';
+import 'package:job_connect/config/widgets/custom_app_bar_title_large.dart';
+import 'package:job_connect/config/widgets/custom_button_border.dart';
+import 'package:job_connect/config/widgets/info_chip.dart';
 import 'package:job_connect/features/job/model/job_application_model.dart';
 import 'package:job_connect/features/job/model/job_posting_model.dart';
 import 'package:job_connect/features/job/service/job_application_service.dart';
@@ -11,19 +18,19 @@ import 'package:job_connect/features/profile/service/candidate_info_service.dart
 import 'package:job_connect/features/profile/service/user_service.dart';
 import 'package:job_connect/recruiter_app/features/candidate/screens/detail_candidate_of_hr.dart';
 
-class HrPendingAplicationScreen extends StatefulWidget {
+class HrPendingApplicationScreen extends StatefulWidget {
   final List<JobApplicationModel> pendingApplications;
 
-  const HrPendingAplicationScreen({
+  const HrPendingApplicationScreen({
     super.key,
     required this.pendingApplications,
   });
 
   @override
-  State<HrPendingAplicationScreen> createState() => _HrPendingAplicationScreenState();
+  State<HrPendingApplicationScreen> createState() => _HrPendingApplicationScreenState();
 }
 
-class _HrPendingAplicationScreenState extends State<HrPendingAplicationScreen> {
+class _HrPendingApplicationScreenState extends State<HrPendingApplicationScreen> {
   final UserService _accountService = UserService();
   final CandidateInfoService _candidateInfoService = CandidateInfoService();
   final JobApplicationService _jobApplicationService = JobApplicationService();
@@ -69,7 +76,6 @@ class _HrPendingAplicationScreenState extends State<HrPendingAplicationScreen> {
       setState(() {
         isLoading = false;
       });
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Lỗi khi tải dữ liệu: $e')),
       );
@@ -98,17 +104,11 @@ class _HrPendingAplicationScreenState extends State<HrPendingAplicationScreen> {
     if (confirm != true) return;
 
     try {
-      // await _jobApplicationService.updateJobApplicationStatus(
-      //   jobPostId: application.idJobPost,
-      //   userId: application.idUser,
-      //   newStatus: "rejected",
-      // );
-
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Đã từ chối hồ sơ thành công.')),
       );
 
-     setState(() {
+      setState(() {
         localApplications.removeWhere((app) =>
             app.idJobPost == application.idJobPost &&
             app.idUser == application.idUser);
@@ -126,17 +126,15 @@ class _HrPendingAplicationScreenState extends State<HrPendingAplicationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Hồ sơ đang chờ đánh giá'),
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        elevation: 0,
-      ),
+      appBar: const CustomAppbarTitleLarge(title: 'Hồ sơ đang chờ đánh giá'),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : ListView.builder(
               itemCount: localApplications.length,
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(16.w),
               itemBuilder: (context, index) {
                 final application = localApplications[index];
 
@@ -185,161 +183,172 @@ class _HrPendingAplicationScreenState extends State<HrPendingAplicationScreen> {
 
                 return Card(
                   elevation: 6,
-                  margin: const EdgeInsets.only(bottom: 16),
+                  margin: EdgeInsets.only(bottom: 16.h),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(16.r),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(16.w),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Header: Avatar và tên ứng viên
-                        Row(
+                        // Header: Avatar, tên ứng viên và icon xem CV
+                        Stack(
                           children: [
-                            CircleAvatar(
-                              radius: 30,
-                              backgroundColor: Colors.blue.withValues(alpha:0.2),
-                              child: Text(
-                                account.userName[0].toUpperCase(),
-                                style: const TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.blue,
+                            Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(30.r), // nửa size để tròn
+                                  child: Image(
+                                    image: ImageUtils.getImageProvider(account.avatarUrl),
+                                    width: 60.w,
+                                    height: 60.w,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) => ClipRRect(
+                                      borderRadius: BorderRadius.circular(30.r),
+                                      child: Image.asset(
+                                        AppImages.defaultAvatar,
+                                        width: 60.w,
+                                        height: 60.w,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                SizedBox(width: 16.w),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        account.userName,
+                                        style: textTheme.titleMedium?.copyWith(
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      SizedBox(height: 4.h),
+                                      Text(
+                                        candidate.workPosition ?? 'Chưa cập nhật vị trí',
+                                        style: textTheme.bodyMedium?.copyWith(
+                                          fontSize: 14.sp,
+                                          color: Colors.black54,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(width: 40.w), // khoảng trống cho icon xem CV
+                              ],
                             ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    account.userName,
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black87,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    candidate.workPosition ?? 'Chưa cập nhật vị trí',
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.black54,
-                                    ),
-                                  ),
-                                ],
+                            Positioned(
+                              right: 0,
+                              top: 0,
+                              child: IconButton(
+                                onPressed: () {
+                                  // TODO: mở CV
+                                  context.push('/resume/file', 
+                                  extra: {
+                                    'fileUrl': application.cvFileUrl, 
+                                    'fileName': 'Hồ sơ ứng tuyển'
+                                  });
+                                },
+                                icon: Icon(Icons.picture_as_pdf, color: Colors.red, size: 28.sp),
+                                tooltip: 'Xem CV',
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 16),
-
+                        SizedBox(height: 16.h),
                         // Thông tin chi tiết
                         Row(
                           children: [
-                            const Icon(Icons.school_outlined, color: Colors.blue, size: 20),
-                            const SizedBox(width: 8),
+                            Icon(Icons.school_outlined, color: Colors.blue, size: 20.sp),
+                            SizedBox(width: 8.w),
                             Expanded(
                               child: Text(
                                 candidate.universityName ?? 'Chưa cập nhật trường đại học',
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black87,
-                                ),
+                                style: textTheme.bodyMedium?.copyWith(fontSize: 14.sp),
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 8),
+                        SizedBox(height: 8.h),
                         Row(
                           children: [
-                            const Icon(Icons.star_outline, color: Colors.orange, size: 20),
-                            const SizedBox(width: 8),
+                            Icon(Icons.star_outline, color: Colors.orange, size: 20.sp),
+                            SizedBox(width: 8.w),
                             Text(
                               'Điểm đánh giá: ${candidate.ratingScore?.toStringAsFixed(1) ?? 'Chưa có'}',
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.black87,
-                              ),
+                              style: textTheme.bodyMedium?.copyWith(fontSize: 14.sp),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 8),
+                        SizedBox(height: 8.h),
                         Row(
                           children: [
-                            const Icon(Icons.work_outline, color: Colors.green, size: 20),
-                            const SizedBox(width: 8),
+                            Icon(Icons.work_outline, color: Colors.green, size: 20.sp),
+                            SizedBox(width: 8.w),
                             Text(
                               'Kinh nghiệm: ${candidate.experienceYears ?? 0} năm',
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.black87,
-                              ),
+                              style: textTheme.bodyMedium?.copyWith(fontSize: 14.sp),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 8),
+                        SizedBox(height: 8.h),
                         Row(
                           children: [
-                            const Icon(Icons.location_history, color: Colors.green, size: 20),
-                            const SizedBox(width: 8),
+                            Icon(Icons.location_history, color: Colors.green, size: 20.sp),
+                            SizedBox(width: 8.w),
                             SizedBox(
-                              width: 260,
+                              width: 260.w,
                               child: Text(
                                 'Vị trí mong muốn: ${candidate.workPosition}',
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black87,
-                                ),
+                                style: textTheme.bodyMedium?.copyWith(fontSize: 14.sp),
                               ),
                             )
                           ],
                         ),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 16.h),
 
                         // Danh sách kỹ năng
                         Text(
                           'Kỹ năng:',
-                          style: const TextStyle(
-                            fontSize: 14,
+                          style: textTheme.titleMedium?.copyWith(
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black87,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        SizedBox(height: 8.h),
                         Wrap(
-                          spacing: 8,
-                          runSpacing: 8,
+                          spacing: 8.w,
+                          runSpacing: 8.h,
                           children: (candidate.skills ?? 'Chưa cập nhật')
                               .split(',')
-                              .map((skill) => Chip(
-                                    label: Text(skill.trim()),
-                                    backgroundColor: Colors.blue.withValues(alpha:0.1),
-                                    labelStyle: const TextStyle(color: Colors.blue),
+                              .map((skill) => InfoChip(
+                                    label: skill.trim(),
+                                    color: Colors.blue,
                                   ))
                               .toList(),
                         ),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 16.h),
 
                         // Thông báo ngày ứng tuyển kèm tên job
                         Container(
-                          padding: const EdgeInsets.all(10),
+                          padding: EdgeInsets.all(10.w),
                           decoration: BoxDecoration(
-                            color: Colors.blue.withValues(alpha:0.1),
-                            borderRadius: BorderRadius.circular(8),
+                            color: Colors.blue.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8.r),
                           ),
                           child: Row(
                             children: [
-                              const Icon(Icons.error_outline, color: Colors.blue, size: 20),
-                              const SizedBox(width: 8),
+                              Icon(Icons.error_outline, color: Colors.blue, size: 20.sp),
+                              SizedBox(width: 8.w),
                               Expanded(
                                 child: Text(
                                   'Ứng viên đã ứng tuyển vào ngày ${application.submittedAt.toLocal().toString().split(' ')[0]} cho vị trí ${job.title}',
-                                  style: const TextStyle(
-                                    fontSize: 14,
+                                  style: textTheme.bodyMedium?.copyWith(
+                                    fontSize: 14.sp,
                                     fontStyle: FontStyle.italic,
                                     color: Colors.black54,
                                   ),
@@ -348,43 +357,28 @@ class _HrPendingAplicationScreenState extends State<HrPendingAplicationScreen> {
                             ],
                           ),
                         ),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 16.h),
 
                         // Nút hành động
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            ElevatedButton.icon(
-                              onPressed: () {
+                            Expanded(
+                              child: ButtonPrimaryGradient(
+                                height: 62.h,
+                                text: 'Chi tiết', 
+                                onPressed: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => CandidateDetailScreen(candidate: candidate, account: account)),
+                                  MaterialPageRoute(
+                                    builder: (context) => CandidateDetailScreen(candidate: candidate, account: account),
+                                  ),
                                 );
                               },
-                              icon: const Icon(Icons.visibility_outlined, size: 16, color: Colors.white),
-                              label: const Text('Xem chi tiết'),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF3366FF),
-                                foregroundColor: Colors.white,
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
                               ),
                             ),
-                            OutlinedButton.icon(
-                              onPressed: () => rejectApplication(application),
-                              icon: const Icon(Icons.close, size: 16, color: Colors.red),
-                              label: const Text('Từ chối'),
-                              style: OutlinedButton.styleFrom(
-                                foregroundColor: Colors.red,
-                                side: const BorderSide(color: Colors.red),
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                            ),
+                            SizedBox(width: 8.w),
+                            Expanded(child: CustomButtonBorder(title: 'Từ chối', onPressed: () => rejectApplication(application),)),
                           ],
                         ),
                       ],

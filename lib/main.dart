@@ -23,6 +23,7 @@ import 'package:job_connect/features/profile/view_model/candidate_info_view_mode
 import 'package:job_connect/features/profile/view_model/user_view_model.dart';
 import 'package:job_connect/features/resume/view_model/resum_view_model.dart';
 import 'package:job_connect/my_app.dart';
+import 'package:job_connect/recruiter_app/features/interview/view_model/interview_schedule_view_model.dart';
 import 'package:job_connect/supabase/supabase_config.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -50,6 +51,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => UserViewModel()),
         ChangeNotifierProvider(create: (_) => CandidateInfoViewModel()),
         ChangeNotifierProvider(create: (_) => ResumeViewModel()),
+        ChangeNotifierProvider(create: (_) => InterviewScheduleViewModel()),
         ChangeNotifierProvider(create: (_) => JobSavedViewModel()),
         ChangeNotifierProvider(create: (_) => JobApplicationViewModel()),
         ChangeNotifierProvider(create: (_) => JobCategoryViewModel()),

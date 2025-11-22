@@ -148,14 +148,20 @@
       );
     }
 
-    /// Lấy chi tiết job posting theo id
-    Future<void> fetchJobPostingById({required String jobId}) async {
+    Future<JobPostingModel?> fetchJobPostingById({required String jobId}) async {
+      JobPostingModel? result;
+
       await _handleApiCall<JobPostingModel?>(
         apiCall: () => _jobPostingService.getJobPostingById(jobId: jobId),
         onSuccess: (model) {
-          if (model != null) _setState(selectedJobPosting: model, errorMessage: null);
+          if (model != null) {
+            _setState(selectedJobPosting: model, errorMessage: null);
+            result = model;
+          }
         },
       );
+
+      return result;
     }
 
     /// Tạo mới job posting

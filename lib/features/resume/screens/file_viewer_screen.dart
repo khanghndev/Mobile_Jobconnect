@@ -73,6 +73,7 @@ class _FileViewerScreenState extends State<FileViewerScreen> {
         _isLoading = false;
       });
     } catch (e) {
+      print(e);
       setState(() {
         _error = 'Không thể tải file: $e';
         _isLoading = false;
