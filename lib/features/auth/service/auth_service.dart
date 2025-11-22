@@ -60,11 +60,34 @@ class AuthService {
           "email": email,
           "password": password,
         },
+        requireAuth: false, // Login không cần token
       );
+
+      if (res == null) {
+        throw ServerException(
+          err: 'API trả về null',
+          type: ServerExceptionType.api,
+        );
+      }
 
       if (res is! Map<String, dynamic>) {
         throw ServerException(
-          err: 'Phản hồi không hợp lệ: $res',
+          err: 'Phản hồi không hợp lệ: ${res.runtimeType} - $res',
+          type: ServerExceptionType.api,
+        );
+      }
+
+      // Kiểm tra các trường bắt buộc
+      if (!res.containsKey('token')) {
+        throw ServerException(
+          err: 'Phản hồi thiếu token: $res',
+          type: ServerExceptionType.api,
+        );
+      }
+
+      if (!res.containsKey('user')) {
+        throw ServerException(
+          err: 'Phản hồi thiếu thông tin user: $res',
           type: ServerExceptionType.api,
         );
       }
@@ -73,7 +96,10 @@ class AuthService {
     } on ServerException {
       rethrow;
     } catch (e) {
-      throw ServerException(err: e.toString(), type: ServerExceptionType.unknown);
+      throw ServerException(
+        err: 'Lỗi đăng nhập: ${e.toString()}',
+        type: ServerExceptionType.unknown,
+      );
     }
   }
 

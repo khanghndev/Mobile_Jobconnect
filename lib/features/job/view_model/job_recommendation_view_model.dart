@@ -122,10 +122,7 @@ class JobRecommendationViewModel extends ChangeNotifier {
   /// Load popular locations
   Future<void> loadPopularLocations({int limit = 10}) async {
     await _handleApiCall<List<String>>(
-      apiCall: () async {
-        final homepagePublic = await _service.getHomepagePublicJobs();
-        return homepagePublic.popularLocations;
-      },
+      apiCall: () => _service.getPopularLocations(limit: limit),
       onSuccess: (res) => _setState(popularLocations: res),
       errorMsg: 'Lỗi khi tải popular locations',
     );

@@ -5,7 +5,6 @@ import 'package:job_connect/config/error/server_exception.dart';
 import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/features/job/model/home_page_public.dart';
 import 'package:job_connect/features/job/model/job_posting_model.dart';
-import 'package:job_connect/features/job/model/skill_model.dart';
 import 'package:job_connect/features/job/model/smart_schedule_model.dart';
 
 class JobRecommendationService {
@@ -28,7 +27,10 @@ class JobRecommendationService {
   }
 
   /// Lấy danh sách job recommendation cá nhân hóa với filter
+  /// API: GET /api/JobRecommendation/personalized
+  /// Nếu không truyền idUser, API sẽ tự lấy từ JWT token
   Future<List<JobPostingModel>> getPersonalizedJobs({
+    String? idUser,
     String? preferredLocation,
     double maxDistanceKm = 50,
     double? minSalary,
@@ -41,6 +43,7 @@ class JobRecommendationService {
     return _handleApi(
       () async {
         final queryParams = <String, dynamic>{
+          if (idUser != null) 'idUser': idUser,
           if (preferredLocation != null) 'preferredLocation': preferredLocation,
           'maxDistanceKm': maxDistanceKm,
           if (minSalary != null) 'minSalary': minSalary,
@@ -68,21 +71,51 @@ class JobRecommendationService {
   }
 
   /// Lấy danh sách job recommendation cho homepage
-  Future<List<JobPostingModel>> getHomepageJobs() async {
+  /// API: GET /api/JobRecommendation/homepage
+  /// Nếu không truyền idUser, API sẽ tự lấy từ JWT token
+  Future<List<JobPostingModel>> getHomepageJobs({String? idUser}) async {
     return _handleApi(
       () async {
+        final queryParams = <String, dynamic>{
+          if (idUser != null) 'idUser': idUser,
+        };
+        
         final res = await _apiService.get(
           endpoint: ApiConstants.jobRecommendationHomepage,
+          queryParams: queryParams.isNotEmpty ? queryParams : null,
           requireAuth: true,
         );
 
+        // API trả về PersonalizedHomepageDto với cấu trúc:
+        // { recommendedJobs: [...], featuredJobs: [...], ... }
+        if (res == null) {
+          return <JobPostingModel>[];
+        }
+
+        // Đảm bảo res là Map
+        if (res is! Map<String, dynamic>) {
+          throw ServerException(
+            err: 'Phản hồi không hợp lệ từ API homepage',
+            type: ServerExceptionType.unknown,
+          );
+        }
+
         // Lấy recommendedJobs, nếu trống thì lấy featuredJobs
-        List<dynamic> jobsJson = res['recommendedJobs'] ?? [];
-        if (jobsJson.isEmpty) {
-          jobsJson = res['featuredJobs'] ?? [];
+        List<dynamic> jobsJson = [];
+        if (res.containsKey('recommendedJobs') && res['recommendedJobs'] != null) {
+          jobsJson = res['recommendedJobs'] is List 
+              ? res['recommendedJobs'] as List<dynamic>
+              : [];
+        }
+        
+        if (jobsJson.isEmpty && res.containsKey('featuredJobs') && res['featuredJobs'] != null) {
+          jobsJson = res['featuredJobs'] is List 
+              ? res['featuredJobs'] as List<dynamic>
+              : [];
         }
 
         return jobsJson
+            .whereType<Map<String, dynamic>>()
             .map<JobPostingModel>((json) => JobPostingModel.fromJson(json))
             .toList();
       },
@@ -91,6 +124,8 @@ class JobRecommendationService {
   }
 
   /// Lấy danh sách trending skills
+  /// API: GET /api/JobRecommendation/trending-skills
+  /// [AllowAnonymous] - Không cần authentication
   Future<List<String>> getTrendingSkills({int limit = 10}) async {
     return _handleApi(
       () async {
@@ -112,7 +147,10 @@ class JobRecommendationService {
   }
 
   /// Lấy popular locations
-  Future<List<SkillModel>> getPopularLocations({int limit = 10}) async {
+  /// API: GET /api/JobRecommendation/popular-locations
+  /// API trả về List<string>, không phải List<SkillModel>
+  /// [AllowAnonymous] - Không cần authentication
+  Future<List<String>> getPopularLocations({int limit = 10}) async {
     return _handleApi(
       () async {
         final queryParams = {
@@ -124,30 +162,58 @@ class JobRecommendationService {
           queryParams: queryParams,
         );
 
-        return ApiResponseParser.parseList(
-          res: res,
-          fromJson: (json) => SkillModel.fromJson(json),
-          errorMsg: 'Phản hồi không hợp lệ khi lấy trending skills',
-        );
+        // API trả về List<string> trực tiếp
+        if (res != null && res is List) {
+          return List<String>.from(res);
+        }
+
+        return <String>[];
       },
-      'Lỗi khi tải trending skills',
+      'Lỗi khi tải popular locations',
     );
   }
 
   /// Lấy điểm match với một jobId cụ thể
-  Future<double> getMatchScore({required String jobId}) async {
+  /// API: GET /api/JobRecommendation/match-score/{jobId}
+  /// API trả về: { JobId, UserId, MatchScore, MatchPercentage }
+  /// Nếu không truyền idUser, API sẽ tự lấy từ JWT token
+  Future<double> getMatchScore({
+    required String jobId,
+    String? idUser,
+  }) async {
     return _handleApi(
       () async {
         // Thay {jobId} trong endpoint bằng giá trị thực tế
         final endpoint = ApiConstants.jobRecommendationMatchScore.replaceFirst('{jobId}', jobId);
 
+        final queryParams = <String, dynamic>{
+          if (idUser != null) 'idUser': idUser,
+        };
+
         final res = await _apiService.get(
           endpoint: endpoint,
+          queryParams: queryParams.isNotEmpty ? queryParams : null,
+          requireAuth: true,
         );
 
-        return ApiResponseParser.parseDouble(
-          res: res,
-          errorMsg: 'Phản hồi không hợp lệ khi lấy match score',
+        // API trả về object: { JobId, UserId, MatchScore, MatchPercentage }
+        if (res == null) {
+          throw ServerException(
+            err: 'Phản hồi không hợp lệ khi lấy match score',
+            type: ServerExceptionType.unknown,
+          );
+        }
+
+        if (res is Map<String, dynamic>) {
+          final matchScore = res['matchScore'];
+          if (matchScore != null) {
+            return (matchScore as num).toDouble();
+          }
+        }
+
+        throw ServerException(
+          err: 'Phản hồi không hợp lệ khi lấy match score: không tìm thấy matchScore',
+          type: ServerExceptionType.unknown,
         );
       },
       'Lỗi khi tải match score',
@@ -155,6 +221,9 @@ class JobRecommendationService {
   }
 
   /// Lấy job recommendation homepage public
+  /// API: GET /api/JobRecommendation/homepage/public
+  /// [AllowAnonymous] - Không cần authentication
+  /// Trả về: { TrendingSkills, PopularLocations, Message }
   Future<HomePagePublic> getHomepagePublicJobs() async {
     return _handleApi(
       () async {
@@ -169,6 +238,9 @@ class JobRecommendationService {
   }
 
   /// Smart schedule POST
+  /// API: POST /api/JobRecommendation/smart-schedule
+  /// [Authorize] - Cần authentication
+  /// API tự lấy userId từ JWT token, nhưng vẫn cần truyền trong body
   Future<SmartScheduleModel> createSmartSchedule({
     required String userId,
     List<String> preferredScheduleTypes = const [],

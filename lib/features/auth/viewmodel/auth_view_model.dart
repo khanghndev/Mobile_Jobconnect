@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:job_connect/config/enum/gender.dart';
+import 'package:job_connect/config/error/server_exception.dart';
 import 'package:job_connect/features/profile/service/user_service.dart';
 import 'package:job_connect/supabase/supabase_auth_service.dart';
 import 'package:job_connect/supabase/supabase_config.dart';
@@ -197,19 +198,42 @@ class AuthViewModel extends ChangeNotifier {
     _setState(isLoading: true, isSuccess: false, errorMessage: null);
 
     try {
-      final response = await _supabaseAuthService.signIn(
-        email: email,
-        password: password,
-      );
+      // Bước 1: Thử đăng nhập Supabase (có thể fail nếu user chưa có trong Supabase)
+      User? supabaseUser;
+      try {
+        final response = await _supabaseAuthService.signIn(
+          email: email,
+          password: password,
+        );
+        supabaseUser = response.user;
+      } on AuthException catch (supabaseError) {
+        // Supabase login fail - có thể user chưa có trong Supabase
+        // Vẫn tiếp tục thử đăng nhập backend
+        debugPrint('⚠️ Supabase login failed: ${supabaseError.message}');
+        debugPrint('⚠️ Continuing with backend login...');
+      }
 
-      final supabaseUser = response.user;
-      if (supabaseUser == null) throw Exception("Không lấy được user từ Supabase");
-
+      // Bước 2: Gọi API backend để lấy token (quan trọng hơn)
       final loginData = await _authApiService.login(email: email, password: password);
 
+      // Bước 3: Lưu thông tin vào SharedPrefs
       await _prefs.saveString(SharedPrefsKey.token, loginData.token);
       await _prefs.saveString(SharedPrefsKey.idUser, loginData.user.idUser);
-      await _prefs.saveString(SharedPrefsKey.idUserAppWrite, supabaseUser.id);
+      
+      // Nếu Supabase login thành công, lưu Supabase ID
+      if (supabaseUser != null) {
+        await _prefs.saveString(SharedPrefsKey.idUserAppWrite, supabaseUser.id);
+        _setState(
+          idUserSupabase: supabaseUser.id,
+        );
+      } else {
+        // Nếu không có Supabase user, dùng backend ID làm fallback
+        await _prefs.saveString(SharedPrefsKey.idUserAppWrite, loginData.user.idUser);
+        _setState(
+          idUserSupabase: loginData.user.idUser,
+        );
+      }
+      
       await _prefs.saveString(
         SharedPrefsKey.roleName,
         loginData.user.role?.roleName ?? 'Candidate',
@@ -220,12 +244,21 @@ class AuthViewModel extends ChangeNotifier {
         isSuccess: true,
         isLoggedIn: true,
         idUser: loginData.user.idUser,
-        idUserSupabase: supabaseUser.id,
       );
-    } on AuthException catch (e) {
-      _setState(isLoading: false, errorMessage: e.message, isSuccess: false);
-    } catch (e) {
-      _setState(isLoading: false, errorMessage: e.toString(), isSuccess: false);
+    } on ServerException catch (e) {
+      _setState(
+        isLoading: false,
+        errorMessage: e.err,
+        isSuccess: false,
+      );
+    } catch (e, stackTrace) {
+      debugPrint('❌ Login error: $e');
+      debugPrint('Stack trace: $stackTrace');
+      _setState(
+        isLoading: false,
+        errorMessage: 'Lỗi đăng nhập: ${e.toString()}',
+        isSuccess: false,
+      );
     }
   }
 

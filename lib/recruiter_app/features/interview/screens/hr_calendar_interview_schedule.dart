@@ -81,34 +81,8 @@ class _HrCalendarInterviewScheduleState extends State<HrCalendarInterviewSchedul
                             startDay: WeekDays.monday,
                             initialMonth: currentMonth,
                             cellAspectRatio: isTablet ? 0.51 : 0.45,
-                            showWeekends: true,
-                            pagePhysics: NeverScrollableScrollPhysics(),
                             borderSize: 0.3.w,
                             borderColor: Colors.grey,
-                            headerStringBuilder: (date, {secondaryDate}) {
-                              return 'Tháng ${date.month} - ${date.year}';
-                            },
-                            headerStyle: HeaderStyle(
-                              headerTextStyle: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 22.sp,
-                                color: Colors.black,
-                              ),
-                              headerPadding: EdgeInsets.all(16.w),
-                              leftIconConfig: IconDataConfig(
-                                icon: (context) => GestureDetector(
-                                  onTap: () => _monthViewKey.currentState?.previousPage(),
-                                  child: Icon(Icons.chevron_left, size: 20.sp),
-                                ),
-                              ),
-                              rightIconConfig: IconDataConfig(
-                                icon: (context) => GestureDetector(
-                                  onTap: () => _monthViewKey.currentState?.nextPage(),
-                                  child: Icon(Icons.chevron_right, size: 20.sp),
-                                ),
-                              ),
-                              titleAlign: TextAlign.center,
-                            ),
                             weekDayBuilder: (int weekDayIndex) {
                               const customWeekDays = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
                               return Center(
@@ -121,7 +95,7 @@ class _HrCalendarInterviewScheduleState extends State<HrCalendarInterviewSchedul
                                 ),
                               );
                             },
-                            cellBuilder: (date, events, isToday, isInMonth, _) {
+                            cellBuilder: (DateTime date, List<CalendarEventData<Object?>> events, bool isToday, bool isInMonth, bool hideDaysNotInMonth) {
                               final maxDisplay = isTablet ? 3 : 4;
                               final hasMore = events.length > maxDisplay;
                               final visibleEvents = hasMore ? events.take(maxDisplay - 1).toList() : events;
@@ -195,7 +169,7 @@ class _HrCalendarInterviewScheduleState extends State<HrCalendarInterviewSchedul
                                     ],
                                   ),
                                 ),
-                              );
+                              ) as Widget;
                             },
                           ),
                         ),
