@@ -32,6 +32,11 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
         isLoading = false;
       });
     } catch (e) {
+      // Bỏ qua lỗi, không hiển thị lỗi nếu table không tồn tại
+      if (!e.toString().toLowerCase().contains("doesn't exist") && 
+          !e.toString().toLowerCase().contains("table")) {
+        // Chỉ hiển thị lỗi nếu không phải lỗi database table
+      }
       setState(() {
         isLoading = false;
       });

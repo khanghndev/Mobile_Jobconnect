@@ -7,11 +7,13 @@ import 'package:go_router/go_router.dart';
 class NotificationIcon extends StatefulWidget {
   final bool isLoggedIn;
   final String idUser;
+  final bool isRecruiter;
 
   const NotificationIcon({
     super.key,
     required this.isLoggedIn,
     required this.idUser,
+    this.isRecruiter = false,
   });
 
   @override
@@ -40,6 +42,9 @@ class _NotificationIconState extends State<NotificationIcon>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    const recruiterPrimary = Color(0xFF1A237E);
+    final primaryColor = widget.isRecruiter ? recruiterPrimary : theme.colorScheme.primary;
+    
     return Consumer<NotificationViewModel>(
       builder: (context, vm, _) {
         final count = vm.unreadCount;
@@ -54,15 +59,29 @@ class _NotificationIconState extends State<NotificationIcon>
           child: Stack(
             alignment: Alignment.center,
             children: [
-              IconButton(
-                icon: Icon(
-                  Icons.notifications_none_rounded,
-                  color: theme.colorScheme.onSurfaceVariant,
-                  size: 28.sp,
-                ),
-                onPressed: () => context.push(
-                  '/notification',
-                  extra: {'idUser': widget.idUser},
+              Container(
+                margin: EdgeInsets.all(4.r),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () => context.push(
+                      '/notification',
+                      extra: {'idUser': widget.idUser},
+                    ),
+                    borderRadius: BorderRadius.circular(12.r),
+                    child: Container(
+                      padding: EdgeInsets.all(8.r),
+                      decoration: BoxDecoration(
+                        color: primaryColor.withValues(alpha: 0.08),
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      child: Icon(
+                        Icons.notifications_none_rounded,
+                        color: primaryColor,
+                        size: 22.sp,
+                      ),
+                    ),
+                  ),
                 ),
               ),
               if (widget.isLoggedIn && hasUnread)

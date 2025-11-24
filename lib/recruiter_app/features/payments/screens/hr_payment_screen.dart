@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:job_connect/config/enum/job_transaction_status.dart';
 import 'package:job_connect/config/utils/format.dart';
 import 'package:job_connect/config/widgets/custom_app_bar_title_large.dart';
-import 'package:job_connect/config/widgets/background_empty_state.dart';
 import 'package:job_connect/config/widgets/background_error_state.dart';
 import 'package:job_connect/features/job/model/job_transaction_model.dart';
 import 'package:job_connect/features/job/service/job_transaction_service.dart';
@@ -12,6 +11,11 @@ import 'package:job_connect/features/profile/model/user_model.dart';
 import 'package:job_connect/features/profile/service/user_service.dart';
 import 'package:job_connect/model/subscription_package_model.dart';
 import 'package:job_connect/recruiter_app/services/subscriptionpackage_service.dart';
+import 'package:job_connect/recruiter_app/services/payment/payos_payment_service.dart';
+import 'package:job_connect/recruiter_app/services/payment/momo_payment_service.dart';
+import 'package:job_connect/config/constant/api_constants.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'payment_webview_screen.dart';
 import 'hr_payment_confirmation_screen.dart';
 import 'package:job_connect/features/mini_social/widgets/connect/groups_tab_shimmer.dart';
 
@@ -32,8 +36,11 @@ class _HrPaymentScreenState extends State<HrPaymentScreen> {
   final UserService _accountService = UserService();
   final SubscriptionPackageService _subscriptionpackageService = SubscriptionPackageService();
   final JobTransactionService _jobtransactionService = JobTransactionService();
+  final PayOsPaymentService _payOsPaymentService = PayOsPaymentService();
+  final MomoPaymentService _momoPaymentService = MomoPaymentService();
 
   bool _isLoading = true;
+  bool _isProcessingPayment = false;
   String? _error;
 
   late UserModel _account;
@@ -41,6 +48,18 @@ class _HrPaymentScreenState extends State<HrPaymentScreen> {
   late JobTransactionModel _jobTransaction;
 
   final List<PaymentMethod> _paymentMethods = [
+    PaymentMethod(
+      id: 'payos',
+      name: 'PayOS',
+      icon: Icons.payment,
+      isSelected: false,
+    ),
+    PaymentMethod(
+      id: 'momo',
+      name: 'MoMo',
+      icon: Icons.account_balance_wallet,
+      isSelected: false,
+    ),
     PaymentMethod(
       id: 'banking',
       name: 'Thanh toán nội bộ',
@@ -89,6 +108,21 @@ class _HrPaymentScreenState extends State<HrPaymentScreen> {
   }
 
   Future<void> _createTransaction() async {
+    final selectedMethod = _paymentMethods.firstWhere((m) => m.isSelected);
+    
+    // Xử lý thanh toán PayOS
+    if (selectedMethod.id == 'payos') {
+      await _processPayOsPayment();
+      return;
+    }
+    
+    // Xử lý thanh toán MoMo
+    if (selectedMethod.id == 'momo') {
+      await _processMomoPayment();
+      return;
+    }
+    
+    // Xử lý thanh toán nội bộ (banking)
     try {
       final now = DateTime.now();
       final jobTransaction = await _jobtransactionService.createTransaction(
@@ -97,7 +131,7 @@ class _HrPaymentScreenState extends State<HrPaymentScreen> {
           idUser: widget.recruiterId,
           idPackage: _package.idPackage,
           amount: _package.price,
-          paymentMethod: _paymentMethods.firstWhere((m) => m.isSelected).name,
+          paymentMethod: selectedMethod.name,
           transactionDate: now,
           status: JobTransactionStatus.pending.name,
         ),
@@ -106,12 +140,183 @@ class _HrPaymentScreenState extends State<HrPaymentScreen> {
       setState(() {
         _jobTransaction = jobTransaction;
       });
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => PaymentConfirmationDetailScreen(idTransaction: _jobTransaction.idTransaction),
+        ),
+      );
     } catch (e) {
       if (!mounted) return;
       setState(() => _error = e.toString());
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Giao dịch thất bại'), backgroundColor: Colors.red),
+        SnackBar(content: Text('Giao dịch thất bại: $e'), backgroundColor: Colors.red),
       );
+    }
+  }
+
+  Future<void> _processPayOsPayment() async {
+    if (_isProcessingPayment) return;
+    
+    setState(() {
+      _isProcessingPayment = true;
+    });
+
+    try {
+      // Tạo return URL và cancel URL
+      final baseUrl = ApiConstants.baseUrl;
+      final returnUrl = '$baseUrl${ApiConstants.payOsReturnEndpoint}';
+      final cancelUrl = '$baseUrl${ApiConstants.payOsReturnEndpoint}?cancel=true';
+
+      // Tạo payment link từ PayOS
+      final paymentResponse = await _payOsPaymentService.createPayment(
+        idUser: widget.recruiterId,
+        idPackage: _package.idPackage,
+        description: 'Thanh toán gói ${_package.packageName}',
+        buyerName: _account.userName,
+        buyerPhone: _account.phoneNumber,
+        buyerEmail: _account.email,
+        returnUrl: returnUrl,
+        cancelUrl: cancelUrl,
+      );
+
+      if (!mounted) return;
+
+      // Mở URL thanh toán trong WebView
+      final checkoutUrl = paymentResponse.checkoutUrl;
+      if (checkoutUrl.isNotEmpty) {
+        final result = await Navigator.push<bool>(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PaymentWebViewScreen(
+              paymentUrl: checkoutUrl,
+              paymentMethod: 'payos',
+              orderCode: paymentResponse.orderCode.toString(),
+            ),
+          ),
+        );
+
+        if (!mounted) return;
+
+        // Nếu thanh toán thành công, chỉ hiển thị thông báo và quay về
+        if (result == true) {
+          if (!mounted) return;
+          // Hiển thị thông báo thành công (đã được hiển thị trong WebView)
+          // Quay về màn hình trước đó
+          Navigator.of(context).pop(true);
+        }
+      } else {
+        throw Exception('Không nhận được link thanh toán từ PayOS');
+      }
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Lỗi thanh toán PayOS: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isProcessingPayment = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _processMomoPayment() async {
+    if (_isProcessingPayment) return;
+    
+    setState(() {
+      _isProcessingPayment = true;
+    });
+
+    try {
+      // Tạo return URL và IPN URL
+      final baseUrl = ApiConstants.baseUrl;
+      final returnUrl = '$baseUrl${ApiConstants.momoReturnEndpoint}';
+      final ipnUrl = '$baseUrl/api/Momo/ipn';
+
+      // Tạo payment link từ MoMo
+      final paymentResponse = await _momoPaymentService.createPayment(
+        idUser: widget.recruiterId,
+        idPackage: _package.idPackage,
+        orderInfo: 'Thanh toán gói ${_package.packageName}',
+        lang: 'vi',
+        returnUrl: returnUrl,
+        ipnUrl: ipnUrl,
+      );
+
+      if (!mounted) return;
+
+      // Ưu tiên sử dụng deeplink nếu có, nếu không thì dùng payUrl
+      final paymentUrl = paymentResponse.deeplink ?? paymentResponse.payUrl;
+      
+      if (paymentUrl.isNotEmpty) {
+        // Nếu có deeplink, thử mở app MoMo, nếu không thì mở WebView
+        if (paymentResponse.deeplink != null && paymentResponse.deeplink!.isNotEmpty) {
+          // Thử mở deeplink (có thể mở app MoMo)
+          try {
+            final uri = Uri.parse(paymentResponse.deeplink!);
+            if (await canLaunchUrl(uri)) {
+              await launchUrl(uri, mode: LaunchMode.externalApplication);
+              // Nếu mở được app MoMo, hiển thị thông báo và quay về
+              if (!mounted) return;
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Đã mở ứng dụng MoMo. Vui lòng hoàn tất thanh toán trong app.'),
+                  duration: Duration(seconds: 3),
+                ),
+              );
+              // Quay về màn hình trước
+              Navigator.of(context).pop();
+              return;
+            }
+          } catch (e) {
+            // Nếu không mở được app, fallback về WebView
+          }
+        }
+        
+        // Mở WebView với payUrl
+        final result = await Navigator.push<bool>(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PaymentWebViewScreen(
+              paymentUrl: paymentResponse.payUrl,
+              paymentMethod: 'momo',
+              orderId: paymentResponse.orderId,
+              requestId: paymentResponse.requestId,
+            ),
+          ),
+        );
+
+        if (!mounted) return;
+
+        // Nếu thanh toán thành công, chỉ hiển thị thông báo và quay về
+        if (result == true) {
+          if (!mounted) return;
+          // Hiển thị thông báo thành công (đã được hiển thị trong WebView)
+          // Quay về màn hình trước đó
+          Navigator.of(context).pop(true);
+        }
+      } else {
+        throw Exception('Không nhận được link thanh toán từ MoMo');
+      }
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Lỗi thanh toán MoMo: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isProcessingPayment = false;
+        });
+      }
     }
   }
 
@@ -122,6 +327,7 @@ class _HrPaymentScreenState extends State<HrPaymentScreen> {
       }
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -207,7 +413,14 @@ class _HrPaymentScreenState extends State<HrPaymentScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Tổng cộng', style: textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, fontSize: 16.sp)),
-                Text(FormatUtils.formatCurrency(_package.price), style: textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, fontSize: 16.sp, color: Colors.blue)),
+                Text(
+                  FormatUtils.formatCurrency(_package.price),
+                  style: textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.sp,
+                    color: const Color(0xFF1A237E), // recruiterPrimary
+                  ),
+                ),
               ],
             ),
           ],
@@ -217,6 +430,9 @@ class _HrPaymentScreenState extends State<HrPaymentScreen> {
   }
 
   Widget _buildPaymentMethodsSection(TextTheme textTheme) {
+    const recruiterPrimary = Color(0xFF1A237E);
+    const recruiterSecondary = Color(0xFF3949AB);
+    
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
@@ -233,17 +449,45 @@ class _HrPaymentScreenState extends State<HrPaymentScreen> {
                 child: Container(
                   margin: EdgeInsets.only(bottom: 12.h),
                   decoration: BoxDecoration(
-                    border: Border.all(color: method.isSelected ? Colors.blue : Colors.grey.shade300, width: method.isSelected ? 2 : 1),
+                    border: Border.all(
+                      color: method.isSelected ? recruiterPrimary : Colors.grey.shade300,
+                      width: method.isSelected ? 2 : 1,
+                    ),
                     borderRadius: BorderRadius.circular(10.r),
+                    gradient: method.isSelected
+                        ? LinearGradient(
+                            colors: [
+                              recruiterPrimary.withValues(alpha: 0.1),
+                              recruiterSecondary.withValues(alpha: 0.05),
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          )
+                        : null,
+                    color: method.isSelected ? null : Colors.white,
                   ),
                   child: Padding(
                     padding: EdgeInsets.all(16.w),
                     child: Row(
                       children: [
-                        Icon(method.icon, color: method.isSelected ? Colors.blue : Colors.grey[600], size: 22.sp),
+                        Icon(
+                          method.icon,
+                          color: method.isSelected ? recruiterPrimary : Colors.grey[600],
+                          size: 22.sp,
+                        ),
                         SizedBox(width: 16.w),
-                        Expanded(child: Text(method.name, style: textTheme.bodyMedium?.copyWith(fontWeight: method.isSelected ? FontWeight.bold : FontWeight.normal, fontSize: 16.sp))),
-                        if (method.isSelected) Icon(Icons.check_circle, color: Colors.blue, size: 20.sp),
+                        Expanded(
+                          child: Text(
+                            method.name,
+                            style: textTheme.bodyMedium?.copyWith(
+                              fontWeight: method.isSelected ? FontWeight.bold : FontWeight.normal,
+                              fontSize: 16.sp,
+                              color: method.isSelected ? recruiterPrimary : Colors.grey[800],
+                            ),
+                          ),
+                        ),
+                        if (method.isSelected)
+                          Icon(Icons.check_circle, color: recruiterPrimary, size: 20.sp),
                       ],
                     ),
                   ),
@@ -324,22 +568,27 @@ class _HrPaymentScreenState extends State<HrPaymentScreen> {
         child: Row(
           children: [
             ElevatedButton(
-              onPressed: () async {
+              onPressed: _isProcessingPayment ? null : () async {
                 await _createTransaction();
-                await Future.delayed(const Duration(seconds: 1));
-                if (!mounted) return;
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => PaymentConfirmationDetailScreen(idTransaction: _jobTransaction.idTransaction)),
-                );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
+                backgroundColor: const Color(0xFF1A237E), // recruiterPrimary
                 foregroundColor: Colors.white,
                 padding: EdgeInsets.symmetric(horizontal: 36.w, vertical: 14.h),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
+                disabledBackgroundColor: Colors.grey,
+                elevation: 2,
               ),
-              child: Text('Thanh toán ngay', style: textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, fontSize: 16.sp, color: Colors.white)),
+              child: _isProcessingPayment
+                  ? SizedBox(
+                      width: 20.w,
+                      height: 20.h,
+                      child: const CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    )
+                  : Text('Thanh toán ngay', style: textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, fontSize: 16.sp, color: Colors.white)),
             ),
             SizedBox(width: 16.w),
             Expanded(

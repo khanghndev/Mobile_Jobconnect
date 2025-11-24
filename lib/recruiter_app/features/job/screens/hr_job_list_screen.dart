@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:job_connect/features/job/model/job_application_model.dart';
 import 'package:job_connect/features/job/model/job_posting_model.dart';
 import 'hr_job_detail_screen.dart';
-import '../../profile/screens/hr_profile_screen.dart';
 
 class JobListScreen extends StatefulWidget {
   final List<JobPostingModel> jobpostingList;
@@ -42,16 +41,23 @@ class _JobListScreenState extends State<JobListScreen> {
       jobs = widget.jobpostingList.where((job) => job.isFeatured == 1).toList();
     } else {
       String status = _mapFilterToPostStatus(_currentFilter);
-      jobs = widget.jobpostingList.where((job) => job.postStatus == status).toList();
+      jobs =
+          widget.jobpostingList
+              .where((job) => job.postStatus == status)
+              .toList();
     }
     // Lọc theo từ khóa tìm kiếm nếu có
     if (_searchKeyword.trim().isNotEmpty) {
       final keyword = _searchKeyword.trim().toLowerCase();
-      jobs = jobs.where((job) =>
-        job.title!.toLowerCase().contains(keyword) ||
-        job.location!.toLowerCase().contains(keyword) ||
-        (job.description ?? '').toLowerCase().contains(keyword)
-      ).toList();
+      jobs =
+          jobs
+              .where(
+                (job) =>
+                    job.title.toLowerCase().contains(keyword) ||
+                    job.location.toLowerCase().contains(keyword) ||
+                    job.description.toLowerCase().contains(keyword),
+              )
+              .toList();
     }
     return jobs;
   }
@@ -120,55 +126,54 @@ class _JobListScreenState extends State<JobListScreen> {
           elevation: 0,
           backgroundColor: Colors.white,
           foregroundColor: Colors.black87,
-          title: _isSearching
-              ? TextField(
-                  controller: _searchController,
-                  autofocus: true,
-                  decoration: const InputDecoration(
-                    hintText: "Tìm kiếm công việc...",
-                    border: InputBorder.none,
-                  ),
-                  onChanged: _onSearchChanged,
-                  onSubmitted: (_) {
-                    setState(() {
-                      _searchKeyword = _searchController.text;
-                    });
-                  },
-                )
-              : const Text(
-                  'Danh sách công việc',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 22,
-                    color: Colors.black87,
-                  ),
-                ),
-          actions: _isSearching
-              ? [
-                  IconButton(
-                    icon: const Icon(Icons.clear),
-                    onPressed: () {
-                      if (_searchController.text.isNotEmpty) {
-                        _searchController.clear();
-                        _onSearchChanged('');
-                      } else {
-                        _stopSearch();
-                      }
+          title:
+              _isSearching
+                  ? TextField(
+                    controller: _searchController,
+                    autofocus: true,
+                    decoration: const InputDecoration(
+                      hintText: "Tìm kiếm công việc...",
+                      border: InputBorder.none,
+                    ),
+                    onChanged: _onSearchChanged,
+                    onSubmitted: (_) {
+                      setState(() {
+                        _searchKeyword = _searchController.text;
+                      });
                     },
+                  )
+                  : const Text(
+                    'Danh sách công việc',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22,
+                      color: Colors.black87,
+                    ),
                   ),
-                ]
-              : [
-                  IconButton(
-                    icon: const Icon(Icons.search),
-                    onPressed: _startSearch,
-                  ),
-                ],
+          actions:
+              _isSearching
+                  ? [
+                    IconButton(
+                      icon: const Icon(Icons.clear),
+                      onPressed: () {
+                        if (_searchController.text.isNotEmpty) {
+                          _searchController.clear();
+                          _onSearchChanged('');
+                        } else {
+                          _stopSearch();
+                        }
+                      },
+                    ),
+                  ]
+                  : [
+                    IconButton(
+                      icon: const Icon(Icons.search),
+                      onPressed: _startSearch,
+                    ),
+                  ],
         ),
         body: Column(
-          children: [
-            _buildStatFilterBar(),
-            Expanded(child: _buildJobList()),
-          ],
+          children: [_buildStatFilterBar(), Expanded(child: _buildJobList())],
         ),
         // floatingActionButton: FloatingActionButton.extended(
         //   onPressed: () {
@@ -188,11 +193,20 @@ class _JobListScreenState extends State<JobListScreen> {
 
   Widget _buildStatFilterBar() {
     int total = widget.jobpostingList.length;
-    int open = widget.jobpostingList.where((job) => job.postStatus == 'open').length;
-    int closed = widget.jobpostingList.where((job) => job.postStatus == 'closed').length;
-    int waiting = widget.jobpostingList.where((job) => job.postStatus == 'waiting').length;
-    int editing = widget.jobpostingList.where((job) => job.postStatus == 'editing').length;
-    int featured = widget.jobpostingList.where((job) => job.isFeatured == 1).length;
+    int open =
+        widget.jobpostingList.where((job) => job.postStatus == 'open').length;
+    int closed =
+        widget.jobpostingList.where((job) => job.postStatus == 'closed').length;
+    int waiting =
+        widget.jobpostingList
+            .where((job) => job.postStatus == 'waiting')
+            .length;
+    int editing =
+        widget.jobpostingList
+            .where((job) => job.postStatus == 'editing')
+            .length;
+    int featured =
+        widget.jobpostingList.where((job) => job.isFeatured == 1).length;
 
     List<_StatFilterItem> items = [
       _StatFilterItem(
@@ -244,64 +258,71 @@ class _JobListScreenState extends State<JobListScreen> {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
-          children: items.map((item) {
-            final isSelected = _currentFilter == item.filter;
-            return Container(
-              width: 120,
-              margin: const EdgeInsets.symmetric(horizontal: 4),
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _currentFilter = item.filter;
-                  });
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: isSelected ? item.color.withValues(alpha:0.08) : Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: isSelected ? item.color : Colors.grey.shade200,
-                      width: isSelected ? 2 : 1,
+          children:
+              items.map((item) {
+                final isSelected = _currentFilter == item.filter;
+                return Container(
+                  width: 120,
+                  margin: const EdgeInsets.symmetric(horizontal: 4),
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _currentFilter = item.filter;
+                      });
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color:
+                            isSelected
+                                ? item.color.withValues(alpha: 0.08)
+                                : Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: isSelected ? item.color : Colors.grey.shade200,
+                          width: isSelected ? 2 : 1,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.05),
+                            blurRadius: 10,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Icon(item.icon, color: item.color, size: 20),
+                          const SizedBox(height: 8),
+                          Text(
+                            item.count.toString(),
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: item.color,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            item.label,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: isSelected ? item.color : Colors.black87,
+                              fontWeight:
+                                  isSelected
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha:0.05),
-                        blurRadius: 10,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Icon(item.icon, color: item.color, size: 20),
-                      const SizedBox(height: 8),
-                      Text(
-                        item.count.toString(),
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: item.color,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        item.label,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: isSelected ? item.color : Colors.black87,
-                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          }).toList(),
+                );
+              }).toList(),
         ),
       ),
     );
@@ -311,13 +332,13 @@ class _JobListScreenState extends State<JobListScreen> {
     return _filteredJobs.isEmpty
         ? _buildEmptyState()
         : ListView.builder(
-            padding: const EdgeInsets.all(16),
-            itemCount: _filteredJobs.length,
-            itemBuilder: (context, index) {
-              final job = _filteredJobs[index];
-              return _buildJobCard(job);
-            },
-          );
+          padding: const EdgeInsets.all(16),
+          itemCount: _filteredJobs.length,
+          itemBuilder: (context, index) {
+            final job = _filteredJobs[index];
+            return _buildJobCard(job);
+          },
+        );
   }
 
   Widget _buildEmptyState() {
@@ -348,7 +369,7 @@ class _JobListScreenState extends State<JobListScreen> {
   Widget _buildJobCard(JobPostingModel job) {
     Color statusColor;
     Widget statusIcon;
-    String statusText = _mapPostStatusToFilter(job.postStatus ?? '');
+    String statusText = _mapPostStatusToFilter(job.postStatus);
 
     switch (job.postStatus) {
       case 'open':
@@ -373,11 +394,7 @@ class _JobListScreenState extends State<JobListScreen> {
         break;
       case 'editing':
         statusColor = Colors.blueGrey;
-        statusIcon = const Icon(
-          Icons.edit,
-          size: 16,
-          color: Colors.blueGrey,
-        );
+        statusIcon = const Icon(Icons.edit, size: 16, color: Colors.blueGrey);
         break;
       default:
         statusColor = Colors.blue;
@@ -388,17 +405,22 @@ class _JobListScreenState extends State<JobListScreen> {
         );
     }
 
-    String salaryText = "${(job.salary! / 1000000).toStringAsFixed(0)} triệu";
+    String salaryText =
+        job.salary != null
+            ? "${(job.salary! / 1000000).toStringAsFixed(0)} triệu"
+            : "Thỏa thuận";
 
     // Số ứng viên dựa vào danh sách JobApplication
-    int applicantCount = widget.jobApplications
-        .where((app) => app.idJobPost == job.idJobPost)
-        .map((app) => app.idUser)
-        .toSet()
-        .length;
+    int applicantCount =
+        widget.jobApplications
+            .where((app) => app.idJobPost == job.idJobPost)
+            .map((app) => app.idUser)
+            .toSet()
+            .length;
 
     // Random lượt xem từ 100-500 cho mỗi job (dựa vào idJobPost để ổn định)
-    int viewCount = 100 + (job.idJobPost.codeUnits.fold(0, (a, b) => a + b) % 401);
+    int viewCount =
+        100 + (job.idJobPost.codeUnits.fold(0, (a, b) => a + b) % 401);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
@@ -407,7 +429,7 @@ class _JobListScreenState extends State<JobListScreen> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha:0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -418,6 +440,7 @@ class _JobListScreenState extends State<JobListScreen> {
           Padding(
             padding: const EdgeInsets.only(top: 8),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
                   padding: const EdgeInsets.all(16),
@@ -431,7 +454,9 @@ class _JobListScreenState extends State<JobListScreen> {
                             margin: EdgeInsets.only(top: 12),
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF3366FF).withValues(alpha:0.1),
+                              color: const Color(
+                                0xFF3366FF,
+                              ).withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: const Icon(
@@ -447,7 +472,7 @@ class _JobListScreenState extends State<JobListScreen> {
                               children: [
                                 const SizedBox(height: 24),
                                 Text(
-                                  job.title ?? '',
+                                  job.title,
                                   style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
@@ -456,164 +481,72 @@ class _JobListScreenState extends State<JobListScreen> {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 const SizedBox(height: 4),
-                                Column(
-                                  children: [
-                                    const SizedBox(height: 20),
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.location_on_outlined,
-                                          size: 14,
-                                          color: Colors.grey.shade600,
-                                        ),
-                                      const SizedBox(width: 4),
-                                      SizedBox(
-                                        width: 160,
-                                          child: Text(
-                                            job.location ?? '',
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.grey.shade600,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 12),
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.access_time,
-                                          size: 14,
-                                          color: Colors.grey.shade600,
-                                        ),
-                                        const SizedBox(width: 4),
-                                        Text(
-                                          job.workType ?? '',
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Colors.grey.shade600,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
+
                                 const SizedBox(height: 8),
-                               // Trạng thái - lương
-                                Row(
-                                  children: [
-                                    // Trạng thái
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 8,
-                                        vertical: 3,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: statusColor.withValues(alpha:0.1),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          statusIcon,
-                                          const SizedBox(width: 4),
-                                          Text(
-                                            statusText,
-                                            style: TextStyle(
-                                              color: statusColor,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    // Lương
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 8,
-                                        vertical: 3,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: Colors.orange.withValues(alpha:0.1),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Icon(Icons.payments_outlined, size: 16, color: Colors.orange),
-                                          const SizedBox(width: 4),
-                                          Text(
-                                            salaryText,
-                                            style: const TextStyle(
-                                              color: Colors.orange,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
+
+                                // Trạng thái - lương
                               ],
                             ),
                           ),
 
                           // Nút more
                           PopupMenuButton<String>(
-                            icon: Icon(Icons.more_vert, color: Colors.grey.shade700),
-                            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                              const PopupMenuItem<String>(
-                                value: 'edit',
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.edit, size: 18),
-                                    SizedBox(width: 8),
-                                    Text('Chỉnh sửa'),
-                                  ],
-                                ),
-                              ),
-                              const PopupMenuItem<String>(
-                                value: 'status',
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.swap_horiz, size: 18),
-                                    SizedBox(width: 8),
-                                    Text('Thay đổi trạng thái'),
-                                  ],
-                                ),
-                              ),
-                              const PopupMenuItem<String>(
-                                value: 'duplicate',
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.content_copy, size: 18),
-                                    SizedBox(width: 8),
-                                    Text('Nhân bản'),
-                                  ],
-                                ),
-                              ),
-                              const PopupMenuItem<String>(
-                                value: 'delete',
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.delete_outline,
-                                      color: Colors.red,
-                                      size: 18,
+                            icon: Icon(
+                              Icons.more_vert,
+                              color: Colors.grey.shade700,
+                            ),
+                            itemBuilder:
+                                (
+                                  BuildContext context,
+                                ) => <PopupMenuEntry<String>>[
+                                  const PopupMenuItem<String>(
+                                    value: 'edit',
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.edit, size: 18),
+                                        SizedBox(width: 8),
+                                        Text('Chỉnh sửa'),
+                                      ],
                                     ),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      'Xóa',
-                                      style: TextStyle(color: Colors.red),
+                                  ),
+                                  const PopupMenuItem<String>(
+                                    value: 'status',
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.swap_horiz, size: 18),
+                                        SizedBox(width: 8),
+                                        Text('Thay đổi trạng thái'),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                                  ),
+                                  const PopupMenuItem<String>(
+                                    value: 'duplicate',
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.content_copy, size: 18),
+                                        SizedBox(width: 8),
+                                        Text('Nhân bản'),
+                                      ],
+                                    ),
+                                  ),
+                                  const PopupMenuItem<String>(
+                                    value: 'delete',
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.delete_outline,
+                                          color: Colors.red,
+                                          size: 18,
+                                        ),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          'Xóa',
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                           ),
                         ],
                       ),
@@ -625,17 +558,148 @@ class _JobListScreenState extends State<JobListScreen> {
                           Expanded(
                             child: _buildInfoItem(
                               icon: Icons.calendar_today_outlined,
-                              label: _formatDate(job.createdAt ?? DateTime.now()),
+                              label: _formatDate(job.createdAt),
                             ),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
                             child: _buildInfoItem(
                               icon: Icons.event_busy_outlined,
-                              label: _formatDate(job.applicationDeadline ?? DateTime.now()),
+                              label:
+                                  job.applicationDeadline != null
+                                      ? _formatDate(job.applicationDeadline!)
+                                      : 'Không có hạn',
                             ),
                           ),
                         ],
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 16.0,
+                    right: 16.0,
+                    top: 0,
+                    bottom: 0,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(
+                        Icons.location_on_outlined,
+                        size: 14,
+                        color: Colors.grey.shade600,
+                      ),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Text(
+                          job.location,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey.shade600,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 16.0,
+                    right: 16.0,
+                    top: 0,
+                    bottom: 16,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(
+                        Icons.access_time,
+                        size: 14,
+                        color: Colors.grey.shade600,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        job.workType,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey.shade600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 16.0,
+                    right: 16.0,
+                    top: 0,
+                    bottom: 16,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Trạng thái
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 3,
+                        ),
+                        decoration: BoxDecoration(
+                          color: statusColor.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            statusIcon,
+                            const SizedBox(width: 4),
+                            Text(
+                              statusText,
+                              style: TextStyle(
+                                color: statusColor,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      // Lương
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 3,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.orange.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.payments_outlined,
+                              size: 16,
+                              color: Colors.orange,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              salaryText,
+                              style: const TextStyle(
+                                color: Colors.orange,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -676,11 +740,19 @@ class _JobListScreenState extends State<JobListScreen> {
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: IconButton(
-                            icon: const Icon(Icons.work, color: Color.fromARGB(255, 44, 44, 44)),
+                            icon: const Icon(
+                              Icons.work,
+                              color: Color.fromARGB(255, 44, 44, 44),
+                            ),
                             tooltip: "Xem chi tiết",
                             onPressed: () {
-                              Navigator.push(context, 
-                                MaterialPageRoute(builder: (context)=> JobDetailScreen(job: job)));
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => JobDetailScreen(job: job),
+                                ),
+                              );
                             },
                           ),
                         ),
@@ -704,7 +776,10 @@ class _JobListScreenState extends State<JobListScreen> {
                     bottomRight: Radius.circular(12),
                   ),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 4,
+                ),
                 child: Row(
                   children: const [
                     Icon(Icons.priority_high, color: Colors.white, size: 14),

@@ -22,100 +22,154 @@ class SocialLoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isCandidate = role == UserRole.candidate.name ;
+    final theme = Theme.of(context);
+    final isCandidate = role == UserRole.candidate.name;
+    final isRecruiter = role == UserRole.recruiter.name;
+    
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 24.h),
+      padding: EdgeInsets.symmetric(
+        horizontal: isRecruiter ? 32.w : 28.w,
+        vertical: isRecruiter ? 24.h : 20.h,
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Logo
+          // Logo với style chuyên nghiệp cho recruiter
           Container(
-            margin: EdgeInsets.only(top: 10.h),
-            width: 120.w,
-            height: 120.w,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-            ),
+            width: isRecruiter ? 90.w : 100.w,
+            height: isRecruiter ? 90.w : 100.w,
+            decoration: isRecruiter
+                ? BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: const Color(0xFF1A237E).withValues(alpha: 0.1),
+                    border: Border.all(
+                      color: const Color(0xFF1A237E).withValues(alpha: 0.2),
+                      width: 2.w,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF1A237E).withValues(alpha: 0.15),
+                        blurRadius: 16.r,
+                        offset: Offset(0, 6.h),
+                      ),
+                    ],
+                  )
+                : const BoxDecoration(shape: BoxShape.circle),
             child: ClipOval(
               child: Image.asset(
                 AppImages.logoApp,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) => Icon(
-                  FontAwesomeIcons.userTie,
-                  size: 60.sp,
-                  color: IconColors.iconBrandPrimary
+                  isRecruiter ? FontAwesomeIcons.briefcase : FontAwesomeIcons.userTie,
+                  size: isRecruiter ? 45.sp : 50.sp,
+                  color: isRecruiter
+                      ? const Color(0xFF1A237E)
+                      : IconColors.iconBrandPrimary,
                 ),
               ),
             ),
           ),
-          SizedBox(height: 20.h),
+          SizedBox(height: isRecruiter ? 20.h : 16.h),
 
-          // Title
+          // Title với theme
           Text(
             isCandidate
               ? '${AppStrings.appName} Chào Bạn'
               : 'Nhà Tuyển Dụng ${AppStrings.appName}',
-            style: Theme.of(context).textTheme.titleMedium!.copyWith(
-              fontSize: 22.sp,
+            style: theme.textTheme.headlineMedium?.copyWith(
+              fontSize: isRecruiter ? 22.sp : 20.sp,
               fontWeight: FontWeight.bold,
+              color: isRecruiter
+                  ? const Color(0xFF1A237E)
+                  : theme.textTheme.headlineMedium?.color,
+              letterSpacing: isRecruiter ? 0.5 : 0,
             ),
-          ),
-          SizedBox(height: 8.h),
-          Text(
-            'Đăng nhập để tiếp tục tìm kiếm ${isCandidate ? 'công việc' : 'ứng viên'} với ${AppStrings.appName}',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              fontSize: 14.sp,
+          ),
+          SizedBox(height: 6.h),
+          
+          Text(
+            isRecruiter
+                ? 'Kết nối với những ứng viên tài năng và xây dựng đội ngũ xuất sắc'
+                : 'Đăng nhập để tiếp tục tìm kiếm ${isCandidate ? 'công việc' : 'ứng viên'} với ${AppStrings.appName}',
+            textAlign: TextAlign.center,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              fontSize: 13.sp,
               fontWeight: FontWeight.w400,
+              color: isRecruiter
+                  ? TextColors.textDefaultSecondary
+                  : theme.textTheme.bodyMedium?.color,
+              height: 1.4,
             ),
           ),
-          SizedBox(height: 32.h),
+          SizedBox(height: isRecruiter ? 28.h : 24.h),
 
-          // Nút login app
+          // Nút login app với icon size phù hợp
           CustomButtomLeadingIcon(
             onPressed: onShowTraditionalLogin,
-            text: 'Đăng nhập với ${AppStrings.appName}',
-            backgroundColor: BackgroundColors.backgroundBrandPrimary,
+            text: isRecruiter
+                ? 'Đăng nhập với Email'
+                : 'Đăng nhập với ${AppStrings.appName}',
+            backgroundColor: isRecruiter
+                ? const Color(0xFF1A237E)
+                : BackgroundColors.backgroundBrandPrimary,
             textColor: TextColors.textBrandOnbrand,
-            icon: Icons.business_center,
+            icon: isRecruiter ? Icons.business_center_outlined : Icons.business_center,
             iconColor: IconColors.iconBrandOnbrand,
             hasBorder: false,
+            iconSize: isRecruiter ? 22 : 20,
           ),
-          SizedBox(height: 20.h),
+          SizedBox(height: 18.h),
 
           // Divider
           Row(
             children: [
-              const Expanded(child: Divider(thickness: 1)),
+              Expanded(
+                child: Divider(
+                  thickness: 1,
+                  color: isRecruiter
+                      ? const Color(0xFF1A237E).withValues(alpha: 0.2)
+                      : Colors.grey.shade300,
+                ),
+              ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                padding: EdgeInsets.symmetric(horizontal: 12.w),
                 child: Text(
                   'hoặc tiếp tục với',
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                    fontSize: 12.sp,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    fontSize: 11.sp,
                     fontWeight: FontWeight.w400,
-                    color: TextColors.textDefaultPrimary.withValues(alpha: 0.5),
+                    color: isRecruiter
+                        ? TextColors.textDefaultSecondary
+                        : TextColors.textDefaultPrimary.withValues(alpha: 0.5),
                   ),
                 ),
               ),
-              const Expanded(child: Divider(thickness: 1)),
+              Expanded(
+                child: Divider(
+                  thickness: 1,
+                  color: isRecruiter
+                      ? const Color(0xFF1A237E).withValues(alpha: 0.2)
+                      : Colors.grey.shade300,
+                ),
+              ),
             ],
           ),
-          SizedBox(height: 20.h),
+          SizedBox(height: 18.h),
 
-          // Google login button
+          // Google login button với icon size 22.sp
           Center(
             child: ElevatedButton.icon(
               onPressed: () => onGoogleLogin(context),
               icon: Image.asset(
                 AppImages.google,
-                width: 24.w,
-                height: 24.w,
+                width: 20.w,
+                height: 20.w,
               ),
               label: Text(
                 'Đăng nhập bằng Google',
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  fontSize: 16.sp,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontSize: 15.sp,
                   fontWeight: FontWeight.w500,
                   color: TextColors.textDefaultPrimary,
                 ),
@@ -123,31 +177,36 @@ class SocialLoginView extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.black,
                 backgroundColor: Colors.white,
-                elevation: 4,
-                shadowColor: Colors.grey.withAlpha(77),
+                elevation: isRecruiter ? 2 : 4,
+                shadowColor: isRecruiter
+                    ? const Color(0xFF1A237E).withValues(alpha: 0.1)
+                    : Colors.grey.withAlpha(77),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                side: BorderSide(
-                  color: Colors.grey.shade300,
-                  width: 1.w,
+                  borderRadius: BorderRadius.circular(isRecruiter ? 14.r : 12.r),
+                  side: BorderSide(
+                    color: isRecruiter
+                        ? const Color(0xFF1A237E).withValues(alpha: 0.2)
+                        : Colors.grey.shade300,
+                    width: isRecruiter ? 1.5.w : 1.w,
+                  ),
                 ),
                 padding: EdgeInsets.symmetric(
-                  vertical: 12.h,
-                  horizontal: 16.w,
+                  vertical: 13.h,
+                  horizontal: 18.w,
                 ),
               ),
             ),
           ),
 
-          SizedBox(height: 48.h),
+          SizedBox(height: isRecruiter ? 28.h : 32.h),
+          
           if(isCandidate)...[
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   'Chưa có tài khoản ${AppStrings.appName}?',
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  style: theme.textTheme.bodyMedium?.copyWith(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                   ),
@@ -178,7 +237,7 @@ class SocialLoginView extends StatelessWidget {
                   ),
                   child: Text(
                     'Đăng ký',
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    style: theme.textTheme.bodyMedium?.copyWith(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
                       color: TextColors.textBrandPrimary,
@@ -195,10 +254,13 @@ class SocialLoginView extends StatelessWidget {
           Text(
             'Bằng cách tiếp tục, bạn đồng ý với Điều khoản sử dụng và Chính sách bảo mật của chúng tôi',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodySmall!.copyWith(
-              fontSize: 12.sp,
+            style: theme.textTheme.bodySmall?.copyWith(
+              fontSize: 11.sp,
               fontWeight: FontWeight.w400,
-              color: TextColors.textDefaultPrimary.withValues(alpha: 0.5),
+              color: isRecruiter
+                  ? TextColors.textDefaultTertiary
+                  : TextColors.textDefaultPrimary.withValues(alpha: 0.5),
+              height: 1.3,
             ),
           ),
         ],

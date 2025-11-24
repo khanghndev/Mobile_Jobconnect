@@ -24,6 +24,8 @@ class CustomTextFieldWithLabel extends StatelessWidget {
   final Color? labelTextColor;
   final double? borderRadius;
   final bool? readOnly;
+  final double? iconSize;
+  final AutovalidateMode? autovalidateMode;
 
   const CustomTextFieldWithLabel({
     super.key,
@@ -46,7 +48,9 @@ class CustomTextFieldWithLabel extends StatelessWidget {
     this.hintTextColor,
     this.labelTextColor,
     this.borderRadius,
-    this.readOnly
+    this.readOnly,
+    this.iconSize,
+    this.autovalidateMode,
   });
 
   @override
@@ -57,6 +61,7 @@ class CustomTextFieldWithLabel extends StatelessWidget {
       controller: controller,
       keyboardType: keyboardType,
       validator: validator,
+      autovalidateMode: autovalidateMode ?? AutovalidateMode.disabled,
       readOnly: readOnly ?? false,
       onTap: onTap,
       maxLines: maxLines,
@@ -77,14 +82,14 @@ class CustomTextFieldWithLabel extends StatelessWidget {
           color: labelTextColor ?? theme.colorScheme.primary,
           fontSize: 16.sp,
         ),
-        prefixIcon: Icon(icon, size: 20.sp),
+        prefixIcon: Icon(icon, size: (iconSize ?? 20).sp),
         prefixIconColor: prefixIconColor ?? theme.iconTheme.color,
         suffixIcon: suffixIcon != null
           ? GestureDetector(
               onTap: onSuffixIconTap,
               child: Icon(
                 suffixIcon, 
-                size: 20.sp,
+                size: (iconSize ?? 20).sp,
                 color: suffixIconColor ?? theme.iconTheme.color
               ),
             )

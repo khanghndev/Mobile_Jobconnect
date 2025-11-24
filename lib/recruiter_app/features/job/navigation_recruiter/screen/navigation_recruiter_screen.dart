@@ -63,6 +63,7 @@ class _NavigationRecruiterScreenState extends State<NavigationRecruiterScreen> {
             idUser: widget.userAccount.idUser,
             selectedRoute: _selectedRoute
           ),
+          isRecruiter: true,
         ),
         iconOutlined: Icons.home_outlined,
         iconFilled: Icons.home_rounded,
@@ -82,6 +83,7 @@ class _NavigationRecruiterScreenState extends State<NavigationRecruiterScreen> {
             idUser: widget.userAccount.idUser,
             selectedRoute: _selectedRoute
           ),
+          isRecruiter: true,
         ),
         iconOutlined: Icons.camera_alt_outlined,
         iconFilled: Icons.camera_alt_outlined,
@@ -110,6 +112,7 @@ class _NavigationRecruiterScreenState extends State<NavigationRecruiterScreen> {
             idUser: widget.userAccount.idUser,
             selectedRoute: _selectedRoute
           ),
+          isRecruiter: true,
         ),
         iconOutlined: Icons.local_fire_department_rounded,
         iconFilled: Icons.local_fire_department,
@@ -131,6 +134,7 @@ class _NavigationRecruiterScreenState extends State<NavigationRecruiterScreen> {
             idUser: widget.userAccount.idUser,
             selectedRoute: _selectedRoute
           ),
+          isRecruiter: true,
         ),
         iconOutlined: Icons.chat_bubble_outline_rounded,
         iconFilled: Icons.chat_bubble_rounded,
@@ -151,6 +155,7 @@ class _NavigationRecruiterScreenState extends State<NavigationRecruiterScreen> {
             idUser: widget.userAccount.idUser,
             selectedRoute: _selectedRoute
           ),
+          isRecruiter: true,
         ),
         iconOutlined: Icons.person_outline_rounded,
         iconFilled: Icons.person_rounded,

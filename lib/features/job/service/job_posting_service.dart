@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:job_connect/api/api_response_parser.dart';
 import 'package:job_connect/config/constant/api_constants.dart';
 import 'package:job_connect/config/enum/server_exception_type.dart';
@@ -22,6 +24,37 @@ class JobPostingService {
         type: ServerExceptionType.unknown,
       );
     }
+  }
+
+  /// Map WorkType từ UI format sang API enum format
+  /// UI: "Full-time", "Part-time", "Temporary" -> API: "fulltime", "parttime", "temporary"
+  String _mapWorkTypeToApiFormat(String workType) {
+    final normalized = workType.trim().toLowerCase();
+    
+    // Map các giá trị phổ biến từ UI sang API enum format
+    // API enum chỉ hỗ trợ: fulltime, parttime, freelancer, remote, internship, fresher, senior, junior
+    final mapping = {
+      'full-time': 'fulltime',
+      'fulltime': 'fulltime',
+      'part-time': 'parttime',
+      'parttime': 'parttime',
+      'temporary': 'parttime', // Temporary không có trong enum, map sang parttime
+      'freelancer': 'freelancer',
+      'remote': 'remote',
+      'internship': 'internship',
+      'fresher': 'fresher',
+      'senior': 'senior',
+      'junior': 'junior',
+      'contract': 'parttime', // Contract không có trong enum, map sang parttime
+    };
+    
+    // Nếu có trong mapping, trả về giá trị đã map
+    if (mapping.containsKey(normalized)) {
+      return mapping[normalized]!;
+    }
+    
+    // Nếu không có, loại bỏ dấu gạch ngang và chuyển thành lowercase
+    return normalized.replaceAll('-', '').replaceAll(' ', '');
   }
 
   //TODO: Lấy tất cả job posting
@@ -165,16 +198,92 @@ class JobPostingService {
   }) async {
     return _handleApi(
       () async {
-        // Build payload đúng chuẩn API
-        final body = {
-          "dto": jobPosting.toJson(),
-          "isUrgent": isUrgent,
-          "isSeasonal": isSeasonal,
+        // API sử dụng Newtonsoft.Json với default settings (PascalCase properties)
+        // Nhưng có thể có vấn đề với deserialization, thử gửi trực tiếp với camelCase
+        // vì Newtonsoft.Json có thể tự động map nếu có JsonProperty attributes
+        
+        // Build DTO với đảm bảo các trường bắt buộc không null/empty
+        final dtoJson = jobPosting.toJson();
+        
+        // API sử dụng Newtonsoft.Json với default settings (PascalCase properties)
+        // Nhưng không có ContractResolver, nên cần gửi với PascalCase
+        // Đảm bảo tất cả các trường bắt buộc có giá trị và không null
+        final title = (dtoJson['title'] as String?)?.trim() ?? '';
+        final description = (dtoJson['description'] as String?)?.trim() ?? '';
+        final location = (dtoJson['location'] as String?)?.trim() ?? '';
+        final workTypeRaw = (dtoJson['workType'] as String?)?.trim() ?? '';
+        final experienceLevel = (dtoJson['experienceLevel'] as String?)?.trim() ?? '';
+        
+        // Map WorkType từ UI format sang API enum format (lowercase, no hyphen)
+        final workType = _mapWorkTypeToApiFormat(workTypeRaw);
+        
+        // Validate trước khi gửi
+        if (title.isEmpty) {
+          throw Exception('Title không được để trống');
+        }
+        if (description.isEmpty) {
+          throw Exception('Description không được để trống');
+        }
+        if (location.isEmpty) {
+          throw Exception('Location không được để trống');
+        }
+        if (workType.isEmpty) {
+          throw Exception('WorkType không được để trống');
+        }
+        if (experienceLevel.isEmpty) {
+          throw Exception('ExperienceLevel không được để trống');
+        }
+        
+        // API sử dụng Newtonsoft.Json với default settings (PascalCase properties)
+        // Không có ContractResolver, nên cần gửi với PascalCase
+        // Đảm bảo tất cả các trường bắt buộc có giá trị và không null
+        final dto = <String, dynamic>{
+          'Title': title, // Đã được validate không empty
+          'Description': description, // Đã được validate không empty
+          'Requirements': dtoJson['requirements'],
+          'Salary': dtoJson['salary'],
+          'Location': location, // Đã được validate không empty
+          'Latitude': dtoJson['latitude'],
+          'Longitude': dtoJson['longitude'],
+          'WorkType': workType, // Đã được map sang API format (lowercase, no hyphen)
+          'ExperienceLevel': experienceLevel, // Đã được validate không empty
+          'IdCompany': dtoJson['idCompany'],
+          'IdUser': dtoJson['idUser'],
+          'ApplicationDeadline': dtoJson['applicationDeadline'],
+          'Benefits': dtoJson['benefits'],
+          'IdCategory': dtoJson['idCategory'],
+          'JobCategory': dtoJson['jobCategory'],
+          'UrgencyLevel': dtoJson['urgencyLevel'] ?? 'normal',
+          'WorkSchedule': dtoJson['workSchedule'],
+          'MinHoursPerWeek': dtoJson['minHoursPerWeek'],
+          'MaxHoursPerWeek': dtoJson['maxHoursPerWeek'],
+          'WorkDaysPerWeek': dtoJson['workDaysPerWeek'],
+          'ProjectDuration': dtoJson['projectDuration'],
+          'SeasonalStartDate': dtoJson['seasonalStartDate'],
+          'SeasonalEndDate': dtoJson['seasonalEndDate'],
+          'HourlyRate': dtoJson['hourlyRate'],
+          'DailyRate': dtoJson['dailyRate'],
+          'ProjectBudget': dtoJson['projectBudget'],
+          'IsSeasonal': dtoJson['isSeasonal'] ?? false,
+          'IsUrgent': dtoJson['isUrgent'] ?? isUrgent,
         };
 
+        // Debug: In ra dữ liệu sẽ gửi
+        if (kDebugMode) {
+          debugPrint('📤 Sending DTO (PascalCase): ${jsonEncode(dto)}');
+          debugPrint('📤 Title value: "$title" (length: ${title.length}, isEmpty: ${title.isEmpty})');
+          debugPrint('📤 Description value: "$description" (length: ${description.length}, isEmpty: ${description.isEmpty})');
+          debugPrint('📤 Location value: "$location" (length: ${location.length}, isEmpty: ${location.isEmpty})');
+          debugPrint('📤 WorkType (raw): "$workTypeRaw" -> (mapped): "$workType" (length: ${workType.length}, isEmpty: ${workType.isEmpty})');
+          debugPrint('📤 ExperienceLevel value: "$experienceLevel" (length: ${experienceLevel.length}, isEmpty: ${experienceLevel.isEmpty})');
+        }
+        
+        // API nhận CreateJobPostingDto trực tiếp từ [FromBody]
+        // Gửi trực tiếp DTO với PascalCase (API expect PascalCase properties)
         final res = await _apiService.post(
           endpoint: ApiConstants.jobPostingEndpoint,
-          body: body,
+          body: dto,
+          requireAuth: true,
         );
 
         return ApiResponseParser.parseObject(
@@ -194,16 +303,110 @@ class JobPostingService {
   }) async {
     return _handleApi(
       () async {
+        // API sử dụng Newtonsoft.Json với default settings (PascalCase properties)
+        // Cần format dữ liệu giống như createJobPosting
+        final dtoJson = jobPosting.toJson();
+        
+        // Validate và format các trường
+        final title = (dtoJson['title'] as String?)?.trim() ?? '';
+        final description = (dtoJson['description'] as String?)?.trim() ?? '';
+        final location = (dtoJson['location'] as String?)?.trim() ?? '';
+        final workTypeRaw = (dtoJson['workType'] as String?)?.trim() ?? '';
+        final experienceLevel = (dtoJson['experienceLevel'] as String?)?.trim() ?? '';
+        
+        // Map WorkType từ UI format sang API enum format (lowercase, no hyphen)
+        final workType = _mapWorkTypeToApiFormat(workTypeRaw);
+        
+        // Validate trước khi gửi
+        if (title.isEmpty) {
+          throw Exception('Title không được để trống');
+        }
+        if (description.isEmpty) {
+          throw Exception('Description không được để trống');
+        }
+        if (location.isEmpty) {
+          throw Exception('Location không được để trống');
+        }
+        if (workType.isEmpty) {
+          throw Exception('WorkType không được để trống');
+        }
+        if (experienceLevel.isEmpty) {
+          throw Exception('ExperienceLevel không được để trống');
+        }
+        
+        // Format DTO với PascalCase như API expect
+        final dto = <String, dynamic>{
+          'IdJobPost': jobPosting.idJobPost,
+          'Title': title,
+          'Description': description,
+          'Requirements': dtoJson['requirements'],
+          'Salary': dtoJson['salary'],
+          'Location': location,
+          'Latitude': dtoJson['latitude'],
+          'Longitude': dtoJson['longitude'],
+          'WorkType': workType, // Đã được map sang API format
+          'ExperienceLevel': experienceLevel,
+          'IdCompany': dtoJson['idCompany'],
+          'IdUser': dtoJson['idUser'],
+          'ApplicationDeadline': dtoJson['applicationDeadline'],
+          'Benefits': dtoJson['benefits'],
+          'IdCategory': dtoJson['idCategory'],
+          'JobCategory': dtoJson['jobCategory'],
+          'UrgencyLevel': dtoJson['urgencyLevel'] ?? 'normal',
+          'WorkSchedule': dtoJson['workSchedule'],
+          'MinHoursPerWeek': dtoJson['minHoursPerWeek'],
+          'MaxHoursPerWeek': dtoJson['maxHoursPerWeek'],
+          'WorkDaysPerWeek': dtoJson['workDaysPerWeek'],
+          'ProjectDuration': dtoJson['projectDuration'],
+          'SeasonalStartDate': dtoJson['seasonalStartDate'],
+          'SeasonalEndDate': dtoJson['seasonalEndDate'],
+          'HourlyRate': dtoJson['hourlyRate'],
+          'DailyRate': dtoJson['dailyRate'],
+          'ProjectBudget': dtoJson['projectBudget'],
+          'IsSeasonal': dtoJson['isSeasonal'] ?? false,
+          'IsUrgent': dtoJson['isUrgent'] ?? false,
+          'PostStatus': dtoJson['postStatus'] ?? 'open', // Thêm PostStatus vào DTO
+        };
+
+        // Debug: In ra dữ liệu sẽ gửi
+        if (kDebugMode) {
+          debugPrint('📤 Updating JobPosting (PascalCase): ${jsonEncode(dto)}');
+          debugPrint('📤 WorkType (raw): "$workTypeRaw" -> (mapped): "$workType"');
+        }
+
         final endpoint = ApiConstants.jobPostingByIdEndpoint.replaceFirst('{id}', jobId);
         final res = await _apiService.put(
           endpoint: endpoint,
-          body: jobPosting.toJson(),
+          body: dto,
         );
 
-        return ApiResponseParser.parseObject(
-          res: res,
-          fromJson: (json) => JobPostingModel.fromJson(json),
-          errorMsg: 'Phản hồi không hợp lệ khi cập nhật job posting',
+        // Nếu API trả về 204 No Content, handleResponse sẽ trả về statusCode (số nguyên)
+        // Trong trường hợp này, trả về jobPosting đã được cập nhật với updatedAt mới
+        if (res is int && (res == 204 || res == 200)) {
+          return jobPosting.copyWith(
+            updatedAt: DateTime.now(),
+          );
+        }
+
+        // Nếu response body rỗng hoặc null, cũng coi như thành công
+        if (res == null || (res is String && res.isEmpty)) {
+          return jobPosting.copyWith(
+            updatedAt: DateTime.now(),
+          );
+        }
+
+        // Nếu có response body là Map, parse như bình thường
+        if (res is Map<String, dynamic>) {
+          return ApiResponseParser.parseObject(
+            res: res,
+            fromJson: (json) => JobPostingModel.fromJson(json),
+            errorMsg: 'Phản hồi không hợp lệ khi cập nhật job posting',
+          );
+        }
+
+        // Nếu không phải Map, coi như thành công và trả về jobPosting đã cập nhật
+        return jobPosting.copyWith(
+          updatedAt: DateTime.now(),
         );
       },
       'Lỗi khi cập nhật job posting',

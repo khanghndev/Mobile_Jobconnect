@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UpgradePostingButton extends StatelessWidget {
   final VoidCallback onTap;
@@ -12,59 +13,96 @@ class UpgradePostingButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.shopping_cart_outlined,
-              color: Color(0xFF10B981),
-              size: 18,
-            ),
-            const SizedBox(width: 8),
-            const Text(
-              "Nâng cấp đăng tin",
-              style: TextStyle(
-                color: Color(0xFF10B981),
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
+    const recruiterPrimary = Color(0xFF1A237E);
+    const recruiterSecondary = Color(0xFF283593);
+    
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16.r),
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 14.w),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12.r),
+            boxShadow: [
+              BoxShadow(
+                color: recruiterPrimary.withValues(alpha: 0.15),
+                blurRadius: 8.r,
+                offset: Offset(0, 3.h),
+                spreadRadius: 0,
               ),
+            ],
+            border: Border.all(
+              color: recruiterPrimary.withValues(alpha: 0.15),
+              width: 1.w,
             ),
-            if (isNew) ...[
-              const SizedBox(width: 8),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                padding: EdgeInsets.all(8.r),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF10B981),
-                  borderRadius: BorderRadius.circular(12),
+                  gradient: const LinearGradient(
+                    colors: [recruiterPrimary, recruiterSecondary],
+                  ),
+                  borderRadius: BorderRadius.circular(10.r),
                 ),
-                child: const Text(
-                  "MỚI",
+                child: Icon(
+                  Icons.workspace_premium_rounded,
+                  color: Colors.white,
+                  size: 18.sp,
+                ),
+              ),
+              SizedBox(width: 10.w),
+              Expanded(
+                child: Text(
+                  "Nâng cấp đăng tin",
                   style: TextStyle(
-                    color: Colors.white,
+                    color: recruiterPrimary,
                     fontWeight: FontWeight.bold,
-                    fontSize: 10,
+                    fontSize: 14.sp,
+                    letterSpacing: 0.2,
                   ),
                 ),
               ),
+              if (isNew) ...[
+                SizedBox(width: 6.w),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF1A237E), Color(0xFF283593)],
+                    ),
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.new_releases_rounded,
+                        color: Colors.white,
+                        size: 10.sp,
+                      ),
+                      SizedBox(width: 3.w),
+                      Text(
+                        "MỚI",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 10.sp,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );

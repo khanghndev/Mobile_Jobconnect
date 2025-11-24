@@ -12,6 +12,7 @@ class CustomButtomLeadingIcon extends StatelessWidget {
   final bool hasBorder;
   final double? width;
   final double? borderRadius;
+  final double? iconSize;
 
   const CustomButtomLeadingIcon({
     super.key,
@@ -24,6 +25,7 @@ class CustomButtomLeadingIcon extends StatelessWidget {
     this.hasBorder = false, 
     this.width, 
     this.borderRadius,
+    this.iconSize,
   });
 
   @override
@@ -45,7 +47,7 @@ class CustomButtomLeadingIcon extends StatelessWidget {
         icon: Icon(
           icon,
           color: iconColor,
-          size: 20.sp,
+          size: (iconSize ?? 20).sp,
         ),
         label: text == null 
           ? SizedBox.shrink()

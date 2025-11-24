@@ -71,8 +71,21 @@ class AuthService {
       }
 
       if (res is! Map<String, dynamic>) {
+        // Nếu res là String và có chứa HTML, hiển thị message ngắn gọn
+        String errorMsg = 'Phản hồi không hợp lệ từ server';
+        if (res is String) {
+          if (res.toLowerCase().contains('<html') || res.toLowerCase().contains('<!doctype')) {
+            errorMsg = 'Server trả về HTML thay vì JSON. Vui lòng kiểm tra kết nối mạng hoặc thử lại sau.';
+          } else if (res.length > 100) {
+            errorMsg = 'Phản hồi không hợp lệ từ server: ${res.substring(0, 100)}...';
+          } else {
+            errorMsg = 'Phản hồi không hợp lệ từ server: $res';
+          }
+        } else {
+          errorMsg = 'Phản hồi không hợp lệ: ${res.runtimeType}';
+        }
         throw ServerException(
-          err: 'Phản hồi không hợp lệ: ${res.runtimeType} - $res',
+          err: errorMsg,
           type: ServerExceptionType.api,
         );
       }

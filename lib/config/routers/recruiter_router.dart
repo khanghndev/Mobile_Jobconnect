@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/navigation/app_navigation.dart';
 import 'package:job_connect/recruiter_app/features/candidate/screens/hr_candidate_management_screen.dart';
@@ -6,7 +7,7 @@ import 'package:job_connect/recruiter_app/features/interview/screens/hr_calendar
 import 'package:job_connect/recruiter_app/features/job/navigation_recruiter/screen/navigation_recruiter_screen.dart';
 import 'package:job_connect/recruiter_app/features/report/screens/hr_report_screen.dart';
 import 'package:job_connect/recruiter_app/features/search/screens/hr_search_screen.dart';
-import 'package:job_connect/recruiter_app/features/post/screens/hr_post_job_screen.dart';
+import 'package:job_connect/recruiter_app/features/job/screens/hr_jobs_dashboard_screen.dart';
 
 class RecruiterRouter {
   RecruiterRouter._();
@@ -69,15 +70,15 @@ class RecruiterRouter {
         },
       ),
 
-      //TODO: Danh sách công việc
+      //TODO: Danh sách công việc - Dashboard
       GoRoute(
         path: 'jobs',
         pageBuilder: (context, state) {
-          final extraData = state.extra as Map<String, dynamic>;
-          final idUser = extraData['idUser'];
+          final extraData = state.extra as Map<String, dynamic>?;
+          final idUser = extraData?['idUser'] as String? ?? '';
           return buildPageWithSlideTransition(
-            HrPostJobScreen(
-              recruiterId: idUser
+            HrJobsDashboardScreen(
+              idUser: idUser,
             ),
             state,
           );
@@ -88,8 +89,32 @@ class RecruiterRouter {
       GoRoute(
         path: 'report',
         pageBuilder: (context, state) {
+          debugPrint('🔵 Report route - state.extra type: ${state.extra.runtimeType}');
+          debugPrint('🔵 Report route - state.extra: ${state.extra}');
+          debugPrint('🔵 Report route - state.uri: ${state.uri}');
+          debugPrint('🔵 Report route - state.fullPath: ${state.fullPath}');
+          
+          Map<String, dynamic>? extraData;
+          if (state.extra != null) {
+            if (state.extra is Map<String, dynamic>) {
+              extraData = state.extra as Map<String, dynamic>;
+            } else {
+              debugPrint('❌ Report route - state.extra is not Map<String, dynamic>');
+            }
+          } else {
+            debugPrint('❌ Report route - state.extra is null');
+          }
+          
+          debugPrint('🔵 Report route - extraData: $extraData');
+          final recruiterId = extraData?['idUser'] as String?;
+          final companyId = extraData?['companyId'] as String?;
+          debugPrint('🔵 Report route - recruiterId: $recruiterId, companyId: $companyId');
+          
           return buildPageWithSlideTransition(
-            HrReportScreen(),
+            HrReportScreen(
+              recruiterId: recruiterId,
+              companyId: companyId,
+            ),
             state,
           );
         },

@@ -148,6 +148,12 @@ class ApiConstants {
   static const String jobTransactionByIdEndpoint = "/api/JobTransaction/{id}";
   static const String jobTransactionDetailEndpoint = "/api/JobTransaction/detail/{idTransaction}";
 
+  // PAYMENT - Thanh toán
+  static const String payOsCreatePaymentEndpoint = "/api/PayOs/create-payment";
+  static const String payOsReturnEndpoint = "/api/PayOs/return";
+  static const String momoCreatePaymentEndpoint = "/api/Momo/create-payment";
+  static const String momoReturnEndpoint = "/api/Momo/return";
+
   // SOCIAL - Bài viết, comment, like, kết nối, story, tag, messgae
   static const String socialPostsEndpoint = "/api/SocialPosts";
   static const String socialPostByIdEndpoint = "/api/SocialPosts/{id}";

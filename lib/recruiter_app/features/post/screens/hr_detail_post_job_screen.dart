@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:job_connect/features/job/model/job_posting_model.dart';
@@ -151,7 +152,7 @@ class HrDetailPostJobScreen extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         children: [
-          Icon(icon, color: Color(0xFF2563EB), size: 22),
+          Icon(icon, color: Color(0xFF2563EB), size: 22.sp),
           const SizedBox(width: 8),
           Text(
             title,
@@ -172,7 +173,7 @@ class HrDetailPostJobScreen extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.check_circle_outline, size: 18, color: Colors.grey),
+          Icon(Icons.check_circle_outline, size: 18.sp, color: Colors.grey),
           const SizedBox(width: 8),
           Expanded(
             child: RichText(

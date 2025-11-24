@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/constant/app_colors.dart';
 import 'package:job_connect/config/enum/job_application_status.dart';
+import 'package:job_connect/config/error/server_exception.dart';
 import 'package:job_connect/config/utils/date_utils_helper.dart';
 import 'package:job_connect/config/utils/snackbar_app.dart';
 import 'package:job_connect/features/home/widgets/home/featured_friends_list.dart';
@@ -227,14 +228,21 @@ class _HrHomeScreenState extends State<HrHomeScreen> with AutomaticKeepAliveClie
       final accountList = accountsAndCandidates.whereType<Map>().map((e) => e['account'] as UserModel).toList();
       final candidateList = accountsAndCandidates.whereType<Map>().map((e) => e['candidate'] as CandidateInfoModel).toList();
 
-      // 8. Lấy giao dịch & gói dịch vụ
-      final results = await Future.wait([
-        jobTransactionService.getAllTransactions(),
-        SubscriptionPackageService().fetchSubscriptionPackages(),
-      ]);
-
-      final jobTransactions = results[0] as List<JobTransactionModel>;
-      final subscriptionPackages = results[1] as List<SubscriptionPackageModel>;
+      // 8. Lấy giao dịch & gói dịch vụ (bỏ qua lỗi)
+      List<JobTransactionModel> jobTransactions = [];
+      List<SubscriptionPackageModel> subscriptionPackages = [];
+      try {
+        final results = await Future.wait([
+          jobTransactionService.getAllTransactions(),
+          SubscriptionPackageService().fetchSubscriptionPackages(),
+        ]);
+        jobTransactions = results[0] as List<JobTransactionModel>;
+        subscriptionPackages = results[1] as List<SubscriptionPackageModel>;
+      } catch (e) {
+        // Bỏ qua lỗi, sử dụng danh sách rỗng
+        jobTransactions = [];
+        subscriptionPackages = [];
+      }
 
       if (!mounted) return;
 
@@ -257,18 +265,38 @@ class _HrHomeScreenState extends State<HrHomeScreen> with AutomaticKeepAliveClie
         subscriptionPackagesList = subscriptionPackages;
         isLoading = false;
       });
-    } catch (_) {
+    } on ServerException catch (e) {
       if (!mounted) return;
       setState(() {
-        error = 'Lỗi tải dữ liệu tổng.';
+        error = e.err;
         isLoading = false;
       });
 
-      SnackbarApp.show(
-        context,
-        message: 'Không thể tải dữ liệu tổng.',
-        backgroundColor: BackgroundColors.backgroundErrorPrimary,
-      );
+      // Chỉ hiển thị snackbar nếu lỗi quan trọng, không phải lỗi database table không tồn tại
+      if (!e.err.toLowerCase().contains("doesn't exist") && 
+          !e.err.toLowerCase().contains("table")) {
+        SnackbarApp.show(
+          context,
+          message: 'Lỗi khi tải dữ liệu: ${e.err}',
+          backgroundColor: BackgroundColors.backgroundErrorPrimary,
+        );
+      }
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        error = 'Lỗi không xác định: ${e.toString()}';
+        isLoading = false;
+      });
+
+      // Chỉ hiển thị snackbar nếu lỗi không phải database
+      if (!e.toString().toLowerCase().contains("doesn't exist") && 
+          !e.toString().toLowerCase().contains("table")) {
+        SnackbarApp.show(
+          context,
+          message: 'Lỗi khi tải dữ liệu: ${e.toString()}',
+          backgroundColor: BackgroundColors.backgroundErrorPrimary,
+        );
+      }
     }
   }
 
@@ -446,15 +474,16 @@ class _HrHomeScreenState extends State<HrHomeScreen> with AutomaticKeepAliveClie
         statusBarIconBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        backgroundColor: theme.scaffoldBackgroundColor,
+        backgroundColor: const Color(0xFFF8F9FA),
         body: SafeArea(
           child: isLoading
           ? const HrHomeShimmer()
           : RefreshIndicator(
             onRefresh: _loadAllData,
+            color: const Color(0xFF1A237E),
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
-              padding: EdgeInsets.all(16.w),
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -462,9 +491,9 @@ class _HrHomeScreenState extends State<HrHomeScreen> with AutomaticKeepAliveClie
                     userName: widget.userAccount.userName,
                     pendingApplications: getApplicationsWithStatus(JobApplicationStatus.pending.name),
                   ),
-                  SizedBox(height: 16.h),
+                  SizedBox(height: 24.h),
                   StatisticsSection(
-                    primaryColor: theme.primaryColor,
+                    primaryColor: const Color(0xFF1A237E),
                     jobApplicationsList: jobApplicationsList,
                     jobPostingsList: jobPostingsList,
                     trendCandidate: trendCandidate,
@@ -472,7 +501,7 @@ class _HrHomeScreenState extends State<HrHomeScreen> with AutomaticKeepAliveClie
                     trendInterview: trendInterview,
                     getApplicationsWithStatus: (status) => getApplicationsWithStatus(status).length,
                   ),
-                  SizedBox(height: 16.h),
+                  SizedBox(height: 24.h),
                   RecentActivitiesSection(
                     getRecentActivities: _getRecentActivities,
                     detailScreenBuilder: (activity) => HrDetailRecentActivitieScreen(
@@ -485,17 +514,68 @@ class _HrHomeScreenState extends State<HrHomeScreen> with AutomaticKeepAliveClie
                       attachments: activity['attachments'],
                     ),
                   ),
-                  SizedBox(height: 16.h),
-                  SectionHeader(
-                    title: "Lịch phỏng vấn sắp tới",
-                    onSeeAll: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => HrCalendarInterviewSchedule(
-                        idUser: widget.userAccount.idUser,
-                        interviews: flatInterviewSchedulesList,
-                        jobPostingsList: jobPostingsList
-                      )),
-                    ),
+                  SizedBox(height: 24.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(8.r),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF1A237E).withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                            child: Icon(
+                              Icons.calendar_today_rounded,
+                              size: 20.sp,
+                              color: const Color(0xFF1A237E),
+                            ),
+                          ),
+                          SizedBox(width: 10.w),
+                          Text(
+                            "Lịch phỏng vấn",
+                            style: theme.textTheme.titleLarge?.copyWith(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.bold,
+                              color: const Color(0xFF1A237E),
+                            ),
+                          ),
+                        ],
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => HrCalendarInterviewSchedule(
+                            idUser: widget.userAccount.idUser,
+                            interviews: flatInterviewSchedulesList,
+                            jobPostingsList: jobPostingsList
+                          )),
+                        ),
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              'Xem tất cả',
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                fontSize: 14.sp,
+                                color: const Color(0xFF1A237E),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            SizedBox(width: 4.w),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              size: 14.sp,
+                              color: const Color(0xFF1A237E),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(height: 16.h),
                   UpComingInterviewsSection(
@@ -511,7 +591,7 @@ class _HrHomeScreenState extends State<HrHomeScreen> with AutomaticKeepAliveClie
                       )),
                     ),
                   ),
-                  SizedBox(height: 16.h),
+                  SizedBox(height: 24.h),
                   SectionHeader(
                     title: "Bạn có thể biết",
                     onSeeAll: () => context.push('/social/search',extra: {'idUser' : widget.userAccount.idUser}),
@@ -547,6 +627,7 @@ class _HrHomeScreenState extends State<HrHomeScreen> with AutomaticKeepAliveClie
                       setState(() {});
                     },
                   ),
+                  SizedBox(height: 24.h),
                 ],
               ),
             ),

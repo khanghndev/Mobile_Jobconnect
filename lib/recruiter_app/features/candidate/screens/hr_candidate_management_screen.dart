@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:job_connect/config/enum/job_application_status.dart';
@@ -13,6 +15,9 @@ import 'package:job_connect/features/profile/service/user_service.dart';
 import 'package:job_connect/features/job/service/job_application_service.dart';
 import 'package:job_connect/features/job/service/job_posting_service.dart';
 import 'package:job_connect/recruiter_app/services/recruiter_service.dart';
+import 'package:job_connect/recruiter_app/features/interview/screens/hr_create_calendar_interview_schedule.dart';
+import 'package:job_connect/recruiter_app/features/interview/service/interview_schedule_service.dart';
+import 'package:job_connect/model/interview_schedule_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CandidateCombined {
@@ -58,6 +63,10 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
 
   // Dữ liệu gốc và đã filter
   List<CandidateCombined> _candidates = [];
+  List<JobPostingModel> _jobPostings = [];
+  List<InterviewScheduleModel> _interviewSchedules = [];
+  final InterviewScheduleService _interviewScheduleService = InterviewScheduleService();
+  final JobApplicationService _jobApplicationService = JobApplicationService();
   bool _isLoading = true;
   // ignore: unused_field
   String _errorMessage = '';
@@ -72,60 +81,159 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
   }
 
   Future<void> _loadCandidates() async {
-    // setState(() {
-    //   _isLoading = true;
-    //   _errorMessage = '';
-    // });
+    setState(() {
+      _isLoading = true;
+      _errorMessage = '';
+    });
 
-    // try {
-    //   final recruiterService = RecruiterService();
-    //   final jobPostingService = JobPostingService();
-    //   final jobApplicationService = JobApplicationService();
-    //   final candidateService = CandidateInfoService();
-    //   final accountService = UserService();
+    try {
+      final recruiterService = RecruiterService();
+      final jobPostingService = JobPostingService();
+      final jobApplicationService = JobApplicationService();
+      final candidateService = CandidateInfoService();
+      final accountService = UserService();
 
-    //   // 1) Lấy thông tin recruiter để có companyId
-    //   final recruiterInfo =
-    //       await recruiterService.getRecruiterById(id: widget.recruiterId);
-    //   final String? companyId = recruiterInfo!.idCompany;
-    //   if (companyId == null) throw Exception('Recruiter chưa có công ty.');
+      // 1) Lấy thông tin recruiter để có companyId
+      final recruiterInfo =
+          await recruiterService.getRecruiterById(id: widget.recruiterId);
+      if (recruiterInfo == null) {
+        throw Exception('Không tìm thấy thông tin nhà tuyển dụng.');
+      }
+      
+      final String? companyId = recruiterInfo.idCompany;
+      if (companyId == null) {
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+      
+      if (companyId.isEmpty) {
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
 
-    //   // 2) Lấy list job postings của company
-    //   final List<JobPostingModel> jobPostings =
-    //       await jobPostingService.getJobPostingsByCompany(companyId: companyId);
+      // 2) Lấy list job postings của company
+      final List<JobPostingModel> jobPostings =
+          await jobPostingService.getJobPostingsByCompany(companyId: companyId);
+      
+      // Lưu job postings vào state để dùng sau
+      _jobPostings = jobPostings;
 
-    //   final List<CandidateCombined> enriched = [];
+      // 2.5) Load tất cả interview schedules cho các job postings
+      final List<Future<List<InterviewScheduleModel>>> interviewFutures = jobPostings
+          .map((job) => _interviewScheduleService
+              .getInterviewScheduleByJobId(jobId: job.idJobPost)
+              .catchError((e) => <InterviewScheduleModel>[]))
+          .toList();
+      
+      final List<List<InterviewScheduleModel>> interviewResults = await Future.wait(interviewFutures);
+      _interviewSchedules = interviewResults.expand((list) => list).toList();
 
-    //   // 3) Với mỗi job, lấy ứng viên đã ứng tuyển
-    //   for (final job in jobPostings) {
-    //     final List<JobApplicationModel> jobApps =
-    //         await jobApplicationService.getJobApplicationsByJob(jobPostId: job.idJobPost);
+      if (jobPostings.isEmpty) {
+        setState(() {
+          _candidates = [];
+          _isLoading = false;
+        });
+        return;
+      }
 
-    //     // 4) Với mỗi jobApp, lấy CandidateInfo và Account
-    //     for (final jobApp in jobApps) {
-    //       final CandidateInfoModel candidate =
-    //           await candidateService.getCandidateById(id:jobApp.idUser);
-    //       final UserModel account =
-    //           await accountService.getUserById(id: jobApp.idUser);
+      // 3) Load tất cả job applications song song
+      final List<Future<List<JobApplicationModel>>> jobAppFutures = jobPostings
+          .map((job) => jobApplicationService
+              .getApplicationsByJobPost(jobPostId: job.idJobPost)
+              .catchError((e) => <JobApplicationModel>[]))
+          .toList();
 
-    //       enriched.add(CandidateCombined(
-    //         candidate: candidate,
-    //         account: account,
-    //         jobApplication: jobApp,
-    //       ));
-    //     }
-    //   }
+      final List<List<JobApplicationModel>> jobAppsList = await Future.wait(jobAppFutures);
+      
+      // Flatten danh sách job applications
+      final List<JobApplicationModel> allJobApps = [];
+      for (final jobApps in jobAppsList) {
+        allJobApps.addAll(jobApps);
+      }
 
-    //   _candidates = enriched;
-    //   setState(() {
-    //     _isLoading = false;
-    //   });
-    // } catch (e) {
-    //   setState(() {
-    //     _errorMessage = 'Lỗi khi tải dữ liệu: $e';
-    //     _isLoading = false;
-    //   });
-    // }
+      if (allJobApps.isEmpty) {
+        setState(() {
+          _candidates = [];
+          _isLoading = false;
+        });
+        return;
+      }
+
+      // 4) Load candidate và account song song cho tất cả job applications
+      final List<Future<CandidateCombined?>> candidateFutures = allJobApps.map((jobApp) async {
+        CandidateInfoModel? candidate;
+        UserModel? account;
+        
+        try {
+          // Load candidate và account song song với error handling
+          final candidateFuture = () async {
+            try {
+              return await candidateService.getCandidateById(id: jobApp.idUser);
+            } catch (e) {
+              return null;
+            }
+          }();
+          
+          final accountFuture = () async {
+            try {
+              return await accountService.getUserById(id: jobApp.idUser);
+            } catch (e) {
+              return null;
+            }
+          }();
+          
+          final results = await Future.wait([
+            candidateFuture,
+            accountFuture,
+          ]);
+
+          candidate = results[0] as CandidateInfoModel?;
+          account = results[1] as UserModel?;
+        } catch (e) {
+          // Ignore errors
+        }
+
+        if (candidate != null && account != null) {
+          return CandidateCombined(
+            candidate: candidate,
+            account: account,
+            jobApplication: jobApp,
+          );
+        }
+        return null;
+      }).toList();
+
+      // 6) Chờ tất cả futures hoàn thành
+      final List<CandidateCombined?> results = await Future.wait(candidateFutures);
+      
+      // 7) Lọc bỏ null values
+      final List<CandidateCombined> enriched = results
+          .whereType<CandidateCombined>()
+          .toList();
+
+      setState(() {
+        _candidates = enriched;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Lỗi khi tải dữ liệu: $e';
+        _isLoading = false;
+      });
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Lỗi khi tải dữ liệu: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 
   @override
@@ -150,7 +258,7 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
 
     // 1) Filter theo search (name, workPosition, skills)
     List<CandidateCombined> filtered = _candidates.where((item) {
-      final name = (item.account.userName ?? '').toLowerCase();
+      final name = item.account.userName.toLowerCase();
       final position = (item.candidate.workPosition ?? '').toLowerCase();
       final skillsStr = item.candidate.skills ?? '';
       final skills = skillsStr
@@ -196,9 +304,10 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
 
   // Lấy màu theo trạng thái
   Color _getStatusColor(String status) {
+    const recruiterPrimary = Color(0xFF1A237E);
     switch (status) {
       case 'pending':
-        return Colors.blue;
+        return recruiterPrimary;
       case 'viewed':
         return Colors.grey;
       case 'interview':
@@ -213,66 +322,157 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
   }
   // Lấy icon theo trạng 
   Icon _getStatusIcon(String status) {
+    const recruiterPrimary = Color(0xFF1A237E);
     switch (status) {
       case 'pending':
-        return const Icon(Icons.file_present, size: 20, color: Colors.blue);
+        return Icon(Icons.file_present, size: 20.sp, color: recruiterPrimary);
       case 'viewed':
-        return const Icon(Icons.pending_actions, size: 20, color: Colors.grey);
+        return Icon(Icons.pending_actions, size: 20.sp, color: Colors.grey);
       case 'interview':
-        return const Icon(Icons.check_circle_outline, size: 20, color: Colors.orange);
+        return Icon(Icons.check_circle_outline, size: 20.sp, color: Colors.orange);
       case 'accepted':
-        return const Icon(Icons.task_alt, size: 20, color: Colors.green);
+        return Icon(Icons.task_alt, size: 20.sp, color: Colors.green);
       case 'rejected':
-        return const Icon(Icons.cancel_outlined, size: 20, color: Colors.red);
+        return Icon(Icons.cancel_outlined, size: 20.sp, color: Colors.red);
       default:
-        return const Icon(Icons.person, size: 20, color: Colors.grey);
+        return Icon(Icons.person, size: 20.sp, color: Colors.grey);
     }
   }
+  // Kiểm tra xem ứng viên đã có lịch phỏng vấn chưa
+  bool _hasInterviewSchedule(CandidateCombined item) {
+    return _interviewSchedules.any((schedule) =>
+        schedule.idJobPost == item.jobApplication.idJobPost &&
+        schedule.idUser == item.jobApplication.idUser);
+  }
+
   // Hàm cập nhật trạng thái khi bấm nút "Chấp nhận"
   Future<void> _acceptApplication(CandidateCombined item) async {
+    // Lưu context của Scaffold cha và Navigator trước khi đóng bottom sheet
+    final navigator = Navigator.of(context);
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    
     try {
-      final jobApplicationService = JobApplicationService();
+      // TODO: Implement update job application status API
       // await jobApplicationService.updateJobApplicationStatus(
       //   jobPostId: item.jobApplication.idJobPost,
       //   userId: item.jobApplication.idUser,
       //   newStatus: "interview",
       // );
       
-       // ignore: use_build_context_synchronously
-       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Cập nhật trạng thái thành công')),
+      // Đóng bottom sheet trước
+      navigator.pop();
+      
+      // Chờ một frame để đảm bảo bottom sheet đã đóng hoàn toàn
+      await Future.delayed(const Duration(milliseconds: 100));
+      
+      // Kiểm tra mounted trước khi tiếp tục
+      if (!mounted) return;
+      
+      // Tạo danh sách candidates (chỉ có candidate hiện tại)
+      final candidateList = [item.account];
+      
+      // Navigate đến màn hình tạo lịch phỏng vấn với pre-selected job và candidate
+      await navigator.push(
+        MaterialPageRoute(
+          builder: (context) => HrCreateCalendarInterviewSchedule(
+            jobs: _jobPostings,
+            candidateList: candidateList,
+            preSelectedJobId: item.jobApplication.idJobPost,
+            preSelectedCandidateId: item.account.idUser,
+          ),
+        ),
       );
-      // ignore: use_build_context_synchronously
-      context.pop();
+      
+      // Sau khi quay lại từ màn hình tạo lịch, cập nhật trạng thái và reload
+      if (mounted) {
+        // Cập nhật trạng thái application thành "interview"
+        try {
+          final updatedApplication = item.jobApplication.copyWith(
+            applicationStatus: 'interview',
+          );
+          await _jobApplicationService.updateApplication(
+            jobPostId: item.jobApplication.idJobPost,
+            userId: item.jobApplication.idUser,
+            model: updatedApplication,
+          );
+        } catch (e) {
+          debugPrint('Lỗi khi cập nhật trạng thái application: $e');
+        }
+        
+        scaffoldMessenger.showSnackBar(
+          const SnackBar(
+            content: Text('Đã chấp nhận ứng viên và tạo lịch phỏng vấn thành công.'),
+            backgroundColor: Colors.green,
+          ),
+        );
+        // Reload data để cập nhật trạng thái và danh sách lịch phỏng vấn
+        _loadCandidates();
+      }
     } catch (e) {
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Lỗi khi cập nhật trạng thái: $e')),
+      // Đóng bottom sheet nếu chưa đóng
+      if (navigator.canPop()) {
+        navigator.pop();
+      }
+      
+      // Chờ một frame
+      await Future.delayed(const Duration(milliseconds: 100));
+      
+      // Kiểm tra mounted trước khi hiển thị lỗi
+      if (!mounted) return;
+      
+      scaffoldMessenger.showSnackBar(
+        SnackBar(
+          content: Text('Lỗi khi cập nhật trạng thái: $e'),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   }
 
   // Hàm cập nhật trạng thái khi bấm nút "Từ chối"
   Future<void> _rejectApplication(CandidateCombined item) async {
+    // Lưu context của Scaffold cha trước khi đóng bottom sheet
+    final scaffoldContext = context;
+    
     try {
-      final jobApplicationService = JobApplicationService();
+      // TODO: Implement update job application status API
       // await jobApplicationService.updateJobApplicationStatus(
       //   jobPostId: item.jobApplication.idJobPost,
       //   userId: item.jobApplication.idUser,
       //   newStatus: "rejected",
       // );
       
-       // ignore: use_build_context_synchronously
-       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Cập nhật trạng thái thành công')),
-      );
-      // ignore: use_build_context_synchronously
-      context.pop();
+      // Đóng bottom sheet trước
+      if (mounted) {
+        Navigator.of(context).pop();
+      }
+      
+      // Sau đó mới hiển thị SnackBar từ context của Scaffold cha
+      if (mounted) {
+        ScaffoldMessenger.of(scaffoldContext).showSnackBar(
+          const SnackBar(
+            content: Text('Cập nhật trạng thái thành công'),
+            backgroundColor: Colors.green,
+          ),
+        );
+        // Reload data
+        _loadCandidates();
+      }
     } catch (e) {
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Lỗi khi cập nhật trạng thái: $e')),
-      );
+      // Đóng bottom sheet trước
+      if (mounted) {
+        Navigator.of(context).pop();
+      }
+      
+      // Sau đó mới hiển thị SnackBar từ context của Scaffold cha
+      if (mounted) {
+        ScaffoldMessenger.of(scaffoldContext).showSnackBar(
+          SnackBar(
+            content: Text('Lỗi khi cập nhật trạng thái: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
@@ -479,22 +679,35 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
               ),
               const SizedBox(height: 10),
               Wrap(
-                spacing: 8,
-                runSpacing: 8,
+                spacing: 8.w,
+                runSpacing: 8.h,
                 children: skills.map((skill) {
+                  const recruiterPrimary = Color(0xFF1A237E);
+                  const recruiterSecondary = Color(0xFF283593);
                   return Container(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
                     decoration: BoxDecoration(
-                      color: Colors.blue[50],
-                      borderRadius: BorderRadius.circular(16),
+                      gradient: LinearGradient(
+                        colors: [
+                          recruiterPrimary.withValues(alpha: 0.1),
+                          recruiterSecondary.withValues(alpha: 0.05),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(16.r),
+                      border: Border.all(
+                        color: recruiterPrimary.withValues(alpha: 0.2),
+                        width: 1,
+                      ),
                     ),
                     child: Text(
                       skill,
                       style: TextStyle(
-                        color: Colors.blue[700],
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
+                        color: recruiterPrimary,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   );
@@ -508,16 +721,21 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
                   children: [
                     Expanded(
                       child: ElevatedButton.icon(
-                        onPressed: () => _acceptApplication(item),
-                        icon: const Icon(Icons.check_circle_outline, color: Colors.white),
-                        label: const Text('Chấp nhận'),
+                        onPressed: _hasInterviewSchedule(item) ? null : () => _acceptApplication(item),
+                        icon: Icon(
+                          _hasInterviewSchedule(item) ? Icons.event_busy : Icons.check_circle_outline,
+                          color: _hasInterviewSchedule(item) ? Colors.grey : Colors.white,
+                        ),
+                        label: Text(_hasInterviewSchedule(item) ? 'Đã có lịch' : 'Chấp nhận'),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          foregroundColor: Colors.white,
+                          backgroundColor: _hasInterviewSchedule(item) ? Colors.grey.shade300 : Colors.green,
+                          foregroundColor: _hasInterviewSchedule(item) ? Colors.grey : Colors.white,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
+                          disabledBackgroundColor: Colors.grey.shade300,
+                          disabledForegroundColor: Colors.grey,
                         ),
                       ),
                     ),
@@ -549,31 +767,40 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
 
   // Helper for contact info
   Widget _contactInfoItem(IconData icon, String text) {
+    const recruiterPrimary = Color(0xFF1A237E);
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
+      padding: EdgeInsets.only(bottom: 10.h),
       child: Row(
         children: [
-          Icon(icon, color: Colors.blue, size: 20),
-          const SizedBox(width: 10),
+          Container(
+            padding: EdgeInsets.all(8.w),
+            decoration: BoxDecoration(
+              color: recruiterPrimary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            child: Icon(icon, color: recruiterPrimary, size: 20.sp),
+          ),
+          SizedBox(width: 12.w),
           Expanded(
             child: Text(
               text,
-              style: const TextStyle(fontSize: 15),
+              style: TextStyle(fontSize: 15.sp),
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.content_copy, size: 18),
+            icon: Icon(Icons.content_copy, size: 18.sp),
             onPressed: () async {
               await Clipboard.setData(ClipboardData(text: text));
               // ignore: use_build_context_synchronously
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
+                SnackBar(
                   content: Text('Đã sao chép vào clipboard'),
-                  duration: Duration(seconds: 1),
+                  duration: const Duration(seconds: 1),
+                  backgroundColor: recruiterPrimary,
                 ),
               );
             },
-            color: Colors.grey[600],
+            color: recruiterPrimary,
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(),
           ),
@@ -605,16 +832,25 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    const recruiterPrimary = Color(0xFF1A237E);
+    const recruiterSecondary = Color(0xFF283593);
 
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Colors.grey.shade50,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: const Text(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: recruiterPrimary, size: 20.sp),
+          onPressed: () => context.pop(),
+        ),
+        title: Text(
           'Quản lý ứng viên',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: recruiterPrimary,
+            fontSize: 18.sp,
+          ),
         ),
         systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarColor: Colors.white,
@@ -622,23 +858,19 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.notifications_none, color: Colors.black54),
+            icon: Icon(Icons.notifications_none, color: recruiterPrimary, size: 22.sp),
             onPressed: () {},
           ),
-          // IconButton(
-          //   icon: const Icon(Icons.person_outline, color: Colors.black54),
-          //   onPressed: () {},
-          // ),
         ],
       ),
       body: Column(
         children: [
           Container(
             color: Colors.white,
-            padding: const EdgeInsets.symmetric(vertical: 16),
+            padding: EdgeInsets.symmetric(vertical: 16.h),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Row(
                 children: [
                   // 1) Card "Tất cả"
@@ -646,7 +878,7 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
                     icon: Icons.person,
                     title: 'Tất cả',
                     value: _candidates.length.toString(),
-                    color: _selectedFilter == 'Tất cả' ? Colors.blue : Colors.grey,
+                    color: _selectedFilter == 'Tất cả' ? recruiterPrimary : Colors.grey,
                     onTap: () {
                       setState(() {
                         _selectedFilter = 'Tất cả';
@@ -664,7 +896,7 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
                         .length
                         .toString(),
                     color: _selectedFilter == JobApplicationStatus.pending.name
-                        ? Colors.blue
+                        ? recruiterPrimary
                         : Colors.grey,
                     onTap: () {
                       setState(() {
@@ -673,7 +905,7 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
                     },
                   ),
 
-                  // 3) Card "Đang phỏng vấn"
+                  // 3) Card "Đã xem"
                   _buildStatsCard(
                     icon: Icons.pending_actions,
                     title: 'Đã xem',
@@ -755,7 +987,7 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
 
           Container(
             color: Colors.white,
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
             child: Row(
               children: [
                 Expanded(
@@ -763,27 +995,45 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
                     controller: _searchController,
                     decoration: InputDecoration(
                       hintText: 'Tìm kiếm ứng viên...',
-                      prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                      hintStyle: TextStyle(fontSize: 14.sp, color: Colors.grey.shade500),
+                      prefixIcon: Icon(Icons.search, color: recruiterPrimary, size: 20.sp),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                         borderSide: BorderSide.none,
                       ),
                       filled: true,
-                      fillColor: Colors.grey[100],
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                      fillColor: Colors.grey.shade100,
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
                     ),
+                    style: TextStyle(fontSize: 14.sp),
                   ),
                 ),
-                const SizedBox(width: 10),
+                SizedBox(width: 10.w),
                 // Hiển thị trạng thái filter hiện tại dưới dạng icon
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+                  padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
                   decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(12),
+                    gradient: _selectedFilter == 'Tất cả'
+                        ? LinearGradient(
+                            colors: [recruiterPrimary, recruiterSecondary],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          )
+                        : null,
+                    color: _selectedFilter == 'Tất cả' ? null : Colors.grey.shade100,
+                    borderRadius: BorderRadius.circular(12.r),
+                    boxShadow: _selectedFilter == 'Tất cả'
+                        ? [
+                            BoxShadow(
+                              color: recruiterPrimary.withValues(alpha: 0.3),
+                              blurRadius: 8.r,
+                              offset: Offset(0, 2.h),
+                            ),
+                          ]
+                        : null,
                   ),
                   child: _selectedFilter == 'Tất cả'
-                      ? const Icon(Icons.list, size: 20, color: Colors.blue)
+                      ? Icon(Icons.list, size: 20.sp, color: Colors.white)
                       : _getStatusIcon(_selectedFilter),
                 ),
               ],
@@ -794,7 +1044,11 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
           // Candidate List
           Expanded(
             child: _isLoading
-              ? const Center(child: CircularProgressIndicator())
+              ? Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(recruiterPrimary),
+                  ),
+                )
               : _filteredCandidates.isEmpty
                   ? Center(
                       child: Column(
@@ -802,15 +1056,15 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
                         children: [
                           Icon(
                             Icons.search_off,
-                            size: 56,
-                            color: Colors.grey[400],
+                            size: 56.sp,
+                            color: Colors.grey.shade400,
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: 16.h),
                           Text(
                             'Không tìm thấy ứng viên',
                             style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey[700],
+                              fontSize: 16.sp,
+                              color: Colors.grey.shade700,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -818,7 +1072,7 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
                       ),
                     )
                   : ListView.builder(
-                      padding: const EdgeInsets.all(16),
+                      padding: EdgeInsets.all(16.w),
                       itemCount: _filteredCandidates.length,
                       itemBuilder: (context, index) {
                         final item = _filteredCandidates[index];
@@ -831,16 +1085,21 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
                             : <String>[];
 
                         return Card(
-                          margin: const EdgeInsets.only(bottom: 12),
-                          elevation: 0,
+                          margin: EdgeInsets.only(bottom: 12.h),
+                          elevation: 2,
+                          shadowColor: recruiterPrimary.withValues(alpha: 0.1),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(16.r),
+                            side: BorderSide(
+                              color: Colors.grey.shade200,
+                              width: 1,
+                            ),
                           ),
                           child: InkWell(
                             onTap: () => _showCandidateDetails(item),
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(16.r),
                             child: Padding(
-                              padding: const EdgeInsets.all(16),
+                              padding: EdgeInsets.all(16.w),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -849,15 +1108,31 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      CircleAvatar(
-                                        radius: 28,
-                                        backgroundImage:
-                                            account.avatarUrl != null
-                                                ? ImageUtils.getImageProvider(account.avatarUrl!)
-                                                : null,
-                                        backgroundColor: Colors.grey[200],
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            color: recruiterPrimary.withValues(alpha: 0.2),
+                                            width: 2,
+                                          ),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: recruiterPrimary.withValues(alpha: 0.1),
+                                              blurRadius: 8.r,
+                                              offset: Offset(0, 2.h),
+                                            ),
+                                          ],
+                                        ),
+                                        child: CircleAvatar(
+                                          radius: 28.r,
+                                          backgroundImage:
+                                              account.avatarUrl != null
+                                                  ? ImageUtils.getImageProvider(account.avatarUrl!)
+                                                  : null,
+                                          backgroundColor: Colors.grey.shade200,
+                                        ),
                                       ),
-                                      const SizedBox(width: 16),
+                                      SizedBox(width: 16.w),
 
                                       // Expanded chứa Tên và Trường
                                       Expanded(
@@ -870,20 +1145,19 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
                                               account.userName,
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 fontWeight: FontWeight.bold,
-                                                fontSize: 16,
+                                                fontSize: 16.sp,
+                                                color: recruiterPrimary,
                                               ),
                                             ),
-                                            const SizedBox(height: 4),
+                                            SizedBox(height: 4.h),
                                             // 2) Vị trí
                                             Text(
                                               item.candidate.workPosition ?? " ",
-                                              // maxLines: 1,
-                                              // overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
-                                                color: Colors.grey[700],
-                                                fontSize: 13,
+                                                color: Colors.grey.shade700,
+                                                fontSize: 13.sp,
                                               ),
                                             ),
                                           ],
@@ -945,16 +1219,27 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
                                                       horizontal: 12,
                                                       vertical: 6),
                                               decoration: BoxDecoration(
-                                                color: Colors.blue[50],
+                                                gradient: LinearGradient(
+                                                  colors: [
+                                                    recruiterPrimary.withValues(alpha: 0.1),
+                                                    recruiterSecondary.withValues(alpha: 0.05),
+                                                  ],
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                ),
                                                 borderRadius:
-                                                    BorderRadius.circular(16),
+                                                    BorderRadius.circular(16.r),
+                                                border: Border.all(
+                                                  color: recruiterPrimary.withValues(alpha: 0.2),
+                                                  width: 1,
+                                                ),
                                               ),
                                               child: Text(
                                                 skill,
                                                 style: TextStyle(
-                                                  color: Colors.blue[700],
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500,
+                                                  color: recruiterPrimary,
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w600,
                                                 ),
                                               ),
                                             );
@@ -988,9 +1273,9 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
                                         mainAxisAlignment: MainAxisAlignment.end,
                                         children: [
                                           IconButton(
-                                            icon: const Icon(Icons.email_outlined),
-                                            color: Colors.blue,
-                                            iconSize: 20,
+                                            icon: Icon(Icons.email_outlined),
+                                            color: recruiterPrimary,
+                                            iconSize: 20.sp,
                                             padding: EdgeInsets.zero,
                                             onPressed: () {
                                               final email = item.account.email;
@@ -1046,41 +1331,73 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
     required Color color,
     required VoidCallback onTap,
   }) {
+    const recruiterPrimary = Color(0xFF1A237E);
+    const recruiterSecondary = Color(0xFF283593);
+    
     final bool isActive = color != Colors.grey;
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.only(right: 12),
-        padding: const EdgeInsets.all(16),
-        width: 140,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeOut,
+        margin: EdgeInsets.only(right: 12.w),
+        padding: EdgeInsets.all(16.w),
+        width: 140.w,
         decoration: BoxDecoration(
-          color: isActive ? color.withValues(alpha:0.2) : Colors.grey[100],
-          borderRadius: BorderRadius.circular(16),
+          gradient: isActive && color == recruiterPrimary
+              ? LinearGradient(
+                  colors: [
+                    recruiterPrimary.withValues(alpha: 0.15),
+                    recruiterSecondary.withValues(alpha: 0.1),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                )
+              : null,
+          color: isActive && color != recruiterPrimary
+              ? color.withValues(alpha: 0.2)
+              : isActive
+                  ? null
+                  : Colors.grey.shade100,
+          borderRadius: BorderRadius.circular(16.r),
           border: Border.all(
-            color: isActive ? color : Colors.grey.withValues(alpha:0.2),
+            color: isActive
+                ? color
+                : Colors.grey.withValues(alpha: 0.2),
             width: isActive ? 2 : 1,
           ),
+          boxShadow: isActive
+              ? [
+                  BoxShadow(
+                    color: color.withValues(alpha: 0.2),
+                    blurRadius: 8.r,
+                    offset: Offset(0, 2.h),
+                  ),
+                ]
+              : null,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(icon, color: isActive ? color : Colors.grey, size: 24),
-            const SizedBox(height: 8),
+            Icon(icon, color: isActive ? color : Colors.grey, size: 24.sp),
+            SizedBox(height: 8.h),
             Text(
               value,
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 24.sp,
                 fontWeight: FontWeight.bold,
-                color: isActive ? color : Colors.grey[700],
+                color: isActive ? color : Colors.grey.shade700,
               ),
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: 4.h),
             Text(
               title,
               style: TextStyle(
-                fontSize: 12,
-                color: isActive ? color.withValues(alpha:0.9) : Colors.grey[600],
-                fontWeight: FontWeight.w500,
+                fontSize: 12.sp,
+                color: isActive
+                    ? color.withValues(alpha: 0.9)
+                    : Colors.grey.shade600,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ],

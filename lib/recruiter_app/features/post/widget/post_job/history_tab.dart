@@ -2,19 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:job_connect/features/job/model/job_application_model.dart';
 import 'package:job_connect/features/job/model/job_posting_model.dart';
+import 'package:job_connect/recruiter_app/features/post/screens/hr_detail_post_job_screen.dart';
 
 class HistoryTab extends StatefulWidget {
   final List<JobPostingModel> jobPostings;
   final List<JobApplicationModel> jobApplicationsList;
 
-  /// Callback khi bấm "Đăng lại"
-  final Future<void> Function(String jobId) onRepostJob;
+  /// Callback khi bấm "Đăng lại" - navigate đến edit screen
+  final Future<void> Function(JobPostingModel job) onRepostJob;
+
+  /// Callback khi bấm "Ngưng tuyển"
+  final Future<void> Function(String jobId) onStopRecruiting;
+
+  /// Callback để refresh dữ liệu
+  final Future<void> Function()? onRefresh;
 
   const HistoryTab({
     super.key,
     required this.jobPostings,
     required this.jobApplicationsList,
     required this.onRepostJob, // truyền callback từ ngoài
+    required this.onStopRecruiting, // truyền callback ngưng tuyển
+    this.onRefresh, // Callback để refresh
   });
 
   @override
@@ -31,26 +40,38 @@ class _HistoryTabState extends State<HistoryTab> {
     final theme = Theme.of(context);
 
     final filteredJobs = widget.jobPostings.where((job) {
-      final matchStatus =
-          _selectedFilter == 'Tất cả' || job.postStatus == _selectedFilter;
+      bool matchStatus;
+      if (_selectedFilter == 'Tất cả') {
+        matchStatus = true;
+      } else if (_selectedFilter == 'editing') {
+        // Hiển thị cả editing và waiting khi chọn "Chỉnh sửa"
+        matchStatus = job.postStatus == 'editing' || job.postStatus == 'waiting';
+      } else {
+        matchStatus = job.postStatus == _selectedFilter;
+      }
       final matchSearch =
-          job.title!.toLowerCase().contains(_searchQuery.toLowerCase());
+          job.title.toLowerCase().contains(_searchQuery.toLowerCase());
       return matchStatus && matchSearch;
     }).toList();
 
-    return Container(
-      color: theme.colorScheme.background,
-      child: SingleChildScrollView(
-        padding: EdgeInsets.only(bottom: 16.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _buildSearchAndFilter(theme),
-            SizedBox(height: 12.h),
-            _buildFilterStats(theme),
-            SizedBox(height: 12.h),
-            _buildJobList(filteredJobs, theme),
-          ],
+    return RefreshIndicator(
+      onRefresh: widget.onRefresh ?? () async {},
+      color: theme.primaryColor,
+      child: Container(
+        color: theme.colorScheme.background,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(), // Cho phép pull-to-refresh
+          padding: EdgeInsets.only(bottom: 16.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _buildSearchAndFilter(theme),
+              SizedBox(height: 12.h),
+              _buildFilterStats(theme),
+              SizedBox(height: 12.h),
+              _buildJobList(filteredJobs, theme),
+            ],
+          ),
         ),
       ),
     );
@@ -152,15 +173,15 @@ class _HistoryTabState extends State<HistoryTab> {
           ),
           SizedBox(width: 12.w),
           _buildHistoryFilterCard(
-            icon: Icons.hourglass_empty,
-            title: "Chờ xác nhận",
+            icon: Icons.edit_outlined,
+            title: "Chỉnh sửa",
             count: widget.jobPostings
-                .where((job) => job.postStatus == 'waiting')
+                .where((job) => job.postStatus == 'editing' || job.postStatus == 'waiting')
                 .length
                 .toString(),
             color: Colors.orange,
-            selected: _selectedFilter == 'waiting',
-            onTap: () => setState(() => _selectedFilter = 'waiting'),
+            selected: _selectedFilter == 'editing' || _selectedFilter == 'waiting',
+            onTap: () => setState(() => _selectedFilter = 'editing'),
           ),
         ],
       ),
@@ -195,7 +216,7 @@ class _HistoryTabState extends State<HistoryTab> {
       onTap: onTap,
       borderRadius: BorderRadius.circular(12.r),
       child: Container(
-        width: 100.w,
+        width: 120.w,
         padding: EdgeInsets.all(12.w),
         decoration: BoxDecoration(
           color: selected ? color.withOpacity(0.2) : color.withOpacity(0.1),
@@ -208,7 +229,7 @@ class _HistoryTabState extends State<HistoryTab> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: color, size: 24.sp),
+            Icon(icon, color: color, size: 22.sp),
             SizedBox(height: 4.h),
             Text(
               count,
@@ -227,6 +248,63 @@ class _HistoryTabState extends State<HistoryTab> {
     );
   }
 
+  /// Navigate đến màn hình chi tiết
+  void _navigateToDetail(JobPostingModel job) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => HrDetailPostJobScreen(jobPosting: job),
+      ),
+    );
+  }
+
+  /// Xử lý ngưng tuyển
+  Future<void> _handleStopRecruiting(String jobId) async {
+    // Hiển thị dialog xác nhận
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Xác nhận ngưng tuyển'),
+        content: const Text('Bạn có chắc chắn muốn ngưng tuyển dụng cho tin đăng này?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Hủy'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Ngưng tuyển'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      try {
+        await widget.onStopRecruiting(jobId);
+        if (!mounted) return;
+        // Refresh dữ liệu sau khi ngưng tuyển
+        await widget.onRefresh?.call();
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Đã ngưng tuyển dụng thành công'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } catch (e) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Lỗi: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
   Widget _buildHistoryJobCard(
       JobPostingModel job, int applicantCount, ThemeData theme) {
     Color statusColor;
@@ -240,136 +318,147 @@ class _HistoryTabState extends State<HistoryTab> {
         statusColor = Colors.grey;
         statusText = "Hết hạn";
         break;
+      case 'editing':
+        statusColor = Colors.red;
+        statusText = "Cần chỉnh sửa";
+        break;
       default:
         statusColor = Colors.orange;
         statusText = "Chờ xác nhận";
     }
 
-    return Container(
-      margin: EdgeInsets.only(bottom: 16.h),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(12.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(16.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    job.title ?? '',
-                    style: theme.textTheme.bodyMedium
-                        ?.copyWith(fontWeight: FontWeight.bold, fontSize: 16.sp),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
-                  decoration: BoxDecoration(
-                    color: statusColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(20.r),
-                  ),
-                  child: Text(
-                    statusText,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12.sp,
-                        color: statusColor),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 12.h),
-            // Info
-            Row(
-              children: [
-                Icon(Icons.calendar_today_outlined,
-                    size: 14.sp, color: Colors.grey.shade600),
-                SizedBox(width: 4.w),
-                Text(
-                  'Đăng ngày:',
-                  style: theme.textTheme.bodySmall
-                      ?.copyWith(fontSize: 13.sp, color: Colors.grey.shade600),
-                ),
-                SizedBox(width: 16.w),
-                Icon(Icons.person_outline,
-                    size: 14.sp, color: Colors.grey.shade600),
-                SizedBox(width: 4.w),
-                Text(
-                  "$applicantCount ứng viên",
-                  style: theme.textTheme.bodySmall
-                      ?.copyWith(fontSize: 13.sp, color: Colors.grey.shade600),
-                ),
-              ],
-            ),
-            SizedBox(height: 16.h),
-            // Actions
-            Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: () {
-                      // Navigate to detail page
-                    },
-                    icon: Icon(Icons.visibility_outlined, size: 16.sp),
-                    label: Text('Chi tiết'),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: theme.primaryColor,
-                      side: BorderSide(color: theme.primaryColor),
-                      padding: EdgeInsets.symmetric(vertical: 10.h),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 8.w),
-                Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: () async {
-                      try {
-                        await widget.onRepostJob(job.idJobPost!);
-                        if (!mounted) return;
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content:
-                                  Text('Cập nhật trạng thái thành công')),
-                        );
-                      } catch (e) {
-                        if (!mounted) return;
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Lỗi: ${e.toString()}')),
-                        );
-                      }
-                    },
-                    icon: Icon(Icons.refresh, size: 16.sp),
-                    label: Text('Đăng lại'),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: job.postStatus == 'closed'
-                          ? Colors.amber.shade800
-                          : Colors.grey.shade400,
-                      side: BorderSide(
-                        color: job.postStatus == 'closed'
-                            ? Colors.amber.shade800
-                            : Colors.grey.shade400,
-                      ),
-                      padding: EdgeInsets.symmetric(vertical: 10.h),
-                    ),
-                  ),
-                ),
-              ],
+    final isOpen = job.postStatus == 'open';
+
+    return InkWell(
+      onTap: () => _navigateToDetail(job),
+      borderRadius: BorderRadius.circular(12.r),
+      child: Container(
+        margin: EdgeInsets.only(bottom: 16.h),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surface,
+          borderRadius: BorderRadius.circular(12.r),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 2),
             ),
           ],
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(16.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      job.title,
+                      style: theme.textTheme.bodyMedium
+                          ?.copyWith(fontWeight: FontWeight.bold, fontSize: 16.sp),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+                    decoration: BoxDecoration(
+                      color: statusColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(20.r),
+                    ),
+                    child: Text(
+                      statusText,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12.sp,
+                          color: statusColor),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 12.h),
+              // Info
+              Row(
+                children: [
+                  Icon(Icons.calendar_today_outlined,
+                      size: 16.sp, color: Colors.grey.shade600),
+                  SizedBox(width: 4.w),
+                  Text(
+                    'Đăng ngày:',
+                    style: theme.textTheme.bodySmall
+                        ?.copyWith(fontSize: 13.sp, color: Colors.grey.shade600),
+                  ),
+                  SizedBox(width: 16.w),
+                  Icon(Icons.person_outline,
+                      size: 16.sp, color: Colors.grey.shade600),
+                  SizedBox(width: 4.w),
+                  Text(
+                    "$applicantCount ứng viên",
+                    style: theme.textTheme.bodySmall
+                        ?.copyWith(fontSize: 13.sp, color: Colors.grey.shade600),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16.h),
+              // Actions
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: () => _navigateToDetail(job),
+                      icon: Icon(Icons.visibility_outlined, size: 18.sp),
+                      label: Text('Chi tiết'),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: theme.primaryColor,
+                        side: BorderSide(color: theme.primaryColor),
+                        padding: EdgeInsets.symmetric(vertical: 10.h),
+                      ),
+                    ),
+                  ),
+                  if (isOpen) ...[
+                    SizedBox(width: 8.w),
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: () => _handleStopRecruiting(job.idJobPost),
+                        icon: Icon(Icons.stop_circle_outlined, size: 18.sp),
+                        label: Text('Ngưng tuyển'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.red,
+                          side: BorderSide(color: Colors.red),
+                          padding: EdgeInsets.symmetric(vertical: 10.h),
+                        ),
+                      ),
+                    ),
+                  ] else ...[
+                    SizedBox(width: 8.w),
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: job.postStatus == 'closed'
+                            ? () => widget.onRepostJob(job)
+                            : null,
+                        icon: Icon(Icons.refresh, size: 18.sp),
+                        label: Text('Đăng lại'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: job.postStatus == 'closed'
+                              ? Colors.amber.shade800
+                              : Colors.grey.shade400,
+                          side: BorderSide(
+                            color: job.postStatus == 'closed'
+                                ? Colors.amber.shade800
+                                : Colors.grey.shade400,
+                          ),
+                          padding: EdgeInsets.symmetric(vertical: 10.h),
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

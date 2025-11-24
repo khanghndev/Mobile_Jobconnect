@@ -192,6 +192,9 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
+    final isRecruiter = (widget.role ?? UserRole.candidate.name)
+        .toLowerCase() == UserRole.recruiter.name.toLowerCase();
+    
     return Consumer<AuthViewModel>(
       builder: (context, authVM, child) {
         return OverlayLoading(
@@ -200,38 +203,86 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
             body: Container(
               width: 1.sw,
               height: 1.sh,
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Color(0xFF0D47A1),
-                    Color(0xFF1976D2),
-                    Color(0xFF42A5F5),
-                  ],
-                ),
+              decoration: BoxDecoration(
+                gradient: isRecruiter
+                    ? const LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Color(0xFF1A237E), // Deep indigo
+                          Color(0xFF283593), // Indigo 800
+                          Color(0xFF3949AB), // Indigo 700
+                          Color(0xFF5C6BC0), // Indigo 600
+                        ],
+                        stops: [0.0, 0.3, 0.7, 1.0],
+                      )
+                    : const LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Color(0xFF0D47A1),
+                          Color(0xFF1976D2),
+                          Color(0xFF42A5F5),
+                        ],
+                      ),
               ),
               child: UnfocusWidget(
                 child: SafeArea(
                   child: Stack(
                     children: [
+                      // Background decorative elements for recruiter
+                      if (isRecruiter)
+                        Positioned(
+                          top: -50.h,
+                          right: -50.w,
+                          child: Container(
+                            width: 200.w,
+                            height: 200.h,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white.withValues(alpha: 0.05),
+                            ),
+                          ),
+                        ),
+                      if (isRecruiter)
+                        Positioned(
+                          bottom: -80.h,
+                          left: -80.w,
+                          child: Container(
+                            width: 250.w,
+                            height: 250.h,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white.withValues(alpha: 0.03),
+                            ),
+                          ),
+                        ),
+                      
                       FadeTransition(
                         opacity: _fadeInAnimation,
                         child: Center(
                           child: SingleChildScrollView(
                             child: Padding(
-                              padding: EdgeInsets.all(24.w),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 24.w,
+                                vertical: 32.h,
+                              ),
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color:
-                                      BackgroundColors.backgroundDefaultPrimary.withValues(alpha:0.9),
-                                  borderRadius: BorderRadius.circular(20.r),
+                                  color: isRecruiter
+                                      ? Colors.white.withValues(alpha: 0.98)
+                                      : BackgroundColors.backgroundDefaultPrimary
+                                          .withValues(alpha: 0.9),
+                                  borderRadius: BorderRadius.circular(isRecruiter ? 28.r : 20.r),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: BackgroundColors.backgroundDefaultPrimarySub
-                                          .withValues(alpha:0.2),
-                                      blurRadius: 20.r,
-                                      offset: Offset(0, 10.h),
+                                      color: isRecruiter
+                                          ? const Color(0xFF1A237E).withValues(alpha: 0.3)
+                                          : BackgroundColors.backgroundDefaultPrimarySub
+                                              .withValues(alpha: 0.2),
+                                      blurRadius: isRecruiter ? 30.r : 20.r,
+                                      offset: Offset(0, isRecruiter ? 15.h : 10.h),
+                                      spreadRadius: isRecruiter ? 2.r : 0,
                                     ),
                                   ],
                                 ),
@@ -241,6 +292,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                       FadeTransition(opacity: anim, child: child),
                                   child: _showLoginForm
                                       ? LoginForm(
+                                          key: const ValueKey('login_form'),
                                           formKey: _formKey,
                                           emailController: _emailController,
                                           passwordController: _passwordController,
@@ -249,8 +301,10 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                           onBack: () =>
                                               setState(() => _showLoginForm = false),
                                           isRemmeber: false,
+                                          role: widget.role,
                                         )
                                       : SocialLoginView(
+                                          key: const ValueKey('social_login'),
                                           role: widget.role ??
                                               StringUtils.capitalize(
                                                   UserRole.candidate.name),
@@ -266,19 +320,29 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                         ),
                       ),
                       Positioned(
-                        top: 12.h,
-                        left: 12.w,
+                        top: 16.h,
+                        left: 16.w,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(50.r),
                           child: BackdropFilter(
                             filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                             child: Container(
-                              color: Colors.black.withValues(alpha:0.25),
+                              padding: EdgeInsets.all(4.w),
+                              decoration: BoxDecoration(
+                                color: isRecruiter
+                                    ? Colors.white.withValues(alpha: 0.2)
+                                    : Colors.black.withValues(alpha: 0.25),
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.white.withValues(alpha: 0.3),
+                                  width: 1.w,
+                                ),
+                              ),
                               child: IconButton(
                                 icon: Icon(
                                   Icons.arrow_back_ios_new_rounded,
                                   color: Colors.white,
-                                  size: 22.sp,
+                                  size: 20.sp,
                                 ),
                                 onPressed: () {
                                   if (_showLoginForm) {

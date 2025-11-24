@@ -16,11 +16,15 @@ import 'package:job_connect/recruiter_app/features/interview/view_model/intervie
 class HrCreateCalendarInterviewSchedule extends StatefulWidget {
   final List<JobPostingModel> jobs;
   final List<UserModel> candidateList;
+  final String? preSelectedJobId;
+  final String? preSelectedCandidateId;
 
   const HrCreateCalendarInterviewSchedule({
     super.key,
     required this.jobs,
     required this.candidateList,
+    this.preSelectedJobId,
+    this.preSelectedCandidateId,
   });
 
   @override
@@ -51,6 +55,15 @@ class _HrCreateCalendarInterviewScheduleState
   void initState() {
     super.initState();
     interviewerController.text = "HR"; // mặc định
+    
+    // Pre-select job và candidate nếu có
+    if (widget.preSelectedJobId != null) {
+      selectedJobId = widget.preSelectedJobId;
+    }
+    if (widget.preSelectedCandidateId != null) {
+      selectedCandidateId = widget.preSelectedCandidateId;
+    }
+    
     WidgetsBinding.instance.addPostFrameCallback((_) {
       vm = context.read<InterviewScheduleViewModel>();
     });
@@ -114,13 +127,20 @@ class _HrCreateCalendarInterviewScheduleState
 
     await vm.createSchedule(model);
 
-    if (vm.isSuccess && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
+    // Kiểm tra mounted trước khi sử dụng Navigator và ScaffoldMessenger
+    if (!mounted) return;
+
+    // Lấy ScaffoldMessenger và Navigator từ context mới sau khi kiểm tra mounted
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    final navigator = Navigator.of(context);
+
+    if (vm.isSuccess) {
+      scaffoldMessenger.showSnackBar(
         const SnackBar(content: Text("Tạo lịch phỏng vấn thành công!"), backgroundColor: Colors.green),
       );
-      Navigator.pop(context, true);
-    } else if (vm.errorMessage != null && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
+      navigator.pop(true);
+    } else if (vm.errorMessage != null) {
+      scaffoldMessenger.showSnackBar(
         SnackBar(content: Text(vm.errorMessage!), backgroundColor: Colors.red),
       );
     }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:job_connect/config/widgets/button_primary_gradient.dart';
 import 'package:job_connect/features/job/model/job_application_model.dart';
 import 'package:job_connect/recruiter_app/features/hr/screen/hr_pending_application_screen.dart';
 
@@ -18,6 +17,7 @@ class WelcomeSectionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final now = DateTime.now();
+    const recruiterPrimary = Color(0xFF1A237E);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,33 +32,69 @@ class WelcomeSectionWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Xin chào,\n$userName',
-                    style: textTheme.titleLarge?.copyWith(
-                      fontSize: 20.sp,
+                    'Xin chào,',
+                    style: textTheme.bodyMedium?.copyWith(
+                      fontSize: 15.sp,
+                      color: const Color(0xFF6B7280),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    userName,
+                    style: textTheme.headlineMedium?.copyWith(
+                      fontSize: 24.sp,
                       fontWeight: FontWeight.bold,
+                      color: recruiterPrimary,
+                      letterSpacing: 0.5,
                     ),
                   ),
                 ],
               ),
             ),
 
-            Padding(
-              padding: EdgeInsets.only(top: 4.h),
-              child: OutlinedButton.icon(
-                icon: Icon(
-                  Icons.calendar_month,
-                  size: 22.sp,
+            Container(
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF1A237E), Color(0xFF283593)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
-                label: Text(
-                  "${now.day}/${now.month}/${now.year}",
-                  style: textTheme.bodyMedium?.copyWith(fontSize: 14.sp),
-                ),
-                onPressed: () {},
-                style: OutlinedButton.styleFrom(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.r),
+                borderRadius: BorderRadius.circular(12.r),
+                boxShadow: [
+                  BoxShadow(
+                    color: recruiterPrimary.withValues(alpha: 0.3),
+                    blurRadius: 8.r,
+                    offset: Offset(0, 4.h),
+                  ),
+                ],
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {},
+                  borderRadius: BorderRadius.circular(12.r),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.calendar_today_rounded,
+                          size: 18.sp,
+                          color: Colors.white,
+                        ),
+                        SizedBox(width: 6.w),
+                        Text(
+                          "${now.day}/${now.month}/${now.year}",
+                          style: textTheme.bodyMedium?.copyWith(
+                            fontSize: 13.sp,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -66,27 +102,46 @@ class WelcomeSectionWidget extends StatelessWidget {
           ],
         ),
 
-        SizedBox(height: 8.h),
+        SizedBox(height: 12.h),
 
         // Subtitle
         Text(
           'Chúc bạn một ngày làm việc hiệu quả!',
           style: textTheme.bodyMedium?.copyWith(
             fontSize: 14.sp,
-            color: Colors.black54,
+            color: const Color(0xFF6B7280),
+            fontWeight: FontWeight.w400,
           ),
         ),
-        SizedBox(height: 16.h),
+        SizedBox(height: 20.h),
 
-        // PENDING APPLICATION CARD
-        Card(
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16.r),
+        // PENDING APPLICATION CARD với gradient và shadow đẹp
+        Container(
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xFFE8F0FE),
+                Color(0xFFF0F7FF),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(20.r),
+            boxShadow: [
+              BoxShadow(
+                color: recruiterPrimary.withValues(alpha: 0.1),
+                blurRadius: 20.r,
+                offset: Offset(0, 8.h),
+                spreadRadius: 2.r,
+              ),
+            ],
+            border: Border.all(
+              color: recruiterPrimary.withValues(alpha: 0.1),
+              width: 1.w,
+            ),
           ),
-          color: const Color(0xFFE9F3FF),
           child: Padding(
-            padding: EdgeInsets.all(16.r),
+            padding: EdgeInsets.all(20.r),
             child: Row(
               children: [
                 // LEFT CONTENT
@@ -94,47 +149,123 @@ class WelcomeSectionWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(8.r),
+                            decoration: BoxDecoration(
+                              color: recruiterPrimary.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                            child: Icon(
+                              Icons.pending_actions_rounded,
+                              size: 20.sp,
+                              color: recruiterPrimary,
+                            ),
+                          ),
+                          SizedBox(width: 10.w),
+                          Text(
+                            'Cần phê duyệt',
+                            style: textTheme.titleMedium?.copyWith(
+                              fontSize: 17.sp,
+                              fontWeight: FontWeight.bold,
+                              color: recruiterPrimary,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 12.h),
                       Text(
-                        'Cần phê duyệt',
-                        style: textTheme.titleMedium?.copyWith(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.bold,
+                        '${pendingApplications.length} hồ sơ ứng viên',
+                        style: textTheme.bodyLarge?.copyWith(
+                          fontSize: 15.sp,
+                          color: const Color(0xFF4B5563),
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                       SizedBox(height: 4.h),
                       Text(
-                        '${pendingApplications.length} hồ sơ ứng viên chờ đánh giá',
+                        'đang chờ đánh giá',
                         style: textTheme.bodyMedium?.copyWith(
-                          fontSize: 14.sp,
-                          color: Colors.black54,
+                          fontSize: 13.sp,
+                          color: const Color(0xFF6B7280),
                         ),
                       ),
-                      SizedBox(height: 12.h),
-                      Padding(
-                        padding: EdgeInsets.all(16.r),
-                        child: ButtonPrimaryGradient(
-                          text: 'Xem ngay', 
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => HrPendingApplicationScreen(
-                                  pendingApplications: pendingApplications,
+                      SizedBox(height: 16.h),
+                      Container(
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFF1A237E), Color(0xFF283593)],
+                          ),
+                          borderRadius: BorderRadius.circular(12.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: recruiterPrimary.withValues(alpha: 0.3),
+                              blurRadius: 8.r,
+                              offset: Offset(0, 4.h),
+                            ),
+                          ],
+                        ),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => HrPendingApplicationScreen(
+                                    pendingApplications: pendingApplications,
+                                  ),
                                 ),
+                              );
+                            },
+                            borderRadius: BorderRadius.circular(12.r),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 20.w,
+                                vertical: 12.h,
                               ),
-                            );
-                          },
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    'Xem ngay',
+                                    style: textTheme.bodyMedium?.copyWith(
+                                      fontSize: 14.sp,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  SizedBox(width: 6.w),
+                                  Icon(
+                                    Icons.arrow_forward_rounded,
+                                    size: 18.sp,
+                                    color: Colors.white,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
 
+                SizedBox(width: 16.w),
+
                 // RIGHT ICON
-                Icon(
-                  Icons.article_outlined,
-                  size: 60.sp,
-                  color: const Color(0xFF3366FF).withValues(alpha: 0.7),
+                Container(
+                  padding: EdgeInsets.all(16.r),
+                  decoration: BoxDecoration(
+                    color: recruiterPrimary.withValues(alpha: 0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.article_outlined,
+                    size: 48.sp,
+                    color: recruiterPrimary,
+                  ),
                 ),
               ],
             ),

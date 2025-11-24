@@ -20,49 +20,101 @@ class SpecialNavBarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(18.r),
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 10.w),
-        width: 64.w,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              height: 42.h,
-              width: 42.w,
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                    colors: [Color(0xFF6A82FB), Color(0xFFFC5C7D)]),
-                borderRadius: BorderRadius.circular(14.r),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFFFC5C7D).withValues(alpha: 0.25),
-                    blurRadius: 8.r,
-                    offset: Offset(0, 3.h),
+    const recruiterPrimary = Color(0xFF1A237E);
+    const recruiterSecondary = Color(0xFF283593);
+    
+    return Expanded(
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16.r),
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 4.w),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeOutCubic,
+                height: 40.h,
+                width: 40.w,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: isSelected
+                        ? [
+                            recruiterPrimary,
+                            recruiterSecondary,
+                            recruiterPrimary.withValues(alpha: 0.8),
+                          ]
+                        : [
+                            recruiterPrimary.withValues(alpha: 0.6),
+                            recruiterSecondary.withValues(alpha: 0.6),
+                          ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
-                ],
-              ),
-              child: Center(
-                child: Icon(
-                  isSelected ? iconFilled : iconOutlined,
-                  color: Colors.white,
-                  size: 22.sp,
+                  borderRadius: BorderRadius.circular(14.r),
+                  boxShadow: [
+                    BoxShadow(
+                      color: recruiterPrimary.withValues(alpha: isSelected ? 0.35 : 0.2),
+                      blurRadius: isSelected ? 14.r : 8.r,
+                      offset: Offset(0, isSelected ? 5.h : 3.h),
+                      spreadRadius: 0,
+                    ),
+                    if (isSelected)
+                      BoxShadow(
+                        color: recruiterPrimary.withValues(alpha: 0.2),
+                        blurRadius: 6.r,
+                        offset: Offset(0, 2.h),
+                        spreadRadius: 0,
+                      ),
+                  ],
+                ),
+                child: Center(
+                  child: Icon(
+                    isSelected ? iconFilled : iconOutlined,
+                    color: Colors.white,
+                    size: isSelected ? 22.sp : 20.sp,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 4.h),
-            Text(
-              label.length > 10 ? '${label.substring(0, 9)}...' : label,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 11.sp,
-                fontWeight: FontWeight.w500,
-                color: const Color(0xFFFC5C7D),
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: SlideTransition(
+                      position: Tween<Offset>(
+                        begin: const Offset(0, 0.3),
+                        end: Offset.zero,
+                      ).animate(CurvedAnimation(
+                        parent: animation,
+                        curve: Curves.easeOut,
+                      )),
+                      child: child,
+                    ),
+                  );
+                },
+                child: isSelected
+                    ? Padding(
+                        key: ValueKey(label),
+                        padding: EdgeInsets.only(top: 4.h),
+                        child: Text(
+                          label,
+                          style: TextStyle(
+                            fontSize: 11.sp,
+                            fontWeight: FontWeight.bold,
+                            color: recruiterPrimary,
+                            letterSpacing: 0.3,
+                            height: 1.2,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      )
+                    : SizedBox(key: ValueKey('empty'), height: 0.h),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

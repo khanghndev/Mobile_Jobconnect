@@ -20,53 +20,88 @@ class ProfileAnalyticsCard extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.all(18.w),
       decoration: BoxDecoration(
-        color: theme.cardColor,
-        borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: color.withValues(alpha: 0.1)),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            color.withValues(alpha: 0.08),
+            color.withValues(alpha: 0.03),
+            Colors.white,
+          ],
+          stops: const [0.0, 0.5, 1.0],
+        ),
+        borderRadius: BorderRadius.circular(18.r),
+        border: Border.all(
+          color: color.withValues(alpha: 0.2),
+          width: 1.5.w,
+        ),
         boxShadow: [
           BoxShadow(
+            color: color.withValues(alpha: 0.15),
+            blurRadius: 12.r,
+            offset: Offset(0, 6.h),
+            spreadRadius: 0,
+          ),
+          BoxShadow(
             color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 10.r,
-            offset: Offset(0, 4.h),
+            blurRadius: 8.r,
+            offset: Offset(0, 2.h),
+            spreadRadius: 0,
           ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            title,
-            style: theme.textTheme.bodySmall?.copyWith(
-              fontWeight: FontWeight.bold,
-              fontSize: 12.sp,
-              color: theme.hintColor,
-            ),
-          ),
-          SizedBox(height: 10.h),
           Row(
             children: [
               Container(
-                padding: EdgeInsets.all(8.w),
+                padding: EdgeInsets.all(10.r),
                 decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(12.r),
+                  gradient: LinearGradient(
+                    colors: [
+                      color,
+                      color.withValues(alpha: 0.8),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(14.r),
+                  boxShadow: [
+                    BoxShadow(
+                      color: color.withValues(alpha: 0.3),
+                      blurRadius: 8.r,
+                      offset: Offset(0, 3.h),
+                    ),
+                  ],
                 ),
-                child: Icon(icon, color: color, size: 24.sp),
+                child: Icon(icon, color: Colors.white, size: 22.sp),
               ),
               SizedBox(width: 12.w),
               Expanded(
                 child: Text(
-                  value,
-                  style: theme.textTheme.titleMedium?.copyWith(
+                  title,
+                  style: theme.textTheme.bodySmall?.copyWith(
                     fontWeight: FontWeight.bold,
-                    fontSize: 20.sp,
-                    color: color,
+                    fontSize: 12.sp,
+                    color: const Color(0xFF64748B),
+                    letterSpacing: 0.2,
                   ),
                 ),
               ),
             ],
+          ),
+          SizedBox(height: 12.h),
+          Text(
+            value,
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+              fontSize: 28.sp,
+              color: color,
+              letterSpacing: 0.3,
+              height: 1.1,
+            ),
           ),
         ],
       ),

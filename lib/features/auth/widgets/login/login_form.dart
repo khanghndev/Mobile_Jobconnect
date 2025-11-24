@@ -37,76 +37,99 @@ class LoginForm extends StatelessWidget {
     final passwordVisible = ValueNotifier<bool>(false);
     final rememberMe = ValueNotifier<bool>(false);
     final theme = Theme.of(context);
+    final isRecruiter = (role ?? UserRole.candidate.name)
+        .toLowerCase() == UserRole.recruiter.name.toLowerCase();
+    
     return Padding(
-      padding: EdgeInsets.all(24.w),
+      padding: EdgeInsets.all(isRecruiter ? 28.w : 24.w),
       child: Form(
         key: formKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Align(
-            //   alignment: Alignment.topLeft,
-            //   child: IconButton(
-            //     icon: Icon(
-            //       getAdaptiveBackIcon(context),
-            //       color: IconColors.iconBrandPrimary,
-            //       size: 22.sp,
-            //     ),
-            //     onPressed: onBack,
-            //   ),
-            // ),
-
-            SizedBox(height: 8.h,),
-            // Logo   
+            // Logo với style chuyên nghiệp cho recruiter
             Container(
               decoration: BoxDecoration(
-                color: BackgroundColors.backgroundDefaultPrimary,
-                borderRadius: BorderRadius.circular(130.r),
+                color: isRecruiter
+                    ? const Color(0xFF1A237E).withValues(alpha: 0.1)
+                    : BackgroundColors.backgroundDefaultPrimary,
+                borderRadius: BorderRadius.circular(isRecruiter ? 24.r : 130.r),
                 boxShadow: [
                   BoxShadow(
-                    color: BackgroundColors.backgroundDefaultPrimarySub.withValues(alpha: 0.1),
-                    blurRadius: 10.r,
-                    offset: Offset(0, 5.h),
+                    color: isRecruiter
+                        ? const Color(0xFF1A237E).withValues(alpha: 0.2)
+                        : BackgroundColors.backgroundDefaultPrimarySub.withValues(alpha: 0.1),
+                    blurRadius: isRecruiter ? 16.r : 10.r,
+                    offset: Offset(0, isRecruiter ? 6.h : 5.h),
+                    spreadRadius: isRecruiter ? 2.r : 0,
                   ),
                 ],
               ),
+              padding: isRecruiter ? EdgeInsets.all(12.w) : EdgeInsets.zero,
               child: ClipOval(
                 child: Image.asset(
                   AppImages.logoApp,
-                  width: 120.w,
-                  height: 120.w,
+                  width: isRecruiter ? 85.w : 100.w,
+                  height: isRecruiter ? 85.w : 100.w,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) => Icon(
-                    FontAwesomeIcons.userTie,
-                    size: 60.sp,
-                    color: IconColors.iconBrandPrimary,
+                    isRecruiter ? FontAwesomeIcons.briefcase : FontAwesomeIcons.userTie,
+                    size: isRecruiter ? 42.sp : 50.sp,
+                    color: isRecruiter
+                        ? const Color(0xFF1A237E)
+                        : IconColors.iconBrandPrimary,
                   ),
                 ),
               ),
             ),
 
-            SizedBox(height: 16.h),
+            SizedBox(height: isRecruiter ? 18.h : 16.h),
+            
+            // Title với theme
             Text(
-              'Đăng nhập',
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                fontSize: 26.sp,
+              isRecruiter ? 'Đăng nhập Nhà Tuyển Dụng' : 'Đăng nhập',
+              style: theme.textTheme.headlineMedium?.copyWith(
+                fontSize: isRecruiter ? 22.sp : 24.sp,
                 fontWeight: FontWeight.bold,
-                color: TextColors.textBrandPrimary,
+                color: isRecruiter
+                    ? const Color(0xFF1A237E)
+                    : TextColors.textBrandPrimary,
+                letterSpacing: isRecruiter ? 0.5 : 0,
               ),
+              textAlign: TextAlign.center,
             ),
+            
+            if (isRecruiter) ...[
+              SizedBox(height: 6.h),
+              Text(
+                'Quản lý và tuyển dụng nhân tài hiệu quả',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontSize: 13.sp,
+                  color: TextColors.textDefaultSecondary,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
 
-            SizedBox(height: 20.h),
+            SizedBox(height: isRecruiter ? 24.h : 20.h),
 
             // Email field
             CustomTextFieldWithLabel(
               controller: emailController,
               label: 'Email',
-              hintText: 'Nhập email',
-              fillColor: theme.colorScheme.primary.withValues(alpha: 0.05),
-              prefixIconColor: theme.colorScheme.primary,
-              borderColor: theme.colorScheme.primary.withValues(alpha: 0.3),
-              borderRadius: 16.r,
-              icon: Icons.email,
+              hintText: isRecruiter ? 'Nhập email công ty' : 'Nhập email',
+              fillColor: isRecruiter
+                  ? const Color(0xFF1A237E).withValues(alpha: 0.05)
+                  : theme.colorScheme.primary.withValues(alpha: 0.05),
+              prefixIconColor: isRecruiter
+                  ? const Color(0xFF1A237E)
+                  : theme.colorScheme.primary,
+              borderColor: isRecruiter
+                  ? const Color(0xFF1A237E).withValues(alpha: 0.3)
+                  : theme.colorScheme.primary.withValues(alpha: 0.3),
+              borderRadius: 14.r,
+              icon: Icons.email_outlined,
+              iconSize: 20.sp,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Vui lòng nhập email';
@@ -132,16 +155,25 @@ class LoginForm extends StatelessWidget {
                     }
                     return null;
                   },
-                  fillColor: theme.colorScheme.primary.withValues(alpha: 0.05),
-                  prefixIconColor: theme.colorScheme.primary,
-                  suffixIconColor: theme.colorScheme.primary,
-                  borderColor: theme.colorScheme.primary.withValues(alpha: 0.3),
-                  borderRadius: 16.r,
+                  fillColor: isRecruiter
+                      ? const Color(0xFF1A237E).withValues(alpha: 0.05)
+                      : theme.colorScheme.primary.withValues(alpha: 0.05),
+                  prefixIconColor: isRecruiter
+                      ? const Color(0xFF1A237E)
+                      : theme.colorScheme.primary,
+                  suffixIconColor: isRecruiter
+                      ? const Color(0xFF1A237E)
+                      : theme.colorScheme.primary,
+                  borderColor: isRecruiter
+                      ? const Color(0xFF1A237E).withValues(alpha: 0.3)
+                      : theme.colorScheme.primary.withValues(alpha: 0.3),
+                  borderRadius: 14.r,
+                  iconSize: 20.sp,
                 );
               },
             ),
 
-            SizedBox(height: 8.h),
+            SizedBox(height: 10.h),
 
             // Remember + Forgot password
             Row(
@@ -152,14 +184,16 @@ class LoginForm extends StatelessWidget {
                     builder: (_, checked, __) {
                       return Checkbox(
                         value: checked,
-                        activeColor: const Color(0xFF1976D2),
+                        activeColor: isRecruiter
+                            ? const Color(0xFF1A237E)
+                            : const Color(0xFF1976D2),
                         onChanged: (value) => rememberMe.value = value ?? false,
                       );
                     },
                   ),
                   Text(
                     'Nhớ tài khoản',
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    style: theme.textTheme.bodySmall?.copyWith(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
                     ),
@@ -179,10 +213,12 @@ class LoginForm extends StatelessWidget {
                     },
                     child: Text(
                       'Quên mật khẩu?',
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      style: theme.textTheme.bodyMedium?.copyWith(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w600,
-                        color: TextColors.textBrandPrimary,
+                        color: isRecruiter
+                            ? const Color(0xFF1A237E)
+                            : TextColors.textBrandPrimary,
                       ),
                     ),
                   ),
@@ -190,43 +226,44 @@ class LoginForm extends StatelessWidget {
               ],
             ),
 
-            SizedBox(height: 24.h),
+            SizedBox(height: isRecruiter ? 24.h : 20.h),
 
             // Login button
-           ButtonPrimaryGradient(
-            text: 'ĐĂNG NHẬP', 
-            onPressed: onLogin
-          ),
+            ButtonPrimaryGradient(
+              text: 'ĐĂNG NHẬP', 
+              onPressed: onLogin,
+            ),
 
-          SizedBox(height: 20.h),
-          if(role == UserRole.candidate.name)...[
-            // Register link
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Chưa có tài khoản?',
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    context.push('/auth/signup');
-                  },
-                  child: Text(
-                    '  Đăng ký',
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+            SizedBox(height: 20.h),
+            
+            if(role == UserRole.candidate.name)...[
+              // Register link
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Chưa có tài khoản?',
+                    style: theme.textTheme.bodyMedium?.copyWith(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
-                      color: TextColors.textBrandPrimary,
                     ),
                   ),
-                ),
-              ],
-            ),
-          ]
+                  GestureDetector(
+                    onTap: () {
+                      context.push('/auth/signup');
+                    },
+                    child: Text(
+                      '  Đăng ký',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        color: TextColors.textBrandPrimary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ]
           ],
         ),
       ),

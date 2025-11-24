@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart';
 import 'package:job_connect/config/constant/api_constants.dart';
 import 'package:job_connect/config/enum/api_method.dart';
 import 'package:job_connect/config/enum/server_exception_type.dart';
@@ -13,12 +14,29 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
   final Map<String, String> defaultHeaders;
+  final http.Client _httpClient;
 
   ApiService({
     this.defaultHeaders = const {
       'Content-Type': 'application/json; charset=UTF-8',
     },
-  });
+  }) : _httpClient = _createHttpClient();
+
+  // Factory method để tạo HttpClient
+  static http.Client _createHttpClient() {
+    // Cấu hình HttpClient để xử lý self-signed certificate (chỉ trong debug mode)
+    if (kDebugMode) {
+      final httpClient = HttpClient()
+        ..badCertificateCallback = (X509Certificate cert, String host, int port) {
+          // Trong debug mode, chấp nhận tất cả certificates (bao gồm self-signed)
+          return true;
+        };
+      return IOClient(httpClient);
+    } else {
+      // Trong production, sử dụng client mặc định với certificate verification
+      return http.Client();
+    }
+  }
 
   // PUBLIC METHODS (đã thêm requireAuth)
 
@@ -145,19 +163,19 @@ class ApiService {
       // EXECUTE METHOD
       switch (method) {
         case ApiMethod.get:
-          response = await http.get(uri, headers: headers);
+          response = await _httpClient.get(uri, headers: headers);
           break;
         case ApiMethod.post:
-          response = await http.post(uri, headers: headers, body: _encodeBody(body));
+          response = await _httpClient.post(uri, headers: headers, body: _encodeBody(body));
           break;
         case ApiMethod.put:
-          response = await http.put(uri, headers: headers, body: _encodeBody(body));
+          response = await _httpClient.put(uri, headers: headers, body: _encodeBody(body));
           break;
         case ApiMethod.patch:
-          response = await http.patch(uri, headers: headers, body: _encodeBody(body));
+          response = await _httpClient.patch(uri, headers: headers, body: _encodeBody(body));
           break;
         case ApiMethod.delete:
-          response = await http.delete(uri, headers: headers, body: _encodeBody(body));
+          response = await _httpClient.delete(uri, headers: headers, body: _encodeBody(body));
           break;
       }
 
@@ -179,6 +197,14 @@ class ApiService {
       if (e is TimeoutException) {
         throw ServerException(err: 'Quá thời gian chờ', type: ServerExceptionType.timeout);
       }
+      // Xử lý lỗi SSL Certificate
+      if (e.toString().contains('CERTIFICATE_VERIFY_FAILED') || 
+          e.toString().contains('HandshakeException')) {
+        throw ServerException(
+          err: 'Lỗi xác thực SSL: Server đang sử dụng chứng chỉ tự ký. Vui lòng liên hệ quản trị viên.',
+          type: ServerExceptionType.network,
+        );
+      }
       throw ServerException(err: 'Lỗi không xác định: $e', type: ServerExceptionType.unknown);
     }
   }
@@ -197,11 +223,33 @@ class ApiService {
   }
 
   dynamic handleResponse(http.Response response, ApiMethod method) {
+    // Kiểm tra Content-Type để phát hiện HTML response
+    final contentType = response.headers['content-type']?.toLowerCase() ?? '';
+    final isHtml = contentType.contains('text/html') || 
+                   response.body.trim().toLowerCase().startsWith('<!doctype') ||
+                   response.body.trim().toLowerCase().startsWith('<html');
+
+    if (isHtml) {
+      // Phát hiện HTML response (có thể là portal redirect, error page, etc.)
+      debugPrint('⚠️ API trả về HTML thay vì JSON - có thể là redirect hoặc error page');
+      throw ServerException(
+        err: 'Server trả về HTML thay vì JSON. Có thể do lỗi kết nối mạng hoặc server đang bảo trì.',
+        type: ServerExceptionType.network,
+      );
+    }
+
     if (response.statusCode >= 200 && response.statusCode < 300) {
       if (response.body.isEmpty) return response.statusCode;
       try {
         return jsonDecode(response.body);
-      } catch (_) {
+      } catch (e) {
+        // Nếu không parse được JSON, có thể là HTML hoặc text khác
+        if (response.body.trim().toLowerCase().startsWith('<')) {
+          throw ServerException(
+            err: 'Server trả về HTML thay vì JSON. Vui lòng kiểm tra kết nối mạng.',
+            type: ServerExceptionType.network,
+          );
+        }
         return response.body;
       }
     }
@@ -209,6 +257,14 @@ class ApiService {
     // Error response
     String errorMessage = "Unknown error";
     try {
+      // Kiểm tra xem có phải HTML không
+      if (response.body.trim().toLowerCase().startsWith('<')) {
+        throw ServerException(
+          err: 'Server trả về HTML thay vì JSON. Có thể do lỗi kết nối mạng hoặc server đang bảo trì.',
+          type: ServerExceptionType.network,
+        );
+      }
+
       final body = jsonDecode(response.body);
       if (body is Map<String, dynamic>) {
         if (body["message"] != null) {
@@ -218,8 +274,16 @@ class ApiService {
           errorMessage = first is List ? first.first.toString() : first.toString();
         }
       }
-    } catch (_) {
-      errorMessage = response.body;
+    } catch (e) {
+      if (e is ServerException) {
+        rethrow;
+      }
+      // Nếu response body quá dài (có thể là HTML), chỉ lấy phần đầu
+      if (response.body.length > 200) {
+        errorMessage = '${response.body.substring(0, 200)}...';
+      } else {
+        errorMessage = response.body;
+      }
     }
 
     debugPrint('❌ API ERROR: $errorMessage');
@@ -228,5 +292,10 @@ class ApiService {
       err: 'Lỗi: $errorMessage',
       type: ServerExceptionType.api,
     );
+  }
+
+  // Dispose httpClient khi không dùng nữa
+  void dispose() {
+    _httpClient.close();
   }
 }

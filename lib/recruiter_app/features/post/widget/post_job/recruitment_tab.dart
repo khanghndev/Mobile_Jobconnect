@@ -63,115 +63,256 @@ class RecruitmentTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    const recruiterPrimary = Color(0xFF1A237E);
 
     return SingleChildScrollView(
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
       child: Form(
         key: formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header
+            // Header với gradient indigo đẹp
             Container(
-              padding: EdgeInsets.all(16.w),
+              padding: EdgeInsets.all(24.w),
               decoration: BoxDecoration(
-                color: theme.primaryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12.r),
-                border: Border.all(color: theme.primaryColor.withOpacity(0.3)),
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    recruiterPrimary.withValues(alpha: 0.08),
+                    recruiterPrimary.withValues(alpha: 0.05),
+                    Colors.white,
+                  ],
+                  stops: const [0.0, 0.5, 1.0],
+                ),
+                borderRadius: BorderRadius.circular(20.r),
+                boxShadow: [
+                  BoxShadow(
+                    color: recruiterPrimary.withValues(alpha: 0.15),
+                    blurRadius: 20.r,
+                    offset: Offset(0, 8.h),
+                    spreadRadius: 0,
+                  ),
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.05),
+                    blurRadius: 10.r,
+                    offset: Offset(0, 2.h),
+                    spreadRadius: 0,
+                  ),
+                ],
+                border: Border.all(
+                  color: recruiterPrimary.withValues(alpha: 0.2),
+                  width: 1.5.w,
+                ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
                 children: [
-                  Text(
-                    "Tạo tin tuyển dụng mới",
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.sp,
-                      color: theme.primaryColor,
+                  Container(
+                    padding: EdgeInsets.all(14.r),
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF1A237E), Color(0xFF283593)],
+                      ),
+                      borderRadius: BorderRadius.circular(16.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: recruiterPrimary.withValues(alpha: 0.3),
+                          blurRadius: 10.r,
+                          offset: Offset(0, 4.h),
+                        ),
+                      ],
+                    ),
+                    child: Icon(
+                      Icons.add_business_rounded,
+                      size: 26.sp,
+                      color: Colors.white,
                     ),
                   ),
-                  SizedBox(height: 8.h),
-                  Text(
-                    "Điền đầy đủ thông tin để tìm được ứng viên phù hợp nhất",
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      fontSize: 14.sp,
-                      color: Colors.black87,
+                  SizedBox(width: 18.w),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Tạo tin tuyển dụng mới",
+                          style: theme.textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20.sp,
+                            color: recruiterPrimary,
+                            letterSpacing: 0.3,
+                            height: 1.2,
+                          ),
+                        ),
+                        SizedBox(height: 8.h),
+                        Text(
+                          "Điền đầy đủ thông tin để tìm được ứng viên phù hợp nhất",
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontSize: 13.sp,
+                            color: const Color(0xFF64748B),
+                            height: 1.5,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: 28.h),
 
-            SectionTitle(
-              title: "THÔNG TIN CƠ BẢN",
-              icon: Icons.person_pin_rounded,
-              fontSize: 16.sp,
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 18.w),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    recruiterPrimary.withValues(alpha: 0.1),
+                    recruiterPrimary.withValues(alpha: 0.05),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(14.r),
+                border: Border.all(
+                  color: recruiterPrimary.withValues(alpha: 0.25),
+                  width: 1.5.w,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: recruiterPrimary.withValues(alpha: 0.1),
+                    blurRadius: 8.r,
+                    offset: Offset(0, 2.h),
+                  ),
+                ],
+              ),
+              child: SectionTitle(
+                title: "THÔNG TIN CƠ BẢN",
+                icon: Icons.person_pin_rounded,
+                iconColor: recruiterPrimary,
+                textColor: recruiterPrimary,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: 20.h),
 
             // Tiêu đề công việc
             CustomTextFieldWithLabel(
-              suffixIconColor: Colors.black87,
-              labelTextColor: Colors.black87,
+              suffixIconColor: recruiterPrimary,
+              labelTextColor: recruiterPrimary,
+              prefixIconColor: recruiterPrimary,
+              fillColor: recruiterPrimary.withValues(alpha: 0.05),
+              borderColor: recruiterPrimary.withValues(alpha: 0.3),
+              borderRadius: 14.r,
               controller: titleController,
               label: 'Tiêu đề công việc',
               hintText: 'Ví dụ: Kỹ sư phần mềm Flutter',
               icon: Icons.work_outline,
+              iconSize: 20.sp,
               keyboardType: TextInputType.text,
-              validator: (value) => InputValidators.validate(
-                value: value,
-                hintText: 'Tiêu đề công việc',
-              ),
+              validator: (value) {
+                if (value == null) {
+                  return 'Tiêu đề công việc không được bỏ trống';
+                }
+                final trimmed = value.trim();
+                if (trimmed.isEmpty) {
+                  return 'Tiêu đề công việc không được bỏ trống';
+                }
+                if (trimmed.length < 5) {
+                  return 'Tiêu đề công việc phải có ít nhất 5 ký tự';
+                }
+                return null;
+              },
+              autovalidateMode: AutovalidateMode.onUserInteraction,
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: 18.h),
 
             // Mô tả công việc
             CustomTextFieldWithLabel(
-              suffixIconColor: Colors.black87,
-              labelTextColor: Colors.black87,
+              suffixIconColor: recruiterPrimary,
+              labelTextColor: recruiterPrimary,
+              prefixIconColor: recruiterPrimary,
+              fillColor: recruiterPrimary.withValues(alpha: 0.05),
+              borderColor: recruiterPrimary.withValues(alpha: 0.3),
+              borderRadius: 14.r,
               controller: descriptionController,
               label: 'Mô tả công việc',
               hintText: 'Mô tả chi tiết về công việc...',
               icon: Icons.description_outlined,
+              iconSize: 20.sp,
               maxLines: 5,
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: 18.h),
 
             // Yêu cầu ứng viên
             CustomTextFieldWithLabel(
-              suffixIconColor: Colors.black87,
-              labelTextColor: Colors.black87,
+              suffixIconColor: recruiterPrimary,
+              labelTextColor: recruiterPrimary,
+              prefixIconColor: recruiterPrimary,
+              fillColor: recruiterPrimary.withValues(alpha: 0.05),
+              borderColor: recruiterPrimary.withValues(alpha: 0.3),
+              borderRadius: 14.r,
               controller: requirementsController,
               label: 'Yêu cầu ứng viên',
               hintText: 'Kỹ năng, bằng cấp...',
               icon: Icons.assignment_outlined,
+              iconSize: 20.sp,
               maxLines: 4,
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: 18.h),
 
             // Quyền lợi
             CustomTextFieldWithLabel(
-              suffixIconColor: Colors.black87,
-              labelTextColor: Colors.black87,
+              suffixIconColor: recruiterPrimary,
+              labelTextColor: recruiterPrimary,
+              prefixIconColor: recruiterPrimary,
+              fillColor: recruiterPrimary.withValues(alpha: 0.05),
+              borderColor: recruiterPrimary.withValues(alpha: 0.3),
+              borderRadius: 14.r,
               controller: benefitsController,
               label: 'Quyền lợi',
               hintText: 'Chế độ bảo hiểm, thưởng...',
               icon: Icons.card_giftcard_outlined,
+              iconSize: 20.sp,
               maxLines: 4,
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: 18.h),
 
             // Deadline
             _buildDatePicker(context, 'Hạn nộp', selectedDeadline, onPickDeadline),
-            SizedBox(height: 24.h),
+            SizedBox(height: 28.h),
 
-            SectionTitle(
-              title: "THÔNG TIN CHI TIẾT",
-              icon: Icons.info_outline_rounded,
-              fontSize: 16.sp,
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 18.w),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    recruiterPrimary.withValues(alpha: 0.1),
+                    recruiterPrimary.withValues(alpha: 0.05),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(14.r),
+                border: Border.all(
+                  color: recruiterPrimary.withValues(alpha: 0.25),
+                  width: 1.5.w,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: recruiterPrimary.withValues(alpha: 0.1),
+                    blurRadius: 8.r,
+                    offset: Offset(0, 2.h),
+                  ),
+                ],
+              ),
+              child: SectionTitle(
+                title: "THÔNG TIN CHI TIẾT",
+                icon: Icons.info_outline_rounded,
+                iconColor: recruiterPrimary,
+                textColor: recruiterPrimary,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: 20.h),
 
             // Loại hình làm việc
             _buildDropdown(
@@ -182,16 +323,21 @@ class RecruitmentTab extends StatelessWidget {
               items: jobTypes,
               onChanged: onJobTypeChanged,
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: 18.h),
 
             // Mức lương
             CustomTextFieldWithLabel(
-              suffixIconColor: Colors.black87,
-              labelTextColor: Colors.black87,
+              suffixIconColor: recruiterPrimary,
+              labelTextColor: recruiterPrimary,
+              prefixIconColor: recruiterPrimary,
+              fillColor: recruiterPrimary.withValues(alpha: 0.05),
+              borderColor: recruiterPrimary.withValues(alpha: 0.3),
+              borderRadius: 14.r,
               controller: salaryController,
               label: 'Mức lương',
               hintText: 'VNĐ/tháng',
               icon: Icons.monetization_on_outlined,
+              iconSize: 20.sp,
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               validator: (value) => InputValidators.validate(
@@ -200,7 +346,7 @@ class RecruitmentTab extends StatelessWidget {
                 keyboardType: TextInputType.number,
               ),
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: 18.h),
 
             // Kinh nghiệm
             _buildDropdown(
@@ -211,7 +357,7 @@ class RecruitmentTab extends StatelessWidget {
               items: experienceLevels,
               onChanged: onExperienceChanged,
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: 18.h),
 
             // Địa điểm làm việc
             _buildDropdown(
@@ -225,16 +371,21 @@ class RecruitmentTab extends StatelessWidget {
                 locationController.text = val;
               },
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: 18.h),
 
             // Số ngày làm việc/tuần
             CustomTextFieldWithLabel(
-              suffixIconColor: Colors.black87,
-              labelTextColor: Colors.black87,
+              suffixIconColor: recruiterPrimary,
+              labelTextColor: recruiterPrimary,
+              prefixIconColor: recruiterPrimary,
+              fillColor: recruiterPrimary.withValues(alpha: 0.05),
+              borderColor: recruiterPrimary.withValues(alpha: 0.3),
+              borderRadius: 14.r,
               controller: workDaysController,
               label: 'Số ngày làm việc/tuần',
               hintText: 'Nhập số ngày làm việc',
               icon: Icons.calendar_today_outlined,
+              iconSize: 20.sp,
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               validator: (value) => InputValidators.validate(
@@ -247,26 +398,88 @@ class RecruitmentTab extends StatelessWidget {
 
             // Tin tuyển gấp
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
+              padding: EdgeInsets.all(18.w),
               decoration: BoxDecoration(
-                color: isUrgent ? Colors.red.shade100 : Colors.blue.shade50,
-                borderRadius: BorderRadius.circular(10.r),
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: isUrgent
+                      ? [
+                          const Color(0xFFFFE8E8),
+                          const Color(0xFFFFF0F0),
+                        ]
+                      : [
+                          recruiterPrimary.withValues(alpha: 0.08),
+                          recruiterPrimary.withValues(alpha: 0.05),
+                        ],
+                ),
+                borderRadius: BorderRadius.circular(16.r),
                 border: Border.all(
-                  color: isUrgent ? Colors.red.shade500 : Colors.blue.shade400,
-                  width: 1.4,
+                  color: isUrgent
+                      ? const Color(0xFFEF4444).withValues(alpha: 0.3)
+                      : recruiterPrimary.withValues(alpha: 0.2),
+                  width: 1.5.w,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: (isUrgent ? Colors.red.shade200 : Colors.blue.shade200)
-                        .withOpacity(0.3),
-                    blurRadius: 6,
-                    offset: Offset(0, 3),
+                    color: (isUrgent
+                            ? const Color(0xFFEF4444)
+                            : recruiterPrimary)
+                        .withValues(alpha: 0.15),
+                    blurRadius: 10.r,
+                    offset: Offset(0, 4.h),
                   ),
                 ],
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Container(
+                    padding: EdgeInsets.all(8.r),
+                    decoration: BoxDecoration(
+                      color: (isUrgent
+                              ? const Color(0xFFEF4444)
+                              : recruiterPrimary)
+                          .withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    child: Icon(
+                      Icons.warning_amber_rounded,
+                      color: isUrgent
+                          ? const Color(0xFFEF4444)
+                          : recruiterPrimary,
+                      size: 22.sp,
+                    ),
+                  ),
+                  SizedBox(width: 14.w),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Đánh dấu tin tuyển gấp",
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.sp,
+                            color: isUrgent
+                                ? const Color(0xFFEF4444)
+                                : recruiterPrimary,
+                          ),
+                        ),
+                        SizedBox(height: 6.h),
+                        Text(
+                          isPremiumUser
+                              ? "Tin tuyển dụng của bạn sẽ được ưu tiên hiển thị"
+                              : "Cần đăng kí gói Premium để sử dụng tính năng này",
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            fontSize: 13.sp,
+                            color: const Color(0xFF6B7280),
+                            height: 1.4,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   Checkbox(
                     value: isUrgent,
                     onChanged: isPremiumUser
@@ -274,64 +487,48 @@ class RecruitmentTab extends StatelessWidget {
                             if (val != null) onUrgentChanged(val);
                           }
                         : null,
-                    activeColor: isUrgent ? Colors.red.shade500 : Colors.blue.shade400,
+                    activeColor: isUrgent
+                        ? const Color(0xFFEF4444)
+                        : recruiterPrimary,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4.r),
-                    ),
-                  ),
-                  SizedBox(width: 8.w),
-                  Icon(Icons.warning_amber_rounded,
-                      color: isUrgent ? Colors.red.shade500 : Colors.blue.shade400,
-                      size: 24.sp),
-                  SizedBox(width: 12.w),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Đánh dấu tin tuyển gấp",
-                          style: theme.textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.w800,
-                            fontSize: 16.sp,
-                            color: isUrgent ? Colors.red.shade500 : Colors.blue.shade400,
-                          ),
-                        ),
-                        SizedBox(height: 4.h),
-                        Text(
-                          "Cần đăng kí gói Premium để sử dụng tính năng này",
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 13.sp,
-                            color: isUrgent ? Colors.red.shade500 : Colors.blue.shade400,
-                          ),
-                        ),
-                      ],
+                      borderRadius: BorderRadius.circular(6.r),
                     ),
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: 32.h),
 
             // Buttons
             Row(
               children: [
                 Expanded(
-                  child: OutlinedButton(
-                    onPressed: onResetForm,
-                    style: OutlinedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 16.h),
-                      side: BorderSide(color: theme.primaryColor),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.r),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14.r),
+                      border: Border.all(
+                        color: recruiterPrimary.withValues(alpha: 0.3),
+                        width: 1.5.w,
                       ),
                     ),
-                    child: Text(
-                      "Hủy",
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                        color: theme.primaryColor,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: onResetForm,
+                        borderRadius: BorderRadius.circular(14.r),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 16.h),
+                          child: Center(
+                            child: Text(
+                              "Hủy",
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.bold,
+                                color: recruiterPrimary,
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -339,35 +536,62 @@ class RecruitmentTab extends StatelessWidget {
                 SizedBox(width: 16.w),
                 Expanded(
                   flex: 2,
-                  child: ElevatedButton(
-                    onPressed: onCreateJob,
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 16.h),
-                      backgroundColor: theme.primaryColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.r),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF1A237E), Color(0xFF283593)],
                       ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.publish_outlined, color: Colors.white, size: 20.sp),
-                        SizedBox(width: 8.w),
-                        Text(
-                          "Đăng tin tuyển dụng",
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+                      borderRadius: BorderRadius.circular(14.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: recruiterPrimary.withValues(alpha: 0.3),
+                          blurRadius: 12.r,
+                          offset: Offset(0, 6.h),
                         ),
                       ],
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {
+                          // Validate form trước khi submit
+                          if (formKey.currentState!.validate()) {
+                            onCreateJob();
+                          }
+                        },
+                        borderRadius: BorderRadius.circular(14.r),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 16.h),
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.check_circle_outline,
+                                  color: Colors.white,
+                                  size: 20.sp,
+                                ),
+                                SizedBox(width: 8.w),
+                                Text(
+                                  "Đăng tin",
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    letterSpacing: 0.5,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 32.h),
+            SizedBox(height: 24.h),
           ],
         ),
       ),
@@ -383,32 +607,57 @@ class RecruitmentTab extends StatelessWidget {
     required ValueChanged<String> onChanged,
   }) {
     final theme = Theme.of(context);
+    const recruiterPrimary = Color(0xFF1A237E);
     final validValue = items.contains(value) ? value : null;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,
-            style: theme.textTheme.bodySmall?.copyWith(fontSize: 12.sp, color: Colors.black54)),
-        SizedBox(height: 8.h),
+        Text(
+          label,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            fontSize: 14.sp,
+            color: recruiterPrimary,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        SizedBox(height: 10.h),
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 8.w),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12.r),
-            border: Border.all(color: Colors.grey.shade200),
+            color: recruiterPrimary.withValues(alpha: 0.05),
+            borderRadius: BorderRadius.circular(14.r),
+            border: Border.all(
+              color: recruiterPrimary.withValues(alpha: 0.3),
+              width: 1.w,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: recruiterPrimary.withValues(alpha: 0.05),
+                blurRadius: 4.r,
+                offset: Offset(0, 2.h),
+              ),
+            ],
           ),
           child: Row(
             children: [
-              Icon(icon, size: 20.sp, color: Colors.black87),
-              SizedBox(width: 8.w),
+              Icon(icon, size: 20.sp, color: recruiterPrimary),
+              SizedBox(width: 12.w),
               Expanded(
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
                     value: validValue,
                     isExpanded: true,
-                    icon: Icon(Icons.arrow_drop_down, size: 24.sp),
-                    style: theme.textTheme.bodyMedium?.copyWith(fontSize: 14.sp, color: Colors.black87),
-                    items: items.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+                    icon: Icon(Icons.arrow_drop_down_rounded, size: 22.sp, color: recruiterPrimary),
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontSize: 15.sp,
+                      color: const Color(0xFF1F2937),
+                      fontWeight: FontWeight.w500,
+                    ),
+                    dropdownColor: Colors.white,
+                    items: items.map((e) => DropdownMenuItem(
+                      value: e,
+                      child: Text(e),
+                    )).toList(),
                     onChanged: (val) {
                       if (val != null) onChanged(val);
                     },
@@ -424,20 +673,65 @@ class RecruitmentTab extends StatelessWidget {
 
   Widget _buildDatePicker(BuildContext context, String label, DateTime? date, VoidCallback onTap) {
     final theme = Theme.of(context);
+    const recruiterPrimary = Color(0xFF1A237E);
     return InkWell(
       onTap: onTap,
-      child: InputDecorator(
-        decoration: InputDecoration(
-          labelText: label,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-          contentPadding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
-        ),
-        child: Text(
-          date != null ? DateFormat('yyyy-MM-dd – HH:mm').format(date) : 'Chọn ngày',
-          style: theme.textTheme.bodyMedium?.copyWith(
-            fontSize: 14.sp,
-            color: date != null ? Colors.black : Colors.grey[600],
+      borderRadius: BorderRadius.circular(14.r),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+        decoration: BoxDecoration(
+          color: recruiterPrimary.withValues(alpha: 0.05),
+          borderRadius: BorderRadius.circular(14.r),
+          border: Border.all(
+            color: recruiterPrimary.withValues(alpha: 0.3),
+            width: 1.w,
           ),
+          boxShadow: [
+            BoxShadow(
+              color: recruiterPrimary.withValues(alpha: 0.05),
+              blurRadius: 4.r,
+              offset: Offset(0, 2.h),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Icon(
+              Icons.calendar_today_rounded,
+              size: 20.sp,
+              color: recruiterPrimary,
+            ),
+            SizedBox(width: 12.w),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    label,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontSize: 12.sp,
+                      color: recruiterPrimary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    date != null ? DateFormat('dd/MM/yyyy – HH:mm').format(date) : 'Chọn ngày',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontSize: 15.sp,
+                      color: date != null ? const Color(0xFF1F2937) : const Color(0xFF9CA3AF),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              Icons.arrow_forward_ios_rounded,
+              size: 16.sp,
+              color: recruiterPrimary,
+            ),
+          ],
         ),
       ),
     );

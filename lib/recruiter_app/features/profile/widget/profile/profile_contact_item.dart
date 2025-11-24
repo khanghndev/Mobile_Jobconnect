@@ -26,15 +26,27 @@ class ProfileContactItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    const recruiterPrimary = Color(0xFF1A237E);
 
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 12.h),
+      padding: EdgeInsets.symmetric(vertical: 14.h),
       child: Column(
         children: [
           Row(
             children: [
-              Icon(icon, color: theme.colorScheme.primary, size: 22.sp),
-              SizedBox(width: 16.w),
+              Container(
+                padding: EdgeInsets.all(10.r),
+                decoration: BoxDecoration(
+                  color: recruiterPrimary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(12.r),
+                  border: Border.all(
+                    color: recruiterPrimary.withValues(alpha: 0.2),
+                    width: 1.w,
+                  ),
+                ),
+                child: Icon(icon, color: recruiterPrimary, size: 20.sp),
+              ),
+              SizedBox(width: 14.w),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,38 +54,66 @@ class ProfileContactItem extends StatelessWidget {
                     Text(
                       title,
                       style: theme.textTheme.bodySmall?.copyWith(
-                        fontSize: 14.sp,
-                        color: theme.hintColor,
+                        fontSize: 12.sp,
+                        color: const Color(0xFF64748B),
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0.2,
                       ),
                     ),
-                    SizedBox(height: 4.h),
+                    SizedBox(height: 6.h),
                     Text(
                       subtitle,
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w500,
-                        color: theme.textTheme.bodyLarge?.color,
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xFF1E293B),
+                        letterSpacing: 0.1,
                       ),
                     ),
                   ],
                 ),
               ),
               if (hasCopy)
-                IconButton(
-                  icon: Icon(Icons.content_copy, size: 20.sp, color: theme.colorScheme.primary),
-                  onPressed: onCopy,
+                Container(
+                  margin: EdgeInsets.only(left: 8.w),
+                  decoration: BoxDecoration(
+                    color: recruiterPrimary.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.content_copy_rounded, size: 18.sp, color: recruiterPrimary),
+                    onPressed: onCopy,
+                    padding: EdgeInsets.all(8.r),
+                  ),
                 ),
               if (hasLink)
-                IconButton(
-                  icon: Icon(Icons.open_in_new, size: 20.sp, color: theme.colorScheme.primary),
-                  onPressed: onOpenLink,
+                Container(
+                  margin: EdgeInsets.only(left: 8.w),
+                  decoration: BoxDecoration(
+                    color: recruiterPrimary.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.open_in_new_rounded, size: 18.sp, color: recruiterPrimary),
+                    onPressed: onOpenLink,
+                    padding: EdgeInsets.all(8.r),
+                  ),
                 ),
             ],
           ),
           if (!isLast)
             Container(
-              margin: EdgeInsets.symmetric(vertical: 8.h),
-              child: Divider(height: 1),
+              margin: EdgeInsets.only(top: 14.h),
+              height: 1.h,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.transparent,
+                    recruiterPrimary.withValues(alpha: 0.1),
+                    Colors.transparent,
+                  ],
+                ),
+              ),
             ),
         ],
       ),

@@ -61,10 +61,25 @@ class _RecruiterProfilePageState extends State<RecruiterProfilePage> {
     try {
       final rec = await recruiterService.getRecruiterById(id: widget.recruiterId);
       final acc = await accountService.getUserById(id: rec!.idUser);
-      final comp = await companyService.getCompanyById(id: rec.idCompany!);
+      
+      // Lấy company với xử lý lỗi
+      CompanyModel? comp;
+      if (rec.idCompany != null && rec.idCompany!.isNotEmpty) {
+        try {
+          comp = await companyService.getCompanyById(id: rec.idCompany!);
+        } catch (e) {
+          // Bỏ qua lỗi, để comp = null
+          comp = null;
+        }
+      }
+      
       List<JobPostingModel>? jobPostings;
       if (rec.idCompany != null && rec.idCompany!.isNotEmpty) {
-        jobPostings = await jobPostingService.getJobPostingsByCompany(companyId: rec.idCompany!);
+        try {
+          jobPostings = await jobPostingService.getJobPostingsByCompany(companyId: rec.idCompany!);
+        } catch (e) {
+          jobPostings = [];
+        }
       }
 
       setState(() {
@@ -84,8 +99,9 @@ class _RecruiterProfilePageState extends State<RecruiterProfilePage> {
   }
 
   int getPosisionPost() {
-    if (jobPostingsList == null) return 0;
-    return jobPostingsList!.map((e) => e.title ?? '').toSet().length;
+    if (jobPostingsList == null || jobPostingsList!.isEmpty) return 0;
+    final titles = jobPostingsList!.map((e) => e.title).where((title) => title.isNotEmpty).toSet();
+    return titles.length;
   }
 
   Future<void> copyText(String text) async {
@@ -127,7 +143,7 @@ class _RecruiterProfilePageState extends State<RecruiterProfilePage> {
       );
     }
 
-    if (user == null || recruiterInfo == null || companyInfo == null) {
+    if (user == null || recruiterInfo == null) {
       return Scaffold(
         body: Center(
           child: BackgroundEmptyState(
@@ -144,88 +160,261 @@ class _RecruiterProfilePageState extends State<RecruiterProfilePage> {
       backgroundColor: const Color(0xFFF8F9FA),
       body: RefreshIndicator(
         onRefresh: _loadAllData,
+        color: const Color(0xFF1A237E),
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
-              // Header
+              // Header với gradient indigo
               Container(
-                height: 260.h,
+                height: 200.h,
                 width: double.infinity,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Color(0xFF1976D2), Color(0xFF0D47A1)],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Color(0xFF1A237E), // Indigo
+                      Color(0xFF283593), // Indigo 800
+                      Color(0xFF3949AB), // Indigo 700
+                    ],
+                    stops: [0.0, 0.5, 1.0],
                   ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF1A237E).withValues(alpha: 0.3),
+                      blurRadius: 20.r,
+                      offset: Offset(0, 8.h),
+                      spreadRadius: 2.r,
+                    ),
+                  ],
                 ),
                 child: SafeArea(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(height: 40.h),
-                      Stack(
-                        alignment: Alignment.bottomRight,
-                        children: [
-                          CircleAvatar(
-                            radius: 45.r,
-                            backgroundColor: Colors.white,
-                            backgroundImage: user?.avatarUrl?.isNotEmpty == true
-                                ? ImageUtils.getImageProvider(user!.avatarUrl!)
-                                : ImageUtils.getImageProvider(AppImages.defaultAvatar),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: theme.colorScheme.primary,
-                              shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white, width: 2.w),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.all(4.w),
-                              child: InkWell(
-                                onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => HrEditProfileScreen(
-                                      account: user!,
-                                      company: companyInfo!,
-                                      recruiterInfo: recruiterInfo!,
-                                    ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Avatar bên trái
+                        Stack(
+                          alignment: Alignment.bottomRight,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(color: Colors.white, width: 3.w),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.2),
+                                    blurRadius: 12.r,
+                                    offset: Offset(0, 4.h),
                                   ),
-                                ),
-                                child: Icon(Icons.business_center, color: Colors.white, size: 14.sp),
+                                ],
+                              ),
+                              child: CircleAvatar(
+                                radius: 45.r,
+                                backgroundColor: Colors.white,
+                                backgroundImage: user?.avatarUrl?.isNotEmpty == true
+                                    ? ImageUtils.getImageProvider(user!.avatarUrl!)
+                                    : ImageUtils.getImageProvider(AppImages.defaultAvatar),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 12.h),
-                      Text(user!.userName,
-                          style: theme.textTheme.titleLarge
-                              ?.copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
-                      SizedBox(height: 8.h),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20.r),
+                            Container(
+                              decoration: BoxDecoration(
+                                gradient: const LinearGradient(
+                                  colors: [Color(0xFF1A237E), Color(0xFF283593)],
+                                ),
+                                shape: BoxShape.circle,
+                                border: Border.all(color: Colors.white, width: 2.w),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: const Color(0xFF1A237E).withValues(alpha: 0.4),
+                                    blurRadius: 6.r,
+                                    offset: Offset(0, 2.h),
+                                  ),
+                                ],
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.all(5.w),
+                                child: InkWell(
+                                  onTap: () {
+                                    if (companyInfo != null) {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => HrEditProfileScreen(
+                                            account: user!,
+                                            company: companyInfo!,
+                                            recruiterInfo: recruiterInfo!,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  child: Icon(Icons.edit_rounded, color: Colors.white, size: 14.sp),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        child: Text(
-                          "Nhà tuyển dụng",
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.w600,
-                            color: theme.colorScheme.primary,
+                        SizedBox(width: 16.w),
+                        // Thông tin bên phải
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // Tên người dùng
+                              Text(
+                                user!.userName,
+                                style: theme.textTheme.titleLarge?.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20.sp,
+                                  letterSpacing: 0.2,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              SizedBox(height: 8.h),
+                              // Badge Nhà tuyển dụng
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Colors.white,
+                                      Colors.white.withValues(alpha: 0.95),
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(12.r),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withValues(alpha: 0.1),
+                                      blurRadius: 6.r,
+                                      offset: Offset(0, 2.h),
+                                    ),
+                                  ],
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.business_center_rounded,
+                                      color: const Color(0xFF1A237E),
+                                      size: 14.sp,
+                                    ),
+                                    SizedBox(width: 5.w),
+                                    Text(
+                                      "Nhà tuyển dụng",
+                                      style: theme.textTheme.bodySmall?.copyWith(
+                                        fontSize: 11.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: const Color(0xFF1A237E),
+                                        letterSpacing: 0.2,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 12.h),
+                              // Thông tin công ty
+                              if (companyInfo != null) ...[
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.apartment_rounded,
+                                      color: Colors.white.withValues(alpha: 0.95),
+                                      size: 16.sp,
+                                    ),
+                                    SizedBox(width: 6.w),
+                                    Expanded(
+                                      child: Text(
+                                        companyInfo!.companyName,
+                                        style: theme.textTheme.bodyMedium?.copyWith(
+                                          color: Colors.white.withValues(alpha: 0.95),
+                                          fontSize: 15.sp,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 6.h),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.location_on_rounded,
+                                      color: Colors.white.withValues(alpha: 0.85),
+                                      size: 14.sp,
+                                    ),
+                                    SizedBox(width: 6.w),
+                                    Expanded(
+                                      child: Text(
+                                        companyInfo!.address,
+                                        style: theme.textTheme.bodySmall?.copyWith(
+                                          color: Colors.white.withValues(alpha: 0.9),
+                                          fontSize: 13.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                if (companyInfo!.industry.isNotEmpty) ...[
+                                  SizedBox(height: 6.h),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.category_rounded,
+                                        color: Colors.white.withValues(alpha: 0.85),
+                                        size: 14.sp,
+                                      ),
+                                      SizedBox(width: 6.w),
+                                      Expanded(
+                                        child: Text(
+                                          companyInfo!.industry,
+                                          style: theme.textTheme.bodySmall?.copyWith(
+                                            color: Colors.white.withValues(alpha: 0.9),
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ] else ...[
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.info_outline_rounded,
+                                      color: Colors.white.withValues(alpha: 0.8),
+                                      size: 14.sp,
+                                    ),
+                                    SizedBox(width: 6.w),
+                                    Text(
+                                      "Chưa có công ty",
+                                      style: theme.textTheme.bodySmall?.copyWith(
+                                        color: Colors.white.withValues(alpha: 0.85),
+                                        fontSize: 13.sp,
+                                        fontStyle: FontStyle.italic,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ],
                           ),
                         ),
-                      ),
-                      SizedBox(height: 8.h),
-                      Text(
-                        "Công ty ${companyInfo!.companyName}",
-                        style: theme.textTheme.bodyMedium?.copyWith(color: Colors.white70, fontSize: 14.sp),
-                      ),
-                      SizedBox(height: 20.h),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -233,11 +422,18 @@ class _RecruiterProfilePageState extends State<RecruiterProfilePage> {
               // Stats
               Container(
                 width: double.infinity,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(28.r)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.05),
+                      blurRadius: 10.r,
+                      offset: Offset(0, -4.h),
+                    ),
+                  ],
                 ),
-                padding: EdgeInsets.all(20.w),
+                padding: EdgeInsets.fromLTRB(20.w, 24.h, 20.w, 20.h),
                 child: ProfileStatsRow(
                   jobPostings: jobPostingsList?.length ?? 0,
                   jobApplications: jobApplicationsList.length,
@@ -249,135 +445,285 @@ class _RecruiterProfilePageState extends State<RecruiterProfilePage> {
 
               // Contact Info
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 4.w),
-                child: Card(
-                  elevation: 2,
-                  shadowColor: Colors.black12,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20.r),
+                    border: Border.all(
+                      color: const Color(0xFF1A237E).withValues(alpha: 0.1),
+                      width: 1.5.w,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF1A237E).withValues(alpha: 0.1),
+                        blurRadius: 15.r,
+                        offset: Offset(0, 6.h),
+                        spreadRadius: 0,
+                      ),
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.05),
+                        blurRadius: 8.r,
+                        offset: Offset(0, 2.h),
+                        spreadRadius: 0,
+                      ),
+                    ],
+                  ),
                   child: Padding(
                     padding: EdgeInsets.all(20.w),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(8.w),
-                              decoration: BoxDecoration(
-                                color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                                borderRadius: BorderRadius.circular(12.r),
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                const Color(0xFF1A237E).withValues(alpha: 0.1),
+                                const Color(0xFF1A237E).withValues(alpha: 0.05),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(14.r),
+                            border: Border.all(
+                              color: const Color(0xFF1A237E).withValues(alpha: 0.2),
+                              width: 1.w,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(10.r),
+                                decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    colors: [Color(0xFF1A237E), Color(0xFF283593)],
+                                  ),
+                                  borderRadius: BorderRadius.circular(12.r),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xFF1A237E).withValues(alpha: 0.3),
+                                      blurRadius: 8.r,
+                                      offset: Offset(0, 3.h),
+                                    ),
+                                  ],
+                                ),
+                                child: Icon(Icons.contact_phone_rounded, color: Colors.white, size: 22.sp),
                               ),
-                              child:
-                                  Icon(Icons.contact_phone_rounded, color: theme.colorScheme.primary, size: 24.sp),
-                            ),
-                            SizedBox(width: 12.w),
-                            Text(
-                              "Thông tin liên hệ",
-                              style: theme.textTheme.titleMedium?.copyWith(
-                                  fontSize: 18.sp, fontWeight: FontWeight.bold, color: theme.colorScheme.primary),
-                            ),
-                          ],
+                              SizedBox(width: 14.w),
+                              Text(
+                                "Thông tin liên hệ",
+                                style: theme.textTheme.titleMedium?.copyWith(
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: const Color(0xFF1A237E),
+                                  letterSpacing: 0.2,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        SizedBox(height: 12.h),
-                        Divider(height: 1),
+                        SizedBox(height: 16.h),
                         ProfileContactItem(icon: Icons.email_rounded, title: "Email", subtitle: user!.email, hasCopy: true),
                         ProfileContactItem(
                             icon: Icons.phone_rounded,
                             title: "Số điện thoại",
                             subtitle: user!.phoneNumber ?? "Chưa có số điện thoại",
                             hasCopy: true),
-                        ProfileContactItem(
-                            icon: Icons.location_on_rounded,
-                            title: "Địa điểm",
-                            subtitle: companyInfo!.address,
-                            isLast: true),
+                        if (companyInfo != null)
+                          ProfileContactItem(
+                              icon: Icons.location_on_rounded,
+                              title: "Địa điểm",
+                              subtitle: companyInfo!.address,
+                              isLast: true)
+                        else
+                          ProfileContactItem(
+                              icon: Icons.location_on_rounded,
+                              title: "Địa điểm",
+                              subtitle: "Chưa có địa chỉ",
+                              isLast: true),
                       ],
                     ),
                   ),
                 ),
               ),
 
-              SizedBox(height: 10.h),
+              SizedBox(height: 16.h),
 
               // Company Info
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 4.w),
-                child: Card(
-                  elevation: 2,
-                  shadowColor: Colors.black12,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
-                  child: Padding(
-                    padding: EdgeInsets.all(20.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(8.w),
-                              decoration: BoxDecoration(
-                                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                                  borderRadius: BorderRadius.circular(12.r)),
-                              child: Icon(Icons.apartment, color: theme.colorScheme.primary, size: 24.sp),
-                            ),
-                            SizedBox(width: 12.w),
-                            Text(
-                              "Thông tin công ty",
-                              style: theme.textTheme.titleMedium
-                                  ?.copyWith(fontSize: 18.sp, fontWeight: FontWeight.bold, color: theme.colorScheme.primary),
-                            ),
-                          ],
+              if (companyInfo != null)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20.r),
+                      border: Border.all(
+                        color: const Color(0xFF1A237E).withValues(alpha: 0.1),
+                        width: 1.5.w,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFF1A237E).withValues(alpha: 0.1),
+                          blurRadius: 15.r,
+                          offset: Offset(0, 6.h),
+                          spreadRadius: 0,
                         ),
-                        SizedBox(height: 12.h),
-                        Divider(height: 1),
-                        ProfileContactItem(icon: Icons.business_rounded, title: "Công ty", subtitle: companyInfo!.companyName),
-                        ProfileContactItem(icon: Icons.people_rounded, title: "Quy mô", subtitle: companyInfo!.scale),
-                        ProfileContactItem(
-                            icon: Icons.public_rounded,
-                            title: "Website",
-                            subtitle: companyInfo!.websiteUrl ?? "Chưa có website",
-                            hasLink: true,
-                            isLast: true,
-                            onOpenLink: () {
-                              if (companyInfo?.websiteUrl != null) launchURL(companyInfo!.websiteUrl!);
-                            }),
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.05),
+                          blurRadius: 8.r,
+                          offset: Offset(0, 2.h),
+                          spreadRadius: 0,
+                        ),
                       ],
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(20.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  const Color(0xFF1A237E).withValues(alpha: 0.1),
+                                  const Color(0xFF1A237E).withValues(alpha: 0.05),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(14.r),
+                              border: Border.all(
+                                color: const Color(0xFF1A237E).withValues(alpha: 0.2),
+                                width: 1.w,
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(10.r),
+                                  decoration: BoxDecoration(
+                                    gradient: const LinearGradient(
+                                      colors: [Color(0xFF1A237E), Color(0xFF283593)],
+                                    ),
+                                    borderRadius: BorderRadius.circular(12.r),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: const Color(0xFF1A237E).withValues(alpha: 0.3),
+                                        blurRadius: 8.r,
+                                        offset: Offset(0, 3.h),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Icon(Icons.apartment_rounded, color: Colors.white, size: 22.sp),
+                                ),
+                                SizedBox(width: 14.w),
+                                Text(
+                                  "Thông tin công ty",
+                                  style: theme.textTheme.titleMedium?.copyWith(
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: const Color(0xFF1A237E),
+                                    letterSpacing: 0.2,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 16.h),
+                          ProfileContactItem(icon: Icons.business_rounded, title: "Công ty", subtitle: companyInfo!.companyName),
+                          ProfileContactItem(icon: Icons.people_rounded, title: "Quy mô", subtitle: companyInfo!.scale),
+                          ProfileContactItem(
+                              icon: Icons.public_rounded,
+                              title: "Website",
+                              subtitle: companyInfo!.websiteUrl ?? "Chưa có website",
+                              hasLink: true,
+                              isLast: true,
+                              onOpenLink: () {
+                                if (companyInfo?.websiteUrl != null) launchURL(companyInfo!.websiteUrl!);
+                              }),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
 
-              SizedBox(height: 10.h),
+              SizedBox(height: 16.h),
 
               // Recruitment Activity
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.w),
-                child: Card(
-                  elevation: 2,
-                  shadowColor: Colors.black12,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20.r),
+                    border: Border.all(
+                      color: const Color(0xFF1A237E).withValues(alpha: 0.1),
+                      width: 1.5.w,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF1A237E).withValues(alpha: 0.1),
+                        blurRadius: 15.r,
+                        offset: Offset(0, 6.h),
+                        spreadRadius: 0,
+                      ),
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.05),
+                        blurRadius: 8.r,
+                        offset: Offset(0, 2.h),
+                        spreadRadius: 0,
+                      ),
+                    ],
+                  ),
                   child: Padding(
                     padding: EdgeInsets.all(20.w),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 20.h),
-                        Row(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(8.w),
-                              decoration: BoxDecoration(
-                                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                                  borderRadius: BorderRadius.circular(12.r)),
-                              child: Icon(Icons.analytics_rounded, color: theme.colorScheme.primary, size: 24.sp),
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                const Color(0xFF1A237E).withValues(alpha: 0.1),
+                                const Color(0xFF1A237E).withValues(alpha: 0.05),
+                              ],
                             ),
-                            SizedBox(width: 12.w),
-                            Text(
-                              "Hoạt động tuyển dụng",
-                              style: theme.textTheme.titleMedium
-                                  ?.copyWith(fontSize: 18.sp, fontWeight: FontWeight.bold, color: theme.colorScheme.primary),
+                            borderRadius: BorderRadius.circular(14.r),
+                            border: Border.all(
+                              color: const Color(0xFF1A237E).withValues(alpha: 0.2),
+                              width: 1.w,
                             ),
-                          ],
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(10.r),
+                                decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    colors: [Color(0xFF1A237E), Color(0xFF283593)],
+                                  ),
+                                  borderRadius: BorderRadius.circular(12.r),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xFF1A237E).withValues(alpha: 0.3),
+                                      blurRadius: 8.r,
+                                      offset: Offset(0, 3.h),
+                                    ),
+                                  ],
+                                ),
+                                child: Icon(Icons.analytics_rounded, color: Colors.white, size: 22.sp),
+                              ),
+                              SizedBox(width: 14.w),
+                              Text(
+                                "Hoạt động tuyển dụng",
+                                style: theme.textTheme.titleMedium?.copyWith(
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: const Color(0xFF1A237E),
+                                  letterSpacing: 0.2,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         SizedBox(height: 16.h),
                         Row(
@@ -421,26 +767,30 @@ class _RecruiterProfilePageState extends State<RecruiterProfilePage> {
                 ),
               ),
 
-              SizedBox(height: 10.h),
+              SizedBox(height: 16.h),
 
               // Action Buttons
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: Column(
                   children: [
                     ProfileActionButton(
                       text: "Chỉnh sửa hồ sơ",
-                      icon: Icons.add_circle_outline_rounded,
+                      icon: Icons.edit_rounded,
                       isPrimary: true,
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => HrEditProfileScreen(
-                              account: user!, company: companyInfo!, recruiterInfo: recruiterInfo!),
-                        ),
-                      ),
+                      onPressed: () {
+                        if (companyInfo != null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => HrEditProfileScreen(
+                                  account: user!, company: companyInfo!, recruiterInfo: recruiterInfo!),
+                            ),
+                          );
+                        }
+                      },
                     ),
-                    SizedBox(height: 12.h),
+                    SizedBox(height: 14.h),
                     ProfileActionButton(
                       text: "Quản lý hồ sơ ứng viên",
                       icon: Icons.people_rounded,
@@ -451,13 +801,13 @@ class _RecruiterProfilePageState extends State<RecruiterProfilePage> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 12.h),
+                    SizedBox(height: 14.h),
                     ProfileActionButton(
                         text: "Đăng xuất",
                         icon: Icons.logout_rounded,
                         isDestructive: true,
                         onPressed: () => DialogUtils.showLogoutDialog(context)),
-                    SizedBox(height: 20.h),
+                    SizedBox(height: 24.h),
                   ],
                 ),
               ),

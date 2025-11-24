@@ -21,6 +21,7 @@ class CustomPassFieldWithLabel extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final int maxLines;
   final EdgeInsetsGeometry? contentPadding;
+  final double? iconSize;
 
   const CustomPassFieldWithLabel({
     super.key,
@@ -41,6 +42,7 @@ class CustomPassFieldWithLabel extends StatelessWidget {
     this.inputFormatters,
     this.maxLines = 1,
     this.contentPadding,
+    this.iconSize,
   });
 
   @override
@@ -71,13 +73,14 @@ class CustomPassFieldWithLabel extends StatelessWidget {
           fontSize: 16.sp,
         ),
         prefixIcon: Icon(
-          Icons.lock,
-          size: 20.sp,
+          Icons.lock_outlined,
+          size: (iconSize ?? 20).sp,
           color: prefixIconColor ?? theme.iconTheme.color,
         ),
         suffixIcon: IconButton(
           icon: Icon(
             isObscure ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+            size: (iconSize ?? 20).sp,
             color: suffixIconColor ?? theme.iconTheme.color,
           ),
           onPressed: onToggleVisibility,

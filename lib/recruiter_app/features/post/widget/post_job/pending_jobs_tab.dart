@@ -19,8 +19,9 @@ class PendingJobsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    // Hiển thị job có status 'editing' (admin yêu cầu chỉnh sửa) hoặc 'waiting' (chờ xác thực)
     final pendingJobs = jobPostings
-        .where((job) => job.postStatus == 'waiting')
+        .where((job) => job.postStatus == 'editing' || job.postStatus == 'waiting')
         .toList();
 
     return Container(
@@ -62,7 +63,7 @@ class PendingJobsTab extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Tin đăng chờ xác thực',
+                  'Tin đăng cần chỉnh sửa',
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: const Color(0xFFED8936),
@@ -71,7 +72,7 @@ class PendingJobsTab extends StatelessWidget {
                 ),
                 SizedBox(height: 4.h),
                 Text(
-                  'Bạn có $count tin đang chờ xác thực. Tin sẽ được hiển thị sau khi được duyệt.',
+                  'Bạn có $count tin cần chỉnh sửa. Vui lòng chỉnh sửa theo yêu cầu của admin hoặc hủy đăng bài.',
                   style: theme.textTheme.bodyMedium?.copyWith(
                     fontSize: 14.sp,
                     color: theme.colorScheme.onBackground,
@@ -87,7 +88,7 @@ class PendingJobsTab extends StatelessWidget {
 
   Widget _buildPendingJobCard(
       BuildContext context, ThemeData theme, JobPostingModel job) {
-    final bool needsEdit = job.postStatus != 'waiting';
+    final bool needsEdit = job.postStatus == 'editing';
     final Color statusColor = needsEdit ? Colors.red : const Color(0xFFED8936);
 
     return Container(
@@ -125,7 +126,7 @@ class PendingJobsTab extends StatelessWidget {
                 ),
                 SizedBox(width: 8.w),
                 Text(
-                  needsEdit ? 'Cần chỉnh sửa' : 'Chờ kiểm duyệt',
+                  needsEdit ? 'Cần chỉnh sửa' : 'Chờ xác thực',
                   style: theme.textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: statusColor,
@@ -141,7 +142,7 @@ class PendingJobsTab extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  job.title ?? '',
+                  job.title,
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                     fontSize: 16.sp,
@@ -152,13 +153,13 @@ class PendingJobsTab extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.location_on_outlined,
-                      size: 14.sp,
+                      size: 16.sp,
                       color: Colors.grey.shade600,
                     ),
                     SizedBox(width: 4.w),
                     Expanded(
                       child: Text(
-                        job.location ?? '',
+                        job.location,
                         maxLines: 4,
                         overflow: TextOverflow.visible,
                         softWrap: true,
@@ -175,12 +176,12 @@ class PendingJobsTab extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.calendar_today_outlined,
-                      size: 14.sp,
+                      size: 16.sp,
                       color: Colors.grey.shade600,
                     ),
                     SizedBox(width: 4.w),
                     Text(
-                      'Gửi ngày: ${DateFormat('dd/MM/yyyy').format(job.createdAt ?? DateTime.now())}',
+                      'Gửi ngày: ${DateFormat('dd/MM/yyyy').format(job.createdAt)}',
                       style: theme.textTheme.bodyMedium?.copyWith(
                         fontSize: 14.sp,
                         color: Colors.grey.shade600,
@@ -199,11 +200,13 @@ class PendingJobsTab extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(Icons.info_outline, color: statusColor, size: 16.sp),
+                      Icon(Icons.info_outline, color: statusColor, size: 18.sp),
                       SizedBox(width: 8.w),
                       Expanded(
                         child: Text(
-                          'Chờ kiểm duyệt nội dung',
+                          needsEdit 
+                              ? 'Admin yêu cầu chỉnh sửa nội dung. Vui lòng chỉnh sửa hoặc hủy đăng bài.'
+                              : 'Chờ kiểm duyệt nội dung',
                           style: theme.textTheme.bodyMedium?.copyWith(
                             fontSize: 14.sp,
                             color: Colors.grey.shade800,
@@ -218,8 +221,8 @@ class PendingJobsTab extends StatelessWidget {
                   children: [
                     Expanded(
                       child: OutlinedButton.icon(
-                        onPressed: () => onEditJob(job.idJobPost!),
-                        icon: Icon(Icons.edit_outlined, size: 16.sp),
+                        onPressed: () => onEditJob(job.idJobPost),
+                        icon: Icon(Icons.edit_outlined, size: 18.sp),
                         label: const Text('Chỉnh sửa'),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: statusColor,
@@ -232,8 +235,8 @@ class PendingJobsTab extends StatelessWidget {
                     SizedBox(width: 8.w),
                     Expanded(
                       child: OutlinedButton.icon(
-                        onPressed: () async => await onCancelJob(job.idJobPost!),
-                        icon: Icon(Icons.delete_outline, size: 16.sp),
+                        onPressed: () async => await onCancelJob(job.idJobPost),
+                        icon: Icon(Icons.delete_outline, size: 18.sp),
                         label: const Text('Hủy đăng'),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.grey.shade700,
@@ -264,7 +267,7 @@ class PendingJobsTab extends StatelessWidget {
           ),
           SizedBox(height: 16.h),
           Text(
-            "Không có tin đăng nào đang chờ xác thực",
+            "Không có tin đăng nào cần chỉnh sửa",
             style: theme.textTheme.titleMedium?.copyWith(
               fontSize: 18.sp,
               fontWeight: FontWeight.bold,
@@ -273,7 +276,7 @@ class PendingJobsTab extends StatelessWidget {
           ),
           SizedBox(height: 8.h),
           Text(
-            "Tất cả tin đăng của bạn đã được phê duyệt",
+            "Tất cả tin đăng của bạn đã được phê duyệt hoặc đang hoạt động",
             style: theme.textTheme.bodyMedium?.copyWith(
               fontSize: 14.sp,
               color: Colors.black54,

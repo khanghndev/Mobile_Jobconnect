@@ -24,17 +24,24 @@ class RecruiterInfoRow extends StatelessWidget {
 
     return Row(
       children: [
-        // Avatar nhà tuyển dụng
+        // Avatar nhà tuyển dụng nhỏ gọn
         Container(
-          width: 50.w,
-          height: 50.w,
+          width: 48.w,
+          height: 48.w,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: Colors.white,
             border: Border.all(color: Colors.white, width: 2.w),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.15),
+                blurRadius: 6.r,
+                offset: Offset(0, 2.h),
+              ),
+            ],
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(25.w),
+            borderRadius: BorderRadius.circular(24.w),
             child: Image(
               image: ImageUtils.getImageProvider(user?.avatarUrl),
               fit: BoxFit.cover,
@@ -46,6 +53,7 @@ class RecruiterInfoRow extends StatelessWidget {
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 user?.userName ?? 'Người dùng',
@@ -53,30 +61,58 @@ class RecruiterInfoRow extends StatelessWidget {
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 16.sp,
-                ),
-              ),
-              SizedBox(height: 2.h),
-              Text(
-                "Công ty: ${companyInfo?.companyName ?? "chưa có"}",
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: Colors.white.withOpacity(0.9),
-                  fontSize: 14.sp,
+                  letterSpacing: 0.1,
                 ),
               ),
               SizedBox(height: 4.h),
+              Row(
+                children: [
+                  Icon(
+                    Icons.business_outlined,
+                    color: Colors.white.withValues(alpha: 0.9),
+                    size: 14.sp,
+                  ),
+                  SizedBox(width: 4.w),
+                  Expanded(
+                    child: Text(
+                      companyInfo?.companyName ?? "Chưa có công ty",
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: Colors.white.withValues(alpha: 0.95),
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 6.h),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFFD700).withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(4.r),
+                  gradient: const LinearGradient(
+                    colors: [
+                      Color(0xFFFFD700),
+                      Color(0xFFFFC107),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(6.r),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFFFFD700).withValues(alpha: 0.3),
+                      blurRadius: 4.r,
+                      offset: Offset(0, 1.h),
+                    ),
+                  ],
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
-                      Icons.star,
-                      color: Color(0xFFFFD700),
-                      size: 12,
+                    Icon(
+                      Icons.star_rounded,
+                      color: Colors.white,
+                      size: 12.sp,
                     ),
                     SizedBox(width: 4.w),
                     Text(
@@ -84,9 +120,10 @@ class RecruiterInfoRow extends StatelessWidget {
                           ? packageName ?? "Gói Cao Cấp"
                           : "Gói Cơ bản",
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: const Color(0xFFFFD700),
+                        color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 12.sp,
+                        fontSize: 11.sp,
+                        letterSpacing: 0.2,
                       ),
                     ),
                   ],

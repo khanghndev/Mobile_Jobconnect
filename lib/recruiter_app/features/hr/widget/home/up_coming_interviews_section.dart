@@ -62,83 +62,149 @@ class UpComingInterviewsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    const recruiterPrimary = Color(0xFF1A237E);
+    
     if (upcomingInterviewSchedulesList.isEmpty) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Card(
-            elevation: 0,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
-            child: Padding(
-              padding: EdgeInsets.all(16.r),
-              child: Center(
-                child: Text(
+      return Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(18.r),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10.r,
+              offset: Offset(0, 4.h),
+            ),
+          ],
+          border: Border.all(
+            color: Colors.grey.withValues(alpha: 0.1),
+            width: 1.w,
+          ),
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(24.r),
+          child: Center(
+            child: Column(
+              children: [
+                Icon(
+                  Icons.event_busy_rounded,
+                  size: 48.sp,
+                  color: const Color(0xFF9CA3AF),
+                ),
+                SizedBox(height: 12.h),
+                Text(
                   'Không có lịch phỏng vấn sắp tới',
                   style: textTheme.bodyMedium?.copyWith(
                     fontSize: 14.sp,
-                    color: Colors.black54,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      );
-    }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Card(
-          elevation: 0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
-          child: Padding(
-            padding: EdgeInsets.all(16.r),
-            child: Column(
-              children: [
-                ListView.separated(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: upcomingInterviewSchedulesList.length,
-                  separatorBuilder: (_, __) => Column(
-                    children: [
-                      SizedBox(height: 12.h),
-                      Divider(height: 1.h),
-                      SizedBox(height: 12.h),
-                    ],
-                  ),
-                  itemBuilder: (context, index) {
-                    final schedule = upcomingInterviewSchedulesList[index];
-                    final account = accountInterviewList[index];
-                    final candidate = candidateInterviewList?[index];
-                    return _InterviewItem(
-                      userName: account.userName,
-                      position: candidate?.workPosition ?? '',
-                      hour: _formatHourWithAmPm(schedule.interviewDate),
-                      date: _getRelativeDateLabel(schedule.interviewDate),
-                      avatarColor: avatarColors[account.idUser]!,
-                    );
-                  },
-                ),
-                SizedBox(height: 24.h),
-                OutlinedButton(
-                  onPressed: onViewAll,
-                  style: OutlinedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 12.h),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    minimumSize: Size(double.infinity, 48.h),
-                  ),
-                  child: Text(
-                    'Xem tất cả lịch phỏng vấn',
-                    style: textTheme.bodyMedium?.copyWith(fontSize: 14.sp),
+                    color: const Color(0xFF6B7280),
                   ),
                 ),
               ],
             ),
           ),
         ),
-      ],
+      );
+    }
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10.r,
+            offset: Offset(0, 4.h),
+            spreadRadius: 0,
+          ),
+        ],
+        border: Border.all(
+          color: Colors.grey.withValues(alpha: 0.1),
+          width: 1.w,
+        ),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(20.r),
+        child: Column(
+          children: [
+            ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: upcomingInterviewSchedulesList.length > 3 ? 3 : upcomingInterviewSchedulesList.length,
+              separatorBuilder: (_, __) => Padding(
+                padding: EdgeInsets.symmetric(vertical: 12.h),
+                child: Divider(
+                  height: 1.h,
+                  color: Colors.grey.withValues(alpha: 0.1),
+                ),
+              ),
+              itemBuilder: (context, index) {
+                final schedule = upcomingInterviewSchedulesList[index];
+                final account = accountInterviewList[index];
+                final candidate = candidateInterviewList?[index];
+                return _InterviewItem(
+                  userName: account.userName,
+                  position: candidate?.workPosition ?? '',
+                  hour: _formatHourWithAmPm(schedule.interviewDate),
+                  date: _getRelativeDateLabel(schedule.interviewDate),
+                  avatarColor: avatarColors[account.idUser]!,
+                );
+              },
+            ),
+            if (upcomingInterviewSchedulesList.length > 3) ...[
+              SizedBox(height: 16.h),
+              Divider(height: 1.h, color: Colors.grey.withValues(alpha: 0.1)),
+              SizedBox(height: 16.h),
+            ],
+            SizedBox(height: 16.h),
+            Container(
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF1A237E), Color(0xFF283593)],
+                ),
+                borderRadius: BorderRadius.circular(12.r),
+                boxShadow: [
+                  BoxShadow(
+                    color: recruiterPrimary.withValues(alpha: 0.3),
+                    blurRadius: 8.r,
+                    offset: Offset(0, 4.h),
+                  ),
+                ],
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: onViewAll,
+                  borderRadius: BorderRadius.circular(12.r),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 14.h),
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Xem tất cả lịch phỏng vấn',
+                            style: textTheme.bodyMedium?.copyWith(
+                              fontSize: 14.sp,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          SizedBox(width: 6.w),
+                          Icon(
+                            Icons.arrow_forward_rounded,
+                            size: 18.sp,
+                            color: Colors.white,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -161,21 +227,42 @@ class _InterviewItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    const recruiterPrimary = Color(0xFF1A237E);
 
     return Row(
       children: [
-        CircleAvatar(
-          radius: 24.r,
-          backgroundColor: avatarColor.withOpacity(0.2),
-          child: Text(
-            userName.split(' ').last,
-            style: textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-              fontSize: 14.sp,
+        Container(
+          width: 50.w,
+          height: 50.w,
+          decoration: BoxDecoration(
+            color: avatarColor.withValues(alpha: 0.15),
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: recruiterPrimary.withValues(alpha: 0.2),
+              width: 2.w,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: avatarColor.withValues(alpha: 0.3),
+                blurRadius: 8.r,
+                offset: Offset(0, 2.h),
+              ),
+            ],
+          ),
+          child: Center(
+            child: Text(
+              userName.split(' ').isNotEmpty 
+                  ? userName.split(' ').last[0].toUpperCase()
+                  : userName[0].toUpperCase(),
+              style: textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 18.sp,
+                color: recruiterPrimary,
+              ),
             ),
           ),
         ),
-        SizedBox(width: 12.w),
+        SizedBox(width: 14.w),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,38 +272,78 @@ class _InterviewItem extends StatelessWidget {
                 style: textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 16.sp,
+                  color: const Color(0xFF1F2937),
                 ),
               ),
-              SizedBox(height: 2.h),
-              Text(
-                position,
-                style: textTheme.bodyMedium?.copyWith(
-                  fontSize: 14.sp,
-                  color: Colors.black54,
-                ),
+              SizedBox(height: 4.h),
+              Row(
+                children: [
+                  Icon(
+                    Icons.work_outline,
+                    size: 14.sp,
+                    color: const Color(0xFF6B7280),
+                  ),
+                  SizedBox(width: 4.w),
+                  Expanded(
+                    child: Text(
+                      position.isNotEmpty ? position : 'Chưa có vị trí',
+                      style: textTheme.bodyMedium?.copyWith(
+                        fontSize: 13.sp,
+                        color: const Color(0xFF6B7280),
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(
-              hour,
-              style: textTheme.bodyMedium?.copyWith(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-              ),
+        SizedBox(width: 14.w),
+
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+          decoration: BoxDecoration(
+            color: recruiterPrimary.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(10.r),
+            border: Border.all(
+              color: recruiterPrimary.withValues(alpha: 0.2),
+              width: 1.w,
             ),
-            SizedBox(height: 2.h),
-            Text(
-              date,
-              style: textTheme.bodySmall?.copyWith(
-                fontSize: 13.sp,
-                color: Colors.black54,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.access_time_rounded,
+                    size: 14.sp,
+                    color: recruiterPrimary,
+                  ),
+                  SizedBox(width: 4.w),
+                  Text(
+                    hour,
+                    style: textTheme.bodyMedium?.copyWith(
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.bold,
+                      color: recruiterPrimary,
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
+              SizedBox(height: 4.h),
+              Text(
+                date,
+                style: textTheme.bodySmall?.copyWith(
+                  fontSize: 11.sp,
+                  color: const Color(0xFF6B7280),
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );
