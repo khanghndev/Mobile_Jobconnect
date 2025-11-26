@@ -27,6 +27,9 @@ import 'package:job_connect/recruiter_app/features/post/widget/post_job/upgrade_
 import 'package:job_connect/recruiter_app/services/recruiter_service.dart';
 import 'package:job_connect/recruiter_app/services/subscriptionpackage_service.dart';
 import 'package:job_connect/recruiter_app/features/post/screens/hr_edit_detail_post_job_screen.dart';
+import 'package:job_connect/features/job/view_model/job_category_view_model.dart';
+import 'package:job_connect/features/job/model/job_category_model.dart';
+import 'package:job_connect/recruiter_app/features/post/service/work_schedule_service.dart';
 
 class HrPostJobScreen extends StatefulWidget {
   final String recruiterId;
@@ -74,19 +77,27 @@ class _HrPostJobScreenState extends State<HrPostJobScreen>
 
   // Dropdown / checkbox state for TemporaryJobsFormTab
   String _tempSelectedWorkType = 'Full-time';
-  String _tempSelectedWorkSchedule = 'Sáng';
-  String _tempSelectedCategory = 'IT';
+  String? _tempSelectedWorkSchedule; // Sẽ set từ API
+  String? _tempSelectedCategoryId; // Lưu idCategory thay vì tên
   String _tempSelectedExperience = 'Không yêu cầu';
   DateTime? _tempSeasonalStart;
   DateTime? _tempSeasonalEnd;
   DateTime? _tempApplicationDeadline;
   bool _tempIsUrgent = false;
+  
+  // Location coordinates
+  double? _recLatitude;
+  double? _recLongitude;
+  double? _tempLatitude;
+  double? _tempLongitude;
 
   // Dropdown options
   final List<String> workTypes = ['Full-time', 'Part-time', 'Temporary'];
-  final List<String> workSchedules = ['Sáng', 'Chiều', 'Tối'];
-  final List<String> categories = ['IT', 'Marketing', 'Sales'];
+  List<String> _workSchedules = []; // Sẽ load từ API
   final List<String> experienceLevels = ['Không yêu cầu', 'Mới tốt nghiệp', '1-3 năm', '3-5 năm'];
+  
+  // Job categories từ API
+  List<JobCategoryModel> _jobCategories = [];
   final List<String> _locations = [
     'An Giang','Bà Rịa - Vũng Tàu','Bạc Liêu','Bắc Giang','Bắc Kạn','Bắc Ninh',
     'Bến Tre','Bình Dương','Bình Định','Bình Phước','Bình Thuận','Cà Mau','Cao Bằng',
@@ -107,6 +118,7 @@ class _HrPostJobScreenState extends State<HrPostJobScreen>
   final CompanyService _companyService = CompanyService();
   final JobTransactionService _jobTransactionService = JobTransactionService();
   final SubscriptionPackageService _subscriptionPackageService = SubscriptionPackageService();
+  final WorkScheduleService _workScheduleService = WorkScheduleService();
 
   // Data
   UserModel? user;
@@ -166,6 +178,35 @@ class _HrPostJobScreenState extends State<HrPostJobScreen>
         packageId: transactions[0].idPackage,
       );
 
+      // Load job categories từ API
+      List<JobCategoryModel> categories = [];
+      try {
+        final categoryVm = JobCategoryViewModel();
+        await categoryVm.fetchAllCategories();
+        categories = categoryVm.activeCategories;
+        // Sắp xếp theo displayOrder nếu có
+        categories.sort((a, b) => (a.displayOrder ?? 0).compareTo(b.displayOrder ?? 0));
+      } catch (e) {
+        // Nếu lỗi, để categories rỗng
+        categories = [];
+      }
+
+      // Load work schedules từ API
+      List<String> workSchedules = [];
+      try {
+        workSchedules = await _workScheduleService.getWorkScheduleTypes();
+      } catch (e) {
+        // Fallback: sử dụng danh sách mặc định
+        workSchedules = [
+          'Theo giờ',
+          'Theo ngày',
+          'Theo tuần',
+          'Theo tháng',
+          'Linh hoạt',
+          'Theo dự án',
+        ];
+      }
+
       setState(() {
         recruiterInfo = recruiter;
         user = account;
@@ -174,6 +215,16 @@ class _HrPostJobScreenState extends State<HrPostJobScreen>
         transaction = transactions[0];
         subscriptionPackage = subscription;
         _isPremiumUser = subscription.packageName != 'Gói Cơ bản';
+        _jobCategories = categories;
+        _workSchedules = workSchedules;
+        // Set category mặc định nếu có
+        if (_tempSelectedCategoryId == null && categories.isNotEmpty) {
+          _tempSelectedCategoryId = categories.first.idCategory;
+        }
+        // Set workSchedule mặc định nếu có
+        if ((_tempSelectedWorkSchedule == null || _tempSelectedWorkSchedule!.isEmpty) && workSchedules.isNotEmpty) {
+          _tempSelectedWorkSchedule = workSchedules.first;
+        }
         isLoading = false;
       });
     } catch (e) {
@@ -202,6 +253,8 @@ class _HrPostJobScreenState extends State<HrPostJobScreen>
       _recSelectedExperience = experienceLevels.first;
       _recIsUrgent = false;
       _recApplicationDeadline = null;
+      _recLatitude = null;
+      _recLongitude = null;
     });
   }
 
@@ -217,13 +270,15 @@ class _HrPostJobScreenState extends State<HrPostJobScreen>
     _tempWorkDaysController.clear();
     setState(() {
       _tempSelectedWorkType = workTypes.first;
-      _tempSelectedWorkSchedule = workSchedules.first;
-      _tempSelectedCategory = categories.first;
+      _tempSelectedWorkSchedule = _workSchedules.isNotEmpty ? _workSchedules.first : null;
+      _tempSelectedCategoryId = _jobCategories.isNotEmpty ? _jobCategories.first.idCategory : null;
       _tempSelectedExperience = experienceLevels.first;
       _tempSeasonalStart = null;
       _tempSeasonalEnd = null;
       _tempApplicationDeadline = null;
       _tempIsUrgent = false;
+      _tempLatitude = null;
+      _tempLongitude = null;
     });
   }
 
@@ -257,15 +312,28 @@ class _HrPostJobScreenState extends State<HrPostJobScreen>
       requirements: _tempRequirementsController.text.trim(),
       salary: double.tryParse(_tempHourlyRateController.text) ?? 0,
       location: _tempLocationController.text.trim(),
+      latitude: _tempLatitude,
+      longitude: _tempLongitude,
       workType: _tempSelectedWorkType,
-      experienceLevel: _tempSelectedWorkSchedule,
+      experienceLevel: _tempSelectedExperience,
       idCompany: companyInfo?.idCompany ?? '',
+      idCategory: _tempSelectedCategoryId, // Lưu idCategory
       applicationDeadline: _tempApplicationDeadline ?? DateTime.now().add(const Duration(days: 7)),
       benefits: '',
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
       isFeatured: _tempIsUrgent ? 1 : 0,
       postStatus: 'waiting',
+      hourlyRate: double.tryParse(_tempHourlyRateController.text),
+      dailyRate: double.tryParse(_tempDailyRateController.text),
+      minHoursPerWeek: int.tryParse(_tempMinHoursController.text),
+      maxHoursPerWeek: int.tryParse(_tempMaxHoursController.text),
+      workDaysPerWeek: int.tryParse(_tempWorkDaysController.text),
+      workSchedule: _tempSelectedWorkSchedule,
+      seasonalStartDate: _tempSeasonalStart,
+      seasonalEndDate: _tempSeasonalEnd,
+      isSeasonal: _tempSelectedWorkType == 'Temporary',
+      isUrgent: _tempIsUrgent,
     );
 
     try {
@@ -340,6 +408,8 @@ class _HrPostJobScreenState extends State<HrPostJobScreen>
       requirements: _recRequirementsController.text.trim(),
       salary: double.tryParse(_recSalaryController.text.replaceAll(',', '').replaceAll('.', '')) ?? 0,
       location: location,
+      latitude: _recLatitude,
+      longitude: _recLongitude,
       workType: _recSelectedWorkType,
       experienceLevel: _recSelectedExperience,
       idCompany: companyInfo?.idCompany ?? '',
@@ -349,6 +419,8 @@ class _HrPostJobScreenState extends State<HrPostJobScreen>
       updatedAt: DateTime.now(),
       isFeatured: _recIsUrgent ? 1 : 0,
       postStatus: 'waiting',
+      workDaysPerWeek: int.tryParse(_workDaysController.text),
+      isUrgent: _recIsUrgent,
     );
 
     try {
@@ -546,6 +618,12 @@ class _HrPostJobScreenState extends State<HrPostJobScreen>
                     onResetForm: _resetRecruitmentForm,
                     onCreateJob: _createRecruitmentJob,
                     formKey: _recruitmentFormKey,
+                    onLocationObtained: (lat, lng) {
+                      setState(() {
+                        _recLatitude = lat;
+                        _recLongitude = lng;
+                      });
+                    },
                   ),
                   TemporaryJobsFormTab(
                     isPremiumUser: _isPremiumUser,
@@ -560,7 +638,7 @@ class _HrPostJobScreenState extends State<HrPostJobScreen>
                     workDaysController: _tempWorkDaysController,
                     workType: _tempSelectedWorkType,
                     workSchedule: _tempSelectedWorkSchedule,
-                    category: _tempSelectedCategory,
+                    categoryId: _tempSelectedCategoryId,
                     experienceLevel: _tempSelectedExperience,
                     seasonalStart: _tempSeasonalStart,
                     seasonalEnd: _tempSeasonalEnd,
@@ -581,14 +659,20 @@ class _HrPostJobScreenState extends State<HrPostJobScreen>
                     },
                     onWorkTypeChanged: (v) => setState(() => _tempSelectedWorkType = v),
                     onWorkScheduleChanged: (v) => setState(() => _tempSelectedWorkSchedule = v),
-                    onCategoryChanged: (v) => setState(() => _tempSelectedCategory = v),
+                    onCategoryChanged: (v) => setState(() => _tempSelectedCategoryId = v),
                     onExperienceChanged: (v) => setState(() => _tempSelectedExperience = v),
                     onUrgentChanged: (v) => setState(() => _tempIsUrgent = v),
                     formKey: _temporaryFormKey,
                     workTypes: workTypes,
-                    workSchedules: workSchedules,
-                    categories: categories,
+                    workSchedules: _workSchedules,
+                    categories: _jobCategories,
                     experienceLevels: experienceLevels,
+                    onLocationObtained: (lat, lng) {
+                      setState(() {
+                        _tempLatitude = lat;
+                        _tempLongitude = lng;
+                      });
+                    },
                   ),
                   HistoryTab(
                     jobPostings: jobPostingsList,

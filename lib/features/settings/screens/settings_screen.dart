@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:go_router/go_router.dart';
@@ -22,10 +21,10 @@ import 'package:job_connect/features/settings/widgets/settings/setting_switch_ca
 import 'package:job_connect/features/settings/widgets/settings/setting_section.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
-import 'package:local_auth/local_auth.dart';
 import 'package:job_connect/config/providers/theme_provider.dart';
 import 'package:job_connect/config/providers/text_size_provider.dart';
 import 'package:job_connect/config/providers/brightness_provider.dart';
+import 'package:job_connect/config/services/biometric_auth_service.dart';
 
 class SettingScreen extends StatefulWidget {
   final bool isLoggedIn;
@@ -41,7 +40,10 @@ class SettingScreen extends StatefulWidget {
 }
 
 class SettingScreenState extends State<SettingScreen> with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  final LocalAuthentication auth = LocalAuthentication();
+  final BiometricAuthService _biometricService = BiometricAuthService();
+  BiometricStatus _biometricStatus = BiometricStatus.error;
+  String _biometricTypeName = 'Sinh trắc học';
+  bool _isBiometricLoading = false;
 
   bool _notificationsEnabled = true;
   String _selectedLanguage = 'Tiếng Việt';
@@ -76,6 +78,11 @@ class SettingScreenState extends State<SettingScreen> with TickerProviderStateMi
 
   Future<void> _loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
+    
+    // Load biometric status
+    _biometricStatus = await _biometricService.getBiometricStatus();
+    _biometricTypeName = await _biometricService.getPrimaryBiometricName();
+    
     if (mounted) {
       setState(() {
         _notificationsEnabled = prefs.getBool('notifications_enabled') ?? true;
@@ -111,55 +118,77 @@ class SettingScreenState extends State<SettingScreen> with TickerProviderStateMi
 
   Future<void> _onToggleBiometricAuth(
       bool enable, ThemeProvider themeProvider) async {
-    if (enable) {
-      bool canCheckBiometrics = await auth.canCheckBiometrics;
-      if (!canCheckBiometrics) {
-        if (mounted){
-          SnackbarApp.show(
-            context,
-            title: 'Lỗi',
-            message: 'Thiết bị này không hỗ trợ sinh trắc học.',
-            backgroundColor: BackgroundColors.backgroundErrorPrimary,
-          );
+    if (!mounted) return;
+    
+    setState(() {
+      _isBiometricLoading = true;
+    });
+    
+    try {
+      if (enable) {
+        // Kiểm tra thiết bị có hỗ trợ không
+        final isSupported = await _biometricService.isDeviceSupported();
+        if (!isSupported) {
+          if (mounted) {
+            setState(() {
+              _isBiometricLoading = false;
+            });
+            SnackbarApp.show(
+              context,
+              title: 'Không hỗ trợ',
+              message: 'Thiết bị này không hỗ trợ sinh trắc học.',
+              backgroundColor: BackgroundColors.backgroundErrorPrimary,
+            );
+          }
+          return;
         }
-        return;
-      }
 
-      List<BiometricType> availableBiometrics = await auth.getAvailableBiometrics();
-      if (availableBiometrics.isEmpty) {
-        if (mounted){
-          SnackbarApp.show(
-            context,
-            title: 'Lỗi',
-            message: 'Vui lòng cài đặt ít nhất một phương thức sinh trắc học.',
-            backgroundColor: BackgroundColors.backgroundErrorPrimary,
-          );
+        // Kiểm tra có phương thức nào khả dụng không
+        final available = await _biometricService.getAvailableBiometrics();
+        if (available.isEmpty) {
+          if (mounted) {
+            setState(() {
+              _isBiometricLoading = false;
+            });
+            SnackbarApp.show(
+              context,
+              title: 'Chưa cài đặt',
+              message: 'Vui lòng cài đặt ít nhất một phương thức sinh trắc học trong Cài đặt hệ thống.',
+              backgroundColor: BackgroundColors.backgroundErrorPrimary,
+            );
+          }
+          return;
         }
-        return;
-      }
 
-      try {
-        bool authenticated = await auth.authenticate(
-          localizedReason: 'Vui lòng xác thực để bật đăng nhập sinh trắc học',
-          options: const AuthenticationOptions(
-            stickyAuth: true,
-            biometricOnly: true,
-          ),
+        // Lấy tên phương thức sinh trắc học
+        final biometricName = await _biometricService.getPrimaryBiometricName();
+        
+        // Xác thực
+        final authenticated = await _biometricService.authenticate(
+          reason: 'Vui lòng xác thực bằng $biometricName để bật đăng nhập sinh trắc học',
+          useErrorDialogs: true,
+          stickyAuth: true,
         );
 
         if (authenticated) {
           if (mounted) {
-            themeProvider.toggleBiometric(true);
-            _saveSetting('biometric_enabled', true);
+            await themeProvider.toggleBiometric(true);
+            await _loadSettings(); // Reload status
+            setState(() {
+              _isBiometricLoading = false;
+            });
             SnackbarApp.show(
               context,
               title: 'Thành công',
-              message: 'Đăng nhập sinh trắc học đã được bật.',
+              message: 'Đăng nhập bằng $biometricName đã được bật.',
               backgroundColor: BackgroundColors.backgroundSuccessPrimary,
             );
           }
         } else {
-          if (mounted){
+          if (mounted) {
+            setState(() {
+              _isBiometricLoading = false;
+            });
             SnackbarApp.show(
               context,
               title: 'Thất bại',
@@ -168,29 +197,92 @@ class SettingScreenState extends State<SettingScreen> with TickerProviderStateMi
             );
           }
         }
-      } on PlatformException catch (e) {
-        if (mounted){
+      } else {
+        // Tắt đăng nhập sinh trắc học
+        await themeProvider.toggleBiometric(false);
+        await _loadSettings(); // Reload status
+        if (mounted) {
+          setState(() {
+            _isBiometricLoading = false;
+          });
           SnackbarApp.show(
             context,
-            title: 'Lỗi',
-            message: 'Lỗi sinh trắc học: ${e.message}',
-            backgroundColor: BackgroundColors.backgroundErrorPrimary,
+            title: 'Thành công',
+            message: 'Đăng nhập sinh trắc học đã được tắt.',
+            backgroundColor: BackgroundColors.backgroundSuccessPrimary,
           );
         }
-          
       }
-    } else {
-      themeProvider.toggleBiometric(false);
-      _saveSetting('biometric_enabled', false);
-      if (mounted){
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isBiometricLoading = false;
+        });
         SnackbarApp.show(
           context,
-          title: 'Thành công',
-          message: 'Đăng nhập sinh trắc học đã được tắt.',
-          backgroundColor: BackgroundColors.backgroundSuccessPrimary,
+          title: 'Lỗi',
+          message: e.toString().replaceFirst('Exception: ', ''),
+          backgroundColor: BackgroundColors.backgroundErrorPrimary,
         );
       }
     }
+  }
+
+  /// Widget hiển thị card đăng nhập sinh trắc học
+  Widget _buildBiometricCard(ThemeProvider themeProvider) {
+    final theme = Theme.of(context);
+    final isEnabled = themeProvider.biometricEnabled;
+    
+    // Chọn icon dựa trên loại sinh trắc học
+    IconData icon;
+    if (_biometricTypeName.contains('Face')) {
+      icon = Icons.face_rounded;
+    } else if (_biometricTypeName.contains('Vân tay')) {
+      icon = Icons.fingerprint_rounded;
+    } else {
+      icon = Icons.security_rounded;
+    }
+
+    // Subtitle dựa trên trạng thái
+    String subtitle;
+    if (isEnabled) {
+      subtitle = 'Sử dụng $_biometricTypeName để đăng nhập nhanh';
+    } else {
+      subtitle = 'Bật để đăng nhập nhanh bằng $_biometricTypeName';
+    }
+
+    return Stack(
+      children: [
+        SettingSwitchCard(
+          icon: icon,
+          title: "Đăng nhập sinh trắc học",
+          subtitle: subtitle,
+          value: isEnabled,
+          iconColor: isEnabled 
+              ? theme.colorScheme.primary 
+              : theme.colorScheme.onSurfaceVariant,
+          onChanged: _isBiometricLoading 
+              ? (_) {} // Disable khi đang loading
+              : (value) {
+                  // Luôn cho phép bấm, kiểm tra bên trong method
+                  _onToggleBiometricAuth(value, themeProvider);
+                },
+        ),
+        if (_isBiometricLoading)
+          Positioned.fill(
+            child: Container(
+              color: Colors.black.withValues(alpha: 0.1),
+              child: Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    theme.colorScheme.primary,
+                  ),
+                ),
+              ),
+            ),
+          ),
+      ],
+    );
   }
 
   @override
@@ -396,14 +488,7 @@ class SettingScreenState extends State<SettingScreen> with TickerProviderStateMi
                       },
                     ),
                     if (widget.isLoggedIn)
-                      SettingSwitchCard(
-                        icon: Icons.fingerprint_rounded,
-                        title: "Đăng nhập sinh trắc học",
-                        value: themeProvider.biometricEnabled,
-                        onChanged: (value) {
-                          _onToggleBiometricAuth(value, themeProvider);
-                        },
-                      ),
+                      _buildBiometricCard(themeProvider),
                   ],
                 ),
 

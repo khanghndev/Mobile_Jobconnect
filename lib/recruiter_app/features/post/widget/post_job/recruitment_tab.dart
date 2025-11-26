@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:job_connect/config/utils/input_validators.dart';
 import 'package:job_connect/config/widgets/custom_text_field_with_label.dart';
 import 'package:job_connect/config/widgets/section_title.dart';
+import 'package:job_connect/recruiter_app/features/post/widget/post_job/location_field_with_current_location.dart';
 
 class RecruitmentTab extends StatelessWidget {
   final bool isPremiumUser;
@@ -31,6 +32,7 @@ class RecruitmentTab extends StatelessWidget {
   final ValueChanged<String> onLocationChanged;
   final ValueChanged<bool> onUrgentChanged;
   final GlobalKey<FormState> formKey;
+  final Function(double?, double?)? onLocationObtained;
 
   const RecruitmentTab({
     super.key,
@@ -58,6 +60,7 @@ class RecruitmentTab extends StatelessWidget {
     required this.onLocationChanged,
     required this.onUrgentChanged,
     required this.formKey,
+    this.onLocationObtained,
   });
 
   @override
@@ -359,17 +362,17 @@ class RecruitmentTab extends StatelessWidget {
             ),
             SizedBox(height: 18.h),
 
-            // Địa điểm làm việc
-            _buildDropdown(
-              context: context,
+            // Địa điểm làm việc với nút lấy vị trí hiện tại
+            LocationFieldWithCurrentLocation(
+              controller: locationController,
               label: 'Địa điểm làm việc',
-              icon: Icons.location_on_outlined,
-              value: location,
-              items: locations,
-              onChanged: (val) {
-                onLocationChanged(val);
-                locationController.text = val;
-              },
+              hintText: 'Nhập địa điểm hoặc nhấn nút để lấy vị trí hiện tại',
+              labelTextColor: recruiterPrimary,
+              prefixIconColor: recruiterPrimary,
+              fillColor: recruiterPrimary.withValues(alpha: 0.05),
+              borderColor: recruiterPrimary.withValues(alpha: 0.3),
+              borderRadius: 14.r,
+              onLocationObtained: onLocationObtained,
             ),
             SizedBox(height: 18.h),
 

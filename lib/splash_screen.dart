@@ -57,73 +57,10 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
   Future<void> _checkLogin() async {
     if (!mounted) return;
-    final authVM = context.read<AuthViewModel>();
-    final userVM = context.read<UserViewModel>();
-    final notifVM = context.read<NotificationViewModel>();
-
-    try {
-      await authVM.checkLoginStatus().timeout(const Duration(seconds: 5));
-
-      // Nếu chưa đăng nhập, đi thẳng ra chọn role
-      if (!authVM.isLoggedIn || authVM.idUser == null) {
-        if (mounted) context.go('/auth/role');
-        return;
-      }
-
-      try {
-        await userVM.getCurrentUser(authVM.idUser!).timeout(const Duration(seconds: 5));
-      } catch (e) {
-        if (mounted) {
-          SnackbarApp.show(
-            context,
-            message: 'Không thể tải thông tin người dùng.',
-            backgroundColor: BackgroundColors.backgroundErrorPrimary,
-          );
-        }
-        if (mounted) context.go('/auth/role');
-        return;
-      }
-
-      try {
-        await notifVM.getUnreadCount(authVM.idUser!).timeout(const Duration(seconds: 5));
-      } catch (_) {
-
-      }
-
-      if (!mounted) return;
-      final role = userVM.roleName;
-      if (role == StringUtils.capitalize(UserRole.candidate.name)) {
-        context.go('/home', extra: {
-          'isLoggedIn': authVM.isLoggedIn,
-          'idUser': authVM.idUser,
-        });
-      } else if (role == StringUtils.capitalize(UserRole.recruiter.name)) {
-        context.go('/recruiter', extra: {
-          'userAccount': userVM.currentUser,
-          'isLoggedIn': authVM.isLoggedIn,
-          'currentIndex': 0,
-        });
-      } else {
-        context.go('/auth/role');
-      }
-    } on TimeoutException {
-      if (mounted) {
-        SnackbarApp.show(
-          context,
-          message: 'Không thể kết nối đến máy chủ, vui lòng thử lại sau.',
-          backgroundColor: BackgroundColors.backgroundErrorPrimary,
-        );
-        context.go('/auth/role');
-      }
-    } catch (e) {
-      if (mounted) {
-        SnackbarApp.show(
-          context,
-          message: 'Đã xảy ra lỗi, vui lòng thử lại.',
-          backgroundColor: BackgroundColors.backgroundErrorPrimary,
-        );
-        context.go('/auth/role');
-      }
+    
+    // Chuyển đến màn hình kiểm tra xác thực
+    if (mounted) {
+      context.go('/auth/check');
     }
   }
 

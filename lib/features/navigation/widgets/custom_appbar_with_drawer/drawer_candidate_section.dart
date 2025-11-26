@@ -51,18 +51,18 @@ class DrawerCandidateSection extends StatelessWidget {
             ),
             isSelected: selectedRoute == '/home/cv',
           ),
-          DrawerItem(
-            icon: Icons.document_scanner_outlined,
-            title: 'Phân tích CV',
-            onTap: () => _checkLoginOrRouter(
-              context: context, 
-              route: '/resume/analysis',
-              extra: {
-                'idUser': idUser,
-              }
-            ),
-            isSelected: selectedRoute == '/resume/analysis',
-          ),
+          // DrawerItem(
+          //   icon: Icons.document_scanner_outlined,
+          //   title: 'Phân tích CV',
+          //   onTap: () => _checkLoginOrRouter(
+          //     context: context, 
+          //     route: '/resume/analysis',
+          //     extra: {
+          //       'idUser': idUser,
+          //     }
+          //   ),
+          //   isSelected: selectedRoute == '/resume/analysis',
+          // ),
           DrawerItem(
             icon: Icons.bookmark_added_outlined,
             title: 'Công việc đã lưu',
@@ -121,7 +121,7 @@ class DrawerCandidateSection extends StatelessWidget {
           ),
           DrawerItem(
             icon: Icons.people_outline,
-            title: 'Kết nối',
+            title: 'Nhóm',
             onTap: () => _checkLoginOrRouter(
               context: context, 
               route: '/social/connections',

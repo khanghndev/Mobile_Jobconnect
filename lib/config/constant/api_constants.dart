@@ -84,6 +84,11 @@ class ApiConstants {
   static const String resumeSkillEndpoint = "/api/ResumeSkill";
   static const String savedResumeEndpoint = "/api/SavedResume";
   static const String setDefaultResumeEndpoint = "/api/Resume/set-default";
+  
+  // CV ANALYSIS - Phân tích CV
+  static const String cvAnalysisEndpoint = "/api/CvAnalysis";
+  static const String cvAnalysisExtractText = "$cvAnalysisEndpoint/extract-text";
+  static const String cvAnalysisAnalyze = "$cvAnalysisEndpoint/analyze";
 
   // COMPANIES - Doanh nghiệp
   static const String companiesEndpoint = "/api/Companies";

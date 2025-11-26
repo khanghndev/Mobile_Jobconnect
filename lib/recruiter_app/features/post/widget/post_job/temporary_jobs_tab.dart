@@ -3,6 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:job_connect/config/widgets/custom_text_field_with_label.dart';
 import 'package:job_connect/config/widgets/section_title.dart';
+import 'package:job_connect/recruiter_app/features/post/widget/post_job/location_field_with_current_location.dart';
+import 'package:job_connect/recruiter_app/features/post/widget/post_job/dynamic_salary_fields.dart';
+import 'package:job_connect/recruiter_app/features/post/widget/post_job/dynamic_work_schedule_fields.dart';
+import 'package:job_connect/features/job/model/job_category_model.dart';
 
 class TemporaryJobsFormTab extends StatelessWidget {
   final bool isPremiumUser;
@@ -16,9 +20,10 @@ class TemporaryJobsFormTab extends StatelessWidget {
   final TextEditingController maxHoursController;
   final TextEditingController workDaysController;
   final String workType;
-  final String workSchedule;
-  final String category;
+  final String? workSchedule; // Có thể null khi chưa load
+  final String? categoryId; // Lưu idCategory thay vì tên
   final String experienceLevel;
+  final Function(double?, double?)? onLocationObtained;
   final DateTime? seasonalStart;
   final DateTime? seasonalEnd;
   final DateTime? applicationDeadline;
@@ -30,13 +35,13 @@ class TemporaryJobsFormTab extends StatelessWidget {
   final VoidCallback onPickDeadline;
   final ValueChanged<String> onWorkTypeChanged;
   final ValueChanged<String> onWorkScheduleChanged;
-  final ValueChanged<String> onCategoryChanged;
+  final ValueChanged<String> onCategoryChanged; // Nhận idCategory
   final ValueChanged<String> onExperienceChanged;
   final ValueChanged<bool> onUrgentChanged;
   final GlobalKey<FormState> formKey;
   final List<String> workTypes;
   final List<String> workSchedules;
-  final List<String> categories;
+  final List<JobCategoryModel> categories; // Thay đổi từ List<String>
   final List<String> experienceLevels;
 
   const TemporaryJobsFormTab({
@@ -53,7 +58,7 @@ class TemporaryJobsFormTab extends StatelessWidget {
     required this.workDaysController,
     required this.workType,
     required this.workSchedule,
-    required this.category,
+    required this.categoryId,
     required this.experienceLevel,
     required this.seasonalStart,
     required this.seasonalEnd,
@@ -74,6 +79,7 @@ class TemporaryJobsFormTab extends StatelessWidget {
     required this.workSchedules,
     required this.categories,
     required this.experienceLevels,
+    this.onLocationObtained,
   });
 
   @override
@@ -213,109 +219,92 @@ class TemporaryJobsFormTab extends StatelessWidget {
             ),
             SizedBox(height: 16.h),
 
-            // Lương
-            CustomTextFieldWithLabel(
-              labelTextColor: recruiterPrimary,
-              prefixIconColor: recruiterPrimary,
-              fillColor: recruiterPrimary.withValues(alpha: 0.05),
-              borderColor: recruiterPrimary.withValues(alpha: 0.3),
-              borderRadius: 14.r,
-              controller: hourlyRateController,
-              label: 'Lương theo giờ',
-              hintText: 'VNĐ/giờ',
-              icon: Icons.monetization_on_outlined,
-              iconSize: 20.sp,
-              keyboardType: TextInputType.number,
-            ),
-            SizedBox(height: 16.h),
-            CustomTextFieldWithLabel(
-              labelTextColor: recruiterPrimary,
-              prefixIconColor: recruiterPrimary,
-              fillColor: recruiterPrimary.withValues(alpha: 0.05),
-              borderColor: recruiterPrimary.withValues(alpha: 0.3),
-              borderRadius: 14.r,
-              controller: dailyRateController,
-              label: 'Lương theo ngày',
-              hintText: 'VNĐ/ngày',
-              icon: Icons.monetization_on_outlined,
-              iconSize: 20.sp,
-              keyboardType: TextInputType.number,
-            ),
-            SizedBox(height: 16.h),
-
-            // Min & Max hours per week
-            Row(
-              children: [
-                Expanded(
-                  child: CustomTextFieldWithLabel(
-                    labelTextColor: recruiterPrimary,
-                    prefixIconColor: recruiterPrimary,
-                    fillColor: recruiterPrimary.withValues(alpha: 0.05),
-                    borderColor: recruiterPrimary.withValues(alpha: 0.3),
-                    borderRadius: 14.r,
-                    controller: minHoursController,
-                    label: 'Số giờ tối thiểu/tuần',
-                    keyboardType: TextInputType.number,
-                    icon: Icons.access_time_outlined,
-                    iconSize: 20.sp,
-                  ),
-                ),
-                SizedBox(width: 12.w),
-                Expanded(
-                  child: CustomTextFieldWithLabel(
-                    labelTextColor: recruiterPrimary,
-                    prefixIconColor: recruiterPrimary,
-                    fillColor: recruiterPrimary.withValues(alpha: 0.05),
-                    borderColor: recruiterPrimary.withValues(alpha: 0.3),
-                    borderRadius: 14.r,
-                    controller: maxHoursController,
-                    label: 'Số giờ tối đa/tuần',
-                    keyboardType: TextInputType.number,
-                    icon: Icons.access_time_outlined,
-                    iconSize: 20.sp,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 16.h),
-
-            // Work days
-            CustomTextFieldWithLabel(
-              labelTextColor: recruiterPrimary,
-              prefixIconColor: recruiterPrimary,
-              fillColor: recruiterPrimary.withValues(alpha: 0.05),
-              borderColor: recruiterPrimary.withValues(alpha: 0.3),
-              borderRadius: 14.r,
-              controller: workDaysController,
-              label: 'Số ngày làm việc/tuần',
-              keyboardType: TextInputType.number,
-              icon: Icons.calendar_today_outlined,
-              iconSize: 20.sp,
-            ),
-            SizedBox(height: 16.h),
-
-            // Dropdowns
+            // Dropdowns - Đặt trước để user chọn trước
             _buildDropdown(context, 'Loại công việc', workType, workTypes, onWorkTypeChanged, theme),
             SizedBox(height: 16.h),
             _buildDropdown(context, 'Thời gian làm việc', workSchedule, workSchedules, onWorkScheduleChanged, theme),
             SizedBox(height: 16.h),
-            _buildDropdown(context, 'Danh mục công việc', category, categories, onCategoryChanged, theme),
+            _buildCategoryDropdown(context, 'Danh mục công việc', categoryId, categories, onCategoryChanged, theme),
             SizedBox(height: 16.h),
             _buildDropdown(context, 'Trình độ kinh nghiệm', experienceLevel, experienceLevels, onExperienceChanged, theme),
-            SizedBox(height: 16.h),
+            SizedBox(height: 24.h),
 
-            // Location
-            CustomTextFieldWithLabel(
+            // Section: Mức lương và lịch làm việc (render động theo workType và workSchedule)
+            if (workType == 'Part-time' || workType == 'Temporary') ...[
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 18.w),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      recruiterPrimary.withValues(alpha: 0.1),
+                      recruiterPrimary.withValues(alpha: 0.05),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(14.r),
+                  border: Border.all(
+                    color: recruiterPrimary.withValues(alpha: 0.25),
+                    width: 1.5.w,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: recruiterPrimary.withValues(alpha: 0.1),
+                      blurRadius: 8.r,
+                      offset: Offset(0, 2.h),
+                    ),
+                  ],
+                ),
+                child: SectionTitle(
+                  title: "MỨC LƯƠNG VÀ LỊCH LÀM VIỆC",
+                  icon: Icons.access_time_rounded,
+                  iconColor: recruiterPrimary,
+                  textColor: recruiterPrimary,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 20.h),
+
+              // Lương động theo workType và workSchedule
+              DynamicSalaryFields(
+                workType: workType,
+                workSchedule: workSchedule,
+                hourlyRateController: hourlyRateController,
+                dailyRateController: dailyRateController,
+                labelTextColor: recruiterPrimary,
+                prefixIconColor: recruiterPrimary,
+                fillColor: recruiterPrimary.withValues(alpha: 0.05),
+                borderColor: recruiterPrimary.withValues(alpha: 0.3),
+                borderRadius: 14.r,
+              ),
+              SizedBox(height: 16.h),
+
+              // Lịch làm việc động theo workType và workSchedule
+              DynamicWorkScheduleFields(
+                workType: workType,
+                workSchedule: workSchedule,
+                minHoursController: minHoursController,
+                maxHoursController: maxHoursController,
+                workDaysController: workDaysController,
+                labelTextColor: recruiterPrimary,
+                prefixIconColor: recruiterPrimary,
+                fillColor: recruiterPrimary.withValues(alpha: 0.05),
+                borderColor: recruiterPrimary.withValues(alpha: 0.3),
+                borderRadius: 14.r,
+              ),
+              SizedBox(height: 24.h),
+            ],
+
+            // Location với nút lấy vị trí hiện tại
+            LocationFieldWithCurrentLocation(
+              controller: locationController,
+              label: 'Địa điểm làm việc',
+              hintText: 'Nhập địa điểm hoặc nhấn nút để lấy vị trí hiện tại',
               labelTextColor: recruiterPrimary,
               prefixIconColor: recruiterPrimary,
               fillColor: recruiterPrimary.withValues(alpha: 0.05),
               borderColor: recruiterPrimary.withValues(alpha: 0.3),
               borderRadius: 14.r,
-              controller: locationController,
-              label: 'Địa điểm làm việc',
-              hintText: 'Nhập địa điểm...',
-              icon: Icons.location_on_outlined,
-              iconSize: 20.sp,
+              onLocationObtained: onLocationObtained,
             ),
             SizedBox(height: 24.h),
 
@@ -528,7 +517,75 @@ class TemporaryJobsFormTab extends StatelessWidget {
     );
   }
 
-  Widget _buildDropdown(BuildContext context, String label, String value, List<String> items, ValueChanged<String> onChanged, ThemeData theme) {
+  Widget _buildDropdown(BuildContext context, String label, String? value, List<String> items, ValueChanged<String> onChanged, ThemeData theme) {
+    const recruiterPrimary = Color(0xFF1A237E);
+    // Đảm bảo value hợp lệ - phải nằm trong items
+    final validValue = (value != null && items.contains(value)) ? value : (items.isNotEmpty ? items.first : null);
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            fontSize: 14.sp,
+            color: recruiterPrimary,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        SizedBox(height: 10.h),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
+          decoration: BoxDecoration(
+            color: recruiterPrimary.withValues(alpha: 0.05),
+            borderRadius: BorderRadius.circular(14.r),
+            border: Border.all(
+              color: recruiterPrimary.withValues(alpha: 0.3),
+              width: 1.w,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: recruiterPrimary.withValues(alpha: 0.05),
+                blurRadius: 4.r,
+                offset: Offset(0, 2.h),
+              ),
+            ],
+          ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              value: validValue,
+              isExpanded: true,
+              icon: Icon(Icons.arrow_drop_down_rounded, size: 22.sp, color: recruiterPrimary),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontSize: 15.sp,
+                color: const Color(0xFF1F2937),
+                fontWeight: FontWeight.w500,
+              ),
+              dropdownColor: Colors.white,
+              hint: items.isEmpty 
+                  ? Text(
+                      'Đang tải...',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        fontSize: 15.sp,
+                        color: const Color(0xFF9CA3AF),
+                      ),
+                    )
+                  : null,
+              items: items.map((item) => DropdownMenuItem(
+                value: item,
+                child: Text(item),
+              )).toList(),
+              onChanged: items.isEmpty ? null : (v) { 
+                if (v != null) onChanged(v); 
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCategoryDropdown(BuildContext context, String label, String? categoryId, List<JobCategoryModel> categories, ValueChanged<String> onChanged, ThemeData theme) {
     const recruiterPrimary = Color(0xFF1A237E);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -561,7 +618,7 @@ class TemporaryJobsFormTab extends StatelessWidget {
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
-              value: value,
+              value: categoryId,
               isExpanded: true,
               icon: Icon(Icons.arrow_drop_down_rounded, size: 22.sp, color: recruiterPrimary),
               style: theme.textTheme.bodyMedium?.copyWith(
@@ -570,11 +627,20 @@ class TemporaryJobsFormTab extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
               dropdownColor: Colors.white,
-              items: items.map((item) => DropdownMenuItem(
-                value: item,
-                child: Text(item),
+              hint: Text(
+                categories.isEmpty ? 'Đang tải...' : 'Chọn danh mục',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontSize: 15.sp,
+                  color: const Color(0xFF9CA3AF),
+                ),
+              ),
+              items: categories.map((category) => DropdownMenuItem(
+                value: category.idCategory,
+                child: Text(category.categoryName ?? ''),
               )).toList(),
-              onChanged: (v) { if (v != null) onChanged(v); },
+              onChanged: categories.isEmpty ? null : (v) { 
+                if (v != null) onChanged(v); 
+              },
             ),
           ),
         ),

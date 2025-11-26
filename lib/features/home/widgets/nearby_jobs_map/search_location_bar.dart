@@ -7,6 +7,7 @@ class SearchLocationBar extends StatelessWidget {
   final GoogleMapController? mapController;
   final LatLng? currentPosition;
   final Function(String) onSubmitted;
+  final VoidCallback? onFilterPressed;
 
   const SearchLocationBar({
     super.key,
@@ -14,6 +15,7 @@ class SearchLocationBar extends StatelessWidget {
     required this.mapController,
     required this.currentPosition,
     required this.onSubmitted,
+    this.onFilterPressed,
   });
 
   @override
@@ -113,6 +115,21 @@ class SearchLocationBar extends StatelessWidget {
               ),
             ),
           ),
+          
+          if (onFilterPressed != null) ...[
+            SizedBox(width: 10.w),
+            FloatingActionButton.small(
+              heroTag: "filterButtonMap",
+              onPressed: onFilterPressed,
+              backgroundColor: theme.cardColor.withValues(alpha: 0.9),
+              elevation: 3,
+              child: Icon(
+                Icons.tune_rounded,
+                color: theme.primaryColor,
+                size: 20.sp,
+              ),
+            ),
+          ],
         ],
       ),
     );

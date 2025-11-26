@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:job_connect/config/widgets/custom_app_bar_title_large.dart';
+import 'package:job_connect/features/job/model/job_posting_model.dart';
 import 'package:job_connect/features/job/screens/job_detail_screen.dart';
-import 'package:job_connect/features/job/screens/job_matching_screen.dart';
 
 class JobMatchDetailScreen extends StatelessWidget {
-  final JobMatch jobMatch;
+  final JobPostingModel job;
   final String idUser;
 
   const JobMatchDetailScreen({
     super.key,
-    required this.jobMatch,
+    required this.job,
     required this.idUser,
   });
 
@@ -22,61 +23,48 @@ class JobMatchDetailScreen extends StatelessWidget {
         title: 'Chi tiết phù hợp',
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //   Job Header
             _buildJobHeader(theme),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
 
             //   Match Score Card
             _buildMatchScoreCard(theme),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
 
-            //   Score Details Title
-            Text(
-              'Chi tiết đánh giá',
-              style: theme.textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
+            //   Match Analysis Section
+            if (job.matchReason != null && job.matchReason!.isNotEmpty) ...[
+              Text(
+                'Phân tích phù hợp',
+                style: theme.textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
+              SizedBox(height: 16.h),
+              _buildMatchAnalysisCard(theme),
+              SizedBox(height: 24.h),
+            ],
 
-            //   Score Items
-            _buildScoreItem(
-              theme: theme,
-              title: 'Kỹ năng',
-              score: jobMatch.skillScore,
-              icon: Icons.code,
-              description: 'Đánh giá dựa trên kỹ năng của bạn so với yêu cầu công việc',
-            ),
-            _buildScoreItem(
-              theme: theme,
-              title: 'Kinh nghiệm',
-              score: jobMatch.experienceScore,
-              icon: Icons.work,
-              description: 'Đánh giá dựa trên số năm kinh nghiệm của bạn',
-            ),
-            _buildScoreItem(
-              theme: theme,
-              title: 'Học vấn',
-              score: jobMatch.educationScore,
-              icon: Icons.school,
-              description: 'Đánh giá dựa trên trình độ học vấn của bạn',
-            ),
-            _buildScoreItem(
-              theme: theme,
-              title: 'Vị trí',
-              score: jobMatch.positionScore,
-              icon: Icons.business_center,
-              description: 'Đánh giá dựa trên vị trí công việc hiện tại của bạn',
-            ),
-            const SizedBox(height: 32),
+            //   Matched Skills Section
+            if (job.matchedSkills != null && job.matchedSkills!.isNotEmpty) ...[
+              Text(
+                'Kỹ năng phù hợp',
+                style: theme.textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 16.h),
+              _buildMatchedSkillsSection(theme),
+              SizedBox(height: 24.h),
+            ],
+            SizedBox(height: 32.h),
 
             //   Action Buttons
             _buildActionButtons(context, theme),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
           ],
         ),
       ),
@@ -87,30 +75,30 @@ class JobMatchDetailScreen extends StatelessWidget {
   Widget _buildJobHeader(ThemeData theme) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              jobMatch.job.title,
+              job.title,
               style: theme.textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8.h),
             Row(
               children: [
                 Icon(
                   Icons.business,
-                  size: 18,
+                  size: 18.sp,
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: 8.w),
                 Expanded(
                   child: Text(
-                    jobMatch.job.company?.companyName ?? 'N/A',
+                    job.company?.companyName ?? 'N/A',
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
@@ -118,19 +106,19 @@ class JobMatchDetailScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
-            if (jobMatch.job.location.isNotEmpty)
+            SizedBox(height: 12.h),
+            if (job.location.isNotEmpty)
               Row(
                 children: [
                   Icon(
                     Icons.location_on,
-                    size: 18,
+                    size: 18.sp,
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: 8.w),
                   Expanded(
                     child: Text(
-                      jobMatch.job.location,
+                      job.location,
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
                       ),
@@ -146,10 +134,12 @@ class JobMatchDetailScreen extends StatelessWidget {
 
   //   Match Score Card
   Widget _buildMatchScoreCard(ThemeData theme) {
-    final scoreColor = _getMatchColor(jobMatch.matchPercentage);
+    // API trả về matchScore dạng 0.0-1.0, cần nhân với 100 để chuyển thành phần trăm
+    final matchScore = ((job.matchScore ?? 0.0) * 100).clamp(0.0, 100.0);
+    final scoreColor = _getMatchColor(matchScore);
 
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
@@ -162,12 +152,12 @@ class JobMatchDetailScreen extends StatelessWidget {
         border: Border.all(
           color: scoreColor.withValues(alpha: 0.3),
         ),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: EdgeInsets.all(12.w),
             decoration: BoxDecoration(
               color: scoreColor.withValues(alpha: 0.2),
               shape: BoxShape.circle,
@@ -175,10 +165,10 @@ class JobMatchDetailScreen extends StatelessWidget {
             child: Icon(
               Icons.analytics,
               color: scoreColor,
-              size: 32,
+              size: 32.sp,
             ),
           ),
-          const SizedBox(width: 20),
+          SizedBox(width: 20.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -189,9 +179,9 @@ class JobMatchDetailScreen extends StatelessWidget {
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8.h),
                 Text(
-                  '${jobMatch.matchPercentage.toStringAsFixed(1)}%',
+                  '${matchScore.toStringAsFixed(1)}%',
                   style: theme.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: scoreColor,
@@ -205,85 +195,97 @@ class JobMatchDetailScreen extends StatelessWidget {
     );
   }
 
-  //   Score Item Widget
-  Widget _buildScoreItem({
-    required ThemeData theme,
-    required String title,
-    required double score,
-    required IconData icon,
-    required String description,
-  }) {
-    final percentage = (score / 25) * 100;
-    final scoreColor = _getMatchColor(percentage);
+  //   Match Analysis Card
+  Widget _buildMatchAnalysisCard(ThemeData theme) {
+    // API trả về matchScore dạng 0.0-1.0, cần nhân với 100 để chuyển thành phần trăm
+    final matchScore = ((job.matchScore ?? 0.0) * 100).clamp(0.0, 100.0);
+    final scoreColor = _getMatchColor(matchScore);
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: scoreColor.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(
+          color: scoreColor.withValues(alpha: 0.3),
+          width: 1.w,
+        ),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.surfaceVariant.withValues(alpha: 0.5),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Icon(
-                  icon,
-                  size: 20,
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
+              Icon(
+                Icons.insights_rounded,
+                size: 20.sp,
+                color: scoreColor,
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          title,
-                          style: theme.textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          '${percentage.toStringAsFixed(1)}%',
-                          style: theme.textTheme.labelLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: scoreColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+              SizedBox(width: 8.w),
+              Text(
+                'Vì sao phù hợp?',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  color: scoreColor,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 12.h),
           Text(
-            description,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-          const SizedBox(height: 12),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            child: LinearProgressIndicator(
-              value: percentage / 100,
-              backgroundColor: theme.colorScheme.surfaceVariant,
-              valueColor: AlwaysStoppedAnimation<Color>(scoreColor),
-              minHeight: 8,
+            job.matchReason ?? 'Không có thông tin phân tích',
+            style: theme.textTheme.bodyMedium?.copyWith(
+              height: 1.5,
             ),
           ),
         ],
       ),
     );
   }
+
+  //   Matched Skills Section
+  Widget _buildMatchedSkillsSection(ThemeData theme) {
+    // API trả về matchScore dạng 0.0-1.0, cần nhân với 100 để chuyển thành phần trăm
+    final matchScore = ((job.matchScore ?? 0.0) * 100).clamp(0.0, 100.0);
+    final scoreColor = _getMatchColor(matchScore);
+    final matchedSkills = job.matchedSkills ?? [];
+
+    return Wrap(
+      spacing: 8.w,
+      runSpacing: 8.h,
+      children: matchedSkills.map((skill) {
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+          decoration: BoxDecoration(
+            color: scoreColor.withValues(alpha: 0.15),
+            borderRadius: BorderRadius.circular(20.r),
+            border: Border.all(
+              color: scoreColor.withValues(alpha: 0.3),
+            ),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.check_circle,
+                size: 16.sp,
+                color: scoreColor,
+              ),
+              SizedBox(width: 6.w),
+              Text(
+                skill,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: scoreColor,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        );
+      }).toList(),
+    );
+  }
+
 
   //   Action Buttons
   Widget _buildActionButtons(BuildContext context, ThemeData theme) {
@@ -297,7 +299,7 @@ class JobMatchDetailScreen extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) => JobDetailScreen(
                     idUser: idUser,
-                    jobPosting: jobMatch.job,
+                    jobPosting: job,
                   ),
                 ),
               );
@@ -305,14 +307,14 @@ class JobMatchDetailScreen extends StatelessWidget {
             icon: const Icon(Icons.arrow_forward),
             label: const Text('Xem chi tiết công việc'),
             style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 12),
+              padding: EdgeInsets.symmetric(vertical: 12.h),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(8.r),
               ),
             ),
           ),
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12.h),
         SizedBox(
           width: double.infinity,
           child: OutlinedButton.icon(
@@ -320,9 +322,9 @@ class JobMatchDetailScreen extends StatelessWidget {
             icon: const Icon(Icons.arrow_back),
             label: const Text('Quay lại'),
             style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 12),
+              padding: EdgeInsets.symmetric(vertical: 12.h),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(8.r),
               ),
             ),
           ),

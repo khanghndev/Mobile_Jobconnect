@@ -8,12 +8,14 @@ import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/config/theme/app_google_theme.dart';
 import 'package:job_connect/config/utils/format.dart';
 import 'package:job_connect/features/home/model_ui/city_model_ui.dart';
+import 'package:job_connect/features/home/widgets/nearby_jobs_map/filter_panel.dart';
 import 'package:job_connect/features/home/widgets/nearby_jobs_map/job_list_draggable_sheet.dart';
 import 'package:job_connect/features/home/widgets/nearby_jobs_map/location_button.dart';
 import 'package:job_connect/features/home/widgets/nearby_jobs_map/search_location_bar.dart';
 import 'package:job_connect/features/job/model/job_posting_model.dart';
 import 'package:job_connect/features/job/screens/job_detail_screen.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart'; 
+import 'package:job_connect/features/job/service/job_posting_service.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'dart:ui';
 
 class NearbyJobsMapScreen extends StatefulWidget {
@@ -35,21 +37,26 @@ class NearbyJobsMapScreen extends StatefulWidget {
 class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen> with TickerProviderStateMixin {
   GoogleMapController? mapController;
   final Set<Marker> _markers = {};
+  final Set<Circle> _circles = {};
   bool _showJobList = false;
   bool _isLoading = true;
   String _errorMessage = '';
   LatLng? _currentPositionLatLng;
   CityModelUi? _currentCity;
-  final ApiService _apiService = ApiService( );
+  final ApiService _apiService = ApiService();
+  final JobPostingService _jobPostingService = JobPostingService();
   List<JobPostingModel> _allFetchedJobs = [];
   List<JobPostingModel> _jobsInView = [];
   final TextEditingController _searchLocationController = TextEditingController();
   Timer? _debounce;
   Timer? _cameraIdleDebounce;
   late AnimationController _sheetAnimationController;
-  late Animation<double> _sheetHeaderFadeAnimation;
   BitmapDescriptor? _jobMarkerIcon;
   BitmapDescriptor? _currentLocationMarkerIcon;
+  
+  // Filter state
+  SearchMode _searchMode = SearchMode.radius;
+  double _radiusKm = 10;
 
   @override
   void initState() {
@@ -57,10 +64,6 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen> with TickerPr
     _sheetAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
-    );
-    _sheetHeaderFadeAnimation = CurvedAnimation(
-      parent: _sheetAnimationController,
-      curve: Curves.easeInOut,
     );
 
     _loadCustomMarkers(); // Tải custom marker icons
@@ -131,24 +134,80 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen> with TickerPr
   }
 
   Future<void> _fetchJobs() async {
+    if (!mounted) return;
+    setState(() => _isLoading = true);
+    
     try {
-      print(_currentCity?.administrativeArea);
-      // Clear _allFetchedJobs trước khi fetch để tránh trùng lặp nếu gọi lại
       _allFetchedJobs.clear();
-      // final responseData = await _apiService.get(
-      //   '${ApiConstants.jobPostingSearchEndpoint}?locationQuery=${_normalizeCityName(_currentCity!.administrativeArea)}',
-      // );
-      final responseData = await _apiService.get(
-        endpoint:  ApiConstants.jobPostingEndpoint,
-      );
-      _allFetchedJobs.addAll(
-        (responseData as List)
+      
+      if (_searchMode == SearchMode.radius && _currentPositionLatLng != null) {
+        // Tìm theo bán kính sử dụng API nearby
+        final jobs = await _jobPostingService.getNearbyJobPostings(
+          latitude: _currentPositionLatLng!.latitude,
+          longitude: _currentPositionLatLng!.longitude,
+          radiusKm: _radiusKm,
+        );
+        _allFetchedJobs = jobs;
+        
+        // Cập nhật camera để hiển thị vùng bán kính
+        if (mapController != null && _currentPositionLatLng != null) {
+          // Tính zoom level dựa trên bán kính (1km ≈ zoom 15, 10km ≈ zoom 12, 50km ≈ zoom 10)
+          double zoomLevel = 15 - (0.3 * _radiusKm).clamp(5.0, 15.0);
+          mapController!.animateCamera(
+            CameraUpdate.newLatLngZoom(_currentPositionLatLng!, zoomLevel),
+          );
+        }
+      } else {
+        // Tìm theo địa điểm - fetch tất cả jobs (hoặc có thể filter theo location query)
+        final responseData = await _apiService.get(
+          endpoint: ApiConstants.jobPostingEndpoint,
+        );
+        _allFetchedJobs = (responseData as List)
             .map((job) => JobPostingModel.fromJson(job as Map<String, dynamic>))
-            .toList(),
-      );
+            .toList();
+      }
+      
+      if (mounted) {
+        _updateJobsInView();
+        _addMarkersToMap();
+        _updateRadiusCircle(); // Cập nhật vòng tròn bán kính
+      }
     } catch (e) {
       debugPrint('Error fetching jobs: $e');
-      _allFetchedJobs = [];
+      if (mounted) {
+        setState(() {
+          _allFetchedJobs = [];
+          _errorMessage = 'Không thể tải danh sách việc làm. Vui lòng thử lại.';
+        });
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+  
+  // Cập nhật vòng tròn bán kính trên map
+  void _updateRadiusCircle() {
+    if (_searchMode == SearchMode.radius && _currentPositionLatLng != null) {
+      final theme = Theme.of(context);
+      setState(() {
+        _circles.clear();
+        _circles.add(
+          Circle(
+            circleId: const CircleId('search_radius'),
+            center: _currentPositionLatLng!,
+            radius: _radiusKm * 1000, // Chuyển từ km sang mét
+            fillColor: theme.primaryColor.withOpacity(0.15),
+            strokeColor: theme.primaryColor.withOpacity(0.5),
+            strokeWidth: 2,
+          ),
+        );
+      });
+    } else {
+      setState(() {
+        _circles.clear();
+      });
     }
   }
 
@@ -246,16 +305,6 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen> with TickerPr
       // Bước 2: Tải jobs (vẫn chạy song song được nếu muốn, nhưng tách ra để dễ quản lý state)
       await _fetchJobs();
       if (!mounted) return;
-
-      _updateJobsInView(); // Lọc jobs theo map bounds ban đầu
-
-      // Bước 3: Thêm markers (quá trình này có thể chậm)
-      // setState ở đây để UI cập nhật danh sách jobs trước khi markers được thêm
-      setState(() {
-        _isLoading =
-            false; // Tắt loading tổng thể, list jobs đã có thể hiển thị
-      });
-      _addMarkersToMap(); // Hàm này sẽ tự setState khi có markers mới
     } catch (e) {
       if (mounted) {
         setState(() {
@@ -339,6 +388,10 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen> with TickerPr
       controller.animateCamera(
         CameraUpdate.newLatLngZoom(_currentPositionLatLng!, 13.5),
       );
+      // Cập nhật vòng tròn sau khi map được tạo
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _updateRadiusCircle();
+      });
     }
   }
 
@@ -412,28 +465,48 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen> with TickerPr
 
   // Hàm cập nhật danh sách công việc trong vùng nhìn thấy của bản đồ
   Future<void> _updateJobsInView() async {
+    if (_searchMode == SearchMode.radius) {
+      // Khi tìm theo bán kính, hiển thị tất cả jobs đã được filter từ API
+      if (mounted) {
+        setState(() {
+          _jobsInView = List.from(_allFetchedJobs);
+          // Sắp xếp theo khoảng cách nếu có
+          _jobsInView.sort((a, b) {
+            final distA = a.distanceKm ?? double.infinity;
+            final distB = b.distanceKm ?? double.infinity;
+            return distA.compareTo(distB);
+          });
+        });
+      }
+      return;
+    }
+    
+    // Tìm theo địa điểm - filter theo visible region
     if (mapController == null || _allFetchedJobs.isEmpty) {
-      _jobsInView = List.from(
-        _allFetchedJobs,
-      ); // Nếu map chưa sẵn sàng, hiển thị tất cả
+      if (mounted) {
+        setState(() {
+          _jobsInView = List.from(_allFetchedJobs);
+        });
+      }
       return;
     }
     if (!mounted) return;
 
     try {
       LatLngBounds visibleRegion = await mapController!.getVisibleRegion();
-      setState(() {
-        _jobsInView =
-            _allFetchedJobs.where((job) {
-              if (job.latitude != null && job.longitude != null) {
-                final jobLatLng = LatLng(job.latitude!, job.longitude!);
-                return visibleRegion.contains(jobLatLng);
-              }
-              return false;
-            }).toList();
-      });
+      if (mounted) {
+        setState(() {
+          _jobsInView = _allFetchedJobs.where((job) {
+            if (job.latitude != null && job.longitude != null) {
+              final jobLatLng = LatLng(job.latitude!, job.longitude!);
+              return visibleRegion.contains(jobLatLng);
+            }
+            return false;
+          }).toList();
+        });
+      }
     } catch (e) {
-      print("Error getting visible region: $e");
+      debugPrint("Error getting visible region: $e");
       // Giữ lại danh sách cũ nếu có lỗi
     }
   }
@@ -451,14 +524,41 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen> with TickerPr
           locations.first.latitude,
           locations.first.longitude,
         );
-        mapController!.animateCamera(
-          CameraUpdate.newLatLngZoom(targetLatLng, 14.0),
-        );
-        // Sau khi di chuyển, cập nhật lại jobs in view và markers
-        // Đợi camera di chuyển xong một chút rồi mới cập nhật
-        await Future.delayed(const Duration(milliseconds: 700));
-        await _updateJobsInView();
-        _addMarkersToMap();
+        
+        // Cập nhật vị trí hiện tại
+        _currentPositionLatLng = targetLatLng;
+        
+        // Lấy thông tin địa chỉ từ tọa độ
+        List<flutter_geocoding.Placemark> placemarks = await flutter_geocoding
+            .placemarkFromCoordinates(targetLatLng.latitude, targetLatLng.longitude);
+        if (placemarks.isNotEmpty) {
+          flutter_geocoding.Placemark place = placemarks[0];
+          _currentCity = CityModelUi(
+            isoCountryCode: place.isoCountryCode ?? '',
+            country: place.country ?? '',
+            postalCode: place.postalCode ?? '',
+            administrativeArea: place.administrativeArea ?? '',
+            subAdministrativeArea: place.subAdministrativeArea ?? '',
+            locality: place.locality ?? '',
+            subLocality: place.subLocality ?? '',
+            thoroughfare: place.thoroughfare ?? '',
+            subThoroughfare: place.subThoroughfare ?? '',
+          );
+        }
+        
+        // Nếu đang ở chế độ radius, fetch lại jobs với vị trí mới
+        if (_searchMode == SearchMode.radius) {
+          await _fetchJobs();
+        } else {
+          // Chế độ location - chỉ di chuyển map
+          mapController!.animateCamera(
+            CameraUpdate.newLatLngZoom(targetLatLng, 14.0),
+          );
+          await Future.delayed(const Duration(milliseconds: 700));
+          await _updateJobsInView();
+          _addMarkersToMap();
+          _updateRadiusCircle(); // Xóa circle khi chuyển sang chế độ location
+        }
       } else {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -468,13 +568,19 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen> with TickerPr
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Lỗi tìm kiếm địa điểm: $e')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Lỗi tìm kiếm địa điểm: $e')),
+        );
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
+  }
+  
+  void _applyFilter() {
+    Navigator.pop(context); // Đóng filter panel
+    _updateRadiusCircle(); // Cập nhật vòng tròn trước
+    _fetchJobs(); // Fetch lại với filter mới
   }
 
   @override
@@ -574,6 +680,7 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen> with TickerPr
               zoom: 13.0, 
             ),
             markers: _markers,
+            circles: _circles,
             myLocationEnabled: true, // Hiển thị chấm xanh vị trí người dùng
             myLocationButtonEnabled: false, // Tắt nút mặc định
             zoomControlsEnabled: false, // Tắt nút zoom mặc định
@@ -606,18 +713,36 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen> with TickerPr
             mapController: mapController,
             currentPosition: _currentPositionLatLng,
             onSubmitted: _searchAndGoToLocation,
-          ),
-
-          JobListDraggableSheet(
-            isLoading: _isLoading,
-            jobsInView: _jobsInView,
-            sheetAnimationController: _sheetAnimationController,
-            showJobList: _showJobList,
-            onSheetStateChanged: (value) {
-              setState(() => _showJobList = value);
+            onFilterPressed: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                useSafeArea: true,
+                builder: (context) => Padding(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom,
+                  ),
+                  child: FilterPanel(
+                    searchMode: _searchMode,
+                    radiusKm: _radiusKm,
+                    onModeChanged: (mode) {
+                      setState(() {
+                        _searchMode = mode;
+                        _updateRadiusCircle(); // Cập nhật vòng tròn ngay khi đổi mode
+                      });
+                    },
+                    onRadiusChanged: (radius) {
+                      setState(() {
+                        _radiusKm = radius;
+                        _updateRadiusCircle(); // Cập nhật vòng tròn khi thay đổi bán kính
+                      });
+                    },
+                    onApplyFilter: _applyFilter,
+                  ),
+                ),
+              );
             },
-            idUser: widget.idUser,
-            currentCity: _currentCity?.locality,
           ),
 
           // Nút MyLocation và Toggle List/Map (đã được thiết kế lại)
@@ -627,6 +752,26 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen> with TickerPr
             currentPositionLatLng: _currentPositionLatLng,
             mapController: mapController,
             loadInitialData: _loadInitialData,
+          ),
+
+          // Bottom sheet - DraggableScrollableSheet tự động đặt ở dưới cùng
+          IgnorePointer(
+            ignoring: false,
+            child: SizedBox.expand(
+              child: JobListDraggableSheet(
+                isLoading: _isLoading,
+                jobsInView: _jobsInView,
+                sheetAnimationController: _sheetAnimationController,
+                showJobList: _showJobList,
+                onSheetStateChanged: (value) {
+                  setState(() => _showJobList = value);
+                },
+                idUser: widget.idUser,
+                currentCity: _currentCity?.locality,
+                searchMode: _searchMode,
+                radiusKm: _radiusKm,
+              ),
+            ),
           ),
         ],
       ),

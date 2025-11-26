@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:job_connect/features/home/widgets/nearby_jobs_map/filter_panel.dart';
 import 'package:job_connect/features/home/widgets/nearby_jobs_map/job_card.dart';
 import 'package:job_connect/features/job/model/job_posting_model.dart';
 
@@ -10,6 +12,8 @@ class JobListDraggableSheet extends StatelessWidget {
   final Function(bool) onSheetStateChanged;
   final String? currentCity;
   final String idUser;
+  final SearchMode? searchMode;
+  final double? radiusKm;
 
   const JobListDraggableSheet({
     super.key,
@@ -20,6 +24,8 @@ class JobListDraggableSheet extends StatelessWidget {
     required this.onSheetStateChanged,
     required this.idUser,
     this.currentCity,
+    this.searchMode,
+    this.radiusKm,
   });
 
   @override
@@ -27,21 +33,22 @@ class JobListDraggableSheet extends StatelessWidget {
     final theme = Theme.of(context);
 
     return DraggableScrollableSheet(
-      initialChildSize: 0.15,
-      minChildSize: 0.15,
-      maxChildSize: 0.85,
+      initialChildSize: 0.18,
+      minChildSize: 0.18,
+      maxChildSize: 0.9,
       snap: true,
-      snapSizes: const [0.15, 0.5, 0.85],
+      snapSizes: const [0.18, 0.5, 0.75, 0.9],
+      expand: false,
       builder: (BuildContext context, ScrollController scrollController) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (scrollController.hasClients) {
             final currentSheetSize =
                 scrollController.position.viewportDimension /
                     MediaQuery.of(context).size.height;
-            if (currentSheetSize > 0.18 && !showJobList) {
+            if (currentSheetSize > 0.22 && !showJobList) {
               onSheetStateChanged(true);
               sheetAnimationController.forward();
-            } else if (currentSheetSize <= 0.18 && showJobList) {
+            } else if (currentSheetSize <= 0.22 && showJobList) {
               onSheetStateChanged(false);
               sheetAnimationController.reverse();
             }
@@ -63,42 +70,86 @@ class JobListDraggableSheet extends StatelessWidget {
           ),
           child: Column(
             children: [
-              // Grabber
-              Container(
-                width: 45,
-                height: 5.5,
-                margin: const EdgeInsets.symmetric(vertical: 12),
-                decoration: BoxDecoration(
-                  color: theme.dividerColor.withAlpha(200),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
+              // Header có thể kéo được - grabber ngay đầu, không có padding top
               FadeTransition(
                 opacity: sheetAnimationController,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        isLoading && jobsInView.isEmpty
-                            ? "Đang tìm việc làm..."
-                            : "${jobsInView.length} việc làm trong khu vực",
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      if (isLoading && jobsInView.isNotEmpty)
-                        SizedBox(
-                          width: 18,
-                          height: 18,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              theme.primaryColor,
-                            ),
+                      // Grabber - ở ngay đầu sheet
+                      Padding(
+                        padding: EdgeInsets.only(top: 8.h, bottom: 12.h),
+                        child: Container(
+                          width: 50.w,
+                          height: 5.h,
+                          decoration: BoxDecoration(
+                            color: theme.dividerColor.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(10.r),
                           ),
                         ),
+                      ),
+                      // Title và info
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 12.h),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    isLoading && jobsInView.isEmpty
+                                        ? "Đang tìm việc làm..."
+                                        : "${jobsInView.length} việc làm",
+                                    style: theme.textTheme.titleMedium?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16.sp,
+                                    ),
+                                  ),
+                                  if (searchMode == SearchMode.radius && radiusKm != null)
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 4.h),
+                                      child: Text(
+                                        "Trong bán kính ${radiusKm!.toInt()} km",
+                                        style: theme.textTheme.bodySmall?.copyWith(
+                                          color: theme.colorScheme.onSurfaceVariant,
+                                          fontSize: 12.sp,
+                                        ),
+                                      ),
+                                    )
+                                  else if (searchMode == SearchMode.location && currentCity != null)
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 4.h),
+                                      child: Text(
+                                        "Tại $currentCity",
+                                        style: theme.textTheme.bodySmall?.copyWith(
+                                          color: theme.colorScheme.onSurfaceVariant,
+                                          fontSize: 12.sp,
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                            if (isLoading && jobsInView.isNotEmpty)
+                              SizedBox(
+                                width: 18.w,
+                                height: 18.w,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    theme.primaryColor,
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -106,32 +157,38 @@ class JobListDraggableSheet extends StatelessWidget {
               Expanded(
                 child: (isLoading && jobsInView.isEmpty)
                     ? Center(
-                        child: Text(
-                          currentCity == null
-                              ? "Vui lòng bật vị trí..."
-                              : "Không có việc làm nào tại đây.",
-                          style: theme.textTheme.bodyLarge?.copyWith(
-                            color: theme.hintColor,
+                        child: Padding(
+                          padding: EdgeInsets.all(32.w),
+                          child: Text(
+                            currentCity == null
+                                ? "Vui lòng bật vị trí..."
+                                : "Không có việc làm nào tại đây.",
+                            style: theme.textTheme.bodyLarge?.copyWith(
+                              color: theme.hintColor,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
                         ),
                       )
                     : jobsInView.isEmpty
                         ? Center(
-                            child: Text(
-                              "Không có việc làm nào trong vùng bản đồ này.",
-                              style: theme.textTheme.bodyLarge?.copyWith(
-                                color: theme.hintColor,
+                            child: Padding(
+                              padding: EdgeInsets.all(32.w),
+                              child: Text(
+                                "Không có việc làm nào trong vùng bản đồ này.",
+                                style: theme.textTheme.bodyLarge?.copyWith(
+                                  color: theme.hintColor,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
                             ),
                           )
                         : ListView.separated(
                             controller: scrollController,
-                            padding:
-                                const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                            padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
                             itemCount: jobsInView.length,
                             separatorBuilder: (context, index) =>
-                                const SizedBox(height: 12),
+                                SizedBox(height: 12.h),
                             itemBuilder: (context, index) {
                               final job = jobsInView[index];
                               return JobCard(

@@ -106,6 +106,7 @@ class SimilarJobCard extends StatelessWidget {
                     SizedBox(height: 8.h),
                     InfoChip(
                       icon: Icons.location_pin,
+                      maxLines: 1,
                       label: location,
                       color: theme.colorScheme.tertiary,
                     ),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/navigation/app_navigation.dart';
+import 'package:job_connect/features/auth/screens/auth_check_screen.dart';
 import 'package:job_connect/features/auth/screens/enter_otp_page.dart';
 import 'package:job_connect/features/auth/screens/forgot_password_screen.dart';
+import 'package:job_connect/features/auth/screens/login_method_screen.dart';
 import 'package:job_connect/features/auth/screens/login_screen.dart';
 import 'package:job_connect/features/auth/screens/register_screen.dart';
 import 'package:job_connect/features/auth/screens/reset_password_screen.dart';
@@ -17,6 +19,13 @@ class AuthRouter {
         buildPageWithSlideTransition(SizedBox(), state),
     routes: [
       GoRoute(
+        path: 'check',
+        pageBuilder: (context, state) => buildPageWithSlideTransition(
+          const AuthCheckScreen(), 
+          state
+        ),
+      ),
+      GoRoute(
         path: 'role',
         pageBuilder: (context, state) => buildPageWithSlideTransition(RoleSelectionScreen(), state)
       ),
@@ -28,9 +37,11 @@ class AuthRouter {
             ? state.extra as Map<String, dynamic>
             : {};
           final role = extraData['role'] ?? '';
+          final prefillEmail = extraData['prefillEmail'] as String?;
           return buildPageWithSlideTransition(
             LoginScreen(
-              role: role
+              role: role,
+              prefillEmail: prefillEmail,
             ), 
             state
           );

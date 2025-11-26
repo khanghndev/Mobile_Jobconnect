@@ -15,10 +15,12 @@ import 'package:job_connect/features/auth/widgets/login/social_login_view.dart';
 import 'package:job_connect/features/notifications/viewmodel/notification_view_model.dart';
 import 'package:job_connect/features/profile/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
+import 'package:job_connect/config/services/biometric_auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   final String? role;
-  const LoginScreen({super.key, this.role = 'Candidate'});
+  final String? prefillEmail; // Email để điền sẵn
+  const LoginScreen({super.key, this.role = 'Candidate', this.prefillEmail});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -28,6 +30,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _biometricService = BiometricAuthService();
   bool _showLoginForm = false;
 
   late final AnimationController _animationController;
@@ -36,6 +39,12 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
   @override
   void initState() {
     super.initState();
+    
+    // Điền sẵn email nếu có
+    if (widget.prefillEmail != null && widget.prefillEmail!.isNotEmpty) {
+      _emailController.text = widget.prefillEmail!;
+    }
+    
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1200),
@@ -43,6 +52,215 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     _fadeInAnimation = Tween<double>(begin: 0, end: 1)
         .animate(CurvedAnimation(parent: _animationController, curve: Curves.easeIn));
     _animationController.forward();
+    
+    // Chỉ kiểm tra sinh trắc học nếu không có email điền sẵn
+    if (widget.prefillEmail == null || widget.prefillEmail!.isEmpty) {
+      _checkAndLoginWithBiometric();
+    }
+  }
+
+  /// Kiểm tra và đăng nhập tự động bằng sinh trắc học
+  Future<void> _checkAndLoginWithBiometric() async {
+    // Đợi một chút để UI render xong
+    await Future.delayed(const Duration(milliseconds: 500));
+    
+    if (!mounted) return;
+    
+    try {
+      // Kiểm tra đã bật chưa
+      final isEnabled = await _biometricService.isBiometricEnabled();
+      if (!isEnabled) return;
+
+      // Kiểm tra có credentials đã lưu không
+      final hasCredentials = await _biometricService.hasSavedCredentials();
+      if (!hasCredentials) return;
+
+      // Đăng nhập bằng sinh trắc học
+      final email = await _biometricService.quickLogin();
+      
+      if (!mounted) return;
+
+      if (email != null && email.isNotEmpty) {
+        // Tự động điền email
+        _emailController.text = email;
+        
+        // Hiển thị dialog để user nhập password
+        _showBiometricPasswordDialog(email);
+      }
+    } catch (e) {
+      // Không hiển thị lỗi, chỉ im lặng fail
+    }
+  }
+
+  /// Hiển thị dialog để nhập password sau khi xác thực sinh trắc học thành công
+  void _showBiometricPasswordDialog(String email) {
+    final passwordController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+    
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.r),
+        ),
+        title: Row(
+          children: [
+            Icon(
+              Icons.fingerprint_rounded,
+              color: Theme.of(context).colorScheme.primary,
+              size: 28.sp,
+            ),
+            SizedBox(width: 12.w),
+            Expanded(
+              child: Text(
+                'Xác thực thành công',
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
+        content: Form(
+          key: formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Vui lòng nhập mật khẩu để hoàn tất đăng nhập',
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+              ),
+              SizedBox(height: 16.h),
+              TextFormField(
+                controller: passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Mật khẩu',
+                  prefixIcon: const Icon(Icons.lock_outline),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Vui lòng nhập mật khẩu';
+                  }
+                  return null;
+                },
+                onFieldSubmitted: (_) => _handleBiometricLogin(email, passwordController.text, formKey),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('Hủy'),
+          ),
+          ElevatedButton(
+            onPressed: () => _handleBiometricLogin(email, passwordController.text, formKey),
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+            ),
+            child: Text('Đăng nhập'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Xử lý đăng nhập với email và password sau khi xác thực sinh trắc học
+  Future<void> _handleBiometricLogin(String email, String password, GlobalKey<FormState> formKey) async {
+    if (!formKey.currentState!.validate()) return;
+    
+    Navigator.of(context).pop(); // Đóng dialog
+    
+    final authVM = context.read<AuthViewModel>();
+    
+    // Đăng nhập
+    await authVM.loginWithEmail(
+      email: email,
+      password: password,
+    );
+
+    if (!mounted) return;
+
+    if (authVM.errorMessage != null) {
+      CustomDialog.show(
+        context,
+        title: "Thất bại",
+        message: authVM.errorMessage ?? "Đăng nhập thất bại.",
+        icon: Icons.error_outline,
+        iconColor: BackgroundColors.backgroundErrorPrimary,
+        confirmButtonColor: BackgroundColors.backgroundErrorPrimary,
+        backgroundColor: BackgroundColors.backgroundErrorPrimary,
+        confirmText: "Đồng ý",
+      );
+      return;
+    }
+
+    if (authVM.idUser != null) {
+      final idUser = authVM.idUser!;
+      final userVM = context.read<UserViewModel>();
+      final notificationVM = context.read<NotificationViewModel>();
+
+      await userVM.getCurrentUser(idUser);
+      await notificationVM.getUnreadCount(idUser);
+
+      final actualRole = userVM.roleName?.trim().toLowerCase();
+      final expectedRole = (widget.role ?? UserRole.candidate.name).toLowerCase();
+
+      if (actualRole != expectedRole) {
+        if(mounted){
+          CustomDialog.show(
+            context,
+            title: "Sai vai trò",
+            message:"Vui lòng đăng nhập bằng cổng dành cho ${StringUtils.capitalize(expectedRole)}.",
+            icon: Icons.warning_amber_outlined,
+            iconColor: BackgroundColors.backgroundWarningPrimary,
+            confirmButtonColor: BackgroundColors.backgroundWarningPrimary,
+            backgroundColor: BackgroundColors.backgroundWarningPrimary,
+            confirmText: "Đồng ý",
+            onConfirm: () => context.push('/auth/role'),
+          );
+        }
+        return;
+      }
+
+      if (actualRole == UserRole.candidate.name.toLowerCase()) {
+        if(mounted){
+          context.go('/home', extra: {
+            'isLoggedIn': authVM.isLoggedIn,
+            'idUser': idUser,
+          });
+        }
+      } else if (actualRole == UserRole.recruiter.name.toLowerCase()) {
+        if(mounted){
+          context.go('/recruiter', extra: {
+            'userAccount': userVM.currentUser,
+            'isLoggedIn': authVM.isLoggedIn,
+            'currentIndex': 0,
+          });
+        }
+      }
+
+      if(mounted){
+        SnackbarApp.show(
+          context,
+          title: 'Thông báo',
+          message: 'Đăng nhập thành công',
+          backgroundColor: BackgroundColors.backgroundSuccessPrimary,
+        );
+      }
+    }
   }
 
   @override
@@ -105,6 +323,17 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
           );
         }
         return;
+      }
+
+      // Lưu email vào secure storage nếu đã bật biometric
+      try {
+        final isBiometricEnabled = await _biometricService.isBiometricEnabled();
+        if (isBiometricEnabled) {
+          await _biometricService.saveCredentials(_emailController.text.trim());
+        }
+      } catch (e) {
+        // Ignore errors when saving credentials
+        print('[DEBUG] Error saving credentials: $e');
       }
 
       if (actualRole == UserRole.candidate.name.toLowerCase()) {

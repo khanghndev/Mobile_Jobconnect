@@ -127,6 +127,8 @@ class JobCard extends StatelessWidget {
 
                     // INFO CHIPS
                     Wrap(
+                      spacing: 8.w,
+                      runSpacing: 6.h,
                       children: [
                         _buildInfoChip(
                           context,
@@ -134,7 +136,6 @@ class JobCard extends StatelessWidget {
                           text: salaryText,
                           color: theme.colorScheme.secondary,
                         ),
-                        SizedBox(width: 8.w),
                         _buildInfoChip(
                           context,
                           icon: Icons.location_pin,
@@ -143,6 +144,13 @@ class JobCard extends StatelessWidget {
                           ),
                           color: theme.colorScheme.tertiary,
                         ),
+                        if (jobPosting.distanceKm != null)
+                          _buildInfoChip(
+                            context,
+                            icon: Icons.navigation_rounded,
+                            text: '${jobPosting.distanceKm!.toStringAsFixed(1)} km',
+                            color: theme.primaryColor,
+                          ),
                       ],
                     ),
                   ],

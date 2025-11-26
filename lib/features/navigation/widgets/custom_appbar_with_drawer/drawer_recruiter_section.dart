@@ -144,7 +144,7 @@ class DrawerRecruiterSection extends StatelessWidget {
           ),
           DrawerItem(
             icon: Icons.people_outline,
-            title: 'Kết nối',
+            title: 'Nhóm',
             onTap: () => _checkLoginOrRouter(
               context: context, 
               route: '/social/connections',

@@ -50,7 +50,8 @@ class SocialPostViewModel extends ChangeNotifier {
   bool get isLoading => _isLoading;
   bool get isSuccess => _isSuccess;
   String? get errorMessage => _errorMessage;
-  List<SocialPostModel> get posts => _posts.where((p) => p.visibility == 'public').toList();
+  // Tạm thời bỏ filter visibility để test - nếu vẫn chỉ có 3 posts thì vấn đề không phải ở đây
+  List<SocialPostModel> get posts => _posts; // .where((p) => p.visibility == 'public').toList();
   List<SocialPostModel> get postsOfGroup => _postsOfGroup.where((p) => p.visibility == 'public').toList();
   Set<String> get selectedPosts => _selectedPosts;
   bool get selectMode => _selectMode;
@@ -341,7 +342,8 @@ class SocialPostViewModel extends ChangeNotifier {
   Future<void> getAllPosts() async {
     await _handleApiCall<List<SocialPostModel>>(
       apiCall: () async {
-        final posts = await _socialPostService.getAllPosts();
+        // API trả về tất cả bài viết, không cần limit
+        final posts = await _socialPostService.getAllPosts(currentUserId: currentUserId);
         try {
           final saved = await _savePostService.getSavedPostsByUser(currentUserId);
           final savedIds = saved.map((s) => s.idPost).toSet();
@@ -414,14 +416,17 @@ class SocialPostViewModel extends ChangeNotifier {
 
     await _handleApiCall<List<SocialPostModel>>(
       apiCall: () async {
-        final posts = await _socialPostService.getAllPosts();
+        // API trả về tất cả bài viết, không cần limit
+        // Truyền currentUserId để API có thể set isSaved và currentUserReaction
+        final posts = await _socialPostService.getAllPosts(currentUserId: currentUserId);
+        print('[DEBUG] getPostsByRole: API trả về ${posts.length} bài viết');
         
-        // Load saved posts để merge trạng thái isSaved
+        // Load saved posts để merge trạng thái isSaved (backup nếu API chưa set)
         try {
           final saved = await _savePostService.getSavedPostsByUser(currentUserId);
           final savedIds = saved.map((s) => s.idPost).toSet();
           return posts
-              .map((p) => p.copyWith(isSaved: savedIds.contains(p.idPost)))
+              .map((p) => p.copyWith(isSaved: savedIds.contains(p.idPost) || p.isSaved))
               .toList();
         } catch (e) {
           // Nếu lỗi khi load saved posts, vẫn trả về posts bình thường
@@ -429,22 +434,16 @@ class SocialPostViewModel extends ChangeNotifier {
         }
       },
       onSuccess: (data) async {
+        print('[DEBUG] getPostsByRole: Sau khi load saved, có ${data.length} bài viết');
         data.sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
-        // Lấy tất cả unique user IDs
-        final userIds = data.map((p) => p.idUser).toSet().toList();
+        // KHÔNG filter theo role nữa - hiển thị TẤT CẢ posts của cả Candidate và Recruiter
+        // Chỉ filter theo visibility để chỉ hiển thị public posts
+        final publicPosts = data.where((p) => p.visibility == 'public').toList();
+        print('[DEBUG] getPostsByRole: Sau khi filter visibility="public", còn ${publicPosts.length} bài viết (không filter theo role)');
         
-        // Batch load user roles một lần thay vì từng cái
-        final userRoles = await _getUserRolesBatch(userIds);
-        
-        // Filter posts dựa trên role đã cache
-        final List<SocialPostModel> filteredPosts = data.where((post) {
-          final userRole = userRoles[post.idUser] ?? UserRole.candidate.name;
-          return userRole == roleName;
-        }).toList();
-        
-        // Load likes cho các posts đã filter (batch)
-        final postIds = filteredPosts.map((p) => p.idPost).toList();
+        // Load likes cho tất cả posts để cache
+        final postIds = publicPosts.map((p) => p.idPost).toList();
         await Future.wait(postIds.map((postId) async {
           try {
             if (!_postLikesCache.containsKey(postId)) {
@@ -460,7 +459,9 @@ class SocialPostViewModel extends ChangeNotifier {
           }
         }));
         
-        _setState(isLoading: false, isSuccess: true, posts: filteredPosts);
+        // Lưu tất cả posts đã filter role vào _posts (getter sẽ filter visibility)
+        print('[DEBUG] getPostsByRole: Cuối cùng set ${publicPosts.length} bài viết vào _posts');
+        _setState(isLoading: false, isSuccess: true, posts: publicPosts);
       },
     );
   }

@@ -24,15 +24,40 @@ class SocialPostService {
   }
 
   //  GET /api/SocialPosts - Lấy tất cả bài viết
-  Future<List<SocialPostModel>> getAllPosts() async {
+  //  API hỗ trợ các query params: userId, currentUserId, postType
+  Future<List<SocialPostModel>> getAllPosts({
+    String? userId,
+    String? currentUserId,
+    String? postType,
+  }) async {
     return _handleApi(
       () async {
-        final res = await _apiService.get(endpoint: ApiConstants.socialPostsEndpoint);
-        return ApiResponseParser.parseList(
+        final queryParams = <String, dynamic>{};
+        if (userId != null) queryParams['userId'] = userId;
+        if (currentUserId != null) queryParams['currentUserId'] = currentUserId;
+        if (postType != null) queryParams['postType'] = postType;
+        
+        print('[DEBUG] getAllPosts: Gọi API với queryParams: $queryParams');
+        final res = await _apiService.get(
+          endpoint: ApiConstants.socialPostsEndpoint,
+          queryParams: queryParams.isNotEmpty ? queryParams : null,
+        );
+        
+        print('[DEBUG] getAllPosts: API response type: ${res.runtimeType}');
+        if (res is List) {
+          print('[DEBUG] getAllPosts: API trả về ${res.length} items trong list');
+        } else {
+          print('[DEBUG] getAllPosts: API response không phải List, type: ${res.runtimeType}');
+        }
+        
+        final posts = ApiResponseParser.parseList(
           res: res,
           fromJson: (json) => SocialPostModel.fromJson(json),
           errorMsg: 'Phản hồi không hợp lệ khi lấy tất cả bài viết',
         );
+        
+        print('[DEBUG] getAllPosts: Sau khi parse, có ${posts.length} bài viết');
+        return posts;
       },
       'Lỗi khi tải tất cả bài viết',
     );
