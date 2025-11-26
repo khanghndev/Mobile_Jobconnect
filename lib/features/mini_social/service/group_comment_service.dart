@@ -24,7 +24,7 @@ class GroupCommentService {
     }
   }
 
-  //TODO: GET /api/GroupComments - Lấy danh sách tất cả comment nhóm
+  //  GET /api/GroupComments - Lấy danh sách tất cả comment nhóm
   Future<List<GroupCommentModel>> getGroupComments() async {
     return _handleApi(
       () async {
@@ -39,7 +39,7 @@ class GroupCommentService {
     );
   }
 
-  //TODO: POST /api/GroupComments - Tạo comment mới
+  //  POST /api/GroupComments - Tạo comment mới
   Future<GroupCommentModel> createGroupComment({
     required GroupCommentModel comment,
   }) async {
@@ -59,7 +59,7 @@ class GroupCommentService {
     );
   }
 
-  //TODO: GET /api/GroupComments/post/{postId} - Lấy danh sách comment theo postId
+  //  GET /api/GroupComments/post/{postId} - Lấy danh sách comment theo postId
   Future<List<GroupCommentModel>> getGroupCommentsByPost({
     required String postId,
   }) async {
@@ -77,7 +77,7 @@ class GroupCommentService {
     );
   }
 
-  //TODO: GET /api/GroupComments/{id}/replies - Lấy danh sách reply theo comment ID
+  //  GET /api/GroupComments/{id}/replies - Lấy danh sách reply theo comment ID
   Future<List<GroupCommentModel>> getRepliesByCommentId({
     required String id,
   }) async {
@@ -95,7 +95,7 @@ class GroupCommentService {
     );
   }
 
-  //TODO: GET /api/GroupComments/{id} - Lấy chi tiết comment theo ID
+  //  GET /api/GroupComments/{id} - Lấy chi tiết comment theo ID
   Future<GroupCommentModel> getGroupCommentById({
     required String id,
   }) async {
@@ -113,7 +113,7 @@ class GroupCommentService {
     );
   }
 
-  //TODO: PUT /api/GroupComments/{id} - Cập nhật comment
+  //  PUT /api/GroupComments/{id} - Cập nhật comment
   Future<GroupCommentModel> updateGroupComment({
     required GroupCommentModel comment,
   }) async {
@@ -141,7 +141,7 @@ class GroupCommentService {
     );
   }
 
-  //TODO: DELETE /api/GroupComments/{id} - Xóa comment
+  //  DELETE /api/GroupComments/{id} - Xóa comment
   Future<void> deleteGroupComment({
     required String id,
   }) async {
@@ -154,7 +154,7 @@ class GroupCommentService {
     );
   }
 
-  //TODO: POST /api/GroupComments/{id}/reaction - Thêm reaction vào comment
+  //  POST /api/GroupComments/{id}/reaction - Thêm reaction vào comment
   Future<void> addReaction({
     required String id,
     required GroupReactionModel reaction,
@@ -168,7 +168,7 @@ class GroupCommentService {
     );
   }
 
-  //TODO: DELETE /api/GroupComments/{id}/reaction - Xóa reaction khỏi comment
+  //  DELETE /api/GroupComments/{id}/reaction - Xóa reaction khỏi comment
   Future<void> removeReaction({
     required String id,
   }) async {
@@ -181,7 +181,7 @@ class GroupCommentService {
     );
   }
 
-  //TODO: GET /api/GroupComments/{id}/reactions - Lấy danh sách reaction của comment
+  //  GET /api/GroupComments/{id}/reactions - Lấy danh sách reaction của comment
   Future<List<GroupReactionModel>> getReactionsByCommentId({
     required String id,
   }) async {

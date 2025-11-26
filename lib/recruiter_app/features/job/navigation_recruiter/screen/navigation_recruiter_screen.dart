@@ -47,7 +47,7 @@ class _NavigationRecruiterScreenState extends State<NavigationRecruiterScreen> {
     _currentIndex = widget.currentIndex;
     _pageController = PageController(initialPage: _currentIndex);
     _selectedRoute = routeList[_currentIndex];
-    // TODO: Bottom navigation
+    //   Bottom navigation
     _tabItems = [
       TabItemData(
         screen: CustomAppBarWithDrawer(

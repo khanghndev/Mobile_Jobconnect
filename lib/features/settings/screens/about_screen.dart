@@ -87,7 +87,7 @@ class _AboutScreenState extends State<AboutScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 SizedBox(height: 16.h),
-                // TODO: Logo
+                //   Logo
                 Container(
                   padding: EdgeInsets.all(12.r),
                   decoration: BoxDecoration(
@@ -115,7 +115,7 @@ class _AboutScreenState extends State<AboutScreen> {
                 ),
                 SizedBox(height: 24.h),
 
-                // TODO: AppName
+                //   AppName
                 Text(
                   AppStrings.appName,
                   style: theme.textTheme.displaySmall?.copyWith(
@@ -126,7 +126,7 @@ class _AboutScreenState extends State<AboutScreen> {
                 ),
                 SizedBox(height: 8.h),
 
-                // TODO: Phiên bản
+                //   Phiên bản
                 Text(
                   'Phiên bản $_version$_buildNumber',
                   style: theme.textTheme.titleMedium?.copyWith(
@@ -137,7 +137,7 @@ class _AboutScreenState extends State<AboutScreen> {
                 ),
                 SizedBox(height: 24.h),
 
-                // TODO: Mô tả ngắn gọn
+                //   Mô tả ngắn gọn
                 Text(
                   '${AppStrings.appName} là nền tảng kết nối ứng viên tài năng với các cơ hội việc làm hấp dẫn trong lĩnh vực Công nghệ thông tin, Thiết kế và Marketing. Sứ mệnh của chúng tôi là đồng hành cùng bạn trên con đường phát triển sự nghiệp.',
                   textAlign: TextAlign.justify,
@@ -150,7 +150,7 @@ class _AboutScreenState extends State<AboutScreen> {
                 Divider( color: theme.dividerColor.withValues(alpha:0.7)),
                 SizedBox(height: 24.h),
 
-                // TODO: Các liên kết hữu ích
+                //   Các liên kết hữu ích
                 SettingSection(
                   isDivider: false,
                   children: [
@@ -160,7 +160,7 @@ class _AboutScreenState extends State<AboutScreen> {
                       title: "Trang web chính thức",
                       subtitle: "Trang web chính thức của ${AppStrings.appName}",
                       onTap:() {
-                        // TODO: LINK WEB
+                        //   LINK WEB
                         _launchUrl( 'https://huit.edu.vn/');
                       }
                     ),
@@ -170,7 +170,7 @@ class _AboutScreenState extends State<AboutScreen> {
                       title: 'Chính sách & Điều khoản',
                       subtitle: "Điều khoản bảo mật của ${AppStrings.appName}",
                       onTap:() {
-                        // TODO: LINK WEB
+                        //   LINK WEB
                         context.push('/setting/policy');
                       }
                     ),
@@ -181,7 +181,7 @@ class _AboutScreenState extends State<AboutScreen> {
                       title: 'Liên hệ hỗ trợ',
                       subtitle: "${AppStrings.appName} luôn lắng nghe bạn",
                       onTap:() {
-                        // TODO: MESSEGER 
+                        //   MESSEGER 
                         
                       }
                     ),

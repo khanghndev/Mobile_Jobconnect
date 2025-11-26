@@ -5,7 +5,9 @@ import 'package:job_connect/config/enum/friend_status.dart';
   import 'package:provider/provider.dart';
   import 'package:job_connect/config/constant/app_images.dart';
   import 'package:job_connect/config/constant/app_strings.dart';
+  import 'package:job_connect/config/utils/dialog_utils.dart';
   import 'package:job_connect/features/mini_social/model/social_connection_model.dart';
+  import 'package:job_connect/features/mini_social/model/social_post_model.dart';
   import 'package:job_connect/features/mini_social/view_model/social_connection_view_model.dart';
   import 'package:job_connect/features/mini_social/view_model/social_post_view_model.dart';
   import 'package:job_connect/features/profile/view_model/user_view_model.dart';
@@ -14,9 +16,9 @@ import 'package:job_connect/config/enum/friend_status.dart';
   import 'package:job_connect/features/mini_social/widgets/profile/profile_goals.dart';
   import 'package:job_connect/features/mini_social/widgets/profile/profile_header.dart';
   import 'package:job_connect/features/mini_social/widgets/profile/profile_stats.dart';
+  import 'package:job_connect/features/mini_social/widgets/profile/profile_post_card.dart';
   import 'package:job_connect/config/widgets/unfocus_widget.dart';
   import 'package:job_connect/features/mini_social/widgets/shimmer/social_profile_shimmer.dart';
-  import 'package:job_connect/features/mini_social/widgets/profile/posted_list.dart';
 
   class SocialProfileScreen extends StatefulWidget {
     final String idUser;
@@ -27,7 +29,6 @@ import 'package:job_connect/config/enum/friend_status.dart';
   }
 
   class _SocialProfileScreenState extends State<SocialProfileScreen> {
-    bool _isExpanded = false;
     bool _isLoadingFriendAction = false; // loading cho nút friend
 
     late UserViewModel userVm;
@@ -103,21 +104,26 @@ import 'package:job_connect/config/enum/friend_status.dart';
       }
     }
 
-    @override
-    Widget build(BuildContext context) {
-      final user = context.watch<UserViewModel>().viewedUser;
-      final posts = context.watch<SocialPostViewModel>()
-          .posts
-          .where((p) => p.idUser == widget.idUser)
-          .toList();
-      final totalLikes = context.watch<SocialPostViewModel>().totalLikes;
-      final totalShared = context.watch<SocialPostViewModel>().totalShared;
-      final totalFollows = context.watch<SocialPostViewModel>().totalFollows;
-      final theme = Theme.of(context);
+  // Tính tổng số lượt thích từ các posts của user
+  int _calculateTotalLikes(List<SocialPostModel> posts) {
+    return posts.fold<int>(0, (sum, post) => sum + post.likesCount);
+  }
 
-      if (userVm.isDetailLoading) return const SocialProfileShimmer();
+  @override
+  Widget build(BuildContext context) {
+    final user = context.watch<UserViewModel>().viewedUser;
+    final posts = context.watch<SocialPostViewModel>()
+        .posts
+        .where((p) => p.idUser == widget.idUser)
+        .toList();
+    final totalLikes = _calculateTotalLikes(posts);
+    final totalShared = context.watch<SocialPostViewModel>().totalShared;
+    final totalFollows = context.watch<SocialPostViewModel>().totalFollows;
+    final theme = Theme.of(context);
 
-      final isCurrentUser = userVm.currentUser?.idUser == user?.idUser;
+    if (userVm.isDetailLoading) return const SocialProfileShimmer();
+
+    final isCurrentUser = userVm.currentUser?.idUser == user?.idUser;
 
       return Scaffold(
         backgroundColor: theme.scaffoldBackgroundColor,
@@ -187,10 +193,62 @@ import 'package:job_connect/config/enum/friend_status.dart';
                   ],
                   body: TabBarView(
                     children: [
-                      DiscoverList(
-                          socialPostModels: posts,
-                          isExpanded: _isExpanded,
-                          onToggle: () => setState(() => _isExpanded = !_isExpanded)),
+                      posts.isEmpty
+                          ? Center(
+                              child: Text(
+                                "Chưa có bài viết",
+                                style: TextStyle(fontSize: 16.sp, color: Colors.grey),
+                              ),
+                            )
+                          : ListView.builder(
+                              itemCount: posts.length,
+                              itemBuilder: (context, index) {
+                                final post = posts[index];
+                                return ProfilePostCard(
+                                  post: post,
+                                  isCurrentUser: isCurrentUser,
+                                  onTap: () {
+                                    context.push(
+                                      '/social/detail-post',
+                                      extra: {
+                                        'socialPostModel': post,
+                                        'isLoggedIn': true,
+                                        'idUser': userVm.currentUser?.idUser ?? '',
+                                      },
+                                    );
+                                  },
+                                  onEdit: () {
+                                    context.push(
+                                      '/social/edit-post',
+                                      extra: {'socialPostModel': post},
+                                    );
+                                  },
+                                  onDelete: () {
+                                    DialogUtils.showConfirmationDialog(
+                                      context: context,
+                                      title: "Xóa bài viết",
+                                      message: "Bạn muốn xóa bài viết này?",
+                                      icon: Icons.delete_forever_rounded,
+                                      onConfirm: () async {
+                                        socialPostVm.deletePost(post.idPost);
+                                        context.pop();
+                                        await _onRefresh();
+                                      },
+                                    );
+                                  },
+                                  onViewDetail: () {
+                                    context.push(
+                                      '/social/detail-post',
+                                      extra: {
+                                        'socialPostModel': post,
+                                        'isLoggedIn': true,
+                                        'idUser': userVm.currentUser?.idUser ?? '',
+                                      },
+                                    );
+                                  },
+                                );
+                              },
+                            ),
                       Center(
                         child: Text(
                           "Chưa có video",

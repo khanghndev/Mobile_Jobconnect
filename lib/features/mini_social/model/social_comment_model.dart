@@ -4,6 +4,8 @@ class SocialCommentModel {
   final String idUser;
   final String? parentComment;
   final String content;
+  final String? imageUrl;
+  final String? icon;
   final DateTime createdAt;
 
   SocialCommentModel({
@@ -12,6 +14,8 @@ class SocialCommentModel {
     required this.idUser,
     this.parentComment,
     required this.content,
+    this.imageUrl,
+    this.icon,
     required this.createdAt,
   });
 
@@ -22,6 +26,8 @@ class SocialCommentModel {
         idUser: json['idUser'],
         parentComment: json['parentComment'],
         content: json['content'],
+        imageUrl: json['imageUrl'],
+        icon: json['icon'],
         createdAt: DateTime.parse(json['createdAt']),
       );
 
@@ -31,6 +37,8 @@ class SocialCommentModel {
         'idUser': idUser,
         'parentComment': parentComment,
         'content': content,
+        'imageUrl': imageUrl,
+        'icon': icon,
         'createdAt': createdAt.toIso8601String(),
       };
 
@@ -40,6 +48,8 @@ class SocialCommentModel {
     String? idUser,
     String? parentComment,
     String? content,
+    String? imageUrl,
+    String? icon,
     DateTime? createdAt,
   }) {
     return SocialCommentModel(
@@ -48,6 +58,8 @@ class SocialCommentModel {
       idUser: idUser ?? this.idUser,
       parentComment: parentComment ?? this.parentComment,
       content: content ?? this.content,
+      imageUrl: imageUrl ?? this.imageUrl,
+      icon: icon ?? this.icon,
       createdAt: createdAt ?? this.createdAt,
     );
   }

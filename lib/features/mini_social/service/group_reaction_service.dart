@@ -23,7 +23,7 @@ class GroupReactionService {
     }
   }
 
-  //TODO: GET /api/GroupReactions - Lấy tất cả reaction
+  //  GET /api/GroupReactions - Lấy tất cả reaction
   Future<List<GroupReactionModel>> getAllReactions() async {
     return _handleApi(
       () async {
@@ -38,7 +38,7 @@ class GroupReactionService {
     );
   }
 
-  //TODO: POST /api/GroupReactions - Thêm reaction mới
+  //  POST /api/GroupReactions - Thêm reaction mới
   Future<GroupReactionModel> createReaction({required GroupReactionModel reaction}) async {
     return _handleApi(
       () async {
@@ -56,7 +56,7 @@ class GroupReactionService {
     );
   }
 
-  //TODO: GET /api/GroupReactions/{entityType}/{entityId} - Lấy reaction theo entity
+  //  GET /api/GroupReactions/{entityType}/{entityId} - Lấy reaction theo entity
   Future<List<GroupReactionModel>> getReactionsByEntity({
     required String entityType,
     required String entityId,
@@ -77,7 +77,7 @@ class GroupReactionService {
     );
   }
 
-  //TODO: DELETE /api/GroupReactions/{entityType}/{entityId}/{userId} - Xóa reaction
+  //  DELETE /api/GroupReactions/{entityType}/{entityId}/{userId} - Xóa reaction
   Future<void> deleteReaction({
     required String entityType,
     required String entityId,

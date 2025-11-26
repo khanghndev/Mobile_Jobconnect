@@ -50,6 +50,7 @@ class SocialFeedScreen extends StatefulWidget {
 
 class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   bool _showFab = false;
+  bool _isInitialized = false;
   final ScrollController _scrollController = ScrollController();
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
@@ -76,15 +77,32 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
     socialConnectionVm = context.read<SocialConnectionViewModel>();
     conversationViewModel = context.read<ConversationViewModel>();
     messageViewModel = context.read<MessageViewModel>();
-    WidgetsBinding.instance.addPostFrameCallback((_) async{
-      await userVm.loadRoleName();
-      if (userVm.roleName != null) {
-        await socialPostVm.getAllPosts();
-      }
-      if (widget.isLoggedIn && userVm.currentUser != null) {
-        await socialConnectionVm.getFriends(userId: userVm.currentUser!.idUser);
-      }
-    });
+    
+    // Chỉ load một lần khi init
+    if (!_isInitialized) {
+      _isInitialized = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (!mounted) return;
+        
+        // Load role name trước
+        await userVm.loadRoleName();
+        
+        if (!mounted) return;
+        
+        // Load saved posts để sync trạng thái
+        if (widget.isLoggedIn) {
+          await socialSavePostVm.getSavedPosts();
+        }
+        
+        // Chỉ load posts nếu chưa có dữ liệu hoặc đang loading
+        if (userVm.roleName != null && socialPostVm.posts.isEmpty && !socialPostVm.isLoading) {
+          await socialPostVm.getPostsByRole(roleName: userVm.roleName!);
+        }
+        
+        // Load friends chỉ khi cần (khi share)
+        // Không load ngay để tránh gọi API không cần thiết
+      });
+    }
 
     _scrollController.addListener(() {
       if (_scrollController.offset > 300 && !_showFab) {
@@ -110,8 +128,6 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
     _animationController.dispose();
     _commentController.dispose();
     _folderController.dispose();
-    _commentController.dispose();
-
     super.dispose();
   }
 
@@ -166,9 +182,20 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
   }
 
   Future<void> _onSavePost(BuildContext context, SocialPostModel socialPost) async {
-    if (socialPost.isSaved) {
+    // Kiểm tra trạng thái từ ViewModel thay vì từ model để đảm bảo chính xác
+    final isCurrentlySaved = socialSavePostVm.isPostSaved(socialPost.idPost) || socialPost.isSaved;
+    
+    if (isCurrentlySaved) {
+      // Bỏ lưu trực tiếp không cần mở bottom sheet
       await socialSavePostVm.deleteSavedPost(socialPost.idPost);
-      socialPostVm.updateLocalSavedState(socialPost.idPost, false);
+      
+      // Đợi một chút để đảm bảo state được cập nhật
+      await Future.delayed(const Duration(milliseconds: 100));
+      
+      // Cập nhật trạng thái sau khi xóa
+      final isStillSaved = socialSavePostVm.isPostSaved(socialPost.idPost);
+      socialPostVm.updateLocalSavedState(socialPost.idPost, isStillSaved);
+      
       if (context.mounted) {
         SnackbarApp.show(
           context,
@@ -184,19 +211,25 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
     const defaultFolder = 'Bộ sưu tập yêu thích';
     final folderToSelect = folders.isNotEmpty ? folders.first : defaultFolder;
 
-    _onShowBottomSheet(
+      _onShowBottomSheet(
       postId: socialPost.idPost,
       type: 'save',
       onSave: (String? selected) async {
         final folderName = selected ?? folderToSelect;
+
+        // Cập nhật trạng thái ngay lập tức (optimistic update)
+        // Giả sử lưu thành công, cập nhật UI ngay
+        socialPostVm.updateLocalSavedState(socialPost.idPost, true);
 
         await socialSavePostVm.toggleSavePostWithFolder(
           idPost: socialPost.idPost,
           selectedFolder: folderName,
         );
 
+        // Kiểm tra lại trạng thái sau khi toggle để đảm bảo chính xác
         final isNowSaved = socialSavePostVm.isPostSaved(socialPost.idPost);
-
+        
+        // Cập nhật lại trạng thái dựa trên kết quả thực tế
         socialPostVm.updateLocalSavedState(socialPost.idPost, isNowSaved);
 
         if (socialSavePostVm.isSuccess && context.mounted) {
@@ -209,6 +242,8 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
             backgroundColor: BackgroundColors.backgroundSuccessPrimary,
           );
         } else if (socialSavePostVm.errorMessage != null && context.mounted) {
+          // Nếu lỗi, revert lại trạng thái
+          socialPostVm.updateLocalSavedState(socialPost.idPost, false);
           DialogUtils.showConfirmationDialog(
             context: context,
             title: "Thông báo",
@@ -289,8 +324,11 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
             comments: vm.comments,
             isLoading: vm.isLoading,
             errorMessage: vm.errorMessage,
-            onSubmit: (text, parentId) async {
-              if (text.isNotEmpty) {
+            onSubmit: (text, parentId, imagePath, icon) async {
+              final hasContent = text.isNotEmpty || imagePath != null || icon != null;
+              if (!hasContent) return;
+              
+              try {
                 await vm.createComment(
                   newComment: SocialCommentModel(
                     idComment: '',
@@ -300,8 +338,17 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
                     parentComment: parentId,
                     createdAt: DateTime.now(),
                   ),
+                  userVm: userVm, // Truyền userVm để load user info
+                  imagePath: imagePath, // Truyền imagePath để upload
+                  icon: icon, // Truyền icon
                 );
+                // Cập nhật số comment trên UI sau khi comment thành công
+                // createComment sẽ throw exception nếu lỗi, nên nếu đến đây là thành công
+                socialPostVm.incrementCommentCount(postId);
                 _commentController.clear();
+              } catch (e) {
+                // Nếu lỗi, không cập nhật số comment
+                // Có thể show snackbar để thông báo lỗi nếu cần
               }
             },
             onRefresh: () => vm.loadCommentsWithUsers(postId: postId, userVm: userVm),
@@ -351,40 +398,17 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
               }
             },
             onDelete: (folder) async {},
-            onCreateFolder: () {
-              // TODO: tạo bộ sưu tập
-              showDialog(
-                context: context,
-                builder: (ctx) => AlertDialog(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16.r),
-                  ),
-                  title: const Text('Tạo bộ sưu tập mới'),
-                  content: TextField(
-                    controller: _folderController,
-                    decoration: const InputDecoration(
-                      hintText: 'Nhập tên bộ sưu tập',
-                    ),
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        _folderController.clear();
-                        ctx.pop();
-                      },
-                      child: const Text('Hủy'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () async {
-                        final name = _folderController.text.trim();
-                        if (name.isNotEmpty) await vm.savePost(idPost: postId, folderName: name);
-                        _folderController.clear();
-                        if (ctx.mounted) ctx.pop();
-                      },
-                      child: const Text('Tạo'),
-                    ),
-                  ],
-                ),
+            onCreateFolder: () {},
+            onTapFolder: (folderName) {
+              // Đóng bottom sheet và navigate đến saved posts screen
+              context.pop();
+              context.push(
+                '/social/saved-posts',
+                extra: {
+                  'isLoggedIn': widget.isLoggedIn,
+                  'idUser': widget.idUser,
+                  'folderName': folderName,
+                },
               );
             },
           );
@@ -395,7 +419,10 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
 
   Future<void> _showShareSheet(String postId) async {
     final vm = context.read<SocialConnectionViewModel>();
-    await vm.getFriends(userId: userVm.currentUser!.idUser);
+    // Chỉ load friends khi mở share sheet, không load trước
+    if (vm.friends.isEmpty && !vm.isLoading) {
+      await vm.getFriends(userId: userVm.currentUser!.idUser);
+    }
 
     await _showBottomSheetWrapper(
       Consumer<SocialConnectionViewModel>(
@@ -466,6 +493,9 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
       fileSize: null,
     );
 
+    // Cập nhật số share trên UI
+    socialPostVm.incrementShareCount(post.idPost);
+
     if (!mounted) return;
 
     context.push(
@@ -506,6 +536,9 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
       messageType: 'text',
     );
 
+    // Cập nhật số share trên UI
+    socialPostVm.incrementShareCount(postId);
+
     final otherUser = await userVm.getViewUser(targetUserId);
     if (!mounted) return;
 
@@ -533,15 +566,28 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
   Widget build(BuildContext context) {
     super.build(context);
     final theme = Theme.of(context);
-    return Consumer<SocialPostViewModel>(
-      builder: (context, socialPostVm, _) {
+    return Consumer2<SocialPostViewModel, SocialSavePostViewModel>(
+      builder: (context, socialPostVm, socialSavePostVm, _) {
+        // Chỉ load lại nếu chưa có dữ liệu và không đang loading
+        if (!_isInitialized && userVm.roleName != null && socialPostVm.posts.isEmpty && !socialPostVm.isLoading) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted && userVm.roleName != null) {
+              socialPostVm.getPostsByRole(roleName: userVm.roleName!);
+            }
+          });
+        }
+        
         if(socialPostVm.isLoading){
           return SocialFeedShimmer();
         }
-        if(socialPostVm.errorMessage != null){
+        if(socialPostVm.errorMessage != null && socialPostVm.posts.isEmpty){
           return BackgroundErrorState(
             title: "Hệ thống đang gặp sự cố\nVui lòng thử lại sau.",
-            onRetry: () => socialPostVm.getPostsByRole(roleName: userVm.roleName!),
+            onRetry: () {
+              if (userVm.roleName != null) {
+                socialPostVm.getPostsByRole(roleName: userVm.roleName!);
+              }
+            },
           );
         }
         return Scaffold(
@@ -580,12 +626,15 @@ class _SocialFeedScreenState extends State<SocialFeedScreen> with SingleTickerPr
                     (context, index) {
                       final post = socialPostVm.posts[index];
                       final isLast = index == socialPostVm.posts.length - 1;
+                      // Kiểm tra trạng thái saved từ cả model và ViewModel để đảm bảo chính xác
+                      // Ưu tiên post.isSaved vì nó được cập nhật ngay lập tức
+                      final isSaved = post.isSaved || socialSavePostVm.isPostSaved(post.idPost);
                       return Column(
                         children: [
                           PostItem(
                             socialPostModel: post,
                             isLiked: socialPostVm.isPostLiked(post.idPost),
-                            isSaved: post.isSaved,
+                            isSaved: isSaved,
                             isAccessJob: post.postType == PostType.job.name,
                             idUser: socialPostVm.currentUserId,
                             roleName: userVm.roleName!,

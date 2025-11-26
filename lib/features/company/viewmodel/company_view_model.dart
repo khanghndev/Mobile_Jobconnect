@@ -28,7 +28,7 @@ class CompanyViewModel extends ChangeNotifier {
   List<CompanyModel> get featuredCompanies => _featuredCompanies;
   CompanyModel? get companyDetail => _companyDetail;
 
-  //TODO: Cập nhật state nội bộ
+  //  Cập nhật state nội bộ
   void _setState({
     bool? isLoading,
     bool? isSuccess,
@@ -52,7 +52,7 @@ class CompanyViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  //TODO: Gọi API danh sách công ty
+  //  Gọi API danh sách công ty
   Future<void> getCompanies() async {
     await _handleApiCall(
       apiCall: () => _companyService.getCompanies(),
@@ -68,7 +68,7 @@ class CompanyViewModel extends ChangeNotifier {
     );
   }
 
-  //TODO: Gọi API công ty nổi bật
+  //  Gọi API công ty nổi bật
   Future<void> getFeaturedCompanies() async {
     await _handleApiCall(
       apiCall: () => _companyService.getFeaturedCompanies(),
@@ -79,7 +79,7 @@ class CompanyViewModel extends ChangeNotifier {
     );
   }
 
-  // TODO: Gọi API chi tiết công ty theo ID
+  //   Gọi API chi tiết công ty theo ID
   Future<void> getCompanyDetail(String id) async {
     _setState(isDetailLoading: true, errorMessage: null);
 
@@ -95,7 +95,7 @@ class CompanyViewModel extends ChangeNotifier {
     }
   }
 
-  //TODO: Hàm xử lý API chung (giảm lặp code)
+  //  Hàm xử lý API chung (giảm lặp code)
   Future<void> _handleApiCall({
     required Future<List<CompanyModel>> Function() apiCall,
     required void Function(List<CompanyModel>) onSuccess,
@@ -129,7 +129,7 @@ class CompanyViewModel extends ChangeNotifier {
     }
   }
 
-  //TODO: Lọc danh sách công ty
+  //  Lọc danh sách công ty
   void filterCompanies(String keyword) {
     if (keyword.isEmpty) {
       _setState(filteredCompanies: _companies);
@@ -146,10 +146,10 @@ class CompanyViewModel extends ChangeNotifier {
     _setState(filteredCompanies: filtered);
   }
 
-  //TODO: Làm mới danh sách công ty
+  //  Làm mới danh sách công ty
   Future<void> refreshCompanies() async => await getCompanies();
 
-  //TODO: Reset toàn bộ state
+  //  Reset toàn bộ state
   void reset() {
     _setState(
       isLoading: false,

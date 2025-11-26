@@ -44,7 +44,7 @@ class ServicesSummaryWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            //TODO: Tiêu đề
+            //  Tiêu đề
             SectionTitle(
               title: "Dịch vụ đã chọn",
               fontSize: 22.sp,
@@ -52,7 +52,7 @@ class ServicesSummaryWidget extends StatelessWidget {
               iconColor: theme.iconTheme.color
             ),
             SizedBox(height: 20.h), 
-            //TODO: Danh sách dịch vụ
+            //  Danh sách dịch vụ
             ...List.generate(selectedServices.length, (index) {
               final service = selectedServices[index];
               return Padding(
@@ -62,7 +62,7 @@ class ServicesSummaryWidget extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    //TODO: Icon
+                    //  Icon
                     Container(
                       width: 48.w,
                       height: 48.h,
@@ -77,7 +77,7 @@ class ServicesSummaryWidget extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: 16.w),
-                    //TODO: Tên và thời gian
+                    //  Tên và thời gian
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,7 +101,7 @@ class ServicesSummaryWidget extends StatelessWidget {
                         ],
                       ),
                     ),
-                    //TODO: Giá
+                    //  Giá
                     Text(
                       FormatUtils.formatCurrency(service.price * 1.0),
                       style: theme.textTheme.titleMedium?.copyWith(
@@ -120,7 +120,7 @@ class ServicesSummaryWidget extends StatelessWidget {
               thickness: 1.5.h,
             ),
             SizedBox(height: 16.h),
-            //TODO: Tổng cộng
+            //  Tổng cộng
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

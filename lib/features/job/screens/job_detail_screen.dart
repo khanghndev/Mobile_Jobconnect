@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/constant/api_constants.dart';
+import 'package:job_connect/config/constant/app_colors.dart';
+import 'package:job_connect/config/utils/snackbar_app.dart';
 import 'package:job_connect/config/widgets/background_error_state.dart';
 import 'package:job_connect/config/widgets/custom_action_bar.dart';
 import 'package:job_connect/config/widgets/login_required_dialog.dart';
@@ -8,6 +10,8 @@ import 'package:job_connect/features/job/model/job_application_model.dart';
 import 'package:job_connect/features/job/model/job_posting_model.dart';
 import 'package:job_connect/features/home/model/job_saved_model.dart';
 import 'package:job_connect/config/services/api_service.dart';
+import 'package:job_connect/config/utils/format.dart';
+import 'package:job_connect/features/home/view_model/job_saved_view_model.dart';
 import 'package:job_connect/features/company/widgets/company_detail/company_detail_appbar.dart';
 import 'package:job_connect/features/job/widgets/job_detail/company_info_card.dart';
 import 'package:job_connect/features/job/widgets/job_detail/job_detail_section.dart';
@@ -15,7 +19,8 @@ import 'package:job_connect/features/job/widgets/job_detail/job_detail_shimmer.d
 import 'package:job_connect/features/job/widgets/job_detail/job_overview_card.dart';
 import 'package:job_connect/features/job/widgets/job_detail/similar_jobs_section.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:share_plus/share_plus.dart'; 
+import 'package:share_plus/share_plus.dart';
+import 'package:provider/provider.dart'; 
 
 class JobDetailScreen extends StatefulWidget {
   final String idUser;
@@ -33,8 +38,8 @@ class JobDetailScreen extends StatefulWidget {
 
 class JobDetailState extends State<JobDetailScreen>with TickerProviderStateMixin {
   final _apiService = ApiService( );
+  late JobSavedViewModel _jobSavedVM;
   JobPostingModel? _jobPosting;
-  JobSavedModel? _jobSaved; // Sẽ lưu trạng thái đã lưu của công việc này
   bool _isLoading = true;
   String? _errorMessage;
   List<JobApplicationModel> _appJobList = []; // Giữ lại để hiển thị số lượng ứng viên
@@ -42,24 +47,15 @@ class JobDetailState extends State<JobDetailScreen>with TickerProviderStateMixin
   late AnimationController _animationController; // Animation cho các section
   late Animation<double> _fadeAnimation;
 
-  final List<Map<String, String>> similarJobsData = [
-    {
-      "title": "Senior Flutter Developer",
-      "company": "Innovatech Ltd.",
-      "salary": "25.000.000đ",
-      "location": "Quận 1, TP. HCM",
-    },
-    {
-      "title": "Mobile Application Engineer",
-      "company": "SolutionHub",
-      "salary": "22.000.000đ",
-      "location": "Đống Đa, Hà Nội",
-    },
-  ];
+  List<JobPostingModel> _similarJobs = []; // Công việc cùng công ty
 
   @override
   void initState() {
     super.initState();
+    _jobSavedVM = context.read<JobSavedViewModel>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _jobSavedVM.fetchSavedJobsByUser(widget.idUser);
+    });
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 700),
@@ -91,9 +87,16 @@ class JobDetailState extends State<JobDetailScreen>with TickerProviderStateMixin
     try {
       await Future.wait([
         _fetchJob(),
-        _fetchSavedJobStatus(), // Đổi tên hàm này để rõ ràng hơn
         _fetchApplicationJobCount(), // Chỉ fetch số lượng nếu cần
       ]);
+      // Fetch saved jobs từ ViewModel
+      if (widget.idUser.isNotEmpty) {
+        await _jobSavedVM.fetchSavedJobsByUser(widget.idUser);
+      }
+      // Fetch công việc cùng công ty sau khi đã có _jobPosting
+      if (_jobPosting != null && _jobPosting!.company != null) {
+        await _fetchSimilarJobs();
+      }
     } catch (e) {
       if (mounted) {
         setState(
@@ -135,27 +138,6 @@ class JobDetailState extends State<JobDetailScreen>with TickerProviderStateMixin
     }
   }
 
-  Future<void> _fetchSavedJobStatus() async {
-    // Lấy trạng thái lưu của CÔNG VIỆC HIỆN TẠI
-    if (widget.idUser.isEmpty) {
-      _jobSaved = null; // Nếu không có idUser, không thể có trạng thái đã lưu
-      return;
-    }
-    try {
-      final data = await _apiService.get(
-        endpoint: '${ApiConstants.jobSavedEndpoint}/${widget.jobPosting.idJobPost}/${widget.idUser}',
-      );
-      if (data.isNotEmpty) {
-        _jobSaved = JobSavedModel.fromJson(data.first);
-      } else {
-        _jobSaved = null; // Công việc này chưa được lưu bởi user này
-      }
-    } catch (e) {
-      print('Error fetching saved job status: $e');
-      _jobSaved = null; // Lỗi thì coi như chưa lưu
-      // Không ném lỗi ở đây để các phần khác vẫn có thể tải
-    }
-  }
 
   Future<void> _fetchApplicationJobCount() async {
     // Chỉ lấy số lượng ứng viên cho công việc này
@@ -177,6 +159,32 @@ class JobDetailState extends State<JobDetailScreen>with TickerProviderStateMixin
     }
   }
 
+  Future<void> _fetchSimilarJobs() async {
+    if (_jobPosting == null || _jobPosting!.company == null) return;
+    
+    try {
+      final endpoint = ApiConstants.jobPostingByCompanyEndpoint
+          .replaceFirst('{companyId}', _jobPosting!.company!.idCompany);
+      final data = await _apiService.get(endpoint: endpoint);
+      
+      if (mounted && data != null) {
+        final List<JobPostingModel> allCompanyJobs = 
+            (data as List).map<JobPostingModel>((job) => JobPostingModel.fromJson(job)).toList();
+        
+        // Lọc bỏ công việc hiện tại và giới hạn số lượng
+        _similarJobs = allCompanyJobs
+            .where((job) => job.idJobPost != widget.jobPosting.idJobPost)
+            .take(5)
+            .toList();
+        
+        if (mounted) setState(() {});
+      }
+    } catch (e) {
+      print('Error fetching similar jobs: $e');
+      _similarJobs = [];
+    }
+  }
+
   Future<void> _onToggleSaveJob() async {
     if (_jobPosting == null) return;
     if (widget.idUser.isEmpty) {
@@ -184,95 +192,50 @@ class JobDetailState extends State<JobDetailScreen>with TickerProviderStateMixin
       return;
     }
 
-    final theme = Theme.of(context);
-    final bool currentlySaved = _jobSaved != null;
-
-    setState(() {
-      // Optimistic update
-      if (currentlySaved) {
-        _jobSaved = null;
-      } else {
-        // Tạo một đối tượng JobSaved giả để UI cập nhật ngay
-        _jobSaved = JobSavedModel(
-          idJobPost: widget.jobPosting.idJobPost,
-          idUser: widget.idUser,
-        );
-      }
-    });
+    final isCurrentlySaved = _jobSavedVM.savedJobs.any(
+      (saved) => saved.idJobPost == widget.jobPosting.idJobPost && saved.idUser == widget.idUser,
+    );
 
     try {
-      if (currentlySaved) {
+      if (isCurrentlySaved) {
         // Nếu đang lưu -> thực hiện bỏ lưu
-        await _apiService.delete(
-           endpoint: "${ApiConstants.jobSavedEndpoint}/${widget.jobPosting.idJobPost}/${widget.idUser}",
-        );
+        await _jobSavedVM.deleteSavedJob(widget.jobPosting.idJobPost, widget.idUser);
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                "Đã bỏ lưu công việc",
-                style: TextStyle(color: theme.colorScheme.onSecondaryContainer),
-              ),
-              backgroundColor: theme.colorScheme.secondaryContainer,
-            ),
+          SnackbarApp.show(
+            context,
+            title: 'Thành công',
+            message: 'Đã bỏ lưu công việc',
+            backgroundColor: BackgroundColors.backgroundInfoPrimary,
           );
         }
       } else {
         // Nếu chưa lưu -> thực hiện lưu
-        Map<String, dynamic> data = {
-          "idJobPost": widget.jobPosting.idJobPost,
-          "idUser": widget.idUser,
-        };
-        final response = await _apiService.post(
-          endpoint: ApiConstants.jobSavedEndpoint,
-          body : data,
+        final jobToSave = JobSavedModel(
+          idJobPost: widget.jobPosting.idJobPost,
+          idUser: widget.idUser,
         );
-        if (response == 200 || response == 201) {
-          if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  "Đã lưu công việc thành công!",
-                  style: TextStyle(
-                    color: theme.colorScheme.onSecondaryContainer,
-                  ),
-                ),
-                backgroundColor: theme.colorScheme.secondaryContainer,
-              ),
-            );
-          }
-          // Sau khi lưu thành công, fetch lại trạng thái để có idJobSaved đúng
-          await _fetchSavedJobStatus();
-          if (mounted) setState(() {}); // Cập nhật lại UI với _jobSaved mới
-        } else {
-          throw Exception("Không thể lưu công việc");
+        await _jobSavedVM.saveJob(jobToSave);
+        if (mounted) {
+          SnackbarApp.show(
+            context,
+            title: 'Thành công',
+            message: 'Đã lưu công việc thành công!',
+            backgroundColor: BackgroundColors.backgroundSuccessPrimary,
+          );
         }
       }
+      // Reload lại danh sách đã lưu sau khi thay đổi
+      await _jobSavedVM.fetchSavedJobsByUser(widget.idUser);
+      if (mounted) setState(() {}); // Cập nhật lại UI
     } catch (e) {
       if (mounted) {
-        // Revert optimistic update
-        setState(() {
-          if (currentlySaved) {
-            // Nếu trước đó đã lưu (giờ đang cố bỏ lưu mà lỗi)
-            _jobSaved = JobSavedModel(
-              idJobPost: widget.jobPosting.idJobPost,
-              idUser: widget.idUser,
-            ); // Giữ lại trạng thái đã lưu (có thể với id giả)
-          } else {
-            // Nếu trước đó chưa lưu (giờ đang cố lưu mà lỗi)
-            _jobSaved = null;
-          }
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              currentlySaved
-                  ? 'Bỏ lưu thất bại: ${e.toString()}'
-                  : 'Lưu thất bại: ${e.toString()}',
-              style: TextStyle(color: theme.colorScheme.onError),
-            ),
-            backgroundColor: theme.colorScheme.error,
-          ),
+        SnackbarApp.show(
+          context,
+          title: 'Lỗi',
+          message: isCurrentlySaved
+              ? 'Bỏ lưu thất bại: ${e.toString()}'
+              : 'Lưu thất bại: ${e.toString()}',
+          backgroundColor: BackgroundColors.backgroundErrorPrimary,
         );
       }
     }
@@ -299,7 +262,7 @@ class JobDetailState extends State<JobDetailScreen>with TickerProviderStateMixin
       );
     }
 
-    // TODO: ERROR VIEW
+    //   ERROR VIEW
     if (_errorMessage != null || _jobPosting == null) {
       return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -312,9 +275,13 @@ class JobDetailState extends State<JobDetailScreen>with TickerProviderStateMixin
     );
     }
 
-    final bool isJobCurrentlySaved =  _jobSaved != null && _jobSaved!.idJobPost.isNotEmpty;
+    return Consumer<JobSavedViewModel>(
+      builder: (context, jobSavedVM, child) {
+        final isJobCurrentlySaved = jobSavedVM.savedJobs.any(
+          (saved) => saved.idJobPost == widget.jobPosting.idJobPost && saved.idUser == widget.idUser,
+        );
 
-    return Scaffold(
+        return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: RefreshIndicator(
         onRefresh: _onRefresh,
@@ -323,7 +290,7 @@ class JobDetailState extends State<JobDetailScreen>with TickerProviderStateMixin
         child: CustomScrollView(
           physics: const BouncingScrollPhysics(),
           slivers: [
-            // TODO: APPBAR
+            //   APPBAR
              CompanyDetailAppbar(
               companyName:  _jobPosting!.title,
               industry: _jobPosting!.company!.industry,
@@ -333,7 +300,7 @@ class JobDetailState extends State<JobDetailScreen>with TickerProviderStateMixin
               isCompany: false,
             ),
             
-            // TODO: CONTENT
+            //   CONTENT
             SliverToBoxAdapter(
               child: FadeTransition(
                 opacity: _fadeAnimation,
@@ -349,7 +316,7 @@ class JobDetailState extends State<JobDetailScreen>with TickerProviderStateMixin
                             child: FadeInAnimation(child: widget),
                           ),
                       children: [
-                        // TODO: JOB OVERVIEW
+                        //   JOB OVERVIEW
                         JobOverviewCard(
                           jobPosting: _jobPosting!,
                           applicantCount: _appJobList.length,
@@ -376,23 +343,48 @@ class JobDetailState extends State<JobDetailScreen>with TickerProviderStateMixin
                             icon: Icons.card_giftcard_outlined,
                             iconColor: theme.primaryColor,
                           ),
-                        // TODO: COMPANY INFO
+                        //   COMPANY INFO
                         CompanyInfoCard(
                           company: _jobPosting!.company!,
                           idUser: widget.idUser,
                           onRefresh: _onRefresh,
                         ),
 
-                        SimilarJobsSection(
-                          similarJobs: similarJobsData,
-                          onSeeAll: () {
-                            // TODO: Navigate đến danh sách việc làm tương tự
-                          },
-                          onTapJob: (job) {
-                            // TODO: Navigate đến chi tiết job được chọn
-                            
-                          },
-                        ),
+                        if (_similarJobs.isNotEmpty)
+                          SimilarJobsSection(
+                            similarJobs: _similarJobs.map((job) => {
+                              "idJobPost": job.idJobPost,
+                              "title": job.title,
+                              "company": job.company?.companyName ?? "",
+                              "salary": job.salary != null 
+                                  ? "${FormatUtils.formatCurrency(job.salary!.toDouble())}đ"
+                                  : "Lương thỏa thuận",
+                              "location": FormatUtils.extractDistrictAndCity(job.location),
+                            }).toList(),
+                            onSeeAll: () {
+                              // Navigate đến trang công ty để xem tất cả công việc
+                              if (_jobPosting?.company != null) {
+                                context.push(
+                                  '/company/detail',
+                                  extra: {'company': _jobPosting!.company!},
+                                );
+                              }
+                            },
+                            onTapJob: (job) {
+                              // Navigate đến chi tiết job được chọn
+                              final jobPosting = _similarJobs.firstWhere(
+                                (j) => j.idJobPost == job["idJobPost"],
+                                orElse: () => _similarJobs.first,
+                              );
+                              context.push(
+                                '/job/detail',
+                                extra: {
+                                  'jobPosting': jobPosting,
+                                  'idUser': widget.idUser,
+                                },
+                              );
+                            },
+                          ),
                       ],
                     ),
                   ),
@@ -427,7 +419,9 @@ class JobDetailState extends State<JobDetailScreen>with TickerProviderStateMixin
         leftIcon: isJobCurrentlySaved
           ? Icons.bookmark_rounded
           : Icons.bookmark_add_outlined,
-      )
+      ),
+    );
+      },
     );
   }
 }

@@ -57,7 +57,7 @@ class JobPostingService {
     return normalized.replaceAll('-', '').replaceAll(' ', '');
   }
 
-  //TODO: Lấy tất cả job posting
+  //  Lấy tất cả job posting
   Future<List<JobPostingModel>> getAllJobPostings() async {
     return _handleApi(
       () async {
@@ -72,7 +72,7 @@ class JobPostingService {
     );
   }
 
-  //TODO: Lấy job posting nổi bật (featured)
+  //  Lấy job posting nổi bật (featured)
   Future<List<JobPostingModel>> getFeaturedJobPostings() async {
     return _handleApi(
       () async {
@@ -87,7 +87,7 @@ class JobPostingService {
     );
   }
 
-  //TODO: Lấy danh sách job posting theo companyId
+  //  Lấy danh sách job posting theo companyId
   Future<List<JobPostingModel>> getJobPostingsByCompany({
     required String companyId,
   }) async {
@@ -106,7 +106,7 @@ class JobPostingService {
     );
   }
 
-  //TODO: Tìm kiếm job posting theo từ khóa, vị trí, filter
+  //  Tìm kiếm job posting theo từ khóa, vị trí, filter
   Future<List<JobPostingModel>> searchJobPostings(Map<String, dynamic> filters) async {
     return _handleApi(
       () async {
@@ -125,7 +125,7 @@ class JobPostingService {
     );
   }
 
-  //TODO: Lấy job posting gần vị trí người dùng (theo lat, lon, bán kính)
+  //  Lấy job posting gần vị trí người dùng (theo lat, lon, bán kính)
   Future<List<JobPostingModel>> getNearbyJobPostings({
     required double latitude,
     required double longitude,
@@ -152,7 +152,7 @@ class JobPostingService {
     );
   }
 
-  //TODO: Lấy job posting theo khu vực (city, district, province, ...)
+  //  Lấy job posting theo khu vực (city, district, province, ...)
   Future<List<JobPostingModel>> getJobPostingsByArea({
     required String area,
   }) async {
@@ -173,7 +173,7 @@ class JobPostingService {
     );
   }
 
-  //TODO: Lấy chi tiết job posting theo id
+  //  Lấy chi tiết job posting theo id
   Future<JobPostingModel?> getJobPostingById({required String jobId}) async {
     return _handleApi(
       () async {
@@ -190,7 +190,7 @@ class JobPostingService {
     );
   }
 
-  // TODO: Tạo mới job posting
+  //   Tạo mới job posting
   Future<JobPostingModel> createJobPosting({
     required JobPostingModel jobPosting,
     bool isUrgent = false,
@@ -296,7 +296,7 @@ class JobPostingService {
     );
   }
 
-  //TODO: Cập nhật job posting theo ID
+  //  Cập nhật job posting theo ID
   Future<JobPostingModel> updateJobPosting({
     required String jobId,
     required JobPostingModel jobPosting,
@@ -413,7 +413,7 @@ class JobPostingService {
     );
   }
 
-  //TODO: Xoá job posting theo ID
+  //  Xoá job posting theo ID
   Future<void> deleteJobPosting({required String jobId}) async {
     return _handleApi(
       () async {
@@ -424,7 +424,7 @@ class JobPostingService {
     );
   }
 
-  //TODO: Cập nhật trạng thái job posting (open, closed, waiting, editing)
+  //  Cập nhật trạng thái job posting (open, closed, waiting, editing)
   Future<void> updateJobPostingStatus({
     required String jobId,
     required String newStatus,

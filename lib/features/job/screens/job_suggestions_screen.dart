@@ -160,7 +160,7 @@ class _JobSuggestionsPageState extends State<JobSuggestionsPage> {
           IconButton(
             icon: Icon(Icons.search, color: theme.appBarTheme.foregroundColor),
             onPressed: () {
-              // TODO: Implement search functionality
+              //   Implement search functionality
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('Chức năng tìm kiếm chưa được triển khai.'),
@@ -230,7 +230,7 @@ class _JobSuggestionsPageState extends State<JobSuggestionsPage> {
               ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // TODO: Navigate to CV editing page or similar
+          //   Navigate to CV editing page or similar
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
@@ -280,7 +280,7 @@ class _JobSuggestionsPageState extends State<JobSuggestionsPage> {
           ),
           TextButton(
             onPressed: () {
-              // TODO: Navigate to CV analytics
+              //   Navigate to CV analytics
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('Xem phân tích CV (chưa triển khai).'),
@@ -315,7 +315,7 @@ class _JobSuggestionsPageState extends State<JobSuggestionsPage> {
       color: theme.cardColor,
       child: InkWell(
         onTap: () {
-          // TODO: Navigate to job detail screen
+          //   Navigate to job detail screen
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(

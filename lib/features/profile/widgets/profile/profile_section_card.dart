@@ -60,7 +60,7 @@ class ProfileSectionCard extends StatelessWidget {
               ],
             ),
         
-            //TODO: Divider
+            //  Divider
             Padding(
               padding: EdgeInsets.symmetric(vertical: 16.h),
               child: Divider(
@@ -69,7 +69,7 @@ class ProfileSectionCard extends StatelessWidget {
               ),
             ),
         
-            //TODO: Children widgets
+            //  Children widgets
             ...children,
           ],
         ),

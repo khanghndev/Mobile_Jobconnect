@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/constant/api_constants.dart';
-import 'package:job_connect/config/constant/app_colors.dart';
 import 'package:job_connect/config/constant/app_strings.dart';
-import 'package:job_connect/config/utils/snackbar_app.dart';
 import 'package:job_connect/config/widgets/custom_button_border.dart';
 import 'package:job_connect/config/widgets/custom_gradient_button.dart';
 import 'package:job_connect/config/widgets/login_required_dialog.dart';
@@ -22,7 +20,6 @@ import 'package:job_connect/features/mini_social/view_model/social_connection_vi
 import 'package:job_connect/features/navigation/screens/navigation_page.dart';
 import 'package:job_connect/features/profile/model/user_model.dart';
 import 'package:job_connect/features/job/model/job_posting_model.dart';
-import 'package:job_connect/features/home/model/podcast_model.dart';
 import 'package:job_connect/config/services/api_service.dart';
 import 'package:job_connect/features/home/widgets/home/banner_slide_show.dart';
 import 'package:job_connect/features/home/widgets/home/featured_companies_list.dart';
@@ -383,19 +380,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, 
                           context.push('/home/company', extra: {"idUser": widget.idUser});
                         },
                       ),
-                      SizedBox(height: 16.h),
                       FeaturedCompaniesList(
                         companies: companyVM.featuredCompanies,
                         idUser: widget.idUser
                       ),
 
-                      SizedBox(height: 16.h),
                       SectionHeader(
                         title: "Công việc nổi bật",
                         onSeeAll: () => NavigationPage.goToSearchTab(context)
                       ),
-                      SizedBox(height: 16.h),
-                      FeaturedJobsList(jobs: _featuredJobs, idUser: widget.idUser),
+                      FeaturedJobsList(jobs: _featuredJobs, idUser: widget.idUser,),
 
                       SectionHeader(
                         title: "Công việc thời vụ",
@@ -404,28 +398,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, 
                           extra: {"idUser": widget.idUser}
                         ),
                       ),
-                      SizedBox(height: 16.h),
                       FeaturedSeasonalJobsList(
                         jobs: jobVM.jobPostings,
                         idUser: widget.idUser
                       ),
 
-                      SizedBox(height: 16.h),
                       SectionHeader(
                         title: "Việc làm cá nhân hóa",
                         onSeeAll: () => NavigationPage.goToSearchTab(context)
                       ),
-                      SizedBox(height: 16.h),
                       FeaturedJobsList(jobs: jobRecommentVM.personalizedJobs, idUser: widget.idUser),
 
-                      SizedBox(height: 16.h),
                       SectionHeader(
                         title: "Việc làm gợi ý",
                         onSeeAll: () => NavigationPage.goToSearchTab(context)
                       ),
-                      SizedBox(height: 16.h),
                       FeaturedJobsList(jobs: jobRecommentVM.homepageJobs, idUser: widget.idUser),
-
                       SizedBox(height: 16.h),
                       SectionHeader(
                         title: "Kỹ năng đang thịnh hành",
@@ -433,21 +421,28 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, 
                       ),
                       SizedBox(height: 16.h),
                       FeaturedSkillTrendingList(skills: jobRecommentVM.trendingSkills),
-
-                      SizedBox(height: 16.h),
                       SectionHeader(
                         title: "Địa điểm thu hút",
                         onSeeAll: () => context.push('/social/job-board', extra: {"idUser": widget.idUser}),
                       ),
-                      SizedBox(height: 16.h),
-                      FeaturedPopularLocationList(locations: jobRecommentVM.popularLocations),
+                      FeaturedPopularLocationList(
+                        locations: jobRecommentVM.popularLocations,
+                        onLocationTap: (location) {
+                          context.go(
+                            '/home/near-job',
+                            extra: {
+                              'isLoggedIn': widget.isLoggedIn,
+                              'idUser': widget.idUser,
+                              'initialLocation': location,
+                            },
+                          );
+                        },
+                      ),
                       
-                      SizedBox(height: 16.h),
                       SectionHeader(
                         title: "Bạn có thể biết",
                         onSeeAll: () => context.push('/social/search',extra: {'idUser' : widget.idUser}),
                       ),
-                      SizedBox(height: 16.h),
                       FeaturedFriendsList(
                         users: userVM.users.where((user) => user.idUser != widget.idUser).toList(),
                         getFriendStatus: (user) {

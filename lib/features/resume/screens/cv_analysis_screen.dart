@@ -219,7 +219,7 @@ class _CvAnalysisScreenState extends State<CvAnalysisScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
 
-        //TODO: Upload new CV
+        //  Upload new CV
         Card(
           elevation: 4,
           shape: RoundedRectangleBorder(
@@ -275,7 +275,7 @@ class _CvAnalysisScreenState extends State<CvAnalysisScreen> {
 
         const SizedBox(height: 16),
 
-        //TODO: Previous CVs từ ResumeViewModel
+        //  Previous CVs từ ResumeViewModel
         if (resumeVm.isListLoading)
           Center(
             child: Padding(

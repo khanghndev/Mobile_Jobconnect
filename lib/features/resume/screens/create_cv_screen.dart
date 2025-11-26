@@ -787,13 +787,13 @@ class _CreateCVScreenState extends State<CreateCVScreen> {
   }
 
   void _previewCV() {
-    // TODO: Implement CV preview
+    //   Implement CV preview
   }
 
   void _saveCV() {
     if (_formKey.currentState?.validate() ?? false) {
       _formKey.currentState?.save();
-      // TODO: Save CV data to database or local storage
+      //   Save CV data to database or local storage
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('CV đã được lưu thành công')),
       );

@@ -383,7 +383,7 @@ class CVPreviewScreen extends StatelessWidget {
   Future<Uint8List> _generatePDF() async {
     final pdf = pw.Document();
 
-    // TODO: Implement PDF generation based on template
+    //   Implement PDF generation based on template
     pdf.addPage(
       pw.Page(
         build: (context) {

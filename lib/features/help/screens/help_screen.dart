@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:job_connect/config/constant/app_strings.dart';
+import 'package:job_connect/config/utils/snackbar_app.dart';
+import 'package:job_connect/config/constant/app_colors.dart';
 import 'package:job_connect/config/widgets/custom_app_bar_title_large.dart';
 import 'package:job_connect/config/widgets/custom_buttom_leading_icon.dart';
 import 'package:job_connect/config/widgets/custom_search_bar_main.dart';
@@ -8,6 +10,7 @@ import 'package:job_connect/config/widgets/section_title.dart';
 import 'package:job_connect/features/help/widgets/faq_section.dart';
 import 'package:job_connect/features/settings/widgets/settings/setting_item.dart';
 import 'package:job_connect/features/settings/widgets/settings/setting_section.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HelpScreen extends StatefulWidget {
   const HelpScreen({super.key});
@@ -53,6 +56,71 @@ class _HelpScreenState extends State<HelpScreen> {
     _searchController.removeListener(_onSearchChanged);
     _searchController.dispose();
     super.dispose();
+  }
+
+  Future<void> _launchEmail(String email) async {
+    final Uri emailUri = Uri(
+      scheme: 'mailto',
+      path: email,
+    );
+    
+    try {
+      if (await canLaunchUrl(emailUri)) {
+        await launchUrl(emailUri);
+      } else {
+        if (mounted) {
+          SnackbarApp.show(
+            context,
+            title: 'Lỗi',
+            message: 'Không thể mở ứng dụng email.',
+            backgroundColor: BackgroundColors.backgroundErrorPrimary,
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        SnackbarApp.show(
+          context,
+          title: 'Lỗi',
+          message: 'Không thể mở email: ${e.toString()}',
+          backgroundColor: BackgroundColors.backgroundErrorPrimary,
+        );
+      }
+    }
+  }
+
+  Future<void> _launchPhone(String phoneNumber) async {
+    // Loại bỏ khoảng trắng và ký tự đặc biệt, chỉ giữ số và dấu +
+    final cleanNumber = phoneNumber.replaceAll(RegExp(r'[^\d+]'), '');
+    final Uri phoneUri = Uri(scheme: 'tel', path: cleanNumber);
+    
+    try {
+      if (await canLaunchUrl(phoneUri)) {
+        // Sử dụng LaunchMode.externalApplication để đảm bảo mở dialer thay vì danh bạ
+        await launchUrl(
+          phoneUri,
+          mode: LaunchMode.externalApplication,
+        );
+      } else {
+        if (mounted) {
+          SnackbarApp.show(
+            context,
+            title: 'Lỗi',
+            message: 'Không thể mở ứng dụng gọi điện.',
+            backgroundColor: BackgroundColors.backgroundErrorPrimary,
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        SnackbarApp.show(
+          context,
+          title: 'Lỗi',
+          message: 'Không thể mở dialer: ${e.toString()}',
+          backgroundColor: BackgroundColors.backgroundErrorPrimary,
+        );
+      }
+    }
   }
 
   @override
@@ -119,14 +187,14 @@ class _HelpScreenState extends State<HelpScreen> {
                 iconColor: theme.primaryColor,
                 title: 'Email hỗ trợ',
                 subtitle: 'support@${AppStrings.appName}.com',
-                onTap: () {},
+                onTap: () => _launchEmail('support@${AppStrings.appName}.com'),
               ),
               SettingItem(
                 icon: Icons.phone_outlined,
                 iconColor: Colors.green,
                 title: 'Hotline',
                 subtitle: '1900 8888',
-                onTap: () {},
+                onTap: () => _launchPhone('1900 8888'),
               ),
               SettingItem(
                 icon: Icons.chat_rounded,

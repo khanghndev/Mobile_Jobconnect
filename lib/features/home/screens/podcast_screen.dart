@@ -100,7 +100,7 @@ class _PodcastScreenState extends State<PodcastScreen> with TickerProviderStateM
               backgroundColor: theme.cardColor,
               child: Column(
                 children: [
-                  // TODO: Thanh tìm kiếm podcast
+                  //   Thanh tìm kiếm podcast
                   CustomSearchBarMain(
                     controller: _searchController,
                     onChanged: (_) => _onSearchChanged(),
@@ -137,7 +137,7 @@ class _PodcastScreenState extends State<PodcastScreen> with TickerProviderStateM
                                         onFavoritePressed: () =>
                                             vm.toggleFavorite(podcast),
                                         onPlayPressed: () {
-                                          // TODO: Phát nhạc
+                                          //   Phát nhạc
                                         },
                                       ),
                                     ),

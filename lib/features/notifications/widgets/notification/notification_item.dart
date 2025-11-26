@@ -67,7 +67,7 @@ class NotificationItem extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              //TODO: Checkbox khi ở select mode
+              //  Checkbox khi ở select mode
               if (selectMode)
                 Padding(
                   padding: EdgeInsets.only(right: 10.w, top: 8.h),
@@ -88,7 +88,7 @@ class NotificationItem extends StatelessWidget {
                   ),
                 ),
 
-              //TODO: Icon bên trái
+              //  Icon bên trái
               Container(
                 width: 46.w,
                 height: 46.w,
@@ -101,12 +101,12 @@ class NotificationItem extends StatelessWidget {
 
               SizedBox(width: 12.w),
 
-              //TODO: Nội dung chính
+              //  Nội dung chính
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    //TODO: Dòng tiêu đề + thời gian
+                    //  Dòng tiêu đề + thời gian
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -138,7 +138,7 @@ class NotificationItem extends StatelessWidget {
 
                     SizedBox(height: 6.h),
 
-                    //TODO: Nội dung phụ
+                    //  Nội dung phụ
                     Text(
                       notification.title,
                       maxLines: 2,
@@ -153,7 +153,7 @@ class NotificationItem extends StatelessWidget {
 
                     SizedBox(height: 8.h),
 
-                    //TODO: Label "Đã đọc" / "Chưa đọc"
+                    //  Label "Đã đọc" / "Chưa đọc"
                     Align(
                       alignment: Alignment.bottomRight,
                       child: Container(

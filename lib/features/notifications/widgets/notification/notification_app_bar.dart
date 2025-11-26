@@ -48,9 +48,10 @@ class NotificationAppBar extends StatelessWidget implements PreferredSizeWidget 
         children: [
           Text(
             'Thông Báo',
-            style: theme.textTheme.headlineSmall?.copyWith(
+            style: theme.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.bold,
               color:theme.colorScheme.onSurface,
+              fontSize: 22.sp,
             ),
           ),
           if (unreadCount > 0 && !selectMode)
@@ -86,7 +87,7 @@ class NotificationAppBar extends StatelessWidget implements PreferredSizeWidget 
             ),
       actions: [
         if (selectMode) ...[
-          // TODO: HIỂN THỊ SỐ LƯỢNG ITEM ĐÃ CHỌN
+          //   HIỂN THỊ SỐ LƯỢNG ITEM ĐÃ CHỌN
           // Padding(
           //   padding: EdgeInsets.only(right: 8.w),
           //   child: Text(

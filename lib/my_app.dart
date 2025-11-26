@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:job_connect/config/providers/text_size_provider.dart';
 import 'package:job_connect/config/providers/theme_provider.dart';
+import 'package:job_connect/config/providers/brightness_provider.dart';
 import 'package:job_connect/config/routers/app_router.dart';
 import 'package:job_connect/config/theme/app_theme.dart';
 import 'package:provider/provider.dart';
@@ -17,8 +18,8 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return Consumer2<ThemeProvider, TextSizeProvider>(
-          builder: (context, themeProvider, textSizeProvider, _) {
+        return Consumer3<ThemeProvider, TextSizeProvider, BrightnessProvider>(
+          builder: (context, themeProvider, textSizeProvider, brightnessProvider, _) {
             return MaterialApp.router(
               routerConfig: RouterModule.routers,
               debugShowCheckedModeBanner: false,
@@ -27,6 +28,11 @@ class MyApp extends StatelessWidget {
               theme: AppTheme.lightTheme,
               darkTheme: AppTheme.darkTheme,
               builder: (context, child) {
+                // Tính toán opacity cho overlay dựa trên brightness
+                // brightness = 1.0 -> opacity = 0.0 (không có overlay)
+                // brightness = 0.1 -> opacity = 0.9 (rất tối)
+                final overlayOpacity = 1.0 - brightnessProvider.brightness;
+                
                 // Sử dụng ResponsiveFramework và MediaQuery đúng cách
                 return ResponsiveBreakpoints.builder(
                   breakpoints: [
@@ -39,7 +45,21 @@ class MyApp extends StatelessWidget {
                     data: MediaQuery.of(context).copyWith(
                       textScaler: TextScaler.linear(textSizeProvider.textScaleFactor),
                     ),
-                    child: child ?? const SizedBox.shrink(),
+                    child: child != null
+                        ? Stack(
+                            key: ValueKey('app_stack_${child.hashCode}'),
+                            children: [
+                              child,
+                              // Overlay để điều chỉnh độ sáng
+                              if (overlayOpacity > 0)
+                                IgnorePointer(
+                                  child: Container(
+                                    color: Colors.black.withOpacity(overlayOpacity),
+                                  ),
+                                ),
+                            ],
+                          )
+                        : const SizedBox.shrink(),
                   ),
                 );
               },

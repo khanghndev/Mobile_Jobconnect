@@ -9,7 +9,7 @@ class RecruiterService {
 
   RecruiterService() : _apiService = ApiService();
 
-  //TODO: Lấy thông tin recruiter theo id
+  //  Lấy thông tin recruiter theo id
   Future<RecruiterInfoModel?> getRecruiterById({
     required String id,
   }) async {
@@ -38,7 +38,7 @@ class RecruiterService {
     }
   }
 
-  //TODO: Tạo recruiter mới (truyền model)
+  //  Tạo recruiter mới (truyền model)
   Future<RecruiterInfoModel> createRecruiter({
     required RecruiterInfoModel recruiter,
   }) async {
@@ -66,7 +66,7 @@ class RecruiterService {
     }
   }
 
-  //TODO: Cập nhật recruiter (truyền model luôn)
+  //  Cập nhật recruiter (truyền model luôn)
   Future<RecruiterInfoModel> updateRecruiter({
     required RecruiterInfoModel recruiter,
   }) async {
@@ -94,7 +94,7 @@ class RecruiterService {
     }
   }
 
-  //TODO: Xóa recruiter theo id
+  //  Xóa recruiter theo id
   Future<void> deleteRecruiter({
     required String id,
   }) async {

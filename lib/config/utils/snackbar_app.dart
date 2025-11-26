@@ -17,6 +17,12 @@ class SnackbarApp {
         backgroundColor: Colors.transparent,
         elevation: 0,
         duration: duration,
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.only(
+          bottom: MediaQuery.of(context).padding.bottom + 16, // Safe area + margin
+          left: 16,
+          right: 16,
+        ),
         content: Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(

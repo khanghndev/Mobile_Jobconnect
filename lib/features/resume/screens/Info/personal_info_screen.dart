@@ -87,7 +87,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
             IconButton(
               icon: Icon(Icons.auto_awesome),
               onPressed: () {
-                // TODO: Implement AI suggestions for personal info
+                //   Implement AI suggestions for personal info
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Đang tạo gợi ý từ AI...')),
                 );
@@ -133,7 +133,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                           ? IconButton(
                             icon: Icon(Icons.auto_awesome),
                             onPressed: () {
-                              // TODO: Implement AI suggestion for name
+                              //   Implement AI suggestion for name
                             },
                           )
                           : null,
@@ -155,7 +155,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                           ? IconButton(
                             icon: Icon(Icons.auto_awesome),
                             onPressed: () {
-                              // TODO: Implement AI suggestion for position
+                              //   Implement AI suggestion for position
                             },
                           )
                           : null,
@@ -177,7 +177,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                           ? IconButton(
                             icon: Icon(Icons.auto_awesome),
                             onPressed: () {
-                              // TODO: Implement AI suggestion for email
+                              //   Implement AI suggestion for email
                             },
                           )
                           : null,
@@ -205,7 +205,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                           ? IconButton(
                             icon: Icon(Icons.auto_awesome),
                             onPressed: () {
-                              // TODO: Implement AI suggestion for phone
+                              //   Implement AI suggestion for phone
                             },
                           )
                           : null,
@@ -228,7 +228,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                           ? IconButton(
                             icon: Icon(Icons.auto_awesome),
                             onPressed: () {
-                              // TODO: Implement AI suggestion for address
+                              //   Implement AI suggestion for address
                             },
                           )
                           : null,
@@ -244,7 +244,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                           ? IconButton(
                             icon: Icon(Icons.auto_awesome),
                             onPressed: () {
-                              // TODO: Implement AI suggestion for LinkedIn
+                              //   Implement AI suggestion for LinkedIn
                             },
                           )
                           : null,
@@ -261,7 +261,7 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
                           ? IconButton(
                             icon: Icon(Icons.auto_awesome),
                             onPressed: () {
-                              // TODO: Implement AI suggestion for portfolio
+                              //   Implement AI suggestion for portfolio
                             },
                           )
                           : null,

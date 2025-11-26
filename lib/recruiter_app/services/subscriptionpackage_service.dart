@@ -9,7 +9,7 @@ class SubscriptionPackageService {
 
   SubscriptionPackageService() : _apiService = ApiService();
 
-  //TODO: Hàm nội bộ lấy danh sách gói dịch vụ
+  //  Hàm nội bộ lấy danh sách gói dịch vụ
   Future<List<SubscriptionPackageModel>> _fetchAllPackages({
     required String endpoint,
     required String dataType,
@@ -39,7 +39,7 @@ class SubscriptionPackageService {
     }
   }
 
-  //TODO: Lấy tất cả gói dịch vụ (gọi hàm tổng)
+  //  Lấy tất cả gói dịch vụ (gọi hàm tổng)
   Future<List<SubscriptionPackageModel>> fetchSubscriptionPackages() async {
     return _fetchAllPackages(
       endpoint: ApiConstants.subscriptionPackageEndpoint,
@@ -47,7 +47,7 @@ class SubscriptionPackageService {
     );
   }
 
-  //TODO: Lấy chi tiết gói dịch vụ theo ID
+  //  Lấy chi tiết gói dịch vụ theo ID
   Future<SubscriptionPackageModel> fetchSubscriptionPackageById({
     required String packageId,
   }) async {
@@ -74,7 +74,7 @@ class SubscriptionPackageService {
     }
   }
 
-  //TODO: Kích hoạt gói dịch vụ sau khi quét mã thanh toán thành công
+  //  Kích hoạt gói dịch vụ sau khi quét mã thanh toán thành công
   Future<bool> activatePackage({
     required String packageId,
     required String transactionCode,

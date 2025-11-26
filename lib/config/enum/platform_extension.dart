@@ -3,16 +3,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
 extension PlatformExtension on BuildContext {
-  //TODO: Android
+  //  Android
   bool get isAndroid => !kIsWeb && Platform.isAndroid;
 
-  //TODO: iOS
+  //  iOS
   bool get isIOS => !kIsWeb && Platform.isIOS;
 
-  //TODO: Web
+  //  Web
   bool get isWeb => kIsWeb;
 
-  //TODO: desktop (Windows, macOS, Linux)
+  //  desktop (Windows, macOS, Linux)
   bool get isDesktop =>
       !kIsWeb &&
       (Platform.isWindows || Platform.isMacOS || Platform.isLinux);

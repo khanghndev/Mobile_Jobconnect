@@ -9,7 +9,7 @@ class SaveCandidateService {
 
   SaveCandidateService() : _apiService = ApiService();
 
-  //TODO: Lấy danh sách ứng viên đã lưu theo recruiterId (lọc client-side)
+  //  Lấy danh sách ứng viên đã lưu theo recruiterId (lọc client-side)
   Future<List<SaveCandidateModel>> getSavedCandidates({
     required String recruiterId,
   }) async {
@@ -41,7 +41,7 @@ class SaveCandidateService {
     }
   }
 
-  //TODO: Lưu ứng viên mới (Save Candidate)
+  //  Lưu ứng viên mới (Save Candidate)
   Future<void> saveCandidate({
     required SaveCandidateModel data,
   }) async {
@@ -60,7 +60,7 @@ class SaveCandidateService {
     }
   }
 
-  //TODO: Cập nhật ghi chú (note) cho ứng viên đã lưu
+  //  Cập nhật ghi chú (note) cho ứng viên đã lưu
   Future<void> updateCandidate({
     required SaveCandidateModel candidate,
   }) async {
@@ -80,7 +80,7 @@ class SaveCandidateService {
     }
   }
 
-  //TODO: Xóa ứng viên đã lưu theo recruiterId & candidateId
+  //  Xóa ứng viên đã lưu theo recruiterId & candidateId
   Future<void> deleteCandidate({
     required String recruiterId,
     required String candidateId,

@@ -124,7 +124,7 @@ ${widget.hobbies}
     });
 
     try {
-      // TODO: Implement actual AI API call
+      //   Implement actual AI API call
       // For now, we'll simulate an API call with a delay
       await Future.delayed(Duration(seconds: 2));
 
@@ -159,7 +159,7 @@ ${widget.hobbies}
     String sectionName,
     String tone,
   ) async {
-    // TODO: Implement actual AI API call
+    //   Implement actual AI API call
     // This is a placeholder that simulates AI improvement
     return '''
 [Improved $sectionName in $tone tone]

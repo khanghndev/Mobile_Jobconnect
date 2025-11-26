@@ -65,7 +65,7 @@ class SearchJobItemCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // TODO: Header: Logo + Title + Bookmark
+              //   Header: Logo + Title + Bookmark
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -148,7 +148,7 @@ class SearchJobItemCard extends StatelessWidget {
 
               SizedBox(height: 18.h),
 
-              // TODO: Info Chips
+              //   Info Chips
               Wrap(
                 spacing: 10.w,
                 runSpacing: 10.h,
@@ -182,7 +182,7 @@ class SearchJobItemCard extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 20.h),
-              // TODO: Actions
+              //   Actions
               Row(
                 children: [
                   Expanded(

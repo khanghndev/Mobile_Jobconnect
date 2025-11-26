@@ -447,6 +447,14 @@ class _SocialCreatePostScreenState extends State<SocialCreatePostScreen> {
                         roleName: userVm.roleName ?? '',
                         groupName: _selectedGroupName,
                         isPublic: _isPublic,
+                        onAvatarTap: () {
+                          if (userVm.currentUser?.idUser != null) {
+                            context.push(
+                              '/social/profile',
+                              extra: {'idUser': userVm.currentUser!.idUser},
+                            );
+                          }
+                        },
                       );
                     }
                   ),

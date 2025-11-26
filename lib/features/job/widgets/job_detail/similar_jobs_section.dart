@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:job_connect/features/home/widgets/home/section_header.dart';
 import 'package:job_connect/features/job/widgets/job_detail/similar_job_card.dart';
+import 'package:job_connect/features/navigation/screens/navigation_page.dart';
 
 class SimilarJobsSection extends StatelessWidget {
   final List<Map<String, String>> similarJobs;
@@ -17,48 +19,17 @@ class SimilarJobsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 14.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      Icons.explore_outlined,
-                      color: theme.primaryColor,
-                      size: 24.sp,
-                    ),
-                    SizedBox(width: 12.w),
-                    Text(
-                      "Việc Làm Tương Tự",
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                TextButton(
-                  onPressed: onSeeAll,
-                  child: Text(
-                    "Xem Tất Cả",
-                    style: theme.textTheme.labelLarge?.copyWith(
-                      fontSize: 14.sp,
-                      color: theme.primaryColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+          SectionHeader(
+            icon: Icons.explore_outlined,
+            title: "Việc Làm Tương Tự",
+            onSeeAll: () {
+              NavigationPage.goToSearchTab(context);
+            },
           ),
           SizedBox(height: 14.h),
           SizedBox(

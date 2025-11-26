@@ -9,7 +9,7 @@ class JobTransactionDetailService {
 
   JobTransactionDetailService() : _apiService = ApiService();
 
-  //TODO: Lấy chi tiết giao dịch theo transactionDetailId
+  //  Lấy chi tiết giao dịch theo transactionDetailId
   Future<JobTransactionDetailModel> getJobTransactionDetail({
     required String transactionDetailId,
   }) async {
@@ -36,7 +36,7 @@ class JobTransactionDetailService {
     }
   }
 
-  //TODO: Tạo mới chi tiết giao dịch
+  //  Tạo mới chi tiết giao dịch
   Future<JobTransactionDetailModel> createJobTransactionDetail({
     required JobTransactionDetailModel detail,
   }) async {
@@ -64,7 +64,7 @@ class JobTransactionDetailService {
     }
   }
 
-  //TODO: Cập nhật chi tiết giao dịch
+  //  Cập nhật chi tiết giao dịch
   Future<JobTransactionDetailModel> updateJobTransactionDetail({
     required String transactionDetailId,
     required JobTransactionDetailModel detail,
@@ -93,7 +93,7 @@ class JobTransactionDetailService {
     }
   }
 
-  //TODO: Xoá chi tiết giao dịch theo transactionDetailId
+  //  Xoá chi tiết giao dịch theo transactionDetailId
   Future<void> deleteJobTransactionDetail({
     required String transactionDetailId,
   }) async {

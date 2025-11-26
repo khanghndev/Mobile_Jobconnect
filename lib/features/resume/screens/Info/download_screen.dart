@@ -37,7 +37,7 @@ class DownloadScreen extends StatelessWidget {
     ).showSnackBar(SnackBar(content: Text("Preparing to download $format...")));
 
     try {
-      // TODO: Implement actual file generation
+      //   Implement actual file generation
       // 1. Call backend API to generate file and return URL or file bytes
       // 2. Or generate file on client:
       //    - Get CV data from widget properties

@@ -6,7 +6,7 @@ import 'package:job_connect/features/notifications/service/notification_service.
 class NotificationViewModel extends ChangeNotifier {
   final NotificationService _notificationService = NotificationService();
 
-  //TODO:  STATE 
+  //   STATE 
   bool _isLoading = false;
   bool _isSuccess = false;
   bool _selectMode = false;
@@ -15,7 +15,7 @@ class NotificationViewModel extends ChangeNotifier {
   List<NotificationModel> _notifications = [];
   int _unreadCount = 0;
 
-  //TODO:  GETTERS 
+  //   GETTERS 
   bool get isLoading => _isLoading;
   bool get isSuccess => _isSuccess;
   bool get selectMode => _selectMode;
@@ -24,7 +24,7 @@ class NotificationViewModel extends ChangeNotifier {
   Set<String> get selectedNotifications => _selectedNotifications;
   int get unreadCount => _unreadCount;
 
-  //TODO:  PRIVATE SET STATE 
+  //   PRIVATE SET STATE 
   void _setState({
     bool? isLoading,
     bool? isSuccess,
@@ -42,7 +42,7 @@ class NotificationViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  //TODO:  GENERIC API HANDLER 
+  //   GENERIC API HANDLER 
   Future<void> _handleApiCall<T>({
     required Future<T> Function() apiCall,
     void Function(T)? onSuccess,
@@ -62,7 +62,7 @@ class NotificationViewModel extends ChangeNotifier {
     }
   }
 
-  //TODO:  GET: Danh sách thông báo theo user 
+  //   GET: Danh sách thông báo theo user 
   Future<void> getNotificationsByIdUser(String userId) async {
     await _handleApiCall<List<NotificationModel>>(
       apiCall: () => _notificationService.getNotificationsByIdUser(idUser: userId),
@@ -72,7 +72,7 @@ class NotificationViewModel extends ChangeNotifier {
     );
   }
 
-  //TODO:  GET: Số lượng thông báo chưa đọc 
+  //   GET: Số lượng thông báo chưa đọc 
   Future<void> getUnreadCount(String userId) async {
     await _handleApiCall<List<NotificationModel>>(
       apiCall: () => _notificationService.getNotificationsByIdUser(idUser: userId),
@@ -83,14 +83,14 @@ class NotificationViewModel extends ChangeNotifier {
     );
   }
 
-  //TODO:  CẬP NHẬT: Chế độ chọn nhiều 
+  //   CẬP NHẬT: Chế độ chọn nhiều 
   void onToggleSelectMode() {
     _selectMode = !_selectMode;
     if (!_selectMode) _selectedNotifications.clear();
     notifyListeners();
   }
 
-  //TODO:  CẬP NHẬT: Chọn / bỏ chọn một thông báo 
+  //   CẬP NHẬT: Chọn / bỏ chọn một thông báo 
   void onToggleSelect(String id) {
     if (_selectedNotifications.contains(id)) {
       _selectedNotifications.remove(id);
@@ -100,7 +100,7 @@ class NotificationViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  //TODO:  UPDATE: Đánh dấu đã đọc các thông báo được chọn 
+  //   UPDATE: Đánh dấu đã đọc các thông báo được chọn 
   Future<void> markAsRead() async {
     if (_selectedNotifications.isEmpty) return;
 
@@ -130,7 +130,7 @@ class NotificationViewModel extends ChangeNotifier {
     );
   }
 
-  //TODO:  DELETE: Xóa các thông báo được chọn 
+  //   DELETE: Xóa các thông báo được chọn 
   Future<void> deleteNotifications() async {
     if (_selectedNotifications.isEmpty) return;
 
@@ -154,7 +154,7 @@ class NotificationViewModel extends ChangeNotifier {
     );
   }
 
-  //TODO:  UPDATE: Đánh dấu tất cả là đã đọc 
+  //   UPDATE: Đánh dấu tất cả là đã đọc 
   Future<void> markAllAsRead() async {
     final unread = _notifications.where((n) => n.isRead == 0).toList();
     if (unread.isEmpty) return;
@@ -183,7 +183,7 @@ class NotificationViewModel extends ChangeNotifier {
     );
   }
 
-  //TODO:  RESET 
+  //   RESET 
   void onReset() {
     _setState(
       isLoading: false,

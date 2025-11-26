@@ -59,7 +59,7 @@ class ImageReviewZoom extends StatelessWidget {
                 size: 30.sp,
               ),
               onPressed: () {
-                // TODO: hành động phụ (vd: tải ảnh, chia sẻ...)
+                //   hành động phụ (vd: tải ảnh, chia sẻ...)
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text("Đang xử lý tải ảnh...")),
                 );

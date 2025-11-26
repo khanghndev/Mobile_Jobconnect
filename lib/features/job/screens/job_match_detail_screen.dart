@@ -26,15 +26,15 @@ class JobMatchDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            //TODO:  Job Header
+            //   Job Header
             _buildJobHeader(theme),
             const SizedBox(height: 24),
 
-            //TODO:  Match Score Card
+            //   Match Score Card
             _buildMatchScoreCard(theme),
             const SizedBox(height: 24),
 
-            //TODO:  Score Details Title
+            //   Score Details Title
             Text(
               'Chi tiết đánh giá',
               style: theme.textTheme.headlineSmall?.copyWith(
@@ -43,7 +43,7 @@ class JobMatchDetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            //TODO:  Score Items
+            //   Score Items
             _buildScoreItem(
               theme: theme,
               title: 'Kỹ năng',
@@ -74,7 +74,7 @@ class JobMatchDetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 32),
 
-            //TODO:  Action Buttons
+            //   Action Buttons
             _buildActionButtons(context, theme),
             const SizedBox(height: 16),
           ],
@@ -83,7 +83,7 @@ class JobMatchDetailScreen extends StatelessWidget {
     );
   }
 
-  //TODO:  Job Header Widget
+  //   Job Header Widget
   Widget _buildJobHeader(ThemeData theme) {
     return Card(
       elevation: 2,
@@ -144,7 +144,7 @@ class JobMatchDetailScreen extends StatelessWidget {
     );
   }
 
-  //TODO:  Match Score Card
+  //   Match Score Card
   Widget _buildMatchScoreCard(ThemeData theme) {
     final scoreColor = _getMatchColor(jobMatch.matchPercentage);
 
@@ -205,7 +205,7 @@ class JobMatchDetailScreen extends StatelessWidget {
     );
   }
 
-  //TODO:  Score Item Widget
+  //   Score Item Widget
   Widget _buildScoreItem({
     required ThemeData theme,
     required String title,
@@ -285,7 +285,7 @@ class JobMatchDetailScreen extends StatelessWidget {
     );
   }
 
-  //TODO:  Action Buttons
+  //   Action Buttons
   Widget _buildActionButtons(BuildContext context, ThemeData theme) {
     return Column(
       children: [
@@ -331,7 +331,7 @@ class JobMatchDetailScreen extends StatelessWidget {
     );
   }
 
-  //TODO:  Match Color Helper
+  //   Match Color Helper
   Color _getMatchColor(double percentage) {
     if (percentage >= 80) return Colors.green;
     if (percentage >= 60) return Colors.orange;

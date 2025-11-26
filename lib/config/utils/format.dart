@@ -1,12 +1,12 @@
 import 'package:intl/intl.dart';
 
 class FormatUtils {
-  // TODO: NGÀY THÁNG NĂM
+  //   NGÀY THÁNG NĂM
   static String formattedDateTime(DateTime dateTime) {
     return DateFormat('dd/MM/yyyy').format(dateTime);
   }
 
-  // TODO: LƯƠNG
+  //   LƯƠNG
   static String formatSalary(num salary) {
     if (salary >= 1000000) {
       final double salaryInMillions = salary / 1000000;
@@ -21,7 +21,7 @@ class FormatUtils {
     }
   }
 
-  // TODO: LOẠI BỎ DẤU CÂU
+  //   LOẠI BỎ DẤU CÂU
   static String removeDiacritics(String input) {
     final diacriticsMap = {
       'á': 'a', 'à': 'a', 'ả': 'a', 'ã': 'a', 'ạ': 'a',
@@ -98,7 +98,7 @@ class FormatUtils {
     }
   }
 
-  // TODO: CHUYỂN VỀ SỐ GIÂY
+  //   CHUYỂN VỀ SỐ GIÂY
   static String formatDuration(int durationInSeconds) {
     final int hours = (durationInSeconds / 3600).toInt();
     final int minutes = ((durationInSeconds % 3600) / 60).toInt();
@@ -113,20 +113,20 @@ class FormatUtils {
     }
   }
 
-  // TODO: SIZE FILE
+  //   SIZE FILE
   static String formatFileSize(int bytes) {
     if (bytes < 1024) return '$bytes B';
     if (bytes < 1024 * 1024) return '${(bytes / 1024).toStringAsFixed(1)} KB';
     return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
   }
 
-  // TODO: TIỀN TỆ
+  //   TIỀN TỆ
   static String formatCurrency(double amount) {
     final formatter = NumberFormat.currency(locale: 'vi_VN', symbol: '₫');
     return formatter.format(amount);
   }
   
-  // TODO: PHONE NUMER
+  //   PHONE NUMER
   static String formatPhoneNumber(String phone) {
     if (phone.isEmpty) return '';
     phone = phone.replaceAll(RegExp(r'\D'), '');

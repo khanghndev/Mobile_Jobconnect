@@ -11,7 +11,6 @@ import 'package:job_connect/features/resume/view_model/resum_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:job_connect/config/constant/app_strings.dart';
-import 'package:job_connect/config/widgets/app_dialog.dart';
 import 'package:job_connect/config/widgets/custom_app_bar_title_large.dart';
 import 'package:job_connect/config/widgets/custom_submit_button.dart';
 import 'package:job_connect/config/widgets/section_title.dart';
@@ -203,43 +202,14 @@ class _ApplyJobScreenState extends State<ApplyJobScreen> with TickerProviderStat
     setState(() => _isSubmitting = false);
 
     if (jobVm.isSuccess) {
-      AppDialog.show(
-        context,
-        title: "Nộp Hồ Sơ Thành Công!",
-        icon: Icons.check_circle_outline_rounded,
-        iconColor: Theme.of(context).colorScheme.primary,
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Hồ sơ của bạn cho vị trí: ${widget.jobTitle}"),
-            SizedBox(height: 8),
-            Text("Sử dụng CV: $finalCvNameToDisplay"),
-            SizedBox(height: 8),
-            Text("Đã được gửi đến nhà tuyển dụng."),
-            SizedBox(height: 12),
-            Text(
-              "Bạn có thể theo dõi trong 'Lịch sử ứng tuyển'.",
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              context.pop();
-              context.push('/job/history/', extra: {'idUser': widget.idUser});
-            },
-            child: const Text("XEM LỊCH SỬ"),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              context.pop();
-              Navigator.of(context).popUntil((route) => route.isFirst);
-            },
-            child: const Text("VỀ TRANG CHỦ"),
-          ),
-        ],
+      context.push(
+        '/job/apply-success',
+        extra: {
+          'jobTitle': widget.jobTitle,
+          'companyName': widget.companyName,
+          'cvName': finalCvNameToDisplay ?? 'CV',
+          'idUser': widget.idUser,
+        },
       );
     } else {
       SnackbarApp.show(

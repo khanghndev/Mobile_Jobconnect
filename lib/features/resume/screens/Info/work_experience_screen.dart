@@ -155,7 +155,7 @@ class _WorkExperienceScreenState extends State<WorkExperienceScreen> {
                                 : () async {
                                   setState(() => _isGenerating = true);
                                   try {
-                                    // TODO: Implement AI API call
+                                    //   Implement AI API call
                                     await Future.delayed(
                                       Duration(seconds: 2),
                                     ); // Simulate API call
@@ -249,7 +249,7 @@ class _WorkExperienceScreenState extends State<WorkExperienceScreen> {
             IconButton(
               icon: Icon(Icons.auto_awesome),
               onPressed: () {
-                // TODO: Implement AI suggestions for work experience
+                //   Implement AI suggestions for work experience
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Đang tạo gợi ý từ AI...')),
                 );

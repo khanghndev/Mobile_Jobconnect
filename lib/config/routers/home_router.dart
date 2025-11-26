@@ -27,24 +27,26 @@ class HomeRouter {
       );
     },
     routes: [
-      // TODO: Trang công việc gần bạn
+      //   Trang công việc gần bạn
       GoRoute(
         path: 'near-job',
         pageBuilder: (context, state) {
           final extraData = state.extra as Map<String, dynamic>;
           final isLoggedIn = extraData['isLoggedIn'];
           final idUser = extraData['idUser'];
+          final initialLocation = extraData['initialLocation'] as String?;
           return buildPageWithSlideTransition(
             NearbyJobsMapScreen(
               isLoggedIn: isLoggedIn,
               idUser: idUser,
+              initialLocation: initialLocation,
             ), 
             state
           );
         },
       ),
 
-      // TODO: Trang các doanh nghiệp
+      //   Trang các doanh nghiệp
       GoRoute(
         path: 'company',
         pageBuilder: (context, state) {
@@ -59,7 +61,7 @@ class HomeRouter {
         },
       ),
 
-      // TODO: Trang tìm kiếm công việc
+      //   Trang tìm kiếm công việc
       GoRoute(
         path: 'search',
         pageBuilder: (context, state) {
@@ -78,7 +80,7 @@ class HomeRouter {
         }
       ),
 
-      // TODO: Trang podcast
+      //   Trang podcast
       GoRoute(
         path: 'podcast',
         pageBuilder: (context, state) {

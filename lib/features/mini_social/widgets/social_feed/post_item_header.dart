@@ -66,7 +66,7 @@ class PostItemHeader extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  // Username
+                  // Username - không cắt, hiển thị đầy đủ trên 1 dòng
                   Flexible(
                     child: GestureDetector(
                       onTap: onOpenProfile,
@@ -76,20 +76,22 @@ class PostItemHeader extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           fontSize: 14.sp,
                         ),
-                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
+                        overflow: TextOverflow.visible,
                       ),
                     ),
                   ),
 
                   // Nếu có group
                   if (socialPostModel.groupName != null && socialPostModel.groupName!.isNotEmpty) ...[
-                    SizedBox(width: 4.w),
+                    SizedBox(width: 48.w),
                     Icon(
                       Icons.arrow_right,
                       color: theme.iconTheme.color,
                       size: 16.sp,
                     ),
-                    SizedBox(width: 4.w),
+                    SizedBox(width: 8.w),
+                    // Group name - chỉ cắt nếu dài quá
                     Flexible(
                       child: GestureDetector(
                         onTap: onGoToGroup,
@@ -100,6 +102,7 @@ class PostItemHeader extends StatelessWidget {
                             fontSize: 14.sp,
                           ),
                           overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
                         ),
                       ),
                     ),

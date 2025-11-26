@@ -12,6 +12,7 @@ class UserInfoCreatePost extends StatelessWidget {
   final bool isPublic;
   final String? userRoleName;
   final IconData? iconRole;
+  final VoidCallback? onAvatarTap;
 
   const UserInfoCreatePost({
     super.key, 
@@ -20,7 +21,8 @@ class UserInfoCreatePost extends StatelessWidget {
     this.groupName, 
     this.isPublic = true, 
     this.userRoleName,
-    this.iconRole
+    this.iconRole,
+    this.onAvatarTap,
   });
 
   @override
@@ -28,9 +30,12 @@ class UserInfoCreatePost extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CircleAvatar(
-          radius: 20.r,
-          backgroundImage: ImageUtils.getImageProvider(user?.avatarUrl ?? ''),
+        GestureDetector(
+          onTap: onAvatarTap,
+          child: CircleAvatar(
+            radius: 20.r,
+            backgroundImage: ImageUtils.getImageProvider(user?.avatarUrl ?? ''),
+          ),
         ),
         SizedBox(width: 10.w),
         Expanded(

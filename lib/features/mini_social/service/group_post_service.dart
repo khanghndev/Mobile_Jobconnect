@@ -27,7 +27,7 @@ class GroupPostService {
     }
   }
 
-  //TODO: GET /api/GroupPosts - Lấy tất cả bài viết nhóm
+  //  GET /api/GroupPosts - Lấy tất cả bài viết nhóm
   Future<List<GroupPostModel>> getGroupPosts() async {
     return _handleApi(
       () async {
@@ -42,7 +42,7 @@ class GroupPostService {
     );
   }
 
-  //TODO: POST /api/GroupPosts - Tạo bài viết mới
+  //  POST /api/GroupPosts - Tạo bài viết mới
   Future<GroupPostModel> createGroupPost({required GroupPostModel post}) async {
     return _handleApi(
       () async {
@@ -60,7 +60,7 @@ class GroupPostService {
     );
   }
 
-  //TODO: GET /api/GroupPosts/{id} - Lấy chi tiết bài viết
+  //  GET /api/GroupPosts/{id} - Lấy chi tiết bài viết
   Future<GroupPostModel> getGroupPostById({required String id}) async {
     return _handleApi(
       () async {
@@ -76,7 +76,7 @@ class GroupPostService {
     );
   }
 
-  //TODO: PUT /api/GroupPosts/{id} - Cập nhật bài viết
+  //  PUT /api/GroupPosts/{id} - Cập nhật bài viết
   Future<GroupPostModel> updateGroupPost({required GroupPostModel post}) async {
     return _handleApi(
       () async {
@@ -92,7 +92,7 @@ class GroupPostService {
     );
   }
 
-  //TODO: DELETE /api/GroupPosts/{id} - Xóa nhóm
+  //  DELETE /api/GroupPosts/{id} - Xóa nhóm
   Future<void> deleteGroupPost({required String id}) async {
     return _handleApi(
       () async {
@@ -103,7 +103,7 @@ class GroupPostService {
     );
   }
 
-  //TODO: GET /api/GroupPosts/group/{groupId} - Lấy danh sách bài viết theo group
+  //  GET /api/GroupPosts/group/{groupId} - Lấy danh sách bài viết theo group
   Future<List<GroupPostModel>> getPostsByGroup({required String groupId}) async {
     return _handleApi(
       () async {
@@ -119,7 +119,7 @@ class GroupPostService {
     );
   }
 
-  //TODO: POST /api/GroupPosts/{id}/reaction - Thêm reaction vào bài viết
+  //  POST /api/GroupPosts/{id}/reaction - Thêm reaction vào bài viết
   Future<void> addReaction({required String id, required GroupReactionModel reaction}) async {
     return _handleApi(
       () async {
@@ -130,7 +130,7 @@ class GroupPostService {
     );
   }
 
-  //TODO: DELETE /api/GroupPosts/{id}/reaction - Xóa reaction khỏi bài viết
+  //  DELETE /api/GroupPosts/{id}/reaction - Xóa reaction khỏi bài viết
   Future<void> removeReaction({required String id}) async {
     return _handleApi(
       () async {
@@ -141,7 +141,7 @@ class GroupPostService {
     );
   }
 
-  //TODO: GET /api/GroupPosts/{id}/reactions - Lấy danh sách reaction của bài viết
+  //  GET /api/GroupPosts/{id}/reactions - Lấy danh sách reaction của bài viết
   Future<List<GroupReactionModel>> getReactionsByPostId({required String id}) async {
     return _handleApi(
       () async {
@@ -157,7 +157,7 @@ class GroupPostService {
     );
   }
 
-  //TODO: GET /api/GroupPosts/pending/{groupId} - Lấy danh sách bài viết chờ duyệt
+  //  GET /api/GroupPosts/pending/{groupId} - Lấy danh sách bài viết chờ duyệt
   Future<List<GroupPostModel>> getPendingPosts({required String groupId}) async {
     return _handleApi(
       () async {
@@ -173,7 +173,7 @@ class GroupPostService {
     );
   }
 
-  //TODO: POST /api/GroupPosts/approve - Duyệt bài viết
+  //  POST /api/GroupPosts/approve - Duyệt bài viết
   Future<void> approvePost({required String idPost}) async {
     return _handleApi(
       () async {
@@ -186,7 +186,7 @@ class GroupPostService {
     );
   }
 
-  //TODO: GET /api/GroupPosts/stats/{groupId} - Lấy thống kê bài viết nhóm
+  //  GET /api/GroupPosts/stats/{groupId} - Lấy thống kê bài viết nhóm
   Future<Map<String, dynamic>> getGroupPostStats({required String groupId}) async {
     return _handleApi(
       () async {
@@ -201,7 +201,7 @@ class GroupPostService {
     );
   }
 
-  //TODO: GET /api/GroupPosts/notifications/{userId} - Lấy thông báo bài viết
+  //  GET /api/GroupPosts/notifications/{userId} - Lấy thông báo bài viết
   Future<List<GroupPostModel>> getGroupPostNotifications({required String userId}) async {
     return _handleApi(
       () async {

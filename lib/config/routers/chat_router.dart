@@ -19,7 +19,7 @@ class ChatRouter  {
       );
     },
     routes: [
-      // TODO: Trang công việc gần bạn
+      //   Trang công việc gần bạn
       GoRoute(
         path: 'ai',
         pageBuilder: (context, state) {

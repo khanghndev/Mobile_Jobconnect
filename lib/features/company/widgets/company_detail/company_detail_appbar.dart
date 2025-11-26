@@ -54,7 +54,7 @@ class CompanyDetailAppbar extends StatelessWidget {
         titlePadding: EdgeInsetsDirectional.only(
           start: 50.w,
           end: 50.w,
-          bottom: 16.h,
+          bottom: 24.h,
         ),
         centerTitle: true,
         title: Text(

@@ -138,7 +138,7 @@ class _SocialCallScreenState extends State<SocialCallScreen>
                     _isMicOn ? Colors.green : Colors.grey,
                     onTap: () {
                       setState(() => _isMicOn = !_isMicOn);
-                      // TODO: xử lý mic on/off
+                      //   xử lý mic on/off
                     },
                   ),
                   SizedBox(width: 24.w),
@@ -155,7 +155,7 @@ class _SocialCallScreenState extends State<SocialCallScreen>
                     _isSpeakerOn ? Colors.green : Colors.grey,
                     onTap: () {
                       setState(() => _isSpeakerOn = !_isSpeakerOn);
-                      // TODO: xử lý bật/tắt loa ngoài
+                      //   xử lý bật/tắt loa ngoài
                     },
                   ),
                 ] else ...[

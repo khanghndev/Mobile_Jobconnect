@@ -11,7 +11,6 @@ import 'package:provider/provider.dart';
 import 'package:job_connect/config/constant/app_strings.dart';
 import 'package:job_connect/config/constant/app_colors.dart';
 import 'package:job_connect/config/enum/post_type.dart';
-import 'package:job_connect/config/enum/user_role.dart';
 import 'package:job_connect/config/utils/dialog_utils.dart';
 import 'package:job_connect/config/utils/snackbar_app.dart';
 import 'package:job_connect/config/widgets/custom_search_bar.dart';
@@ -56,7 +55,6 @@ class _SocialManagentPostGroupScreenState extends State<SocialManagentPostGroupS
   
   late final ScrollController _scrollController;
   late final AnimationController _animationController;
-  late final Animation<double> _scaleAnimation;
   
   late final SocialPostViewModel socialPostVm;
   late final SocialCommentViewModel socialCommentVm;
@@ -77,7 +75,6 @@ class _SocialManagentPostGroupScreenState extends State<SocialManagentPostGroupS
     _scrollController.addListener(_scrollListener);
 
     _animationController = AnimationController(vsync: this, duration: const Duration(seconds: 1))..repeat(reverse: true);
-    _scaleAnimation = Tween<double>(begin: 0.9, end: 1.1).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeInOut));
 
     socialPostVm = context.read<SocialPostViewModel>();
     socialCommentVm = context.read<SocialCommentViewModel>();
@@ -176,7 +173,7 @@ class _SocialManagentPostGroupScreenState extends State<SocialManagentPostGroupS
       folders: folders,
       isLoading: socialSavePostVm.isLoading,
       onSaved: (folderName) async {
-        final folder = folderName ?? folderToSelect;
+        final folder = folderName.isNotEmpty ? folderName : folderToSelect;
         await socialSavePostVm.toggleSavePostWithFolder(idPost: post.idPost, selectedFolder: folder);
         socialPostVm.updateLocalSavedState(post.idPost, socialSavePostVm.isPostSaved(post.idPost));
         if (mounted) {
@@ -210,28 +207,37 @@ class _SocialManagentPostGroupScreenState extends State<SocialManagentPostGroupS
 
   Future<void> _showCommentSheet(String postId) async {
     socialCommentVm.loadCommentsWithUsers(postId: postId, userVm: userVm);
-    await _showBottomSheetWrapper(CommentBottomSheet(
-      commentController: _commentController,
-      comments: socialCommentVm.comments,
-      isLoading: socialCommentVm.isLoading,
-      errorMessage: socialCommentVm.errorMessage,
-      onSubmit: (text, parentId) async {
-        if (text.isNotEmpty) {
-          await socialCommentVm.createComment( newComment: 
-            SocialCommentModel(
-            idComment: '',
-            idPost: postId,
-            idUser: widget.idUser,
-            content: text,
-            parentComment: parentId,
-            createdAt: DateTime.now(),
-          ));
+    await _showBottomSheetWrapper(Consumer<SocialCommentViewModel>(
+      builder: (context, vm, _) => CommentBottomSheet(
+        commentController: _commentController,
+        comments: vm.comments,
+        isLoading: vm.isLoading,
+        errorMessage: vm.errorMessage,
+        onSubmit: (text, parentId, imagePath, icon) async {
+          final hasContent = text.isNotEmpty || imagePath != null || icon != null;
+          if (!hasContent) return;
+          
+          await vm.createComment(
+            newComment: SocialCommentModel(
+              idComment: '',
+              idPost: postId,
+              idUser: widget.idUser,
+              content: text,
+              parentComment: parentId,
+              createdAt: DateTime.now(),
+            ),
+            userVm: userVm, // Truyền userVm để load user info
+            imagePath: imagePath, // Truyền imagePath để upload
+            icon: icon, // Truyền icon
+          );
+          // Cập nhật số comment trên UI sau khi comment thành công
+          socialPostVm.incrementCommentCount(postId);
           _commentController.clear();
-        }
-      },
-      onRefresh: () => socialCommentVm.loadCommentsWithUsers(postId: postId, userVm: userVm),
-      resolveUsername: socialCommentVm.resolveUsername,
-      resolveUserAvatar: socialCommentVm.resolveUserAvatar,
+        },
+        onRefresh: () => vm.loadCommentsWithUsers(postId: postId, userVm: userVm),
+        resolveUsername: vm.resolveUsername,
+        resolveUserAvatar: vm.resolveUserAvatar,
+      ),
     ));
   }
 

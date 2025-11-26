@@ -50,7 +50,7 @@ class _CvSelectionSectionState extends State<CvSelectionSection>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // TODO: Hiển thị CV đã chọn hoặc hướng dẫn
+            //   Hiển thị CV đã chọn hoặc hướng dẫn
             if (widget.hasLocalFile || widget.selectedSavedCvUrl != null)
               SelectedCvInfo(
                 fileName: widget.selectedCVFileName ?? widget.selectedSavedCvName,

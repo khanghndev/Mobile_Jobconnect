@@ -10,19 +10,19 @@ import 'package:job_connect/config/services/shared_prefs_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PodcastViewModel extends ChangeNotifier {
-  // TODO: Service xử lý API
+  //   Service xử lý API
   final PodcastService _podcastService = PodcastService();
 
-  // TODO: Service lưu trữ local
+  //   Service lưu trữ local
   SharedPrefsService? _prefsService; // dùng nullable để tránh LateInitializationError
   bool _prefsReady = false;
 
-  // TODO: Constructor khởi tạo SharedPrefsService
+  //   Constructor khởi tạo SharedPrefsService
   PodcastViewModel() {
     _initPrefs();
   }
 
-  // TODO: Hàm async khởi tạo SharedPrefsService
+  //   Hàm async khởi tạo SharedPrefsService
   Future<void> _initPrefs() async {
     final prefs = await SharedPreferences.getInstance();
     _prefsService = SharedPrefsService(prefs: prefs);
@@ -30,15 +30,15 @@ class PodcastViewModel extends ChangeNotifier {
     await loadFavorites(); // load danh sách yêu thích ngay khi có prefs
   }
 
-  // TODO: State nội bộ
+  //   State nội bộ
   bool _isLoading = false;
   bool _isSuccess = false;
   String? _errorMessage;
   List<PodcastModel> _podcasts = [];
   List<PodcastModel> _filteredPodcasts = [];
-  final Set<String> _favoriteIds = {}; // TODO: Lưu ID podcast yêu thích local
+  final Set<String> _favoriteIds = {}; //   Lưu ID podcast yêu thích local
 
-  // TODO: Getter cho view
+  //   Getter cho view
   bool get isLoading => _isLoading;
   bool get isSuccess => _isSuccess;
   String? get errorMessage => _errorMessage;
@@ -46,7 +46,7 @@ class PodcastViewModel extends ChangeNotifier {
   List<PodcastModel> get filteredPodcasts => _filteredPodcasts;
   bool isFavorite(PodcastModel podcast) => _favoriteIds.contains(podcast.idPodcast);
 
-  // TODO: Cập nhật state nội bộ
+  //   Cập nhật state nội bộ
   void _setState({
     bool? isLoading,
     bool? isSuccess,
@@ -62,7 +62,7 @@ class PodcastViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // TODO: Gọi API lấy danh sách podcast
+  //   Gọi API lấy danh sách podcast
   Future<void> getPodcasts() async {
     _setState(isLoading: true, errorMessage: null, isSuccess: false);
 
@@ -82,7 +82,7 @@ class PodcastViewModel extends ChangeNotifier {
     }  
   }
 
-  // TODO: Lọc podcast theo từ khóa (có xử lý bỏ dấu)
+  //   Lọc podcast theo từ khóa (có xử lý bỏ dấu)
   void filterPodcasts(String keyword) {
     if (keyword.isEmpty) {
       _setState(filteredPodcasts: _podcasts);
@@ -99,10 +99,10 @@ class PodcastViewModel extends ChangeNotifier {
     _setState(filteredPodcasts: filtered);
   }
 
-  // TODO: Làm mới danh sách podcast
+  //   Làm mới danh sách podcast
   Future<void> refreshPodcasts() async => await getPodcasts();
 
-  // TODO: Load danh sách yêu thích từ local storage
+  //   Load danh sách yêu thích từ local storage
   Future<void> loadFavorites() async {
     if (!_prefsReady || _prefsService == null) return;
 
@@ -120,14 +120,14 @@ class PodcastViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // TODO: Thêm / Xóa podcast khỏi danh sách yêu thích và lưu local
+  //   Thêm / Xóa podcast khỏi danh sách yêu thích và lưu local
   Future<void> toggleFavorite(PodcastModel podcast) async {
-    // TODO: Nếu chưa khởi tạo prefs thì chờ init
+    //   Nếu chưa khởi tạo prefs thì chờ init
     if (!_prefsReady || _prefsService == null) {
       await _initPrefs();
     }
 
-    // TODO: Cập nhật local state để phản hồi nhanh
+    //   Cập nhật local state để phản hồi nhanh
     if (isFavorite(podcast)) {
       _favoriteIds.remove(podcast.idPodcast);
     } else {
@@ -136,7 +136,7 @@ class PodcastViewModel extends ChangeNotifier {
 
     notifyListeners();
 
-    // TODO: Lưu xuống local (không chặn UI)
+    //   Lưu xuống local (không chặn UI)
     unawaited(
       _prefsService?.saveString(
         SharedPrefsKey.favoritePodcasts,
@@ -145,7 +145,7 @@ class PodcastViewModel extends ChangeNotifier {
     );
   }
 
-  // TODO: Reset toàn bộ state
+  //   Reset toàn bộ state
   void reset() {
     _setState(
       isLoading: false,

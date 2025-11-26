@@ -10,7 +10,7 @@ class JobSavedService {
 
   JobSavedService() : _apiService = ApiService();
 
-  // TODO: Hàm helper xử lý lỗi API chung cho tất cả các request
+  //   Hàm helper xử lý lỗi API chung cho tất cả các request
   Future<T> _handleApi<T>(Future<T> Function() action, String errorMsg) async {
     try {
       return await action();
@@ -24,7 +24,7 @@ class JobSavedService {
     }
   }
 
-  // TODO: Lấy tất cả việc làm đã lưu
+  //   Lấy tất cả việc làm đã lưu
   Future<List<JobSavedModel>> getAllSavedJobs() async {
     return _handleApi(() async {
       final res = await _apiService.get(endpoint: ApiConstants.jobSavedEndpoint);
@@ -36,7 +36,7 @@ class JobSavedService {
     }, 'Lỗi khi tải tất cả việc làm đã lưu');
   }
 
-  // TODO: Lấy tất cả việc làm đã lưu của 1 user
+  //   Lấy tất cả việc làm đã lưu của 1 user
   Future<List<JobSavedModel>> getSavedJobsByUser(String idUser) async {
     final endpoint = ApiConstants.jobSavedByUser.replaceAll('{idUser}', idUser);
     return _handleApi(() async {
@@ -49,7 +49,7 @@ class JobSavedService {
     }, 'Lỗi khi tải việc làm đã lưu theo user');
   }
 
-  // TODO: Lấy tất cả việc làm đã lưu theo jobPost
+  //   Lấy tất cả việc làm đã lưu theo jobPost
   Future<List<JobSavedModel>> getSavedJobsByJobPost(String jobPost) async {
     final endpoint = ApiConstants.jobSavedByJobPost.replaceAll('{jobPost}', jobPost);
     return _handleApi(() async {
@@ -62,7 +62,7 @@ class JobSavedService {
     }, 'Lỗi khi tải việc làm đã lưu theo jobPost');
   }
 
-  // TODO: Kiểm tra 1 job đã được lưu bởi user hay chưa
+  //   Kiểm tra 1 job đã được lưu bởi user hay chưa
   Future<bool> checkJobSaved(String jobPost, String user) async {
     final endpoint = ApiConstants.jobSavedCheck
         .replaceAll('{jobPost}', jobPost)
@@ -73,7 +73,7 @@ class JobSavedService {
     }, 'Lỗi khi kiểm tra việc làm đã lưu');
   }
 
-  // TODO: Lưu 1 job cho user
+  //   Lưu 1 job cho user
   Future<void> saveJob(JobSavedModel jobSaved) async {
     return _handleApi(() async {
       await _apiService.post(
@@ -83,7 +83,7 @@ class JobSavedService {
     }, 'Lỗi khi lưu việc làm');
   }
 
-  // TODO: Xóa 1 job đã lưu của user
+  //   Xóa 1 job đã lưu của user
   Future<void> deleteSavedJob(String jobPost, String user) async {
     final endpoint = ApiConstants.jobSavedDelete
         .replaceAll('{jobPost}', jobPost)

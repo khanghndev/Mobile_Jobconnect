@@ -352,7 +352,7 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
     final scaffoldMessenger = ScaffoldMessenger.of(context);
     
     try {
-      // TODO: Implement update job application status API
+      //   Implement update job application status API
       // await jobApplicationService.updateJobApplicationStatus(
       //   jobPostId: item.jobApplication.idJobPost,
       //   userId: item.jobApplication.idUser,
@@ -435,7 +435,7 @@ class _HrCandidateManagementScreenState extends State<HrCandidateManagementScree
     final scaffoldContext = context;
     
     try {
-      // TODO: Implement update job application status API
+      //   Implement update job application status API
       // await jobApplicationService.updateJobApplicationStatus(
       //   jobPostId: item.jobApplication.idJobPost,
       //   userId: item.jobApplication.idUser,

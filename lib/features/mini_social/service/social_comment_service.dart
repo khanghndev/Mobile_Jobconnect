@@ -26,7 +26,7 @@ class SocialCommentService {
     }
   }
 
-  // TODO: GET /api/SocialComments/by-post/{postId} - Lấy danh sách comment theo post
+  //   GET /api/SocialComments/by-post/{postId} - Lấy danh sách comment theo post
   Future<List<SocialCommentModel>> getCommentsByPost({required String postId}) async {
     return _handleApi(
       () async {
@@ -42,7 +42,7 @@ class SocialCommentService {
     );
   }
 
-  // TODO: GET /api/SocialComments/replies/{parentId} - Lấy danh sách replies theo parent comment
+  //   GET /api/SocialComments/replies/{parentId} - Lấy danh sách replies theo parent comment
   Future<List<SocialCommentModel>> getRepliesByParent({required String parentId}) async {
     return _handleApi(
       () async {
@@ -58,7 +58,7 @@ class SocialCommentService {
     );
   }
 
-  // TODO: POST /api/SocialComments - Tạo comment mới
+  //   POST /api/SocialComments - Tạo comment mới
   Future<SocialCommentModel> createComment({required SocialCommentModel comment}) async {
     return _handleApi(
       () async {
@@ -76,7 +76,7 @@ class SocialCommentService {
     );
   }
 
-  // TODO: DELETE /api/SocialComments/{id} - Xóa comment
+  //   DELETE /api/SocialComments/{id} - Xóa comment
   Future<void> deleteComment({required String id}) async {
     return _handleApi(
       () async {

@@ -9,7 +9,7 @@ class ResumeSkillService {
 
   ResumeSkillService() : _apiService = ApiService();
 
-  //TODO: Hàm nội bộ dùng chung để lấy danh sách resume skill
+  //  Hàm nội bộ dùng chung để lấy danh sách resume skill
   Future<List<ResumeSkillModel>> _fetchResumeSkillList({
     required String endpoint,
     required String dataType,
@@ -39,7 +39,7 @@ class ResumeSkillService {
     }
   }
 
-  //TODO: Lấy toàn bộ kỹ năng trong hồ sơ
+  //  Lấy toàn bộ kỹ năng trong hồ sơ
   Future<List<ResumeSkillModel>> getAllResumeSkills() async {
     return _fetchResumeSkillList(
       endpoint: ApiConstants.resumeSkillEndpoint,
@@ -47,7 +47,7 @@ class ResumeSkillService {
     );
   }
 
-  //TODO: Lấy danh sách kỹ năng theo resumeId (nếu cần lọc theo hồ sơ)
+  //  Lấy danh sách kỹ năng theo resumeId (nếu cần lọc theo hồ sơ)
   Future<List<ResumeSkillModel>> getSkillsByResumeId({
     required String resumeId,
   }) async {

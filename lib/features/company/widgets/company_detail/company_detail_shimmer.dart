@@ -17,7 +17,7 @@ class CompanyDetailShimmer extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // TODO: Banner/logo công ty
+              //   Banner/logo công ty
               Container(
                 height: 180.h,
                 width: double.infinity,
@@ -28,7 +28,7 @@ class CompanyDetailShimmer extends StatelessWidget {
               ),
               SizedBox(height: 24.h),
         
-              // TODO: Tên công ty
+              //   Tên công ty
               Container(
                 height: 22.h,
                 width: 200.w,
@@ -39,7 +39,7 @@ class CompanyDetailShimmer extends StatelessWidget {
               ),
               SizedBox(height: 8.h),
         
-              // TODO: Địa chỉ
+              //   Địa chỉ
               Container(
                 height: 14.h,
                 width: 250.w,
@@ -50,7 +50,7 @@ class CompanyDetailShimmer extends StatelessWidget {
               ),
               SizedBox(height: 32.h),
         
-              // TODO: "Giới thiệu công ty"
+              //   "Giới thiệu công ty"
               Container(
                 height: 18.h,
                 width: 160.w,
@@ -80,7 +80,7 @@ class CompanyDetailShimmer extends StatelessWidget {
               ),
               SizedBox(height: 32.h),
         
-              // TODO: Thông tin liên hệ
+              //   Thông tin liên hệ
               Container(
                 height: 18.h,
                 width: 180.w,
@@ -125,7 +125,7 @@ class CompanyDetailShimmer extends StatelessWidget {
         
               SizedBox(height: 32.h),
         
-              // TODO: Danh sách việc làm
+              //   Danh sách việc làm
               Container(
                 height: 18.h,
                 width: 200.w,

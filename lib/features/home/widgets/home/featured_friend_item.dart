@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/utils/image_url.dart';
 import 'package:job_connect/config/widgets/info_chip.dart';
 import 'package:job_connect/features/profile/model/user_model.dart';
@@ -100,41 +101,53 @@ class FeaturedFriendItem extends StatelessWidget {
       }
     }
 
-    return Container(
-      width: 200.w,
-      margin: EdgeInsets.only(right: 12.w),
-      padding: EdgeInsets.all(12.w),
-      decoration: BoxDecoration(
-        color: theme.cardColor,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {
+          context.push(
+            '/social/profile',
+            extra: {'idUser': user.idUser},
+          );
+        },
         borderRadius: BorderRadius.circular(16.r),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha:0.05), blurRadius: 6, offset: const Offset(0, 4))],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CircleAvatar(
-            radius: 40.r,
-            backgroundImage: ImageUtils.getImageProvider(user.avatarUrl),
+        child: Container(
+          width: 280.w,
+          margin: EdgeInsets.only(right: 12.w),
+          padding: EdgeInsets.all(12.w),
+          decoration: BoxDecoration(
+            color: theme.cardColor,
+            borderRadius: BorderRadius.circular(16.r),
+            boxShadow: [BoxShadow(color: Colors.black.withValues(alpha:0.05), blurRadius: 6, offset: const Offset(0, 4))],
           ),
-          SizedBox(height: 8.h),
-          Text(
-            user.userName,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-            style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                radius: 40.r,
+                backgroundImage: ImageUtils.getImageProvider(user.avatarUrl),
+              ),
+              SizedBox(height: 8.h),
+              Text(
+                user.userName,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8.h),
+              InfoChip(
+                icon: user.role?.roleName == 'Candidate' ? Icons.star_rounded : Icons.stars_rounded,
+                label: user.role?.roleName == 'Candidate' ? 'Người tìm việc' : 'Nhà tuyển dụng',
+                color: theme.colorScheme.secondary,
+                isHighlighted: true,
+                maxLines: 1,
+              ),
+              SizedBox(height: 12.h),
+              SizedBox(width: double.infinity, child: buildButton()),
+            ],
           ),
-          SizedBox(height: 8.h),
-          InfoChip(
-            icon: user.role?.roleName == 'Candidate' ? Icons.star_rounded : Icons.stars_rounded,
-            label: user.role?.roleName == 'Candidate' ? 'Người tìm việc' : 'Nhà tuyển dụng',
-            color: theme.colorScheme.secondary,
-            isHighlighted: true,
-            maxLines: 1,
-          ),
-          SizedBox(height: 12.h),
-          SizedBox(width: double.infinity, child: buildButton()),
-        ],
+        ),
       ),
     );
   }

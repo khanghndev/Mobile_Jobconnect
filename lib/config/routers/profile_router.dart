@@ -21,7 +21,7 @@ class ProfileRouter  {
       );
     },
     routes: [
-      // TODO: Trang profie 
+      //   Trang profie 
       GoRoute(
         path: 'edit',
         pageBuilder: (context, state) {

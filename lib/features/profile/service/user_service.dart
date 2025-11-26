@@ -9,7 +9,7 @@ class UserService {
 
   UserService() : _apiService = ApiService();
 
-  // TODO: Lấy chi tiết người dùng theo ID
+  //   Lấy chi tiết người dùng theo ID
   Future<UserModel> getUserById({required String id}) async {
     try {
       final res = await _apiService.get(
@@ -34,7 +34,7 @@ class UserService {
     }
   }
 
-  // TODO: Thêm người dùng mới
+  //   Thêm người dùng mới
   Future<UserModel> createUser(UserModel user) async {
     try {
       final res = await _apiService.post(
@@ -60,7 +60,7 @@ class UserService {
     }
   }
 
-  // TODO: Cập nhật người dùng theo ID
+  //   Cập nhật người dùng theo ID
   Future<void> updateUser({required UserModel user}) async {
     try {
       await _apiService.put(
@@ -90,7 +90,7 @@ class UserService {
     }
   }
 
-  // TODO: Xóa người dùng theo ID
+  //   Xóa người dùng theo ID
   Future<void> deleteUser({required String id}) async {
     try {
       await _apiService.delete(
@@ -106,7 +106,7 @@ class UserService {
     }
   }
 
-  // TODO: Lấy tất cả người dùng
+  //   Lấy tất cả người dùng
   Future<List<UserModel>> getAllUsers() async {
     try {
       final res = await _apiService.get(

@@ -10,11 +10,13 @@ import 'package:provider/provider.dart';
 class FeaturedJobsList extends StatelessWidget {
   final List<JobPostingModel> jobs;
   final String idUser;
+  final Axis scrollDirection;
 
   const FeaturedJobsList({
     super.key,
     required this.jobs,
     required this.idUser,
+    this.scrollDirection = Axis.vertical, // Mặc định cuộn dọc
   });
 
   @override
@@ -23,20 +25,26 @@ class FeaturedJobsList extends StatelessWidget {
 
     if (jobs.isEmpty) {
       return Center(
-        child: Text(
-          'Hiện chưa có công việc nào',
-          style: theme.textTheme.bodyMedium,
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 16.h),
+          child: Text(
+            'Hiện chưa có công việc nào',
+            style: theme.textTheme.bodyMedium,
+          ),
         ),
       );
     }
 
     return Consumer<JobSavedViewModel>(
       builder: (context, jobSavedVM, child) {
-        return AnimationLimiter(
+        final listView = AnimationLimiter(
           child: ListView.builder(
-            shrinkWrap: true,
+            shrinkWrap: scrollDirection == Axis.vertical,
+            scrollDirection: scrollDirection,
             padding: EdgeInsets.zero,
-            physics: const NeverScrollableScrollPhysics(),
+            physics: scrollDirection == Axis.horizontal 
+                ? const BouncingScrollPhysics() 
+                : const NeverScrollableScrollPhysics(),
             itemCount: jobs.length > 4 ? 4 : jobs.length,
             itemBuilder: (context, index) {
               final job = jobs[index];
@@ -48,7 +56,8 @@ class FeaturedJobsList extends StatelessWidget {
                 position: index,
                 duration: const Duration(milliseconds: 425),
                 child: SlideAnimation(
-                  verticalOffset: 60.h,
+                  verticalOffset: scrollDirection == Axis.vertical ? 60.h : 0,
+                  horizontalOffset: scrollDirection == Axis.horizontal ? 60.w : 0,
                   child: FadeInAnimation(
                     child: FeaturedJobCard(
                       job: job,
@@ -75,6 +84,16 @@ class FeaturedJobsList extends StatelessWidget {
             },
           ),
         );
+
+        // Khi cuộn ngang, cần wrap trong SizedBox với chiều cao cố định
+        if (scrollDirection == Axis.horizontal) {
+          return SizedBox(
+            height: 220.h, // Chiều cao cố định cho ListView ngang
+            child: listView,
+          );
+        }
+
+        return listView;
       },
     );
   }

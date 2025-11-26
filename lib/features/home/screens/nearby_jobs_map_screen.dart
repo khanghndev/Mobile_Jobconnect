@@ -15,14 +15,17 @@ import 'package:job_connect/features/job/model/job_posting_model.dart';
 import 'package:job_connect/features/job/screens/job_detail_screen.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart'; 
 import 'dart:ui';
+
 class NearbyJobsMapScreen extends StatefulWidget {
   final bool isLoggedIn;
   final String idUser;
+  final String? initialLocation; // Địa chỉ ban đầu (nếu có)
 
   const NearbyJobsMapScreen({
     super.key,
     required this.isLoggedIn,
     required this.idUser,
+    this.initialLocation,
   });
 
   @override
@@ -149,6 +152,50 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen> with TickerPr
     }
   }
 
+  // Hàm geocoding địa chỉ thành tọa độ
+  Future<void> _geocodeLocation(String address) async {
+    try {
+      List<flutter_geocoding.Location> locations = await flutter_geocoding
+          .locationFromAddress(address);
+      if (locations.isNotEmpty) {
+        final location = locations[0];
+        _currentPositionLatLng = LatLng(location.latitude, location.longitude);
+        
+        // Lấy thông tin địa chỉ từ tọa độ
+        List<flutter_geocoding.Placemark> placemarks = await flutter_geocoding
+            .placemarkFromCoordinates(location.latitude, location.longitude);
+        if (placemarks.isNotEmpty) {
+          flutter_geocoding.Placemark place = placemarks[0];
+          _currentCity = CityModelUi(
+            isoCountryCode: place.isoCountryCode ?? '',
+            country: place.country ?? '',
+            postalCode: place.postalCode ?? '',
+            administrativeArea: place.administrativeArea ?? '',
+            subAdministrativeArea: place.subAdministrativeArea ?? '',
+            locality: place.locality ?? '',
+            subLocality: place.subLocality ?? '',
+            thoroughfare: place.thoroughfare ?? '',
+            subThoroughfare: place.subThoroughfare ?? '',
+          );
+        }
+        
+        // Cập nhật search controller với địa chỉ
+        _searchLocationController.text = address;
+        
+        // Di chuyển map đến vị trí mới
+        if (mapController != null) {
+          mapController!.animateCamera(
+            CameraUpdate.newLatLngZoom(_currentPositionLatLng!, 14.0),
+          );
+        }
+      }
+    } catch (e) {
+      debugPrint('Lỗi geocoding địa chỉ: $e');
+      // Nếu không geocoding được, fallback về vị trí hiện tại
+      await _determinePositionAndCity();
+    }
+  }
+
   Future<void> _loadInitialData() async {
     if (!mounted) return;
     setState(() {
@@ -161,7 +208,12 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen> with TickerPr
 
     try {
       // Bước 1: Xác định vị trí (quan trọng cho map ban đầu)
-      await _determinePositionAndCity();
+      // Nếu có initialLocation, geocoding địa chỉ đó, nếu không thì lấy vị trí hiện tại
+      if (widget.initialLocation != null && widget.initialLocation!.isNotEmpty) {
+        await _geocodeLocation(widget.initialLocation!);
+      } else {
+        await _determinePositionAndCity();
+      }
       if (!mounted) return;
 
       // Cập nhật map controller nếu đã có vị trí

@@ -10,7 +10,7 @@ class MessageService {
 
   MessageService() : _apiService = ApiService();
 
-  // TODO: Hàm tiện ích để wrap lỗi chung
+  //   Hàm tiện ích để wrap lỗi chung
   Future<T> _handleApi<T>(Future<T> Function() action, String errorMsg) async {
     try {
       return await action();
@@ -24,7 +24,7 @@ class MessageService {
     }
   }
 
-  //TODO: Tạo tin nhắn mới 
+  //  Tạo tin nhắn mới 
   Future<MessageModel> createMessage({
     required String idConversation,
     required String idSender,
@@ -57,7 +57,7 @@ class MessageService {
     );
   }
 
- //TODO: Gửi tin nhắn 
+ //  Gửi tin nhắn 
   Future<MessageModel> sendMessage({
     required String conversationId,
     required String senderId,
@@ -82,7 +82,7 @@ class MessageService {
     );
   }
 
- //TODO: Lấy danh sách tin nhắn theo conversationId, có hỗ trợ limit & offset
+ //  Lấy danh sách tin nhắn theo conversationId, có hỗ trợ limit & offset
   Future<List<MessageModel>> getMessagesByConversationId({
     required String conversationId,
     int limit = 50,
@@ -112,7 +112,7 @@ class MessageService {
     );
   }
 
-  //TODO: Đánh dấu tin nhắn trong cuộc trò chuyện là đã đọc
+  //  Đánh dấu tin nhắn trong cuộc trò chuyện là đã đọc
   Future<void> markMessagesAsRead({
     required String conversationId,
     required String readerId,
@@ -134,7 +134,7 @@ class MessageService {
     );
   }
 
-  // TODO: Lấy tổng số tin nhắn chưa đọc của user
+  //   Lấy tổng số tin nhắn chưa đọc của user
   Future<int> getUnreadMessageCount({ required String userId}) async {
     return _handleApi(
       () async {

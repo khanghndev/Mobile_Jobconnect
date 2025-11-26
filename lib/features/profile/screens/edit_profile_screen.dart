@@ -300,7 +300,7 @@ class _EditProfilePageState extends State<EditProfilePage>with SingleTickerProvi
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        // TODO: AVATAR
+                        //   AVATAR
                         ProfileImagePicker(
                           profileImage: _profileImage,
                           avatarUrl: _account?.avatarUrl,

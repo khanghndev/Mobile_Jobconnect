@@ -5,13 +5,12 @@ import 'package:job_connect/config/widgets/background_error_state.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:job_connect/config/utils/date_utils_helper.dart';
 import 'package:job_connect/features/mini_social/model/social_comment_model.dart';
-import 'package:job_connect/features/mini_social/widgets/comments/comment_filter_dropdown.dart';
 import 'package:job_connect/features/mini_social/widgets/comments/comment_input_field.dart';
 import 'package:job_connect/features/mini_social/widgets/comments/comment_tile.dart';
 
 class CommentBottomSheet extends StatefulWidget {
   final TextEditingController commentController;
-  final Future<void> Function(String text, String? parentId) onSubmit;
+  final Future<void> Function(String text, String? parentId, String? imagePath, String? icon) onSubmit;
   final List<SocialCommentModel> comments;
   final Future<void> Function()? onRefresh;
   final Function(SocialCommentModel)? onReply;
@@ -46,12 +45,11 @@ class CommentBottomSheet extends StatefulWidget {
 }
 
 class _CommentBottomSheetState extends State<CommentBottomSheet> {
-  String _selectedFilter = "Phù hợp nhất";
   SocialCommentModel? _replyingComment;
   bool _hasText = false;
   String? _selectedReaction;
-
-  final List<String> _filters = ["Phù hợp nhất", "Mới nhất", "Tất cả bình luận"];
+  String? _selectedImagePath;
+  String? _selectedIcon;
 
   @override
   void initState() {
@@ -105,13 +103,31 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
 
   void _onSend() {
     final text = widget.commentController.text.trim();
-    if (text.isEmpty) return;
+    final hasContent = text.isNotEmpty || _selectedImagePath != null || _selectedIcon != null;
+    if (!hasContent) return;
+    
     final parentId = _replyingComment?.idComment;
-    widget.onSubmit(text, parentId);
+    // Gửi text, imagePath và icon
+    widget.onSubmit(text, parentId, _selectedImagePath, _selectedIcon);
+    
     widget.commentController.clear();
     setState(() {
       _hasText = false;
       _replyingComment = null;
+      _selectedImagePath = null;
+      _selectedIcon = null;
+    });
+  }
+  
+  void _onImageSelected(String? imagePath) {
+    setState(() {
+      _selectedImagePath = imagePath;
+    });
+  }
+  
+  void _onIconSelected(String? icon) {
+    setState(() {
+      _selectedIcon = icon;
     });
   }
 
@@ -143,6 +159,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
             time: DateUtilsHelper.timeAgo(comment.createdAt),
             icon: _selectedReaction ?? '👍',
             count: 0,
+            imageUrl: comment.imageUrl,
+            commentIcon: comment.icon,
             onReplyTap: () => _onReply(comment),
             onReactTap: () => (){},
             onUserTap: () => _onGoToProfile(comment.idUser),
@@ -166,6 +184,8 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
                       time: DateUtilsHelper.timeAgo(reply.createdAt),
                       icon: _selectedReaction ?? '👍',
                       count: 0,
+                      imageUrl: reply.imageUrl,
+                      commentIcon: reply.icon,
                       onReplyTap: () => _onReply(comment), 
                       onReactTap: () => (){},
                       onUserTap: () => _onGoToProfile(reply.idUser),
@@ -327,9 +347,11 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
               padding: EdgeInsets.all(8.w),
               child: CommentInputField(
                 controller: widget.commentController,
-                hasText: _hasText,
+                hasText: _hasText || _selectedImagePath != null || _selectedIcon != null,
                 onChanged: (value) => setState(() => _hasText = value.trim().isNotEmpty),
-                onSend: _hasText ? _onSend : null,
+                onSend: (_hasText || _selectedImagePath != null || _selectedIcon != null) ? _onSend : null,
+                onImageSelected: _onImageSelected,
+                onIconSelected: _onIconSelected,
               ),
             ),
           ],

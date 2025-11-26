@@ -24,7 +24,7 @@ class JobCategoryService {
     }
   }
 
-  //TODO: Lấy danh sách tất cả category
+  //  Lấy danh sách tất cả category
   Future<List<JobCategoryModel>> getAllCategories() async {
     return _handleApi(
       () async {
@@ -39,7 +39,7 @@ class JobCategoryService {
     );
   }
 
-  //TODO: Lấy category theo ID
+  //  Lấy category theo ID
   Future<JobCategoryModel?> getCategoryById(String id) async {
     return _handleApi(
       () async {
@@ -55,7 +55,7 @@ class JobCategoryService {
     );
   }
 
-  //TODO: Lấy category theo code
+  //  Lấy category theo code
   Future<JobCategoryModel?> getCategoryByCode(String code) async {
     return _handleApi(
       () async {
@@ -72,7 +72,7 @@ class JobCategoryService {
     );
   }
 
-  //TODO: Lấy danh sách category đang active
+  //  Lấy danh sách category đang active
   Future<List<JobCategoryModel>> getActiveCategories() async {
     final all = await getAllCategories();
     return all.where((e) => e.isActive == true).toList();

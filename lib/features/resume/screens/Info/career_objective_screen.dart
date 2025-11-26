@@ -41,7 +41,7 @@ class _CareerObjectiveScreenState extends State<CareerObjectiveScreen> {
     });
 
     try {
-      // TODO: Implement actual AI API call
+      //   Implement actual AI API call
       // For now, we'll simulate an API call with a delay
       await Future.delayed(Duration(seconds: 2));
 

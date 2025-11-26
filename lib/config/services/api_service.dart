@@ -256,6 +256,8 @@ class ApiService {
 
     // Error response
     String errorMessage = "Unknown error";
+    ServerExceptionType exceptionType = ServerExceptionType.api;
+    
     try {
       // Kiểm tra xem có phải HTML không
       if (response.body.trim().toLowerCase().startsWith('<')) {
@@ -273,6 +275,8 @@ class ApiService {
           final first = (body["errors"] as Map).values.first;
           errorMessage = first is List ? first.first.toString() : first.toString();
         }
+      } else if (body is String) {
+        errorMessage = body;
       }
     } catch (e) {
       if (e is ServerException) {
@@ -286,11 +290,24 @@ class ApiService {
       }
     }
 
+    // Xác định loại exception dựa trên status code
+    if (response.statusCode == 409) {
+      exceptionType = ServerExceptionType.conflict;
+    } else if (response.statusCode == 400) {
+      exceptionType = ServerExceptionType.badRequest;
+    } else if (response.statusCode == 401) {
+      exceptionType = ServerExceptionType.unauthorized;
+    } else if (response.statusCode == 404) {
+      exceptionType = ServerExceptionType.notFound;
+    } else if (response.statusCode >= 500) {
+      exceptionType = ServerExceptionType.server;
+    }
+
     debugPrint('❌ API ERROR: $errorMessage');
 
     throw ServerException(
-      err: 'Lỗi: $errorMessage',
-      type: ServerExceptionType.api,
+      err: errorMessage,
+      type: exceptionType,
     );
   }
 

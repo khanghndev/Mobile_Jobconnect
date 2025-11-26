@@ -26,7 +26,7 @@ class SettingRouter {
     },
     routes: [
 
-      // TODO: Trang giúp đỡ
+      //   Trang giúp đỡ
       GoRoute(
         path: 'help',
         pageBuilder: (context, state) {
@@ -37,7 +37,7 @@ class SettingRouter {
         },
       ),
 
-      // TODO: Trang chính sách
+      //   Trang chính sách
       GoRoute(
         path: 'policy',
         pageBuilder: (context, state) {
@@ -48,7 +48,7 @@ class SettingRouter {
         },
       ),
 
-      // TODO: Trang về chúng tôi
+      //   Trang về chúng tôi
       GoRoute(
         path: 'about',
         pageBuilder: (context, state) {
@@ -59,7 +59,7 @@ class SettingRouter {
         },
       ),
 
-      // TODO: Trang bảo mật
+      //   Trang bảo mật
       GoRoute(
         path: 'payment',
         pageBuilder: (context, state) {
@@ -70,7 +70,7 @@ class SettingRouter {
         },
       ),
 
-      // TODO: Trang bảo mật
+      //   Trang bảo mật
       GoRoute(
         path: 'security',
         pageBuilder: (context, state) {

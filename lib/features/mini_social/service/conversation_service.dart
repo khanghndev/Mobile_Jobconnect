@@ -11,7 +11,7 @@ class ConversationService {
 
   ConversationService() : _apiService = ApiService();
 
-  // TODO: m tiện ích để wrap lỗi chung
+  //   m tiện ích để wrap lỗi chung
   Future<T> _handleApi<T>(Future<T> Function() action, String errorMsg) async {
     try {
       return await action();
@@ -25,7 +25,7 @@ class ConversationService {
     }
   }
 
-  // TODO: Tạo cuộc trò chuyện mới
+  //   Tạo cuộc trò chuyện mới
   Future<ConversationModel> createConversation({required List<String> memberIds}) async {
     return _handleApi(
       () async {
@@ -41,7 +41,7 @@ class ConversationService {
     );
   }
 
-  // TODO: Thêm thành viên vào cuộc trò chuyện
+  //   Thêm thành viên vào cuộc trò chuyện
   Future<void> addMembers({ required String conversationId, required String userIds}) async {
     return _handleApi(
       () async {
@@ -56,7 +56,7 @@ class ConversationService {
     );
   }
 
-  // TODO: Xóa thành viên khỏi cuộc trò chuyện
+  //   Xóa thành viên khỏi cuộc trò chuyện
   Future<void> removeMember({required String conversationId, required String userId}) async {
     return _handleApi(
       () async {
@@ -69,7 +69,7 @@ class ConversationService {
     );
   }
 
-  // TODO: Lấy danh sách cuộc trò chuyện theo userId
+  //   Lấy danh sách cuộc trò chuyện theo userId
   Future<List<ConversationModel>> getConversationsByUser({ required String userId}) async {
     return _handleApi(
       () async {
@@ -86,7 +86,7 @@ class ConversationService {
     );
   }
 
-  // TODO: Lấy danh sách tin nhắn trong một cuộc trò chuyện
+  //   Lấy danh sách tin nhắn trong một cuộc trò chuyện
   Future<List<MessageModel>> getConversationMessages({ required String conversationId}) async {
     return _handleApi(
       () async {

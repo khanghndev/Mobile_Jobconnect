@@ -29,7 +29,7 @@ class RecruiterRouter {
       );
     },
     routes: [
-      //TODO: Trang chủ
+      //  Trang chủ
       GoRoute(
         path: 'home',
         pageBuilder: (context, state) {
@@ -42,7 +42,7 @@ class RecruiterRouter {
         },
       ),
 
-      //TODO: Tìm kiếm ứng viên
+      //  Tìm kiếm ứng viên
       GoRoute(
         path: 'search-candidate',
         pageBuilder: (context, state) {
@@ -55,7 +55,7 @@ class RecruiterRouter {
         },
       ),
 
-      //TODO: Quản lý ứng viên
+      //  Quản lý ứng viên
       GoRoute(
         path: 'candidates-management',
         pageBuilder: (context, state) {
@@ -70,7 +70,7 @@ class RecruiterRouter {
         },
       ),
 
-      //TODO: Danh sách công việc - Dashboard
+      //  Danh sách công việc - Dashboard
       GoRoute(
         path: 'jobs',
         pageBuilder: (context, state) {
@@ -85,7 +85,7 @@ class RecruiterRouter {
         },
       ),
 
-      //TODO: Báo cáo
+      //  Báo cáo
       GoRoute(
         path: 'report',
         pageBuilder: (context, state) {
@@ -120,7 +120,7 @@ class RecruiterRouter {
         },
       ),
 
-      //TODO: Lịch phỏng vấn
+      //  Lịch phỏng vấn
       GoRoute(
         path: 'interview-schedules',
         pageBuilder: (context, state) {

@@ -9,7 +9,7 @@ class PodcastService {
 
   PodcastService() : _apiService = ApiService();
 
-  /// TODO: Hàm nội bộ xử lý gọi API và bắt lỗi chung
+  ///   Hàm nội bộ xử lý gọi API và bắt lỗi chung
   Future<List<PodcastModel>> _fetchPodcastList({
     required String endpoint,
     required String dataType,
@@ -38,7 +38,7 @@ class PodcastService {
     }
   }
 
-  /// TODO: Lấy danh sách podcast
+  ///   Lấy danh sách podcast
   Future<List<PodcastModel>> getPodcasts() async {
     return _fetchPodcastList(
       endpoint: ApiConstants.podcastEndpoint,

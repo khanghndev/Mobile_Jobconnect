@@ -9,7 +9,7 @@ class InterviewScheduleService {
 
   InterviewScheduleService() : _apiService = ApiService();
 
-  //TODO: Hàm nội bộ để tải danh sách lịch phỏng vấn từ API
+  //  Hàm nội bộ để tải danh sách lịch phỏng vấn từ API
   Future<List<InterviewScheduleModel>> _fetchInterviewScheduleList({
     required String endpoint,
     required String dataType,
@@ -37,7 +37,7 @@ class InterviewScheduleService {
     }
   }
 
-  //TODO: Lấy tất cả lịch phỏng vấn
+  //  Lấy tất cả lịch phỏng vấn
   Future<List<InterviewScheduleModel>> getAllInterviewSchedules() async {
     return _fetchInterviewScheduleList(
       endpoint: ApiConstants.interviewScheduleEndpoint,
@@ -45,7 +45,7 @@ class InterviewScheduleService {
     );
   }
 
-  //TODO: Lấy lịch phỏng vấn theo ID
+  //  Lấy lịch phỏng vấn theo ID
   Future<InterviewScheduleModel> getInterviewScheduleById({
     required String id,
   }) async {
@@ -72,7 +72,7 @@ class InterviewScheduleService {
     }
   }
 
-  //TODO: Lấy lịch phỏng vấn theo ID bài tuyển dụng (idJobPost)
+  //  Lấy lịch phỏng vấn theo ID bài tuyển dụng (idJobPost)
   Future<List<InterviewScheduleModel>> getInterviewScheduleByJobId({
     required String jobId,
   }) async {
@@ -82,7 +82,7 @@ class InterviewScheduleService {
     );
   }
 
-  //TODO: Tạo mới lịch phỏng vấn
+  //  Tạo mới lịch phỏng vấn
   Future<InterviewScheduleModel> createInterviewSchedule({
     required InterviewScheduleModel schedule,
   }) async {
@@ -110,7 +110,7 @@ class InterviewScheduleService {
     }
   }
 
-  //TODO: Cập nhật lịch phỏng vấn
+  //  Cập nhật lịch phỏng vấn
   Future<InterviewScheduleModel> updateInterviewSchedule({
     required InterviewScheduleModel schedule,
   }) async {
@@ -138,7 +138,7 @@ class InterviewScheduleService {
     }
   }
 
-  //TODO: Xoá lịch phỏng vấn theo ID
+  //  Xoá lịch phỏng vấn theo ID
   Future<void> deleteInterviewSchedule({
     required String id,
   }) async {

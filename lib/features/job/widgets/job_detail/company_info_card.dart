@@ -33,7 +33,7 @@ class CompanyInfoCard extends StatelessWidget {
               SizedBox(width: 12.w),
               Text(
                 "Thông Tin Công Ty",
-                style: theme.textTheme.titleLarge?.copyWith(
+                style: theme.textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),

@@ -41,6 +41,7 @@ class SearchScreenState extends State<SearchScreen> with TickerProviderStateMixi
   late TabController _tabController;
   bool _showClearButton = false;
   final _apiService = ApiService();
+  final ScrollController _mainScrollController = ScrollController();
 
   List<JobPostingModel> _jobList = [];
   List<JobPostingModel> _filteredJobs = [];
@@ -58,10 +59,7 @@ class SearchScreenState extends State<SearchScreen> with TickerProviderStateMixi
   double _maxSalary = 5000000;
   double _currentMinSalary = 0;
   double _currentMaxSalary = 5000000;
-  bool _showFilters = false;
   final Map<String, List<String>> _locationGroups = {};
-
-  late AnimationController _filterPanelController;
 
   @override
   void initState() {
@@ -77,18 +75,15 @@ class SearchScreenState extends State<SearchScreen> with TickerProviderStateMixi
     );
 
     _tabController.addListener(() {
-      if (mounted && !_tabController.indexIsChanging) setState(() {});
+      if (mounted && !_tabController.indexIsChanging) {
+        setState(() {});
+      }
     });
 
     _searchController.addListener(() {
       if (mounted) setState(() => _showClearButton = _searchController.text.isNotEmpty);
       _filterJobs();
     });
-
-    _filterPanelController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 350),
-    );
 
     _initializeData();
   }
@@ -97,8 +92,18 @@ class SearchScreenState extends State<SearchScreen> with TickerProviderStateMixi
   void dispose() {
     _searchController.dispose();
     _tabController.dispose();
-    _filterPanelController.dispose();
+    _mainScrollController.dispose();
     super.dispose();
+  }
+
+  void _scrollToTop() {
+    if (_mainScrollController.hasClients) {
+      _mainScrollController.animateTo(
+        0,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
   }
 
   void setTab(int index) {
@@ -182,7 +187,7 @@ class SearchScreenState extends State<SearchScreen> with TickerProviderStateMixi
     }
   }
 
-  // TODO: Fetch danh sách job posting
+  //   Fetch danh sách job posting
   Future<void> _fetchJobs() async {
     try {
       final response = await _apiService.get(endpoint: ApiConstants.jobPostingEndpoint);
@@ -270,15 +275,39 @@ class SearchScreenState extends State<SearchScreen> with TickerProviderStateMixi
   void _applyFilters() {
     if (!mounted) return;
     _filterJobs();
-    _filterPanelController.reverse();
-    setState(() => _showFilters = false);
   }
 
   void _toggleFilterPanel() {
-    setState(() {
-      _showFilters = !_showFilters;
-      _showFilters ? _filterPanelController.forward() : _filterPanelController.reverse();
-    });
+    FilterPanelWidget.show(
+      context,
+      locationGroups: _locationGroups,
+      jobTypes: _jobTypes,
+      experienceLevels: _experienceLevels,
+      selectedLocation: _selectedLocation,
+      selectedJobType: _selectedJobType,
+      selectedExperience: _selectedExperience,
+      currentMinSalary: _currentMinSalary,
+      currentMaxSalary: _currentMaxSalary,
+      maxSalary: _maxSalary,
+      onApply: ({
+        required location,
+        required jobType,
+        required experience,
+        required minSalary,
+        required maxSalary,
+      }) {
+        if (!mounted) return;
+        setState(() {
+          _selectedLocation = location;
+          _selectedJobType = jobType;
+          _selectedExperience = experience;
+          _currentMinSalary = minSalary;
+          _currentMaxSalary = maxSalary;
+        });
+        _applyFilters();
+      },
+      onResetFilters: _resetFilters,
+    );
   }
 
   @override
@@ -292,61 +321,43 @@ class SearchScreenState extends State<SearchScreen> with TickerProviderStateMixi
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SearchHeader(
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: _scrollToTop,
+      //   backgroundColor: theme.colorScheme.primary,
+      //   foregroundColor: theme.colorScheme.onPrimary,
+      //   elevation: 4,
+      //   child: Icon(Icons.arrow_upward_rounded, size: 28.sp),
+      // ),
+      body: CustomScrollView(
+        controller: _mainScrollController,
+        physics: const BouncingScrollPhysics(),
+        slivers: [
+          SliverToBoxAdapter(
+            child: SearchHeader(
               searchController: _searchController,
               onFilterTap: _toggleFilterPanel,
               tabController: _tabController,
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height - 150.h,
-              child: Stack(
-                children: [
-                  TabBarView(
-                    controller: _tabController,
-                    physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                    children: [
-                      _buildJobListView(isFeatured: true, sortByNewest: false),
-                      _buildJobListView(isFeatured: false, sortByNewest: true),
-                      _buildSavedJobsView(),
-                    ],
-                  ),
-                  if (_showFilters)
-                    FilterPanelWidget(
-                      locationGroups: _locationGroups,
-                      jobTypes: _jobTypes,
-                      experienceLevels: _experienceLevels,
-                      onResetFilters: _resetFilters,
-                      onApply: ({
-                        required location,
-                        required jobType,
-                        required experience,
-                        required minSalary,
-                        required maxSalary,
-                      }) {
-                        setState(() {
-                          _selectedLocation = location;
-                          _selectedJobType = jobType;
-                          _selectedExperience = experience;
-                          _currentMinSalary = minSalary;
-                          _currentMaxSalary = maxSalary;
-                        });
-                        _applyFilters();
-                      },
-                      onClose: _toggleFilterPanel,
-                    ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+          _buildSliverContent(),
+        ],
       ),
     );
   }
 
-  Widget _buildJobListView({bool isFeatured = false, bool sortByNewest = false}) {
+  Widget _buildSliverContent() {
+    final currentIndex = _tabController.index;
+    
+    if (currentIndex == 0) {
+      return _buildSliverJobList(isFeatured: true, sortByNewest: false);
+    } else if (currentIndex == 1) {
+      return _buildSliverJobList(isFeatured: false, sortByNewest: true);
+    } else {
+      return _buildSliverSavedJobsList();
+    }
+  }
+
+  Widget _buildSliverJobList({bool isFeatured = false, bool sortByNewest = false}) {
     List<JobPostingModel> jobsToDisplay = List.from(_filteredJobs);
 
     if (isFeatured) {
@@ -361,32 +372,31 @@ class SearchScreenState extends State<SearchScreen> with TickerProviderStateMixi
     }
 
     if (_isLoading && jobsToDisplay.isEmpty) {
-      return Center(
-        child: SearchJobShimmer()
+      return SliverFillRemaining(
+        child: Center(
+          child: SearchJobShimmer()
+        ),
       );
     }
 
     if (jobsToDisplay.isEmpty) {
-      return BackgroundEmptyState(
-        isSearching: _searchController.text.isNotEmpty,
-        onRefresh: _onRefresh,
-        title: isFeatured ? "Công Việc Nổi Bật" : "Công Việc",
-        iconData: Icons.work_off_outlined,
+      return SliverFillRemaining(
+        child: BackgroundEmptyState(
+          isSearching: _searchController.text.isNotEmpty,
+          onRefresh: _onRefresh,
+          title: isFeatured ? "Công Việc Nổi Bật" : "Công Việc",
+          iconData: Icons.work_off_outlined,
+        ),
       );
     }
 
     return Consumer<JobSavedViewModel>(
       builder: (context, jobSavedVM, _) {
-        return RefreshIndicator(
-          onRefresh: _onRefresh,
-          color: Theme.of(context).primaryColor,
-          child: AnimationLimiter(
-            child: ListView.builder(
-              shrinkWrap: true,
-              physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
-              itemCount: jobsToDisplay.length,
-              itemBuilder: (context, index) {
+        return SliverPadding(
+          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
+          sliver: SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
                 final job = jobsToDisplay[index];
                 final isSaved = jobSavedVM.savedJobs.any((s) => s.idJobPost == job.idJobPost);
                 return AnimationConfiguration.staggeredList(
@@ -406,15 +416,15 @@ class SearchScreenState extends State<SearchScreen> with TickerProviderStateMixi
                   ),
                 );
               },
+              childCount: jobsToDisplay.length,
             ),
           ),
         );
       },
     );
-
   }
 
-  Widget _buildSavedJobsView() {
+  Widget _buildSliverSavedJobsList() {
     final savedJobPostsFromFullList = _jobList.where((job) {
       final isActuallySaved = _jobSavedVM.savedJobs.any((savedJob) => savedJob.idJobPost == job.idJobPost);
       if (!isActuallySaved) return false;
@@ -445,30 +455,29 @@ class SearchScreenState extends State<SearchScreen> with TickerProviderStateMixi
     savedJobPostsFromFullList.sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
     if (_isLoading && savedJobPostsFromFullList.isEmpty) {
-      return Center(
-        child: SearchJobShimmer()
+      return SliverFillRemaining(
+        child: Center(
+          child: SearchJobShimmer()
+        ),
       );
     }
 
     if (savedJobPostsFromFullList.isEmpty) {
-      return BackgroundEmptyState(
-        isSearching: _searchController.text.isNotEmpty,
-        onRefresh: _onRefresh,
-        title: "Công Việc Đã Lưu",
-        iconData: Icons.bookmark_add_outlined,
+      return SliverFillRemaining(
+        child: BackgroundEmptyState(
+          isSearching: _searchController.text.isNotEmpty,
+          onRefresh: _onRefresh,
+          title: "Công Việc Đã Lưu",
+          iconData: Icons.bookmark_add_outlined,
+        ),
       );
     }
 
-    return RefreshIndicator(
-      onRefresh: _onRefresh,
-      color: Theme.of(context).primaryColor,
-      child: AnimationLimiter(
-        child: ListView.builder(
-          shrinkWrap: true,
-          physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
-          itemCount: savedJobPostsFromFullList.length,
-          itemBuilder: (context, index) {
+    return SliverPadding(
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
+      sliver: SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (context, index) {
             final job = savedJobPostsFromFullList[index];
             return AnimationConfiguration.staggeredList(
               position: index,
@@ -487,6 +496,7 @@ class SearchScreenState extends State<SearchScreen> with TickerProviderStateMixi
               ),
             );
           },
+          childCount: savedJobPostsFromFullList.length,
         ),
       ),
     );

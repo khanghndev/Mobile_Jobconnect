@@ -12,6 +12,7 @@ class SaveBottomSheet extends StatelessWidget {
   final void Function(String folderName) onDelete;
   final VoidCallback onCreateFolder;
   final void Function(String folderName)? onSelectFolder;
+  final void Function(String folderName)? onTapFolder;
   final bool isLoading;
   final String? errorMessage;
   final VoidCallback? onRefesh;
@@ -23,6 +24,7 @@ class SaveBottomSheet extends StatelessWidget {
     required this.onDelete,
     required this.onCreateFolder,
     this.onSelectFolder,
+    this.onTapFolder,
     required this.folderSavedCount,
     this.isLoading = false,
     this.errorMessage,
@@ -39,19 +41,8 @@ class SaveBottomSheet extends StatelessWidget {
       ...folders,
     ];
 
-    return Container(
+    return Padding(
       padding: EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 16.h),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 12,
-            offset: const Offset(0, -2),
-          ),
-        ],
-      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -77,14 +68,14 @@ class SaveBottomSheet extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              InkWell(
-                borderRadius: BorderRadius.circular(50),
-                onTap: onCreateFolder,
-                child: Padding(
-                  padding: EdgeInsets.all(6.w),
-                  child: Icon(Icons.add_rounded, size: 26.sp, color: theme.primaryColor),
-                ),
-              ),
+              // InkWell(
+              //   borderRadius: BorderRadius.circular(50),
+              //   onTap: onCreateFolder,
+              //   child: Padding(
+              //     padding: EdgeInsets.all(6.w),
+              //     child: Icon(Icons.add_rounded, size: 26.sp, color: theme.primaryColor),
+              //   ),
+              // ),
               InkWell(
                 borderRadius: BorderRadius.circular(50),
                 onTap: () => context.pop(),
@@ -126,7 +117,15 @@ class SaveBottomSheet extends StatelessWidget {
                               final isDefault = folderName == kDefaultFolder;
 
                               return GestureDetector(
-                                onTap: () => onSelectFolder?.call(folderName),
+                                onTap: () {
+                                  // Nếu có onTapFolder, gọi nó để navigate
+                                  if (onTapFolder != null) {
+                                    onTapFolder!(folderName);
+                                  } else {
+                                    // Nếu không, gọi onSelectFolder như cũ
+                                    onSelectFolder?.call(folderName);
+                                  }
+                                },
                                 child: Stack(
                                   clipBehavior: Clip.none,
                                   children: [

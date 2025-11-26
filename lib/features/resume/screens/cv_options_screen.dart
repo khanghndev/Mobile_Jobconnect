@@ -8,7 +8,6 @@ import 'package:job_connect/config/widgets/custom_app_bar_title_large.dart';
 import 'package:job_connect/config/widgets/custom_dialog.dart';
 import 'package:job_connect/features/mini_social/widgets/connect/groups_tab_shimmer.dart';
 import 'package:job_connect/features/resume/view_model/resum_view_model.dart';
-import 'package:job_connect/features/resume/widgets/cv_options/cv_options_shimmer.dart';
 import 'package:provider/provider.dart';
 import 'package:job_connect/config/constant/app_colors.dart';
 import 'package:job_connect/config/utils/snackbar_app.dart';
@@ -54,7 +53,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
   @override
   bool get wantKeepAlive => true;
 
-  // TODO: Lifecycle
+  //   Lifecycle
   @override
   void initState() {
     super.initState();
@@ -78,14 +77,14 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
     super.dispose();
   }
 
-  // TODO: Refresh dữ liệu
+  //   Refresh dữ liệu
   Future<void> _onRefresh() async {
     _listAnimationController.reset();
     await context.read<ResumeViewModel>().getResumesByUser(idUser: widget.idUser);
     _listAnimationController.forward();
   }
 
-  // TODO: Upload CV
+  //   Upload CV
   Future<void> _pickAndUploadCV() async {
     if (_isUploadingCv) {
       if (!mounted) return;
@@ -180,7 +179,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
     }
   }
 
-  // TODO: Xóa CV
+  //   Xóa CV
   void _deleteCV(ResumeModel resumeToDelete) {
     CustomDialog.show(
       context,
@@ -225,7 +224,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
     );
   }
 
-  // TODO: Sort & Filter
+  //   Sort & Filter
   void _sortByName(ResumeViewModel vm) {
     vm.resumes.sort((a, b) => a.fileName.compareTo(b.fileName));
     vm.searchResumes(keyword: _searchTerm);
@@ -244,7 +243,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
     showDialog(context: context, builder: (_) => HelpDialogWidget());
   }
 
-  // TODO: Tạo CV mới
+  //   Tạo CV mới
   void _showCreateOptions(BuildContext context) {
     final theme = Theme.of(context);
     showModalBottomSheet(
@@ -278,7 +277,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
     );
   }
 
-  // TODO: Đổi tên CV
+  //   Đổi tên CV
   Future<void> _editCVName(BuildContext context, ResumeModel resume) async {
     final controller = TextEditingController(text: resume.fileName);
     final formKey = GlobalKey<FormState>();
@@ -317,7 +316,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
     );
   }
 
-  // TODO: Xem / Chia sẻ / Tải xuống CV
+  //   Xem / Chia sẻ / Tải xuống CV
   void _viewCV(BuildContext context, ResumeModel resume) {
     print(resume.fileUrl);
     if (resume.fileUrl.isEmpty) {
@@ -355,7 +354,7 @@ class _CVOptionsScreenState extends State<CVOptionsScreen>
     );
   }
 
-  // TODO: Build UI
+  //   Build UI
   @override
   Widget build(BuildContext context) {
     super.build(context);

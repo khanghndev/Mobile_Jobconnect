@@ -9,7 +9,7 @@ class CompanyService {
 
   CompanyService() : _apiService = ApiService();
 
-  //TODO: HÀM DÙNG CHUNG XỬ LÝ DANH SÁCH
+  //  HÀM DÙNG CHUNG XỬ LÝ DANH SÁCH
   Future<List<CompanyModel>> _fetchCompanyList({
     required String endpoint,
     required String dataType,
@@ -38,7 +38,7 @@ class CompanyService {
     }
   }
 
-  //TODO: LẤY DANH SÁCH CÔNG TY
+  //  LẤY DANH SÁCH CÔNG TY
   Future<List<CompanyModel>> getCompanies() async {
     return _fetchCompanyList(
       endpoint: ApiConstants.companiesEndpoint,
@@ -46,7 +46,7 @@ class CompanyService {
     );
   }
 
-  //TODO: LẤY DANH SÁCH CÔNG TY NỔI BẬT
+  //  LẤY DANH SÁCH CÔNG TY NỔI BẬT
   Future<List<CompanyModel>> getFeaturedCompanies() async {
     return _fetchCompanyList(
       endpoint: ApiConstants.companiesFeaturedEndpoint,
@@ -54,7 +54,7 @@ class CompanyService {
     );
   }
 
-  //TODO: LẤY CHI TIẾT CÔNG TY THEO ID
+  //  LẤY CHI TIẾT CÔNG TY THEO ID
   Future<CompanyModel> getCompanyById({required String id}) async {
     try {
       final res = await _apiService.get(
@@ -80,7 +80,7 @@ class CompanyService {
     }
   }
 
-  //TODO: TẠO CÔNG TY MỚI
+  //  TẠO CÔNG TY MỚI
   Future<CompanyModel> createCompany(CompanyModel company) async {
     try {
       final res = await _apiService.post(
@@ -106,7 +106,7 @@ class CompanyService {
     }
   }
 
-  //TODO: CẬP NHẬT THÔNG TIN CÔNG TY
+  //  CẬP NHẬT THÔNG TIN CÔNG TY
   Future<CompanyModel> updateCompany({required CompanyModel company,}) async {
     try {
       final body = {
@@ -146,7 +146,7 @@ class CompanyService {
     }
   }
 
-  //TODO: XÓA CÔNG TY THEO ID
+  //  XÓA CÔNG TY THEO ID
   Future<void> deleteCompany({required String id}) async {
     try {
       await _apiService.delete(

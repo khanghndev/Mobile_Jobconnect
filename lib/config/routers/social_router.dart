@@ -12,6 +12,7 @@ import 'package:job_connect/features/mini_social/screens/messeger/social_messeng
 import 'package:job_connect/features/mini_social/screens/social_post/social_create_post_screen.dart';
 import 'package:job_connect/features/mini_social/screens/connects/social_connects_screen.dart';
 import 'package:job_connect/features/mini_social/screens/connects/social_group_screen.dart';
+import 'package:job_connect/features/mini_social/screens/social_post/saved_posts_screen.dart';
 import 'package:job_connect/features/mini_social/screens/social_post/social_detail_post_screen.dart';
 import 'package:job_connect/features/mini_social/screens/report/social_help_screen.dart';
 import 'package:job_connect/features/mini_social/screens/job_board/social_job_board_page.dart';
@@ -60,6 +61,26 @@ class SocialRouter {
               socialPostModel: socialPostModel,
               isLoggedIn: isLoggedIn,
               idUser: idUser,
+            ),
+            state,
+          );
+        },
+      ),
+
+      // Danh sách bài viết đã lưu
+      GoRoute(
+        path: 'saved-posts',
+        pageBuilder: (context, state) {
+          final extraData = state.extra as Map<String, dynamic>? ?? {};
+          final isLoggedIn = extraData['isLoggedIn'] as bool? ?? false;
+          final idUser = extraData['idUser'] as String? ?? '';
+          final folderName = extraData['folderName'] as String?;
+
+          return buildPageWithSlideTransition(
+            SavedPostsScreen(
+              isLoggedIn: isLoggedIn,
+              idUser: idUser,
+              folderName: folderName,
             ),
             state,
           );

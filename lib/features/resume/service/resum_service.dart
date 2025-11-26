@@ -9,7 +9,7 @@ class ResumeService {
 
   ResumeService() : _apiService = ApiService();
 
-  // TODO: Lấy tất cả CV (GET: /api/resume)
+  //   Lấy tất cả CV (GET: /api/resume)
   Future<List<ResumeModel>> getAllResumes() async {
     return _fetchResumeList(
       endpoint: ApiConstants.resumeEndpoint,
@@ -17,7 +17,7 @@ class ResumeService {
     );
   }
 
-  // TODO: Lấy danh sách CV theo idUser (GET: /api/resume/{idUser})
+  //   Lấy danh sách CV theo idUser (GET: /api/resume/{idUser})
   Future<List<ResumeModel>> getResumesByUser({ required String idUser }) async {
     return _fetchResumeList(
       endpoint: "${ApiConstants.resumeEndpoint}/$idUser",
@@ -25,7 +25,7 @@ class ResumeService {
     );
   }
 
-  // TODO: Lấy CV mặc định để hiển thị (GET: /api/resume/by-user/{candidateId})
+  //   Lấy CV mặc định để hiển thị (GET: /api/resume/by-user/{candidateId})
   Future<ResumeModel?> getDefaultResume({ required String candidateId }) async {
     try {
       final res = await _apiService.get(
@@ -41,7 +41,7 @@ class ResumeService {
     }
   }
 
-  // TODO: Lấy tất cả CV của 1 user (GET: /api/resume/user/{userId})
+  //   Lấy tất cả CV của 1 user (GET: /api/resume/user/{userId})
   Future<List<ResumeModel>> getResumesForUserProfile({ required String userId }) async {
     return _fetchResumeList(
       endpoint: "${ApiConstants.resumeEndpoint}/user/$userId",
@@ -49,7 +49,7 @@ class ResumeService {
     );
   }
 
-  // TODO: Tạo CV mới (POST: /api/resume)
+  //   Tạo CV mới (POST: /api/resume)
   Future<ResumeModel> createResume(ResumeModel resume) async {
     try {
       final res = await _apiService.post(
@@ -73,7 +73,7 @@ class ResumeService {
     }
   }
 
-  // TODO: Cập nhật CV (PUT: /api/resume/{id})
+  //   Cập nhật CV (PUT: /api/resume/{id})
   Future<void> updateResume({ required String id, required ResumeModel updated }) async {
     try {
       await _apiService.put(
@@ -93,7 +93,7 @@ class ResumeService {
     }
   }
 
-  // TODO: Xóa CV (DELETE: /api/resume/{id})
+  //   Xóa CV (DELETE: /api/resume/{id})
   Future<void> deleteResume({ required String idResume}) async {
     try {
       await _apiService.delete(
@@ -107,7 +107,7 @@ class ResumeService {
     }
   }
 
-  // TODO: Đặt CV làm mặc định (POST: /api/resume/set-default)
+  //   Đặt CV làm mặc định (POST: /api/resume/set-default)
   Future<void> setDefaultResume({
     required String userId,
     required String fileId,
@@ -128,7 +128,7 @@ class ResumeService {
     }
   }
 
-  // TODO: Tải xuống CV (GET: /api/resume/download/{userId}/{fileId})
+  //   Tải xuống CV (GET: /api/resume/download/{userId}/{fileId})
   Future<Map<String, dynamic>> downloadResume({
     required String userId,
     required String fileId,
@@ -152,7 +152,7 @@ class ResumeService {
     }
   }
 
-  // TODO:  nội bộ xử lý fetch list (chuẩn hóa)
+  //    nội bộ xử lý fetch list (chuẩn hóa)
   Future<List<ResumeModel>> _fetchResumeList({
     required String endpoint,
     required String dataType,

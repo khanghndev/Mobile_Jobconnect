@@ -36,12 +36,14 @@ class _SocialSearchScreenState extends State<SocialSearchScreen>
   ];
 
   bool _isLoadingTab = false;
+  final Set<int> _loadedTabs = {}; // Track các tab đã load
+  bool _usersLoaded = false; // Track xem users đã load chưa
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _loadTabData(_selectedTab);
+      _loadTabData(_selectedTab, forceReload: false);
     });
     _searchController.addListener(() => setState(() {}));
   }
@@ -52,28 +54,54 @@ class _SocialSearchScreenState extends State<SocialSearchScreen>
     super.dispose();
   }
 
-  Future<void> _loadTabData(int tabIndex) async {
+  Future<void> _loadTabData(int tabIndex, {bool forceReload = false}) async {
     final userVm = context.read<UserViewModel>();
     final connVm = context.read<SocialConnectionViewModel>();
 
+    // Kiểm tra xem tab đã load chưa, nếu đã load và không force reload thì bỏ qua
+    if (!forceReload && _loadedTabs.contains(tabIndex) && _usersLoaded) {
+      return;
+    }
+
     setState(() => _isLoadingTab = true);
 
-    // Luôn fetch user list
-    await userVm.fetchAllUsers();
+    // Chỉ fetch user list nếu chưa load
+    if (!_usersLoaded) {
+      await userVm.fetchAllUsers();
+      _usersLoaded = true;
+    }
 
-    // Load dữ liệu theo tab
-    switch (tabIndex) {
-      case 1:
-        await connVm.getFriends(userId: widget.idUser);
-        break;
-      case 2:
-        await connVm.getSentRequests(userId: widget.idUser);
-        break;
-      case 3:
-        await connVm.getRequests(userId: widget.idUser);
-        break;
-      default:
-        await connVm.loadAllConnections(userId: widget.idUser);
+    // Load dữ liệu theo tab (chỉ load nếu chưa load hoặc force reload)
+    if (!_loadedTabs.contains(tabIndex) || forceReload) {
+      switch (tabIndex) {
+        case 1:
+          // Tab "Bạn bè" - chỉ load friends
+          if (connVm.friends.isEmpty || forceReload) {
+            await connVm.getFriends(userId: widget.idUser);
+          }
+          break;
+        case 2:
+          // Tab "Đã gửi" - chỉ load sent requests
+          if (connVm.sentRequests.isEmpty || forceReload) {
+            await connVm.getSentRequests(userId: widget.idUser);
+          }
+          break;
+        case 3:
+          // Tab "Lời mời kết bạn" - chỉ load requests
+          if (connVm.requests.isEmpty || forceReload) {
+            await connVm.getRequests(userId: widget.idUser);
+          }
+          break;
+        default:
+          // Tab "Tất cả" - load tất cả connections
+          if (forceReload || 
+              connVm.friends.isEmpty || 
+              connVm.sentRequests.isEmpty || 
+              connVm.requests.isEmpty) {
+            await connVm.loadAllConnections(userId: widget.idUser);
+          }
+      }
+      _loadedTabs.add(tabIndex);
     }
 
     if (!mounted) return;
@@ -199,7 +227,7 @@ class _SocialSearchScreenState extends State<SocialSearchScreen>
               SizedBox(height: 12.h),
               Expanded(
                 child: RefreshIndicator(
-                  onRefresh: () => _loadTabData(_selectedTab),
+                  onRefresh: () => _loadTabData(_selectedTab, forceReload: true),
                   child: _isLoadingTab
                       ? _buildShimmerList()
                       : filteredUsers.isEmpty
@@ -208,7 +236,7 @@ class _SocialSearchScreenState extends State<SocialSearchScreen>
                               children: [
                                 Center(
                                   child: BackgroundEmptyState(
-                                    onRefresh: () => _loadTabData(_selectedTab),
+                                    onRefresh: () => _loadTabData(_selectedTab, forceReload: true),
                                     title: 'Không tìm thấy người dùng',
                                     subTitle: 'Hiện tại chưa có thông tin người dùng.',
                                     iconData: Icons.supervised_user_circle_outlined,
@@ -311,7 +339,7 @@ class _SocialSearchScreenState extends State<SocialSearchScreen>
             child: GestureDetector(
               onTap: () {
                 setState(() => _selectedTab = index);
-                _loadTabData(index);
+                _loadTabData(index, forceReload: false);
               },
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),

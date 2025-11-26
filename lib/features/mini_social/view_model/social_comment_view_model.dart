@@ -1,4 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:job_connect/appwrite/storage_appwrite_service.dart';
 import 'package:job_connect/config/constant/app_images.dart';
 import 'package:job_connect/config/error/server_exception.dart';
 import 'package:job_connect/features/mini_social/model/social_comment_model.dart';
@@ -8,6 +11,7 @@ import 'package:job_connect/features/profile/view_model/user_view_model.dart';
 
 class SocialCommentViewModel extends ChangeNotifier {
   final SocialCommentService _commentService = SocialCommentService();
+  final StorageAppwriteService _storageAppwriteService = StorageAppwriteService();
 
   // STATE
   bool _isLoading = false;
@@ -73,14 +77,83 @@ class SocialCommentViewModel extends ChangeNotifier {
     );
   }
 
+  // UPLOAD IMAGE
+  Future<String?> uploadImage(String imagePath) async {
+    try {
+      final bucketId = dotenv.env['APPWRITE_BUCKET_ID_IMAGE'] ?? '';
+      if (bucketId.isEmpty) {
+        throw Exception('APPWRITE_BUCKET_ID_IMAGE chưa cấu hình');
+      }
+      
+      final file = File(imagePath);
+      final uploadedFile = await _storageAppwriteService.uploadFile(file, bucketId: bucketId);
+      return _storageAppwriteService.getFileViewUrl(uploadedFile.$id, bucketId: bucketId);
+    } catch (e) {
+      _errorMessage = e.toString();
+      notifyListeners();
+      rethrow;
+    }
+  }
+
   // CREATE COMMENT
-  Future<void> createComment({required SocialCommentModel newComment}) async {
-    await _handleApiCall<SocialCommentModel>(
-      apiCall: () => _commentService.createComment(comment: newComment),
-      onSuccess: (created) {
-        _comments.insert(0, created); // thêm vào đầu danh sách
-      },
-    );
+  Future<void> createComment({
+    required SocialCommentModel newComment,
+    UserViewModel? userVm,
+    String? imagePath,
+    String? icon,
+  }) async {
+    // Không set isLoading để tránh hiển thị loading state khi tạo comment
+    // Comment sẽ được thêm vào danh sách ngay lập tức
+    try {
+      String? imageUrl;
+      
+      // Upload ảnh nếu có
+      if (imagePath != null && imagePath.isNotEmpty) {
+        imageUrl = await uploadImage(imagePath);
+      }
+      
+      // Tạo comment với imageUrl và icon
+      final commentToCreate = newComment.copyWith(
+        imageUrl: imageUrl,
+        icon: icon,
+      );
+      
+      final created = await _commentService.createComment(comment: commentToCreate);
+      _comments.insert(0, created); // thêm vào đầu danh sách
+      
+      // Load user info cho comment mới nếu chưa có trong cache
+      if (userVm != null && !userCache.containsKey(created.idUser)) {
+        // Nếu là current user, sử dụng currentUser luôn
+        if (userVm.currentUser?.idUser == created.idUser && userVm.currentUser != null) {
+          userCache[created.idUser] = userVm.currentUser!;
+          notifyListeners(); // Rebuild UI với user info mới
+        } else {
+          // Nếu không phải current user, load từ API (async, không block UI)
+          _loadUserInfoForComment(created.idUser, userVm);
+        }
+      } else {
+        // Nếu đã có user info, chỉ cần notify để rebuild UI
+        notifyListeners();
+      }
+    } catch (e) {
+      // Nếu lỗi, vẫn giữ nguyên danh sách comments hiện tại
+      // Có thể show snackbar hoặc dialog để thông báo lỗi nếu cần
+      _errorMessage = e.toString();
+      notifyListeners();
+    }
+  }
+
+  // Helper method để load user info cho comment
+  Future<void> _loadUserInfoForComment(String userId, UserViewModel userVm) async {
+    try {
+      final user = await userVm.getViewUser(userId);
+      if (user != null) {
+        userCache[userId] = user;
+        notifyListeners(); // Rebuild UI với user info mới
+      }
+    } catch (e) {
+      // Bỏ qua lỗi, sẽ hiển thị "Người dùng $id" nếu không load được
+    }
   }
 
   // DELETE COMMENT

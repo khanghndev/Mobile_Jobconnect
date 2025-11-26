@@ -9,7 +9,7 @@ class JobTransactionService {
 
   JobTransactionService() : _apiService = ApiService();
 
-  //TODO: Hàm nội bộ dùng chung để lấy danh sách job transaction
+  //  Hàm nội bộ dùng chung để lấy danh sách job transaction
   Future<List<JobTransactionModel>> _fetchTransactionList({
     required String endpoint,
     required String dataType,
@@ -37,7 +37,7 @@ class JobTransactionService {
     }
   }
 
-  //TODO: Lấy danh sách tất cả job transaction
+  //  Lấy danh sách tất cả job transaction
   Future<List<JobTransactionModel>> getAllTransactions() async {
     return _fetchTransactionList(
       endpoint: ApiConstants.jobTransactionEndpoint,
@@ -45,7 +45,7 @@ class JobTransactionService {
     );
   }
 
-  //TODO: Lấy danh sách job transaction theo userId
+  //  Lấy danh sách job transaction theo userId
   Future<List<JobTransactionModel>> getTransactionsByUserId({
     required String userId,
   }) async {
@@ -55,7 +55,7 @@ class JobTransactionService {
     );
   }
 
-  //TODO: Lấy chi tiết job transaction theo id
+  //  Lấy chi tiết job transaction theo id
   Future<JobTransactionModel?> getTransactionById({
     required String transactionId,
   }) async {
@@ -84,7 +84,7 @@ class JobTransactionService {
     }
   }
 
-  //TODO: Tạo mới job transaction
+  //  Tạo mới job transaction
   Future<JobTransactionModel> createTransaction({
     required JobTransactionModel transaction,
   }) async {
@@ -112,7 +112,7 @@ class JobTransactionService {
     }
   }
 
-  //TODO: Cập nhật trạng thái giao dịch
+  //  Cập nhật trạng thái giao dịch
   Future<void> updateTransactionStatus({
     required String transactionId,
     required String newStatus,
@@ -132,7 +132,7 @@ class JobTransactionService {
     }
   }
 
-  //TODO: Xoá job transaction theo id
+  //  Xoá job transaction theo id
   Future<void> deleteTransaction({
     required String transactionId,
   }) async {

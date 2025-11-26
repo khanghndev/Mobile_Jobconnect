@@ -14,7 +14,7 @@ class CandidateInfoViewModel extends ChangeNotifier {
   List<CandidateInfoModel> _candidates = [];
   CandidateInfoModel? _candidateDetail;
 
-  //TODO: Getters
+  //  Getters
   bool get isLoading => _isLoading;
   bool get isDetailLoading => _isDetailLoading;
   bool get isSuccess => _isSuccess;
@@ -23,7 +23,7 @@ class CandidateInfoViewModel extends ChangeNotifier {
   List<CandidateInfoModel> get candidates => _candidates;
   CandidateInfoModel? get candidateDetail => _candidateDetail;
 
-  //TODO: Private: cập nhật state và notify
+  //  Private: cập nhật state và notify
   void _setState({
     bool? isLoading,
     bool? isDetailLoading,
@@ -41,7 +41,7 @@ class CandidateInfoViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  //TODO: Lấy chi tiết ứng viên theo ID
+  //  Lấy chi tiết ứng viên theo ID
   Future<CandidateInfoModel?> getCandidateDetail(String id) async {
     _setState(isDetailLoading: true, errorMessage: null);
     try {
@@ -58,7 +58,7 @@ class CandidateInfoViewModel extends ChangeNotifier {
     return null;
   }
 
-  //TODO: Tạo ứng viên mới
+  //  Tạo ứng viên mới
   Future<void> createCandidate(CandidateInfoModel candidate) async {
     await _handleApiCall(
       apiCall: () async => [await _candidateService.createCandidate(candidate)],
@@ -68,7 +68,7 @@ class CandidateInfoViewModel extends ChangeNotifier {
     );
   }
 
-  //TODO: Cập nhật ứng viên
+  //  Cập nhật ứng viên
   Future<void> updateCandidate(String id, CandidateInfoModel candidate) async {
     await _handleApiCall(
       apiCall: () async => [await _candidateService.updateCandidate(id: id, candidate: candidate)],
@@ -83,7 +83,7 @@ class CandidateInfoViewModel extends ChangeNotifier {
     );
   }
 
-  //TODO: Xóa ứng viên
+  //  Xóa ứng viên
   Future<void> deleteCandidate(String id) async {
     _setState(isLoading: true, errorMessage: null);
     try {
@@ -97,7 +97,7 @@ class CandidateInfoViewModel extends ChangeNotifier {
     }  
   }
 
-  //TODO: Hàm xử lý API chung
+  //  Hàm xử lý API chung
   Future<void> _handleApiCall({
     required Future<List<CandidateInfoModel>> Function() apiCall,
     required void Function(List<CandidateInfoModel>) onSuccess,
@@ -114,14 +114,14 @@ class CandidateInfoViewModel extends ChangeNotifier {
     }  
   }
 
-  //TODO: Làm mới chi tiết ứng viên
+  //  Làm mới chi tiết ứng viên
   Future<void> refreshCandidate() async {
     if (_candidateDetail != null) {
       await getCandidateDetail(_candidateDetail!.idUser!);
     }
   }
 
-  //TODO: Reset toàn bộ state
+  //  Reset toàn bộ state
   void reset() {
     _setState(
       isLoading: false,

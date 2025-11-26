@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:job_connect/config/navigation/app_navigation.dart';
 import 'package:job_connect/features/job/screens/apply_job_screen.dart';
+import 'package:job_connect/features/job/screens/apply_job_success_screen.dart';
 import 'package:job_connect/features/job/screens/job_application_detail_screen.dart';
 import 'package:job_connect/features/job/screens/job_detail_screen.dart';
 import 'package:job_connect/features/job/screens/job_history_screen.dart';
@@ -99,6 +100,26 @@ class JobRouter {
             JobApplicationDetailScreen(
               idUser : idUser,
               idJobPost: idJobPost,
+            ),
+            state
+          );
+        },
+      ),
+
+      GoRoute(
+        path: 'apply-success',
+        pageBuilder: (context, state) {
+          final extraData = state.extra as Map<String, dynamic>;
+          final jobTitle = extraData['jobTitle'];
+          final companyName = extraData['companyName'];
+          final cvName = extraData['cvName'];
+          final idUser = extraData['idUser'];
+          return buildPageWithSlideTransition(
+            ApplyJobSuccessScreen(
+              jobTitle: jobTitle,
+              companyName: companyName,
+              cvName: cvName,
+              idUser: idUser,
             ),
             state
           );

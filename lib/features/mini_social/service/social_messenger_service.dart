@@ -23,7 +23,7 @@ class SocialMessengerService {
     }
   }
 
-  //TODO: POST /api/SocialMessages/send - Gửi tin nhắn
+  //  POST /api/SocialMessages/send - Gửi tin nhắn
   Future<SocialMessageModel> sendMessage({required SocialMessageModel message}) async {
     return _handleApi(
       () async {
@@ -41,7 +41,7 @@ class SocialMessengerService {
     );
   }
 
-  //TODO: GET /api/SocialMessages/thread - Lấy luồng tin nhắn giữa 2 người
+  //  GET /api/SocialMessages/thread - Lấy luồng tin nhắn giữa 2 người
   Future<List<SocialMessageModel>> getThread({
     required String userId1,
     required String userId2,
@@ -60,7 +60,7 @@ class SocialMessengerService {
     );
   }
 
-  //TODO: POST /api/SocialMessages/mark-read - Đánh dấu tin nhắn đã đọc
+  //  POST /api/SocialMessages/mark-read - Đánh dấu tin nhắn đã đọc
   Future<void> markRead({required SocialMessageModel message}) async {
     return _handleApi(
       () async {
@@ -73,7 +73,7 @@ class SocialMessengerService {
     );
   }
 
-  //TODO: GET /api/SocialMessages/unread-count/{userId} - Lấy số lượng tin nhắn chưa đọc
+  //  GET /api/SocialMessages/unread-count/{userId} - Lấy số lượng tin nhắn chưa đọc
   Future<int> getUnreadCount({required String userId}) async {
     return _handleApi(
       () async {

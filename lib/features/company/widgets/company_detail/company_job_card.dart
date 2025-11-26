@@ -36,7 +36,7 @@ class CompanyJobCard extends StatelessWidget {
       color: theme.cardColor,
       child: InkWell(
         onTap: () async {
-          // TODO: Chuyển sang trang chi tiết công việc
+          //   Chuyển sang trang chi tiết công việc
           await Navigator.push(
             context,
             MaterialPageRoute(
@@ -68,7 +68,7 @@ class CompanyJobCard extends StatelessWidget {
                       ),
                     ),
                     child: (jobCompanyLogoUrl != null && jobCompanyLogoUrl.isNotEmpty)
-                    // TODO: ẢNH 
+                    //   ẢNH 
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(11.r),
                           child: Image.network(
@@ -94,7 +94,7 @@ class CompanyJobCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // TODO: LABEL NỔI BẬT
+                        //   LABEL NỔI BẬT
                         if (job.isFeatured == 1) ...[
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
@@ -118,7 +118,7 @@ class CompanyJobCard extends StatelessWidget {
                             ),
                           )
                         ],
-                        // TODO: TÊN CÔNG VIỆC
+                        //   TÊN CÔNG VIỆC
                         Text(
                           job.title,
                           style: theme.textTheme.titleLarge?.copyWith(
@@ -130,7 +130,7 @@ class CompanyJobCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                         SizedBox(height: 6.h),
-                        // TODO: TÊN CÔNG TY
+                        //   TÊN CÔNG TY
                         Text(
                           jobCompanyName,
                           style: theme.textTheme.bodyMedium?.copyWith(
@@ -145,7 +145,7 @@ class CompanyJobCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  // TODO: DANH SÁCH CHIP
+                  //   DANH SÁCH CHIP
                   Icon(
                     Icons.chevron_right_rounded,
                     color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),

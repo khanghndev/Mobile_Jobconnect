@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:job_connect/config/enum/server_exception_type.dart';
 import 'package:job_connect/config/enum/shared_prefs_key.dart';
 import 'package:job_connect/config/error/server_exception.dart';
 import 'package:job_connect/config/services/shared_prefs_service.dart';
@@ -64,6 +65,8 @@ class SocialSavePostViewModel extends ChangeNotifier {
   Future<void> _handleApiCall<T>({
     required Future<T> Function() apiCall,
     void Function(T)? onSuccess,
+    bool treatConflictAsSuccess = false,
+    void Function()? onConflict, // Callback khi conflict xảy ra
   }) async {
     _setState(isLoading: true, errorMessage: null, isSuccess: false);
     try {
@@ -71,7 +74,16 @@ class SocialSavePostViewModel extends ChangeNotifier {
       if (onSuccess != null) onSuccess(result);
       _setState(isSuccess: true, isLoading: false);
     } on ServerException catch (e) {
-      _setState(errorMessage: e.err, isSuccess: false, isLoading: false);
+      // Xử lý trường hợp conflict (409) - bài viết đã được lưu
+      if (e.type == ServerExceptionType.conflict && treatConflictAsSuccess) {
+        // Coi như thành công vì bài viết đã được lưu rồi
+        if (onConflict != null) {
+          onConflict();
+        }
+        _setState(isSuccess: true, isLoading: false, errorMessage: null);
+      } else {
+        _setState(errorMessage: e.err, isSuccess: false, isLoading: false);
+      }
     } catch (e) {
       _setState(errorMessage: e.toString(), isSuccess: false, isLoading: false);
     }
@@ -128,9 +140,13 @@ class SocialSavePostViewModel extends ChangeNotifier {
         folderName: folderName,
         note: note,
       ),
+      treatConflictAsSuccess: true, // Xử lý 409 như thành công
       onSuccess: (savedPost) {
-        _savedPosts.add(savedPost);
-        _folderSavedCount[folderName] = (_folderSavedCount[folderName] ?? 0) + 1;
+        // Chỉ thêm nếu chưa có trong danh sách
+        if (!_savedPosts.any((p) => p.idPost == idPost)) {
+          _savedPosts.add(savedPost);
+          _folderSavedCount[folderName] = (_folderSavedCount[folderName] ?? 0) + 1;
+        }
       },
     );
   }
@@ -169,6 +185,7 @@ class SocialSavePostViewModel extends ChangeNotifier {
           _folderSavedCount[post.folderName] =
               (_folderSavedCount[post.folderName]! - 1).clamp(0, double.infinity).toInt();
         }
+        notifyListeners(); // Đảm bảo notify sau khi xóa
       },
     );
   }
@@ -185,30 +202,57 @@ class SocialSavePostViewModel extends ChangeNotifier {
                   idPost: '', idUser: '', folderName: 'Bài viết yêu thích', savedAt: DateTime.now(), note: 'Yêu thích của tôi'))
           .folderName;
 
-      await _service.deleteSavedPost(idPost: idPost, idUser: currentUserId);
-      _savedPosts.removeWhere((p) => p.idPost == idPost);
+      await _handleApiCall<void>(
+        apiCall: () => _service.deleteSavedPost(idPost: idPost, idUser: currentUserId),
+        onSuccess: (_) {
+          _savedPosts.removeWhere((p) => p.idPost == idPost);
 
-      if (_folderSavedCount[folderName] != null) {
-        _folderSavedCount[folderName] =
-            (_folderSavedCount[folderName]! - 1).clamp(0, double.infinity).toInt();
-      }
-
-      notifyListeners();
+          if (_folderSavedCount[folderName] != null) {
+            _folderSavedCount[folderName] =
+                (_folderSavedCount[folderName]! - 1).clamp(0, double.infinity).toInt();
+          }
+          notifyListeners(); // Đảm bảo notify sau khi xóa
+        },
+      );
     } else {
       final folders = await getSavedFolders();
       final folderToSave = selectedFolder ?? (folders.isNotEmpty ? folders.first : 'Bộ sưu tập ưu thích');
 
-      final savedPost = await _service.createSavedPost(
-        idPost: idPost,
-        idUser: currentUserId,
-        folderName: folderToSave,
-        note: "",
+      await _handleApiCall<SavedPostModel>(
+        apiCall: () => _service.createSavedPost(
+          idPost: idPost,
+          idUser: currentUserId,
+          folderName: folderToSave,
+          note: "",
+        ),
+        treatConflictAsSuccess: true, // Xử lý 409 như thành công
+        onSuccess: (savedPost) {
+          // Chỉ thêm nếu chưa có trong danh sách
+          if (!_savedPosts.any((p) => p.idPost == idPost)) {
+            _savedPosts.add(savedPost);
+            _folderSavedCount[folderToSave] = (_folderSavedCount[folderToSave] ?? 0) + 1;
+          }
+          notifyListeners(); // Đảm bảo notify sau khi thêm
+        },
+        onConflict: () {
+          // Khi conflict (409), bài viết đã được lưu rồi
+          // Cần reload danh sách để đảm bảo state đồng bộ
+          // Hoặc tạo một SavedPostModel giả lập để cập nhật state
+          if (!_savedPosts.any((p) => p.idPost == idPost)) {
+            // Tạo SavedPostModel giả lập từ thông tin hiện có
+            final conflictPost = SavedPostModel(
+              idPost: idPost,
+              idUser: currentUserId,
+              folderName: folderToSave,
+              savedAt: DateTime.now(),
+              note: "",
+            );
+            _savedPosts.add(conflictPost);
+            _folderSavedCount[folderToSave] = (_folderSavedCount[folderToSave] ?? 0) + 1;
+          }
+          notifyListeners(); // Đảm bảo notify sau khi conflict
+        },
       );
-
-      _savedPosts.add(savedPost);
-      _folderSavedCount[folderToSave] = (_folderSavedCount[folderToSave] ?? 0) + 1;
-
-      notifyListeners();
     }
   }
 

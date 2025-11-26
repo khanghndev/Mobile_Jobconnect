@@ -5,54 +5,48 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class SocialFeedShimmer extends StatelessWidget {
   const SocialFeedShimmer({super.key});
 
+  Widget _box({double? w, double? h, double radius = 12}) {
+    return Container(
+      width: w,
+      height: h,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(radius),
+      ),
+    );
+  }
+
   Widget _shimmerPost() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header
+          /// Header
           Row(
             children: [
-              Container(
-                width: 40.w,
-                height: 40.w,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                ),
-              ),
+              _box(w: 40.w, h: 40.w, radius: 40), // avatar
               SizedBox(width: 8.w),
-              Container(
-                width: 100.w,
-                height: 12.h,
-                color: Colors.white,
-              ),
+              _box(w: 100.w, h: 12.h, radius: 8),
             ],
           ),
           SizedBox(height: 8.h),
-          // Content
-          Container(
-            width: double.infinity,
-            height: 80.h,
-            color: Colors.white,
-          ),
+
+          /// Content text
+          _box(w: double.infinity, h: 80.h, radius: 12),
           SizedBox(height: 8.h),
-          // Image
-          Container(
-            width: double.infinity,
-            height: 150.h,
-            color: Colors.white,
-          ),
+
+          /// Image placeholder
+          _box(w: double.infinity, h: 150.h, radius: 12),
           SizedBox(height: 8.h),
-          // Actions row
+
+          /// Actions row
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(3, (_) => Container(
-              width: 50.w,
-              height: 20.h,
-              color: Colors.white,
-            )),
+            children: List.generate(
+              3,
+              (_) => _box(w: 50.w, h: 20.h, radius: 20),
+            ),
           ),
           SizedBox(height: 12.h),
         ],
@@ -69,15 +63,13 @@ class SocialFeedShimmer extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         child: Column(
           children: [
-            // Input tạo post
+            /// Input tạo post
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
-              child: Container(
-                width: double.infinity,
-                height: 60.h,
-                color: Colors.white,
-              ),
+              child: _box(w: double.infinity, h: 60.h, radius: 16),
             ),
+
+            /// 5 posts shimmer
             ...List.generate(5, (_) => _shimmerPost()),
           ],
         ),

@@ -58,14 +58,14 @@
       notifyListeners();
     }
 
-    // TODO: Lấy role name từ local (SharedPreferences)
+    //   Lấy role name từ local (SharedPreferences)
     Future<void> loadRoleName() async {
       final prefs = await SharedPreferences.getInstance();
       final savedRole = prefs.getString(SharedPrefsKey.roleName.getVal);
       _setState(roleName: savedRole);
     }
 
-    // TODO: Cập nhật và lưu role name mới
+    //   Cập nhật và lưu role name mới
     Future<void> updateRoleName(String newRole) async {
       _setState(roleName: newRole);
       final prefs = await SharedPreferences.getInstance();
@@ -81,7 +81,7 @@
       }
     }
 
-    // TODO: Lấy user hiện tại
+    //   Lấy user hiện tại
     Future<void> getCurrentUser(String id) async {
       _setState(isDetailLoading: true, errorMessage: null);
       try {
@@ -100,7 +100,7 @@
       }
     }
 
-    // TODO: Lấy user khác (dùng cho SocialProfile)
+    //   Lấy user khác (dùng cho SocialProfile)
     Future<UserModel?> getViewUser(String id) async {
       _setState(isDetailLoading: true, errorMessage: null, isSuccess: null);
       try {
@@ -118,7 +118,7 @@
       }
     }
 
-  // TODO: Lấy tất cả user từ server
+  //   Lấy tất cả user từ server
   Future<void> fetchAllUsers() async {
     await _handleApiCall(
       apiCall: () => _userService.getAllUsers(),
@@ -126,7 +126,7 @@
     );
   }
 
-  // TODO: Tìm kiếm user theo từ khóa
+  //   Tìm kiếm user theo từ khóa
     Future<void> searchUsers(String keyword) async {
       final lowerKeyword = keyword.toLowerCase();
       final filtered = _users.where((u) {
@@ -138,7 +138,7 @@
       _setState(users: filtered);
     }
 
-    // TODO: Tạo user
+    //   Tạo user
     Future<void> createUser(UserModel user) async {
       await _handleApiCall(
         apiCall: () async => [await _userService.createUser(user)],
@@ -146,7 +146,7 @@
       );
     }
 
-    // TODO: Cập nhật user
+    //   Cập nhật user
     Future<void> updateUser(String id, UserModel data, {File? newAvatar}) async {
       _setState(isLoading: true, errorMessage: null, isSuccess: false);
 
@@ -185,7 +185,7 @@
       }  
     }
 
-    // TODO: Xóa user
+    //   Xóa user
     Future<void> deleteUser(String id) async {
       _setState(isLoading: true, errorMessage: null);
       try {
@@ -199,7 +199,7 @@
       }  
     }
 
-    // TODO: Helper gọi API chung
+    //   Helper gọi API chung
     Future<void> _handleApiCall({
       required Future<List<UserModel>> Function() apiCall,
       required void Function(List<UserModel>) onSuccess,
@@ -215,19 +215,19 @@
       }  
     }
 
-    // TODO: Làm mới user hiện tại
+    //   Làm mới user hiện tại
     Future<void> refreshCurrentUser() async {
       if (_currentUser != null) {
         await getCurrentUser(_currentUser!.idUser);
       }
     }
 
-    // TODO: Xóa cache viewed user
+    //   Xóa cache viewed user
     void clearViewedUser() {
       _setState(viewedUser: null);
     }
 
-    // TODO: Reset toàn bộ state
+    //   Reset toàn bộ state
     void reset() {
       _setState(
         isLoading: false,

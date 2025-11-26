@@ -410,8 +410,10 @@ class _SocialGroupScreenState extends State<SocialGroupScreen> with SingleTicker
           comments: vm.comments,
           isLoading: vm.isLoading,
           errorMessage: vm.errorMessage,
-          onSubmit: (text, parentId) async {
-            if (text.isEmpty) return;
+          onSubmit: (text, parentId, imagePath, icon) async {
+            final hasContent = text.isNotEmpty || imagePath != null || icon != null;
+            if (!hasContent) return;
+            
             await vm.createComment(
               newComment: SocialCommentModel(
                 idComment: '',
@@ -421,7 +423,12 @@ class _SocialGroupScreenState extends State<SocialGroupScreen> with SingleTicker
                 parentComment: parentId,
                 createdAt: DateTime.now(),
               ),
+              userVm: userVm, // Truyền userVm để load user info
+              imagePath: imagePath, // Truyền imagePath để upload
+              icon: icon, // Truyền icon
             );
+            // Cập nhật số comment trên UI sau khi comment thành công
+            socialPostVm.incrementCommentCount(postId);
             _commentController.clear();
           },
           onRefresh: () => vm.loadCommentsWithUsers(postId: postId, userVm: userVm),

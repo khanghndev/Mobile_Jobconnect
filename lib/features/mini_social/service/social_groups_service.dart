@@ -25,7 +25,7 @@ class SocialGroupsService {
     }
   }
 
-  /// TODO: GET /api/SocialGroups - Lấy danh sách tất cả nhóm
+  ///   GET /api/SocialGroups - Lấy danh sách tất cả nhóm
   Future<List<SocialGroupsModel>> getAllGroups() async {
     return _handleApi(
       () async {
@@ -40,7 +40,7 @@ class SocialGroupsService {
     );
   }
 
-  /// TODO: GET /api/SocialGroups/joined - Lấy danh sách nhóm đã tham gia
+  ///   GET /api/SocialGroups/joined - Lấy danh sách nhóm đã tham gia
   Future<List<SocialGroupsModel>> getJoinedGroups({required String userId}) async {
     return _handleApi(
       () async {
@@ -58,7 +58,7 @@ class SocialGroupsService {
     );
   }
 
-  /// TODO: GET /api/SocialGroups/pending - Lấy danh sách nhóm đang chờ tham gia
+  ///   GET /api/SocialGroups/pending - Lấy danh sách nhóm đang chờ tham gia
   Future<List<SocialGroupsModel>> getPendingGroups({required String userId}) async {
     return _handleApi(
       () async {
@@ -76,7 +76,7 @@ class SocialGroupsService {
     );
   }
 
-  // TODO: GET /api/SocialGroups/my-group - Lấy danh sách nhóm của tôi
+  //   GET /api/SocialGroups/my-group - Lấy danh sách nhóm của tôi
   Future<List<SocialGroupsModel>> getMyGroups({required String userId, required String createdBy}) async {
     return _handleApi(
       () async {
@@ -97,7 +97,7 @@ class SocialGroupsService {
     );
   }
 
-  /// TODO: GET /api/SocialGroups/search?q=keyword - Tìm kiếm nhóm
+  ///   GET /api/SocialGroups/search?q=keyword - Tìm kiếm nhóm
   Future<List<SocialGroupsModel>> searchGroups({required String keyword}) async {
     return _handleApi(
       () async {
@@ -113,7 +113,7 @@ class SocialGroupsService {
     );
   }
 
-  /// TODO: GET /api/SocialGroups/{id} - Lấy thông tin nhóm theo id
+  ///   GET /api/SocialGroups/{id} - Lấy thông tin nhóm theo id
   Future<SocialGroupsModel> getGroupById({required String id}) async {
     return _handleApi(
       () async {
@@ -129,7 +129,7 @@ class SocialGroupsService {
     );
   }
 
-  /// TODO: POST /api/SocialGroups - Tạo nhóm
+  ///   POST /api/SocialGroups - Tạo nhóm
   Future<SocialGroupsModel> createGroup({required SocialGroupsModel group}) async {
     return _handleApi(
       () async {
@@ -187,7 +187,7 @@ class SocialGroupsService {
     );
   }
 
-  /// TODO: DELETE /api/SocialGroups/{id} - Xóa nhóm
+  ///   DELETE /api/SocialGroups/{id} - Xóa nhóm
   Future<void> deleteGroup({required String id, required String userId}) async {
     return _handleApi(
       () async {
@@ -322,7 +322,7 @@ class SocialGroupsService {
       );
     }
 
-  /// TODO: GET /api/SocialGroups/tags - Lấy danh sách tags
+  ///   GET /api/SocialGroups/tags - Lấy danh sách tags
   Future<List<String>> getGroupTags() async {
     return _handleApi(
       () async {
@@ -333,7 +333,7 @@ class SocialGroupsService {
     );
   }
 
-  /// TODO: GET /api/SocialGroups/stats - Lấy thống kê nhóm
+  ///   GET /api/SocialGroups/stats - Lấy thống kê nhóm
   Future<GroupStatsModel> getGroupStats() async {
     return _handleApi(
       () async {

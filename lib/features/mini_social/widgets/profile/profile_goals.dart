@@ -21,7 +21,7 @@ class ProfileGoals extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         _buildGoal(Icons.post_add_outlined, posts.toString(), "Bài viết", Colors.purple),
-        _buildGoal(Icons.remove_red_eye, posts.toString(), "Số người xem", Colors.orange),
+        _buildGoal(Icons.favorite_rounded, likes.toString(), "Lượt thích", Colors.red),
         _buildGoal(Icons.save_alt, shared.toString(), "Lượt lưu", Colors.amber),
       ],
     );

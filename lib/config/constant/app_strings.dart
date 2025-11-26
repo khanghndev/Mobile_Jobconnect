@@ -8,7 +8,7 @@ class AppStrings {
   static const String appMessage = 'Hộp thư';
   static const String appProfile = 'Trang cá nhân';
 
-  //TODO: Nội dung Intro
+  //  Nội dung Intro
   static final List<Map<String, dynamic>> introContent = [
     {
       'title': 'Tìm kiếm công việc mơ ước',
@@ -27,7 +27,7 @@ class AppStrings {
     },
   ];
 
-  // TODO: NỘI DUNG BANNER
+  //   NỘI DUNG BANNER
   static const List<Map<String, dynamic>> bannerItems = [
     {
       'image': 'assets/images/placeholder_banner_1.jpg',
@@ -67,7 +67,7 @@ class AppStrings {
     },
   ];
 
-  // TODO: MẸO ỨNG TUYỂN
+  //   MẸO ỨNG TUYỂN
   static const List<String> applyTipsList = [
     "Đảm bảo CV của bạn được cập nhật và không có lỗi chính tả.",
     "Viết thư xin việc (Cover Letter) thể hiện sự quan tâm và phù hợp của bạn với vị trí.",
@@ -75,7 +75,7 @@ class AppStrings {
     "Nhà tuyển dụng thường đánh giá cao sự chuyên nghiệp và cẩn thận.",
   ];
 
-  // TODO: FAQ
+  //   FAQ
   static const List<Map<String, String>> faqItemsNormal = [
     {
       'question': 'Làm sao để tạo tài khoản trên ${AppStrings.appName}?',
@@ -104,7 +104,7 @@ class AppStrings {
     },
   ];
 
-  // TODO: FAQ SOCIAL
+  //   FAQ SOCIAL
   static const List<Map<String, String>> faqItemsSocial = [
     {
       'question': 'Làm sao để tạo tài khoản trên ${AppStrings.appName}?',
@@ -133,7 +133,7 @@ class AppStrings {
     },
   ];
 
-  // TODO: POLICY
+  //   POLICY
   static const privacyPolicyItems = [
     {
       'title': 'Chính Sách Bảo Mật ${AppStrings.appName}',
@@ -170,7 +170,7 @@ class AppStrings {
     },
   ];
 
-  // TODO: AI CHAT
+  //   AI CHAT
   static  const String systemPrompt = 'Bạn là một trợ lý AI chuyên nghiệp của ${AppStrings.appName}, tập trung vào tư vấn việc làm trong các lĩnh vực IT (bao gồm Frontend, Backend, Mobile, Data Science, AI/ML, DevOps, QA/QC, Game Developer), thiết kế (UI/UX, Graphic Design, Illustration, Video Editing, 3D Modeling), và marketing (Digital Marketing, Content Marketing, SEO, Social Media Marketing, Branding, Market Research). Hãy trả lời ngắn gọn, thân thiện, chuyên nghiệp và đi thẳng vào vấn đề. Luôn đặt câu hỏi để khai thác thêm thông tin nếu cần thiết để đưa ra lời khuyên tốt nhất. Nếu người dùng hỏi về chủ đề không liên quan đến việc làm hoặc các lĩnh vực đã nêu, hãy lịch sự từ chối và khéo léo lái cuộc trò chuyện về chủ đề chính. Mục tiêu của bạn là giúp người dùng định hướng nghề nghiệp, tìm kiếm cơ hội việc làm, chuẩn bị CV và phỏng vấn. Hãy cung cấp thông tin cập nhật và hữu ích. Bạn có thể gợi ý các kỹ năng cần thiết, lộ trình học tập, hoặc các công ty tiềm năng. Khi được hỏi về một vị trí cụ thể, hãy mô tả ngắn gọn về công việc đó và các yêu cầu phổ biến.';
 
 }

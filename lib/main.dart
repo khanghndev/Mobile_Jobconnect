@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:job_connect/config/providers/text_size_provider.dart';
 import 'package:job_connect/config/providers/theme_provider.dart';
+import 'package:job_connect/config/providers/brightness_provider.dart';
 import 'package:job_connect/config/services/shared_prefs_service.dart';
 import 'package:job_connect/features/auth/viewmodel/auth_view_model.dart';
 import 'package:job_connect/features/company/viewmodel/company_view_model.dart';
@@ -39,11 +40,12 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        // TODO: MANAGER SYSTEM
-        ChangeNotifierProvider(create: (_) => ThemeProvider()),
-        ChangeNotifierProvider(create: (_) => TextSizeProvider()),
+        //   MANAGER SYSTEM
+        ChangeNotifierProvider(create: (_) => ThemeProvider()), 
+        ChangeNotifierProvider(create: (_) => TextSizeProvider()), // Kích thước chữ
+        ChangeNotifierProvider(create: (_) => BrightnessProvider()), // Độ sáng
 
-        // TODO: MANAGER LOGIC
+        //   MANAGER LOGIC
         ChangeNotifierProvider(create: (_) => AuthViewModel(prefs: SharedPrefsService(prefs: prefs))),
         ChangeNotifierProvider(create: (_) => CompanyViewModel()),  
         ChangeNotifierProvider(create: (_) => PodcastViewModel()),
@@ -58,14 +60,14 @@ void main() async {
         ChangeNotifierProvider(create: (_) => JobPostingViewModel()),
         ChangeNotifierProvider(create: (_) => JobRecommendationViewModel()),
         
-        // TODO: SOCIAL
+        //   SOCIAL
         ChangeNotifierProvider(create: (_) => SocialPostViewModel(prefs: SharedPrefsService(prefs: prefs))),
         ChangeNotifierProvider(create: (_) => SocialCommentViewModel()),
         ChangeNotifierProvider(create: (_) => SocialSavePostViewModel(prefs: SharedPrefsService(prefs: prefs))),
         ChangeNotifierProvider(create: (_) => SocialConnectionViewModel()),
         ChangeNotifierProvider(create: (_) => SocialGroupsViewModel()),
 
-        // TODO: MESSAGE
+        //   MESSAGE
         ChangeNotifierProvider(create: (_) => MessageViewModel(prefs: SharedPrefsService(prefs: prefs))),
         ChangeNotifierProvider(create: (_) => ConversationViewModel()),
 

@@ -157,7 +157,7 @@ class PostItemContent extends StatelessWidget {
                     color: Colors.white,
                     size: 64,
                   ),
-                  // TODO: Nếu có thumbnail video, thêm Image.network(videoThumbnailUrl)
+                  //   Nếu có thumbnail video, thêm Image.network(videoThumbnailUrl)
                 ],
               ),
             ),

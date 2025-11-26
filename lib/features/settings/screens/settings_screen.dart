@@ -15,7 +15,6 @@ import 'package:job_connect/config/widgets/custom_drop_down.dart';
 import 'package:job_connect/config/widgets/custom_slider_setting.dart';
 import 'package:job_connect/config/widgets/login_required_dialog.dart';
 import 'package:job_connect/config/widgets/section_title.dart';
-import 'package:job_connect/features/payments/screens/payment_screen.dart';
 import 'package:job_connect/features/profile/view_model/user_view_model.dart';
 import 'package:job_connect/features/settings/widgets/settings/setting_card_profile_header.dart';
 import 'package:job_connect/features/settings/widgets/settings/setting_item.dart';
@@ -26,6 +25,7 @@ import 'package:provider/provider.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:job_connect/config/providers/theme_provider.dart';
 import 'package:job_connect/config/providers/text_size_provider.dart';
+import 'package:job_connect/config/providers/brightness_provider.dart';
 
 class SettingScreen extends StatefulWidget {
   final bool isLoggedIn;
@@ -97,7 +97,7 @@ class SettingScreenState extends State<SettingScreen> with TickerProviderStateMi
 
   Future<void> _onRefresh() async {
     _staggerAnimationController.reset();
-    // TODO: REFRESH
+    //   REFRESH
 
     if (mounted) _staggerAnimationController.forward();
 
@@ -198,6 +198,7 @@ class SettingScreenState extends State<SettingScreen> with TickerProviderStateMi
     super.build(context);
     final themeProvider = Provider.of<ThemeProvider>(context);
     final textSizeProvider = Provider.of<TextSizeProvider>(context);
+    final brightnessProvider = Provider.of<BrightnessProvider>(context);
     final theme = Theme.of(context);
     final userVM = context.watch<UserViewModel>();
     final user = userVM.currentUser;
@@ -319,10 +320,12 @@ class SettingScreenState extends State<SettingScreen> with TickerProviderStateMi
                     CustomSliderSetting(
                       icon: Icons.brightness_6_rounded,
                       title: "Độ sáng",
-                      value: 1,
-                      min: 0.8,
-                      max: 1.5,
-                      onChanged: (value) {},
+                      value: brightnessProvider.brightness,
+                      min: 0.1,
+                      max: 1.0,
+                      onChanged: (value) {
+                        brightnessProvider.setBrightness(value);
+                      },
                     ),
                     SettingSwitchCard(
                       icon: Icons.brightness_6_outlined,
@@ -363,7 +366,7 @@ class SettingScreenState extends State<SettingScreen> with TickerProviderStateMi
                   ],
                 ),
 
-                //TODO: Thông báo & tiện ích
+                //  Thông báo & tiện ích
                 SizedBox(height: 16.h),
                 SectionTitle(
                   title: "Thông báo & tiện ích",
@@ -404,7 +407,7 @@ class SettingScreenState extends State<SettingScreen> with TickerProviderStateMi
                   ],
                 ),
 
-                //TODO: Hỗ trợ & khác
+                //  Hỗ trợ & khác
                 SizedBox(height: 16.h),
                 SectionTitle(
                   title: "Hỗ trợ & khác",

@@ -29,7 +29,7 @@ class CompanyLogoHeader extends StatelessWidget {
     return Stack(
       alignment: Alignment.center,
       children: [
-        // TODO: NỀN
+        //   NỀN
         SizedBox(
           height: 280.h,
           child: DecoratedBox(
@@ -58,7 +58,7 @@ class CompanyLogoHeader extends StatelessWidget {
           ),
         ),
 
-        //TODO: Logo + Tên công ty + Ngành nghề
+        //  Logo + Tên công ty + Ngành nghề
         Positioned(
           child: Column(
             mainAxisSize: MainAxisSize.min,

@@ -51,7 +51,7 @@
         curve: Curves.easeInOut,
       );
       companyViewModel = context.read<CompanyViewModel>();
-      // TODO: LẤY CHI TIẾT CÔNG TY
+      //   LẤY CHI TIẾT CÔNG TY
       getDetailJob();
       _fetchAndFilterCompanyJobs();
     }
@@ -82,7 +82,7 @@
 
         String targetCompanyId = widget.company.idCompany;
 
-        // TODO: Lọc và sắp xếp
+        //   Lọc và sắp xếp
         allJobs =
             allJobs.where((job) => job.idCompany == targetCompanyId).toList();
         allJobs.sort((a, b) {
@@ -149,7 +149,7 @@
               parent: AlwaysScrollableScrollPhysics(),
             ),
             slivers: [
-              // TODO: APPBAR
+              //   APPBAR
               CompanyDetailAppbar(
                 companyName: widget.company.companyName,
                 industry: widget.company.industry,
@@ -159,7 +159,7 @@
                 isCompany: true,
               ),
 
-              // TODO: CONTENT
+              //   CONTENT
               SliverToBoxAdapter(
                 child: FadeTransition(
                   opacity: _fadeAnimation,
@@ -174,7 +174,7 @@
                           child: FadeInAnimation(child: widget),
                         ),
                         children: [
-                          //TODO: TODO: SECTION - Giới thiệu
+                          //    SECTION - Giới thiệu
                           SectionTitle(
                             title: "Giới thiệu công ty",
                             icon: Icons.info_outline_rounded,
@@ -201,7 +201,7 @@
                           ),
                           SizedBox(height: 24.h),
 
-                          // TODO: SECTION - Thông tin liên hệ
+                          //   SECTION - Thông tin liên hệ
                           SectionTitle(
                             title: "Thông tin liên hệ",
                             icon: Icons.contact_page_outlined,
@@ -247,7 +247,7 @@
 
                           SizedBox(height: 24.h),
 
-                          // TODO: SECTION - Việc làm đang tuyển
+                          //   SECTION - Việc làm đang tuyển
                           SectionTitle(
                             title:
                                 "Việc Làm Đang Tuyển (${_companyJobsList.length})",

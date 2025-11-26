@@ -9,6 +9,8 @@ class CommentTile extends StatelessWidget {
   final String icon;
   final int count;
   final String avatarUrl;
+  final String? imageUrl;
+  final String? commentIcon;
   final VoidCallback onReplyTap;
   final VoidCallback onReactTap;
   final VoidCallback? onUserTap;
@@ -21,6 +23,8 @@ class CommentTile extends StatelessWidget {
     required this.icon,
     required this.count,
     required this.avatarUrl,
+    this.imageUrl,
+    this.commentIcon,
     required this.onReplyTap,
     required this.onReactTap,
     this.onUserTap,
@@ -66,25 +70,56 @@ class CommentTile extends StatelessWidget {
                         ),
                       ],
                     ),
-                  child: RichText(
-                    text: TextSpan(
-                      text: "$username  ",
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14.sp,
-                        color: theme.colorScheme.onSurface,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: textContent,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          text: "$username  ",
                           style: theme.textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.normal,
+                            fontWeight: FontWeight.bold,
                             fontSize: 14.sp,
                             color: theme.colorScheme.onSurface,
                           ),
+                          children: [
+                            if (commentIcon != null)
+                              TextSpan(
+                                text: " $commentIcon ",
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  fontSize: 18.sp,
+                                ),
+                              ),
+                            TextSpan(
+                              text: textContent,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                fontWeight: FontWeight.normal,
+                                fontSize: 14.sp,
+                                color: theme.colorScheme.onSurface,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Hiển thị ảnh nếu có
+                      if (imageUrl != null && imageUrl!.isNotEmpty) ...[
+                        SizedBox(height: 8.h),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8.r),
+                          child: Image.network(
+                            imageUrl!,
+                            width: 200.w,
+                            height: 200.w,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) => Container(
+                              width: 200.w,
+                              height: 200.w,
+                              color: Colors.grey[200],
+                              child: Icon(Icons.broken_image_rounded, size: 48.sp),
+                            ),
+                          ),
                         ),
                       ],
-                    ),
+                    ],
                   ),
                 ),
               ),

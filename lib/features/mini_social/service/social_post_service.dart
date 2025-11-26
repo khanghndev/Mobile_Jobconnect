@@ -23,7 +23,7 @@ class SocialPostService {
     }
   }
 
-  //TODO: GET /api/SocialPosts - Lấy tất cả bài viết
+  //  GET /api/SocialPosts - Lấy tất cả bài viết
   Future<List<SocialPostModel>> getAllPosts() async {
     return _handleApi(
       () async {
@@ -38,7 +38,7 @@ class SocialPostService {
     );
   }
 
-  //TODO: POST /api/SocialPosts - Tạo bài viết mới
+  //  POST /api/SocialPosts - Tạo bài viết mới
   Future<SocialPostModel> createPost(SocialPostModel postModel) async {
     return _handleApi(
       () async {
@@ -57,7 +57,7 @@ class SocialPostService {
     );
   }
 
-  //TODO: GET /api/SocialPosts/{id} - Lấy bài viết theo ID
+  //  GET /api/SocialPosts/{id} - Lấy bài viết theo ID
   Future<SocialPostModel> getPostById({required String id}) async {
     return _handleApi(
       () async {
@@ -73,7 +73,7 @@ class SocialPostService {
     );
   }
 
-  //TODO: PUT /api/SocialPosts/{id} - Cập nhật bài viết
+  //  PUT /api/SocialPosts/{id} - Cập nhật bài viết
   Future<void> updatePost({
     required String id,
     required SocialPostModel post,
@@ -96,7 +96,7 @@ class SocialPostService {
     );
   }
 
-  //TODO: DELETE /api/SocialPosts/{id} - Xóa bài viết
+  //  DELETE /api/SocialPosts/{id} - Xóa bài viết
   Future<void> deletePost({required String id}) async {
     return _handleApi(
       () async {
@@ -107,7 +107,7 @@ class SocialPostService {
     );
   }
 
-  // TODO: POST /api/SocialPosts/{id}/like - Thích bài viết
+  //   POST /api/SocialPosts/{id}/like - Thích bài viết
   Future<void> likePost({required String id, required String userId}) async {
     return _handleApi(
       () async {
@@ -122,7 +122,7 @@ class SocialPostService {
     );
   }
 
-  // TODO: DELETE /api/SocialPosts/{id}/like - Bỏ thích bài viết
+  //   DELETE /api/SocialPosts/{id}/like - Bỏ thích bài viết
   Future<void> unlikePost({required String id, required String userId}) async {
     return _handleApi(
       () async {
@@ -136,7 +136,7 @@ class SocialPostService {
     );
   }
 
-  //TODO: GET /api/SocialPosts/{id}/likes - Lấy danh sách người thích bài viết
+  //  GET /api/SocialPosts/{id}/likes - Lấy danh sách người thích bài viết
   Future<List<String>> getPostLikes({required String id}) async {
     return _handleApi(
       () async {
@@ -148,7 +148,7 @@ class SocialPostService {
     );
   }
 
-  //TODO: GET /api/SocialPosts/feed/{userId} - Lấy feed bài viết của user
+  //  GET /api/SocialPosts/feed/{userId} - Lấy feed bài viết của user
   Future<List<SocialPostModel>> getFeedUserId({required String userId}) async {
     return _handleApi(
       () async {
@@ -164,7 +164,7 @@ class SocialPostService {
     );
   }
 
-  // TODO: POST /api/users/{id}/follow - Theo dõi người dùng
+  //   POST /api/users/{id}/follow - Theo dõi người dùng
   Future<void> followUser({required String userId}) async {
     // return _handleApi(
     //   () async {
@@ -175,7 +175,7 @@ class SocialPostService {
     // );
   }
 
-  // TODO: DELETE /api/users/{id}/follow - Bỏ theo dõi người dùng
+  //   DELETE /api/users/{id}/follow - Bỏ theo dõi người dùng
   Future<void> unfollowUser({required String userId}) async {
     // return _handleApi(
     //   () async {
@@ -186,7 +186,7 @@ class SocialPostService {
     // );
   }
 
-  // TODO: POST /api/SocialPosts/{id}/save - Lưu bài viết
+  //   POST /api/SocialPosts/{id}/save - Lưu bài viết
   Future<void> savePost({required String id, required String userId}) async {
     // return _handleApi(
     //   () async {
@@ -197,7 +197,7 @@ class SocialPostService {
     // );
   }
 
-  // TODO: DELETE /api/SocialPosts/{id}/save - Bỏ lưu bài viết
+  //   DELETE /api/SocialPosts/{id}/save - Bỏ lưu bài viết
   Future<void> unsavePost({required String id, required String userId}) async {
     // return _handleApi(
     //   () async {
@@ -208,7 +208,7 @@ class SocialPostService {
     // );
   }
 
-  // TODO: POST /api/SocialPosts/{id}/share - Chia sẻ bài viết
+  //   POST /api/SocialPosts/{id}/share - Chia sẻ bài viết
   Future<void> sharePost({required String id, required String userId, required String userOtherId}) async {
     // return _handleApi(
     //   () async {

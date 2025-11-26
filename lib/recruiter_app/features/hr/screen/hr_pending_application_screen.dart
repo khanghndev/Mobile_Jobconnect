@@ -246,7 +246,7 @@ class _HrPendingApplicationScreenState extends State<HrPendingApplicationScreen>
                               top: 0,
                               child: IconButton(
                                 onPressed: () {
-                                  // TODO: mở CV
+                                  //   mở CV
                                   context.push('/resume/file', 
                                   extra: {
                                     'fileUrl': application.cvFileUrl, 

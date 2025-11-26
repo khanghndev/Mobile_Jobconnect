@@ -33,7 +33,7 @@ class SectionTitle extends StatelessWidget {
         if(icon != null)...[
           Icon(
             icon,
-            color:iconColor ?? Colors.black,
+            color:iconColor ?? theme.primaryColor,
             size: 22.sp,
           ),
           SizedBox(width: 10.w),

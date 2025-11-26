@@ -44,20 +44,12 @@ class _CustomAppBarWithDrawerState extends State<CustomAppBarWithDrawer> {
             margin: EdgeInsets.only(left: 8.w),
             child: Material(
               color: Colors.transparent,
-              child: InkWell(
+              child: GestureDetector(
                 onTap: () => Scaffold.of(context).openDrawer(),
-                borderRadius: BorderRadius.circular(12.r),
-                child: Container(
-                  padding: EdgeInsets.all(8.r),
-                  decoration: BoxDecoration(
-                    color: primaryColor.withValues(alpha: 0.08),
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                  child: Icon(
-                    Icons.menu_rounded,
-                    color: primaryColor,
-                    size: 22.sp,
-                  ),
+                child: Icon(
+                  Icons.menu_open_rounded,
+                  color: primaryColor,
+                  size: 26.sp,
                 ),
               ),
             ),
@@ -68,7 +60,7 @@ class _CustomAppBarWithDrawerState extends State<CustomAppBarWithDrawer> {
           style: theme.textTheme.titleLarge?.copyWith(
             color: primaryColor,
             fontWeight: FontWeight.bold,
-            fontSize: 20.sp,
+            fontSize: 26.sp,
             letterSpacing: 0.3,
           ),
         ),

@@ -131,7 +131,7 @@ class _EducationScreenState extends State<EducationScreen> {
                                 : () async {
                                   setState(() => _isGenerating = true);
                                   try {
-                                    // TODO: Implement AI API call
+                                    //   Implement AI API call
                                     await Future.delayed(
                                       Duration(seconds: 2),
                                     ); // Simulate API call
@@ -219,7 +219,7 @@ class _EducationScreenState extends State<EducationScreen> {
             IconButton(
               icon: Icon(Icons.auto_awesome),
               onPressed: () {
-                // TODO: Implement AI suggestions for education
+                //   Implement AI suggestions for education
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Đang tạo gợi ý từ AI...')),
                 );

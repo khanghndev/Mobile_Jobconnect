@@ -294,14 +294,14 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
             icon: const Icon(Icons.call_outlined, size: 22),
             tooltip: "Gọi",
             onPressed: () {
-              /* TODO: Logic gọi */
+              /*   Logic gọi */
             },
           ),
           IconButton(
             icon: const Icon(Icons.info_outline_rounded, size: 22),
             tooltip: "Thông tin",
             onPressed: () {
-              /* TODO: Hiển thị thông tin chi tiết */
+              /*   Hiển thị thông tin chi tiết */
             },
           ),
           const SizedBox(width: 4),
@@ -319,7 +319,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: () {
-                    /* TODO: Điều hướng đến chi tiết công việc */
+                    /*   Điều hướng đến chi tiết công việc */
                   },
                   borderRadius: BorderRadius.circular(10),
                   child: Container(
@@ -497,7 +497,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                   _isSendingMessage
                       ? null
                       : () {
-                        /* TODO: Logic gửi ảnh */
+                        /*   Logic gửi ảnh */
                       },
             ),
             Expanded(
@@ -547,7 +547,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                           _isSendingMessage
                               ? null
                               : () {
-                                /* TODO: Logic chọn emoji */
+                                /*   Logic chọn emoji */
                               },
                     ),
                   ),

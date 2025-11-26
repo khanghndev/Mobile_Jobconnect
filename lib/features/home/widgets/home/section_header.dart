@@ -3,32 +3,49 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SectionHeader extends StatelessWidget {
   final String title;
+  final IconData? icon;
   final VoidCallback? onSeeAll;
   final bool? isSeeAll;
 
   const SectionHeader({
     super.key,
     required this.title,
-    this.onSeeAll, 
+    this.icon,
+    this.onSeeAll,
     this.isSeeAll = true,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(
-          title,
-          style: theme.textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.onSurface.withValues(alpha: 0.85),
-            fontSize: 22.sp,
-          ),
+
+        Row(
+          children: [
+            if (icon != null) ...[
+              Icon(
+                icon,
+                size: 22.sp,
+                color: theme.colorScheme.primary,
+              ),
+              SizedBox(width: 8.w),
+            ],
+            Text(
+              title,
+              style: theme.textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.85),
+                fontSize: 22.sp,
+              ),
+            ),
+          ],
         ),
-        if(isSeeAll == true)...[
+
+        if (isSeeAll == true) ...[
           TextButton(
             onPressed: onSeeAll,
             style: TextButton.styleFrom(

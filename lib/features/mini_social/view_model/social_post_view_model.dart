@@ -21,7 +21,7 @@ class SocialPostViewModel extends ChangeNotifier {
 
   SocialPostViewModel({required SharedPrefsService prefs}) : _prefs = prefs;
 
-  //TODO: STATE
+  //  STATE
   bool _isLoading = false;
   bool _isSuccess = false;
   String? _errorMessage;
@@ -36,18 +36,22 @@ class SocialPostViewModel extends ChangeNotifier {
   bool _selectMode = false;
 
 
-  //TODO: LIKE STATE
+  //  LIKE STATE
   final Set<String> _likedPosts = {};
   final Set<String> _savedPosts = {};
+  
+  // Cache để tránh gọi API nhiều lần
+  final Map<String, String> _userRoleCache = {};
+  final Map<String, List<String>> _postLikesCache = {};
 
-  //TODO: GETTERS
+  //  GETTERS
   String get currentUserId => _prefs.getString(SharedPrefsKey.idUser) ?? '';
 
   bool get isLoading => _isLoading;
   bool get isSuccess => _isSuccess;
   String? get errorMessage => _errorMessage;
-  List<SocialPostModel> get posts => _posts.where((p) => p.visibility != 'hidden').toList();
-  List<SocialPostModel> get postsOfGroup => _postsOfGroup.where((p) => p.visibility != 'hidden').toList();
+  List<SocialPostModel> get posts => _posts.where((p) => p.visibility == 'public').toList();
+  List<SocialPostModel> get postsOfGroup => _postsOfGroup.where((p) => p.visibility == 'public').toList();
   Set<String> get selectedPosts => _selectedPosts;
   bool get selectMode => _selectMode;
   bool isPostLiked(String postId) => _likedPosts.contains(postId);
@@ -56,7 +60,7 @@ class SocialPostViewModel extends ChangeNotifier {
   int get totalShared => _totalShared;
   int get totalFollows => _totalFollows;
 
-  //TODO: PRIVATE SET STATE
+  //  PRIVATE SET STATE
   void _setState({
     bool? isLoading,
     bool? isSuccess,
@@ -74,7 +78,7 @@ class SocialPostViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  //TODO: HELPER API CALL
+  //  HELPER API CALL
   Future<void> _handleApiCall<T>({
     required Future<T> Function() apiCall,
     void Function(T)? onSuccess,
@@ -94,7 +98,7 @@ class SocialPostViewModel extends ChangeNotifier {
   }
 
   int getPostCountByUser(String userId) {
-    return _posts.where((p) => p.idUser == userId && p.visibility != 'hidden').length;
+    return _posts.where((p) => p.idUser == userId && p.visibility == 'public').length;
   }
 
   void _calculateTotalLikes() {
@@ -127,7 +131,7 @@ class SocialPostViewModel extends ChangeNotifier {
     // }
   }
 
-  //TODO: TOGGLE LIKE
+  //  TOGGLE LIKE
   Future<void> onToggleLike(String postId) async {
     final isLiked = _likedPosts.contains(postId);
     
@@ -170,7 +174,7 @@ class SocialPostViewModel extends ChangeNotifier {
     }
   }
 
-  //TODO: TOGGLE SAVE
+  //  TOGGLE SAVE
   Future<void> onToggleSave(String postId) async {
     final isSaved = _savedPosts.contains(postId);
 
@@ -202,6 +206,24 @@ class SocialPostViewModel extends ChangeNotifier {
     final index = _posts.indexWhere((p) => p.idPost == idPost);
     if (index != -1) {
       _posts[index] = _posts[index].copyWith(isSaved: isSaved);
+      notifyListeners();
+    }
+  }
+
+  void incrementCommentCount(String idPost) {
+    final index = _posts.indexWhere((p) => p.idPost == idPost);
+    if (index != -1) {
+      final currentCount = _posts[index].commentsCount;
+      _posts[index] = _posts[index].copyWith(commentsCount: currentCount + 1);
+      notifyListeners();
+    }
+  }
+
+  void incrementShareCount(String idPost) {
+    final index = _posts.indexWhere((p) => p.idPost == idPost);
+    if (index != -1) {
+      final currentCount = _posts[index].sharesCount;
+      _posts[index] = _posts[index].copyWith(sharesCount: currentCount + 1);
       notifyListeners();
     }
   }
@@ -279,8 +301,41 @@ class SocialPostViewModel extends ChangeNotifier {
   }
 
   Future<String> _getUserRole(String userId) async {
+    // Sử dụng cache nếu đã có
+    if (_userRoleCache.containsKey(userId)) {
+      return _userRoleCache[userId]!;
+    }
     final user = await _userService.getUserById(id: userId);
-    return user.role?.roleName ?? UserRole.candidate.name;
+    final roleName = user.role?.roleName ?? UserRole.candidate.name;
+    _userRoleCache[userId] = roleName;
+    return roleName;
+  }
+  
+  // Batch get user roles để giảm số lượng API calls
+  Future<Map<String, String>> _getUserRolesBatch(List<String> userIds) async {
+    final Map<String, String> roles = {};
+    final List<String> uncachedIds = userIds.where((id) => !_userRoleCache.containsKey(id)).toList();
+    
+    // Lấy từ cache trước
+    for (final id in userIds) {
+      if (_userRoleCache.containsKey(id)) {
+        roles[id] = _userRoleCache[id]!;
+      }
+    }
+    
+    // Batch load các user chưa có trong cache
+    if (uncachedIds.isNotEmpty) {
+      await Future.wait(uncachedIds.map((userId) async {
+        try {
+          final role = await _getUserRole(userId);
+          roles[userId] = role;
+        } catch (e) {
+          roles[userId] = UserRole.candidate.name;
+        }
+      }));
+    }
+    
+    return roles;
   }
 
   Future<void> getAllPosts() async {
@@ -301,12 +356,28 @@ class SocialPostViewModel extends ChangeNotifier {
       onSuccess: (data) async {
         data.sort((a, b) => b.createdAt.compareTo(a.createdAt));
         _posts = data;
-        for (var post in _posts) {
-          final likes = await _socialPostService.getPostLikes(id: post.idPost);
-          if (likes.contains(currentUserId)) {
-            _likedPosts.add(post.idPost);
+        
+        // Batch load likes thay vì gọi từng cái một
+        final postIds = _posts.map((p) => p.idPost).toList();
+        await Future.wait(postIds.map((postId) async {
+          try {
+            // Kiểm tra cache trước
+            if (_postLikesCache.containsKey(postId)) {
+              final likes = _postLikesCache[postId]!;
+              if (likes.contains(currentUserId)) {
+                _likedPosts.add(postId);
+              }
+            } else {
+              final likes = await _socialPostService.getPostLikes(id: postId);
+              _postLikesCache[postId] = likes;
+              if (likes.contains(currentUserId)) {
+                _likedPosts.add(postId);
+              }
+            }
+          } catch (e) {
+            // Bỏ qua lỗi, tiếp tục với post khác
           }
-        }
+        }));
       },
     );
   }
@@ -314,7 +385,7 @@ class SocialPostViewModel extends ChangeNotifier {
   /// Lấy danh sách bài viết của nhóm hiện tại theo tên groupName
    List<SocialPostModel> getPostsOfCurrentGroupByName(String groupName) {
     if (groupName.isEmpty) return [];
-    return _posts.where((post) => post.groupName == groupName && post.visibility != 'hidden').toList();
+    return _posts.where((post) => post.groupName == groupName && post.visibility == 'public').toList();
   }
 
    Future<void> getAllPostsOfGroup({required String groupId, required String currentUserId}) async {
@@ -327,7 +398,7 @@ class SocialPostViewModel extends ChangeNotifier {
         data.sort((a, b) => b.createdAt.compareTo(a.createdAt));
         _postsOfGroup = data;
 
-        //TODO: Lấy danh sách user đã like từng post
+        //  Lấy danh sách user đã like từng post
         for (var postOfGroup in _postsOfGroup) {
           final likes = await _socialPostService.getPostLikes(id: postOfGroup.idPost);
           if (likes.contains(currentUserId)) {
@@ -342,22 +413,53 @@ class SocialPostViewModel extends ChangeNotifier {
     _setState(isLoading: true, errorMessage: null);
 
     await _handleApiCall<List<SocialPostModel>>(
-      apiCall: () => _socialPostService.getAllPosts(),
+      apiCall: () async {
+        final posts = await _socialPostService.getAllPosts();
+        
+        // Load saved posts để merge trạng thái isSaved
+        try {
+          final saved = await _savePostService.getSavedPostsByUser(currentUserId);
+          final savedIds = saved.map((s) => s.idPost).toSet();
+          return posts
+              .map((p) => p.copyWith(isSaved: savedIds.contains(p.idPost)))
+              .toList();
+        } catch (e) {
+          // Nếu lỗi khi load saved posts, vẫn trả về posts bình thường
+          return posts;
+        }
+      },
       onSuccess: (data) async {
         data.sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
-        final List<SocialPostModel> filteredPosts = [];
-
-        for (final post in data) {
+        // Lấy tất cả unique user IDs
+        final userIds = data.map((p) => p.idUser).toSet().toList();
+        
+        // Batch load user roles một lần thay vì từng cái
+        final userRoles = await _getUserRolesBatch(userIds);
+        
+        // Filter posts dựa trên role đã cache
+        final List<SocialPostModel> filteredPosts = data.where((post) {
+          final userRole = userRoles[post.idUser] ?? UserRole.candidate.name;
+          return userRole == roleName;
+        }).toList();
+        
+        // Load likes cho các posts đã filter (batch)
+        final postIds = filteredPosts.map((p) => p.idPost).toList();
+        await Future.wait(postIds.map((postId) async {
           try {
-            final userRole = await _getUserRole(post.idUser);
-            if (userRole == roleName) {
-              filteredPosts.add(post);
+            if (!_postLikesCache.containsKey(postId)) {
+              final likes = await _socialPostService.getPostLikes(id: postId);
+              _postLikesCache[postId] = likes;
+            }
+            final likes = _postLikesCache[postId]!;
+            if (likes.contains(currentUserId)) {
+              _likedPosts.add(postId);
             }
           } catch (e) {
-            continue;
+            // Bỏ qua lỗi
           }
-        }
+        }));
+        
         _setState(isLoading: false, isSuccess: true, posts: filteredPosts);
       },
     );
@@ -371,7 +473,7 @@ class SocialPostViewModel extends ChangeNotifier {
     }
   }
 
-  //TODO: CREATE, UPDATE, DELETE POST
+  //  CREATE, UPDATE, DELETE POST
   Future<void> createPost(SocialPostModel postModel) async {
     await _handleApiCall<SocialPostModel>(
       apiCall: () => _socialPostService.createPost(postModel),
@@ -407,7 +509,7 @@ class SocialPostViewModel extends ChangeNotifier {
     );
   }
 
-  //TODO: FOLLOW / SAVE / SHARE
+  //  FOLLOW / SAVE / SHARE
   Future<void> onToggleFollow(String userId, bool isFollowing) async {
     await _handleApiCall<void>(
       apiCall: () => isFollowing
@@ -429,20 +531,22 @@ class SocialPostViewModel extends ChangeNotifier {
   }
   
 
-  //TODO: HIDE POST
+  //  HIDE POST
   Future<void> onHidePost(String postId) async {
     await _handleApiCall<void>(
       apiCall: () async {
         final index = _posts.indexWhere((p) => p.idPost == postId);
         if (index == -1) return;
-        final post = _posts[index].copyWith(visibility: 'hidden');
+        // Đổi visibility thành 'private' để ẩn bài viết
+        final post = _posts[index].copyWith(visibility: 'private');
         _posts[index] = post;
         await _socialPostService.updatePost(id: postId, post: post);
+        notifyListeners(); // Cập nhật UI
       },
     );
   }
 
-  //TODO: GET POSTS BY USER
+  //  GET POSTS BY USER
   Future<void> getPostsByUserId(String userId) async {
     await _handleApiCall<List<SocialPostModel>>(
       apiCall: () => _socialPostService.getFeedUserId(userId: userId),
@@ -455,7 +559,7 @@ class SocialPostViewModel extends ChangeNotifier {
     );
   }
 
-  //TODO: GET POST LIKES
+  //  GET POST LIKES
   Future<List<String>> getPostLikes(String postId) async {
     List<String> likes = [];
     await _handleApiCall<List<String>>(
@@ -467,7 +571,7 @@ class SocialPostViewModel extends ChangeNotifier {
     return likes;
   }
 
-  //TODO: MULTI SELECT
+  //  MULTI SELECT
   void onToggleSelectMode() {
     _selectMode = !_selectMode;
     if (!_selectMode) _selectedPosts.clear();
@@ -483,7 +587,7 @@ class SocialPostViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  //TODO: RESET
+  //  RESET
   void onResetState() {
     _setState(
       isLoading: false,
@@ -496,7 +600,7 @@ class SocialPostViewModel extends ChangeNotifier {
     _likedPosts.clear();
   }
 
-  //TODO: REFRESH
+  //  REFRESH
   Future<void> refreshPosts({required String roleName}) async {
     await getPostsByRole(roleName: roleName);
   }

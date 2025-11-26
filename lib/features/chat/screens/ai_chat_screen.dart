@@ -499,7 +499,7 @@ class _AIChatScreenState extends State<AIChatScreen> with TickerProviderStateMix
                   // IconButton( // Nút đính kèm (tùy chọn)
                   //   icon: Icon(Icons.add_circle_outline_rounded, color: theme.primaryColor, size: 28),
                   //   tooltip: 'Thêm tùy chọn',
-                  //   onPressed: () { /* TODO: Mở menu đính kèm */ },
+                  //   onPressed: () { /*   Mở menu đính kèm */ },
                   //   padding: const EdgeInsets.all(10),
                   // ),
                   // const SizedBox(width: 4),

@@ -78,7 +78,7 @@ class _NotificationIconState extends State<NotificationIcon>
                       child: Icon(
                         Icons.notifications_none_rounded,
                         color: primaryColor,
-                        size: 22.sp,
+                        size: 24.sp,
                       ),
                     ),
                   ),

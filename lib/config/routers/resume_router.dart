@@ -27,7 +27,7 @@ class ResumeRouter  {
       );
     },
     routes: [
-      // TODO: Trang file của bạn
+      //   Trang file của bạn
       GoRoute(
         path: 'file',
         pageBuilder: (context, state) {

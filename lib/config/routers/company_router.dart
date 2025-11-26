@@ -19,7 +19,7 @@ class CompanyRouter  {
       );
     },
     routes: [
-      // TODO: Trang công việc gần bạn
+      //   Trang công việc gần bạn
       GoRoute(
         path: 'detail',
         pageBuilder: (context, state) {

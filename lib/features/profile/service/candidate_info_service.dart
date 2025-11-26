@@ -9,7 +9,7 @@ class CandidateInfoService {
 
   CandidateInfoService() : _apiService = ApiService();
 
-  // TODO: Lấy danh sách tất cả ứng viên
+  //   Lấy danh sách tất cả ứng viên
   Future<List<CandidateInfoModel>> getAllCandidates() async {
     try {
       final res = await _apiService.get(
@@ -36,7 +36,7 @@ class CandidateInfoService {
     }
   }
 
-  // TODO: Lấy thông tin ứng viên theo ID
+  //   Lấy thông tin ứng viên theo ID
   Future<CandidateInfoModel> getCandidateById({required String id}) async {
     try {
       final res = await _apiService.get(
@@ -61,7 +61,7 @@ class CandidateInfoService {
     }
   }
 
-  // TODO: Tạo ứng viên mới
+  //   Tạo ứng viên mới
   Future<CandidateInfoModel> createCandidate(CandidateInfoModel candidate) async {
     try {
       final res = await _apiService.post(
@@ -87,7 +87,7 @@ class CandidateInfoService {
     }
   }
 
-  // TODO: Cập nhật thông tin ứng viên
+  //   Cập nhật thông tin ứng viên
   Future<CandidateInfoModel> updateCandidate({
     required String id,
     required CandidateInfoModel candidate,
@@ -126,7 +126,7 @@ class CandidateInfoService {
     }
   }
 
-  // TODO: Xóa ứng viên
+  //   Xóa ứng viên
   Future<void> deleteCandidate({required String id}) async {
     try {
       await _apiService.delete(
@@ -142,7 +142,7 @@ class CandidateInfoService {
     }
   }
 
-  // TODO: Tìm kiếm ứng viên theo từ khóa (tuỳ chọn nếu API có hỗ trợ)
+  //   Tìm kiếm ứng viên theo từ khóa (tuỳ chọn nếu API có hỗ trợ)
   Future<List<CandidateInfoModel>> searchCandidates(String keyword) async {
     try {
       final res = await _apiService.get(
