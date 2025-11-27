@@ -352,7 +352,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin, 
                     children: [
                       SizedBox(height: 24.h),
                       CustomGradientButton(
-                        title: "Tìm Việc Quanh Đây",
+                        title: "Khám phá cơ hội quanh bạn",
                         icon: Icons.radar_outlined,
                         gradientColors: [
                           theme.colorScheme.secondary,

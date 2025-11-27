@@ -47,9 +47,9 @@ class _LoginMethodScreenState extends State<LoginMethodScreen> {
     setState(() => _isAuthenticating = true);
 
     try {
-      // Kiểm tra xem đã có session hợp lệ chưa
+      // Kiểm tra xem đã có session hợp lệ chưa (silent mode để tránh notifyListeners)
       final authVM = context.read<AuthViewModel>();
-      await authVM.checkLoginStatus();
+      await authVM.checkLoginStatus(silent: true);
 
       // Nếu đã đăng nhập và có session hợp lệ → chỉ cần xác thực sinh trắc học
       if (authVM.isLoggedIn && authVM.idUser != null) {

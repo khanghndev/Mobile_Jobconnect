@@ -292,29 +292,43 @@ class AuthViewModel extends ChangeNotifier {
   }
   
   // Kiểm tra trạng thái đăng nhập hiện tại
-  Future<void> checkLoginStatus() async {
-    _setState(isLoading: true, errorMessage: null);
+  Future<void> checkLoginStatus({bool silent = false}) async {
+    if (!silent) {
+      _setState(isLoading: true, errorMessage: null);
+    }
     try {
       final user = _supabaseAuthService.currentUser;
       if (user != null) {
         final savedIdUser = _prefs.getString(SharedPrefsKey.idUser);
-        _setState(
-          isLoading: false,
-          isSuccess: true,
-          isLoggedIn: true,
-          idUser: savedIdUser,
-          idUserSupabase: user.id,
-        );
+        // Chỉ cập nhật nếu state thay đổi để tránh notifyListeners không cần thiết
+        if (_isLoggedIn != true || _idUser != savedIdUser || _idUserSupabase != user.id) {
+          _setState(
+            isLoading: false,
+            isSuccess: true,
+            isLoggedIn: true,
+            idUser: savedIdUser,
+            idUserSupabase: user.id,
+          );
+        } else if (!silent) {
+          _setState(isLoading: false);
+        }
       } else {
-        _setState(isLoading: false, isSuccess: false, isLoggedIn: false);
+        // Chỉ cập nhật nếu state thay đổi
+        if (_isLoggedIn != false) {
+          _setState(isLoading: false, isSuccess: false, isLoggedIn: false);
+        } else if (!silent) {
+          _setState(isLoading: false);
+        }
       }
     } catch (e) {
-      _setState(
-        isLoading: false,
-        isSuccess: false,
-        isLoggedIn: false,
-        errorMessage: e.toString(),
-      );
+      if (!silent) {
+        _setState(
+          isLoading: false,
+          isSuccess: false,
+          isLoggedIn: false,
+          errorMessage: e.toString(),
+        );
+      }
     }
   }
 

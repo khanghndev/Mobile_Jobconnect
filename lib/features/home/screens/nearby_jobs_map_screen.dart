@@ -15,7 +15,9 @@ import 'package:job_connect/features/home/widgets/nearby_jobs_map/search_locatio
 import 'package:job_connect/features/job/model/job_posting_model.dart';
 import 'package:job_connect/features/job/screens/job_detail_screen.dart';
 import 'package:job_connect/features/job/service/job_posting_service.dart';
+import 'package:job_connect/features/home/view_model/job_saved_view_model.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 import 'dart:ui';
 
 class NearbyJobsMapScreen extends StatefulWidget {
@@ -68,6 +70,14 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen> with TickerPr
 
     _loadCustomMarkers(); // Tải custom marker icons
     _loadInitialData();
+    
+    // Load saved jobs
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && widget.idUser.isNotEmpty) {
+        final jobSavedVM = Provider.of<JobSavedViewModel>(context, listen: false);
+        jobSavedVM.fetchSavedJobsByUser(widget.idUser);
+      }
+    });
   }
 
   @override
@@ -759,18 +769,55 @@ class _NearbyJobsMapScreenState extends State<NearbyJobsMapScreen> with TickerPr
             ignoring: false,
             child: SizedBox.expand(
               child: JobListDraggableSheet(
-                isLoading: _isLoading,
-                jobsInView: _jobsInView,
-                sheetAnimationController: _sheetAnimationController,
-                showJobList: _showJobList,
-                onSheetStateChanged: (value) {
-                  setState(() => _showJobList = value);
-                },
-                idUser: widget.idUser,
-                currentCity: _currentCity?.locality,
-                searchMode: _searchMode,
-                radiusKm: _radiusKm,
-              ),
+  isLoading: _isLoading,
+  jobsInView: _jobsInView,
+  idUser: widget.idUser,
+  currentCity: _currentCity?.locality,
+  searchMode: _searchMode,
+  radiusKm: _radiusKm,
+  onFilterPressed: () {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      useSafeArea: true,
+      builder: (context) => Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: FilterPanel(
+          searchMode: _searchMode,
+          radiusKm: _radiusKm,
+          onModeChanged: (mode) {
+            setState(() {
+              _searchMode = mode;
+              _updateRadiusCircle();
+            });
+          },
+          onRadiusChanged: (radius) {
+            setState(() {
+              _radiusKm = radius;
+              _updateRadiusCircle();
+            });
+          },
+          onApplyFilter: _applyFilter,
+        ),
+      ),
+    );
+  },
+  onLocationPressed: () async {
+    if (_currentPositionLatLng != null && mapController != null) {
+      mapController!.animateCamera(
+        CameraUpdate.newLatLngZoom(
+          _currentPositionLatLng!,
+          14.5,
+        ),
+      );
+    } else {
+      await _loadInitialData();
+    }
+  },
+),
             ),
           ),
         ],

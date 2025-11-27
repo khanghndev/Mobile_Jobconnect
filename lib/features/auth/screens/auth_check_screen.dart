@@ -27,7 +27,10 @@ class _AuthCheckScreenState extends State<AuthCheckScreen> {
   @override
   void initState() {
     super.initState();
-    _checkAuthentication();
+    // Defer the check to avoid setState during build
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkAuthentication();
+    });
   }
 
   Future<void> _checkAuthentication() async {
@@ -36,7 +39,7 @@ class _AuthCheckScreenState extends State<AuthCheckScreen> {
     try {
       final authVM = context.read<AuthViewModel>();
 
-      // Kiểm tra đăng nhập
+      // Kiểm tra đăng nhập (không cần await timeout vì đã defer)
       await authVM.checkLoginStatus().timeout(const Duration(seconds: 5));
 
       // Nếu chưa đăng nhập, đi thẳng ra chọn role
